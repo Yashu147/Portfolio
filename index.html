@@ -58053,91 +58053,96 @@ renderer.setAnimationLoop(now => {
     #about .ypa-panel { height: 640px; min-height: 640px; }
   }
   @media (prefers-reduced-motion: reduce) { #about .ypa-lift, #about .ypa-idimg { transition: none; } }
-  /* ── Services: pinned showcase. Accent #2b3a9e, text #111, muted #B5B5B5, divider #E5E5E5.
-     Only transform and opacity animate. ── */
+  /* ── Services: pinned showcase, after the reference. Accent #2b3a9e, text #111, muted #B5B5B5,
+     divider #E5E5E5. Proportions from the reference: list column 33%, image 45.6% (near square),
+     sub-items panel the rest; image and panel form one block, rounded on the right only. ── */
   #services.ysx { --acc: #2b3a9e; --ink: #111111; --mut: #b5b5b5; --div: #e5e5e5; --ease: cubic-bezier(0.215, 0.61, 0.355, 1);
     position: relative; z-index: 30; background: #ffffff; color: var(--ink); font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-weight: 500; }
-  #services .ysx-headwrap { padding: clamp(110px, 17vh, 200px) clamp(20px, 4vw, 56px) clamp(40px, 6vh, 72px); }
-  /* the two headline lines are scrubbed from muted grey to ink by the script */
+  #services .ysx-headwrap { padding: clamp(110px, 17vh, 200px) clamp(20px, 4vw, 56px) 0; }
+  /* headline as in the reference: grey line indented, ink line indented further, one divider between */
   #services .yph-line { color: var(--mut); }
+  #services .yph-grey { padding-left: 7%; }
+  #services .yph-ink { padding-left: 14%; }
   #services .yph-rule { background: var(--div); }
+  #services .yph-rule:last-child { visibility: hidden; }
 
   #services .ysx-pin { position: relative; height: calc(var(--n) * 100vh); }
-  #services .ysx-stage { position: sticky; top: 0; height: 100vh; max-width: 1440px; margin: 0 auto; padding: 48px; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; align-items: center; box-sizing: border-box; }
+  #services .ysx-stage { position: sticky; top: 0; height: 100vh; display: flex; align-items: center; padding: 0 clamp(20px, 4vw, 56px); box-sizing: border-box; }
+  #services .ysx-frame { --h: min(78vh, 43vw, 760px); position: relative; width: 100%; height: var(--h); display: grid; grid-template-columns: 33% minmax(0, 1fr); }
 
-  /* left: the list */
-  #services .ysx-list { grid-column: 1 / 4; align-self: center; }
-  #services .ysx-list ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
-  #services .ysx-name { appearance: none; border: 0; background: none !important; padding: 2px 0 !important; border-radius: 4px !important; font: inherit; font-size: clamp(16px, 1.2vw, 18px); font-weight: 500; text-align: left; white-space: normal; color: var(--ink) !important; opacity: .6; cursor: pointer; transition: opacity 300ms ease, color 300ms ease !important; }
-  #services .ysx-name:hover { opacity: 1; }
-  #services .ysx-name[aria-current="true"] { color: var(--acc) !important; opacity: 1; }
+  /* left column: the list at the top, the tagline at the bottom */
+  #services .ysx-side { position: relative; display: flex; flex-direction: column; justify-content: space-between; min-width: 0; }
+  #services .ysx-list ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: clamp(8px, 1.1vh, 12px); }
+  #services .ysx-name { appearance: none; border: 0; background: none !important; padding: 2px 0 !important; border-radius: 3px !important; font: inherit; font-size: clamp(16px, 1.2vw, 18px); font-weight: 500; letter-spacing: -0.02em; text-align: left; white-space: normal; color: var(--ink) !important; cursor: pointer; transition: color 300ms ease !important; }
+  #services .ysx-name:hover { color: var(--acc) !important; }
+  #services .ysx-name[aria-current="true"] { color: var(--acc) !important; }
   #services .ysx-name:focus-visible { outline: 2px solid var(--acc); outline-offset: 4px; }
+  #services .ysx-tags { position: relative; height: 3.2em; font-size: 11px; }
+  #services .ysx-tag { position: absolute; left: 0; bottom: 0; margin: 0; max-width: 32ch; display: flex; gap: 8px; font-size: 11px; font-weight: 600; line-height: 1.5; letter-spacing: .04em; text-transform: uppercase; color: var(--ink); opacity: 0; transform: translate3d(0, 6px, 0); transition: opacity 400ms var(--ease), transform 400ms var(--ease); }
+  #services .ysx-tag.is-on { opacity: 1; transform: none; }
+  #services .ysx-tag svg { flex: none; width: 10px; height: 10px; margin-top: 3px; stroke: var(--acc); stroke-width: 2.2; fill: none; }
 
-  /* centre: image, big title over its left edge, progress */
-  #services .ysx-media { grid-column: 4 / 10; position: relative; align-self: center; justify-self: center; }
-  #services .ysx-image { position: relative; height: min(calc(100vh - 170px), 780px); aspect-ratio: 4 / 5; border-radius: 12px; overflow: hidden; background: #f1f1f1; }
+  /* right: image + sub-items panel, one block */
+  #services .ysx-block { display: grid; grid-template-columns: 67.7% minmax(0, 1fr); height: 100%; border-radius: 0 12px 12px 0; overflow: hidden; }
+  #services .ysx-image { position: relative; height: 100%; overflow: hidden; background: #f1f1f1; }
   #services .ysx-image .ysx-art { position: absolute; inset: 0; opacity: 0; transform: scale(1.05); transition: opacity 800ms var(--ease), transform 800ms var(--ease); }
   #services .ysx-image .ysx-art.is-on { opacity: 1; transform: scale(1); }
-  #services .ysx-titles { position: absolute; left: -26%; bottom: 9%; z-index: 2; height: 1.02em; overflow: hidden; font-size: clamp(3.5rem, 7.6vw, 8.25rem); pointer-events: none; }
-  #services .ysx-title { position: absolute; left: 0; top: 0; margin: 0; font-size: 1em; font-weight: 700; line-height: 1; letter-spacing: -0.045em; white-space: nowrap; color: var(--ink); transform: translate3d(0, 105%, 0); opacity: 0; transition: transform 600ms var(--ease), opacity 600ms var(--ease); }
-  #services .ysx-title.is-on { position: relative; transform: none; opacity: 1; }
-  #services .ysx-title.is-out { transform: translate3d(0, -105%, 0); opacity: 0; }
-  #services .ysx-title.no-t { transition: none; }
-  #services .ysx-progress { position: absolute; left: 50%; bottom: -26px; width: 160px; height: 1px; margin-left: -80px; background: var(--div); overflow: hidden; }
+  #services .ysx-progress { position: absolute; z-index: 2; left: 50%; bottom: 5%; width: 30%; max-width: 180px; height: 2px; transform: translateX(-50%); background: rgba(255,255,255,.55); overflow: hidden; }
   #services .ysx-progress i { position: absolute; inset: 0; background: var(--acc); transform-origin: 0 50%; transform: scaleX(0); }
-
-  /* right: sub-items and the counter */
-  #services .ysx-panel { grid-column: 10 / 13; position: relative; align-self: center; height: min(calc(100vh - 170px), 780px); background: #f7f7f7; border-radius: 12px; padding: 28px 24px; box-sizing: border-box; overflow: hidden; }
-  #services .ysx-subs { list-style: none; margin: 0; padding: 0; position: absolute; left: 24px; right: 24px; top: 28px; display: none; flex-direction: column; gap: 14px; font-size: 16px; line-height: 1.35; }
+  #services .ysx-panel { position: relative; height: 100%; background: #f7f7f7; padding: clamp(18px, 2.4vh, 26px) clamp(16px, 1.4vw, 24px); box-sizing: border-box; overflow: hidden; }
+  #services .ysx-subs { list-style: none; margin: 0; padding: 0; position: absolute; left: clamp(16px, 1.4vw, 24px); right: 12px; top: clamp(18px, 2.4vh, 26px); display: none; flex-direction: column; gap: clamp(5px, .7vh, 8px); font-size: clamp(14px, 1.1vw, 16px); line-height: 1.4; letter-spacing: -0.015em; color: var(--ink); }
   #services .ysx-subs.is-on { display: flex; }
-  #services .ysx-subs li { padding-bottom: 14px; border-bottom: 1px solid var(--div); }
-  #services .ysx-count { position: absolute; right: 22px; bottom: 16px; display: flex; font-size: clamp(3rem, 6vw, 5rem); font-weight: 700; line-height: 1; letter-spacing: -0.04em; color: var(--mut); font-variant-numeric: tabular-nums; }
+  #services .ysx-count { position: absolute; right: clamp(14px, 1.2vw, 20px); bottom: clamp(12px, 1.6vh, 20px); display: flex; font-size: clamp(3rem, 4.6vw, 5rem); font-weight: 700; line-height: 1; letter-spacing: -0.05em; color: var(--mut); font-variant-numeric: tabular-nums; }
   #services .ysx-roll { display: block; height: 1em; overflow: hidden; }
   #services .ysx-strip { display: flex; flex-direction: column; transform: translate3d(0, calc(var(--d) * -10%), 0); transition: transform 600ms var(--ease); }
   #services .ysx-strip span { display: block; height: 1em; }
 
-  #services .ysx-tagline { position: absolute; left: 48px; bottom: 30px; margin: 0; display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--ink); }
-  #services .ysx-tagline svg { width: 11px; height: 11px; stroke: var(--acc); stroke-width: 2; fill: none; }
+  /* the big title: starts in the list column and runs over the image's left edge, blending into it */
+  #services .ysx-titles { position: absolute; z-index: 3; left: 20%; bottom: 22%; font-size: clamp(3.25rem, 6.6vw, 7.5rem); height: 2.02em; width: 60%; overflow: hidden; pointer-events: none; mix-blend-mode: multiply; }
+  #services .ysx-title { position: absolute; left: 0; bottom: 0; margin: 0; font-size: 1em; font-weight: 700; line-height: 0.92; letter-spacing: -0.055em; white-space: nowrap; padding-bottom: .16em; color: var(--ink); transform: translate3d(0, 105%, 0); opacity: 0; transition: transform 600ms var(--ease), opacity 600ms var(--ease); }
+  #services .ysx-title.is-on { transform: none; opacity: 1; }
+  #services .ysx-title.is-out { transform: translate3d(0, -105%, 0); opacity: 0; }
+  #services .ysx-title.no-t { transition: none; }
   #services .ysx-live { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; margin: -1px; }
 
-  /* placeholder artwork, in the site's palette */
+  /* placeholder artwork, in the site's palette (light at the lower left, where the title sits) */
   #services .ysx-art { background-color: #eef0f7; }
   #services .ysx-p1 { background: radial-gradient(70% 55% at 85% 12%, #1b2570 0%, rgba(27,37,112,0) 70%), radial-gradient(80% 60% at 60% 45%, #5a6be0 0%, rgba(90,107,224,0) 65%), linear-gradient(210deg, #2b3a9e 0%, #9fa9ef 50%, #eef0fb 100%); }
-  #services .ysx-p2 { background: radial-gradient(70% 55% at 75% 70%, #c4e007 0%, rgba(196,224,7,0) 65%), radial-gradient(60% 50% at 25% 25%, #ffffff 0%, rgba(255,255,255,0) 70%), linear-gradient(200deg, #f7f7f2 0%, #e4efb0 60%, #b8d41a 100%); }
-  #services .ysx-p3 { background: radial-gradient(80% 60% at 70% 30%, #c9d0ff 0%, rgba(201,208,255,0) 70%), radial-gradient(70% 60% at 30% 85%, #6f7ee0 0%, rgba(111,126,224,0) 70%), linear-gradient(180deg, #f5f6fc 0%, #dfe3fb 100%); }
+  #services .ysx-p2 { background: radial-gradient(70% 55% at 75% 30%, #c4e007 0%, rgba(196,224,7,0) 65%), radial-gradient(60% 50% at 20% 80%, #ffffff 0%, rgba(255,255,255,0) 70%), linear-gradient(20deg, #f7f7f2 0%, #e4efb0 55%, #b8d41a 100%); }
+  #services .ysx-p3 { background: radial-gradient(80% 60% at 70% 25%, #9aa6f2 0%, rgba(154,166,242,0) 70%), radial-gradient(70% 60% at 25% 85%, #ffffff 0%, rgba(255,255,255,0) 70%), linear-gradient(200deg, #c9d0ff 0%, #f5f6fc 100%); }
   #services .ysx-p4 { background: radial-gradient(55% 45% at 72% 30%, #3a4bc0 0%, rgba(58,75,192,0) 70%), radial-gradient(90% 60% at 15% 90%, #f1f1f4 0%, rgba(241,241,244,0) 60%), linear-gradient(200deg, #121218 0%, #6b6f86 48%, #e9eaf0 100%); }
   #services .ysx-p5 { background: radial-gradient(55% 45% at 78% 22%, #c4e007 0%, rgba(196,224,7,0) 70%), repeating-linear-gradient(90deg, rgba(17,17,17,.06) 0 1px, transparent 1px 48px), repeating-linear-gradient(0deg, rgba(17,17,17,.06) 0 1px, transparent 1px 48px), linear-gradient(180deg, #f7f7f7 0%, #dadada 100%); }
-  #services .ysx-p6 { background: radial-gradient(60% 50% at 30% 75%, #c4e007 0%, rgba(196,224,7,0) 70%), radial-gradient(80% 70% at 75% 25%, #2b3a9e 0%, rgba(43,58,158,0) 70%), linear-gradient(135deg, #f3f5ff 0%, #b9c1f5 100%); }
+  #services .ysx-p6 { background: radial-gradient(60% 50% at 25% 80%, #e4f5a0 0%, rgba(228,245,160,0) 70%), radial-gradient(80% 70% at 78% 20%, #2b3a9e 0%, rgba(43,58,158,0) 70%), linear-gradient(135deg, #f3f5ff 0%, #b9c1f5 100%); }
 
   /* phone: one card per service */
   #services .ysx-cards { display: none; }
   #services .ysx-card { padding: 0 clamp(20px, 4vw, 56px) 56px; opacity: 0; transform: translate3d(0, 24px, 0); transition: opacity 700ms var(--ease), transform 700ms var(--ease); }
   #services .ysx-card.is-in { opacity: 1; transform: none; }
   #services .ysx-card-name { margin: 0; padding-top: 22px; border-top: 1px solid var(--div); font-size: 14px; color: var(--acc); }
-  #services .ysx-card-title { margin: 6px 0 16px; font-size: clamp(2.6rem, 13vw, 4rem); font-weight: 700; line-height: 1; letter-spacing: -0.045em; }
-  #services .ysx-card .ysx-art { aspect-ratio: 4 / 5; border-radius: 12px; }
-  #services .ysx-card-foot { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; margin-top: 16px; padding: 20px; background: #f7f7f7; border-radius: 12px; }
-  #services .ysx-card-foot ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 16px; }
-  #services .ysx-card-count { font-size: 3rem; font-weight: 700; line-height: .9; letter-spacing: -0.04em; color: var(--mut); }
+  #services .ysx-card-title { margin: 6px 0 16px; font-size: clamp(2.4rem, 12vw, 3.6rem); font-weight: 700; line-height: .95; letter-spacing: -0.05em; }
+  #services .ysx-card .ysx-art { aspect-ratio: 1 / 1; border-radius: 12px 12px 0 0; }
+  #services .ysx-card-foot { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; padding: 20px; background: #f7f7f7; border-radius: 0 0 12px 12px; }
+  #services .ysx-card-foot ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; font-size: 15px; }
+  #services .ysx-card-count { font-size: 3rem; font-weight: 700; line-height: .9; letter-spacing: -0.05em; color: var(--mut); }
+  #services .ysx-card-tag { margin: 14px 0 0; display: flex; gap: 8px; font-size: 11px; font-weight: 600; line-height: 1.5; letter-spacing: .04em; text-transform: uppercase; }
+  #services .ysx-card-tag svg { flex: none; width: 10px; height: 10px; margin-top: 3px; stroke: var(--acc); stroke-width: 2.2; fill: none; }
 
-  /* tablet: still pinned; the sub-items sit under the image */
+  /* tablet: still pinned; the sub-items panel sits under the image */
   @media (max-width: 1023px) {
-    #services .ysx-stage { padding: 32px; column-gap: 16px; grid-template-rows: 1fr auto; align-content: center; }
-    #services .ysx-list { grid-column: 1 / 5; grid-row: 1 / 3; }
-    #services .ysx-media { grid-column: 5 / 13; grid-row: 1; justify-self: start; }
-    #services .ysx-image { height: min(52vh, 560px); }
-    #services .ysx-titles { left: 5%; font-size: clamp(2.75rem, 8vw, 4.5rem); }
-    #services .ysx-panel { grid-column: 5 / 13; grid-row: 2; height: auto; min-height: 30vh; margin-top: 44px; }
-    #services .ysx-subs { position: relative; left: 0; right: 0; top: 0; gap: 10px; font-size: 15px; }
-    #services .ysx-subs li { padding-bottom: 10px; }
+    #services .ysx-frame { --h: min(80vh, 760px); grid-template-columns: 30% minmax(0, 1fr); }
+    #services .ysx-block { grid-template-columns: 1fr; grid-template-rows: 62% 1fr; border-radius: 0 12px 12px 0; }
+    #services .ysx-titles { left: 16%; bottom: 44%; font-size: clamp(2.5rem, 7.5vw, 4rem); }
+    #services .ysx-subs { gap: 4px; font-size: 14px; }
     #services .ysx-count { font-size: 2.75rem; }
   }
   @media (max-width: 767px) {
     #services .ysx-pin { display: none; }
     #services .ysx-cards { display: block; }
+    #services .yph-grey { padding-left: 0; }
+    #services .yph-ink { padding-left: 8%; }
   }
   @media (prefers-reduced-motion: reduce) {
-    #services .ysx-image .ysx-art, #services .ysx-title { transition: opacity 200ms linear; transform: none !important; }
+    #services .ysx-image .ysx-art, #services .ysx-title, #services .ysx-tag { transition: opacity 200ms linear; transform: none !important; }
     #services .ysx-strip { transition: none; }
     #services .ysx-card { transition: opacity 300ms linear; transform: none; }
   }
@@ -58275,18 +58280,21 @@ window.__ypImgs = function (r) { r.querySelectorAll('img[data-yp-src]').forEach(
   </div>
   <div class="ysx-pin" data-ysx-pin="">
     <div class="ysx-stage">
-      <nav class="ysx-list" aria-label="Services"><ul><li><button type="button" class="ysx-name" data-ysx-go="0" aria-current="true">Product design, end to end</button></li><li><button type="button" class="ysx-name" data-ysx-go="1">Interface &amp; experience</button></li><li><button type="button" class="ysx-name" data-ysx-go="2">Web &amp; app design</button></li><li><button type="button" class="ysx-name" data-ysx-go="3">Front-end development</button></li><li><button type="button" class="ysx-name" data-ysx-go="4">Design systems</button></li><li><button type="button" class="ysx-name" data-ysx-go="5">Prototypes worth testing</button></li></ul></nav>
-      <div class="ysx-media">
-        <div class="ysx-image"><div class="ysx-art ysx-p1 is-on" role="img" aria-label="Placeholder artwork in deep blue for product design" data-ysx-art="0"></div><div class="ysx-art ysx-p2" role="img" aria-label="Placeholder artwork in lime and white for interface design" data-ysx-art="1"></div><div class="ysx-art ysx-p3" role="img" aria-label="Placeholder artwork in soft blue for web and app design" data-ysx-art="2"></div><div class="ysx-art ysx-p4" role="img" aria-label="Placeholder artwork in black and blue for front-end development" data-ysx-art="3"></div><div class="ysx-art ysx-p5" role="img" aria-label="Placeholder artwork in grey and lime for design systems" data-ysx-art="4"></div><div class="ysx-art ysx-p6" role="img" aria-label="Placeholder artwork in blue and lime for prototyping" data-ysx-art="5"></div></div>
-        <div class="ysx-titles" aria-hidden="false"><h3 class="ysx-title is-on" data-ysx-title="0">Product</h3><h3 class="ysx-title" data-ysx-title="1">Interface</h3><h3 class="ysx-title" data-ysx-title="2">Web &amp; App</h3><h3 class="ysx-title" data-ysx-title="3">Front-end</h3><h3 class="ysx-title" data-ysx-title="4">Systems</h3><h3 class="ysx-title" data-ysx-title="5">Prototype</h3></div>
-        <div class="ysx-progress" aria-hidden="true"><i data-ysx-bar=""></i></div>
+      <div class="ysx-frame">
+        <div class="ysx-side">
+          <nav class="ysx-list" aria-label="Services"><ul><li><button type="button" class="ysx-name" data-ysx-go="0" aria-current="true">Brand Identity</button></li><li><button type="button" class="ysx-name" data-ysx-go="1">Product Design</button></li><li><button type="button" class="ysx-name" data-ysx-go="2">Web Systems</button></li><li><button type="button" class="ysx-name" data-ysx-go="3">Development</button></li><li><button type="button" class="ysx-name" data-ysx-go="4">Content &amp; Messaging</button></li><li><button type="button" class="ysx-name" data-ysx-go="5">Motion &amp; Interaction</button></li></ul></nav>
+          <div class="ysx-tags"><p class="ysx-tag is-on" data-ysx-tag="0"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0v12M0 6h12M1.8 1.8l8.4 8.4M10.2 1.8l-8.4 8.4"/></svg><span>A brand should be recognised before it is read.</span></p><p class="ysx-tag" data-ysx-tag="1"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0v12M0 6h12M1.8 1.8l8.4 8.4M10.2 1.8l-8.4 8.4"/></svg><span>Every screen has one job. I design the path, not just the page.</span></p><p class="ysx-tag" data-ysx-tag="2"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0v12M0 6h12M1.8 1.8l8.4 8.4M10.2 1.8l-8.4 8.4"/></svg><span>Sites built to grow page by page without falling apart.</span></p><p class="ysx-tag" data-ysx-tag="3"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0v12M0 6h12M1.8 1.8l8.4 8.4M10.2 1.8l-8.4 8.4"/></svg><span>I build what I draw, so what ships matches the design.</span></p><p class="ysx-tag" data-ysx-tag="4"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0v12M0 6h12M1.8 1.8l8.4 8.4M10.2 1.8l-8.4 8.4"/></svg><span>Words are interface too. Clear copy removes friction.</span></p><p class="ysx-tag" data-ysx-tag="5"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0v12M0 6h12M1.8 1.8l8.4 8.4M10.2 1.8l-8.4 8.4"/></svg><span>Motion that explains what just happened, never decoration.</span></p></div>
+        </div>
+        <div class="ysx-block">
+          <div class="ysx-image"><div class="ysx-art ysx-p2 is-on" role="img" aria-label="Placeholder artwork for brand identity" data-ysx-art="0"></div><div class="ysx-art ysx-p1" role="img" aria-label="Placeholder artwork for product design" data-ysx-art="1"></div><div class="ysx-art ysx-p3" role="img" aria-label="Placeholder artwork for web systems" data-ysx-art="2"></div><div class="ysx-art ysx-p4" role="img" aria-label="Placeholder artwork for development" data-ysx-art="3"></div><div class="ysx-art ysx-p5" role="img" aria-label="Placeholder artwork for content and messaging" data-ysx-art="4"></div><div class="ysx-art ysx-p6" role="img" aria-label="Placeholder artwork for motion and interaction" data-ysx-art="5"></div><div class="ysx-progress" aria-hidden="true"><i data-ysx-bar=""></i></div></div>
+          <div class="ysx-panel"><ul class="ysx-subs is-on" data-ysx-subs="0"><li>Brand Strategy</li><li>Logo &amp; Marks</li><li>Visual Language</li><li>Typography</li><li>Guidelines</li></ul><ul class="ysx-subs" data-ysx-subs="1"><li>User Experience Design</li><li>Visual Design</li><li>Design Systems</li><li>Flows</li><li>Prototypes</li><li>Interaction</li></ul><ul class="ysx-subs" data-ysx-subs="2"><li>Marketing Sites</li><li>Page Templates</li><li>CMS Structure</li><li>Responsive Layouts</li><li>Launch Support</li></ul><ul class="ysx-subs" data-ysx-subs="3"><li>Front-end Build</li><li>Component Libraries</li><li>Design-to-Code</li><li>Performance</li><li>Accessibility</li></ul><ul class="ysx-subs" data-ysx-subs="4"><li>Voice &amp; Tone</li><li>UX Writing</li><li>Product Copy</li><li>Onboarding</li><li>Microcopy</li></ul><ul class="ysx-subs" data-ysx-subs="5"><li>Micro-interactions</li><li>Transitions</li><li>Scroll Effects</li><li>Prototyped Motion</li><li>Motion Guidelines</li></ul><span class="ysx-count" aria-hidden="true"><span>.</span><span class="ysx-roll"><span class="ysx-strip" style="--d:0"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span><span class="ysx-roll"><span class="ysx-strip" data-ysx-digit="" style="--d:1"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span></span></div>
+        </div>
+        <div class="ysx-titles"><h3 class="ysx-title is-on" data-ysx-title="0">Brand<br>Identity</h3><h3 class="ysx-title" data-ysx-title="1">Product<br>Design</h3><h3 class="ysx-title" data-ysx-title="2">Web<br>Systems</h3><h3 class="ysx-title" data-ysx-title="3">Develop-<br>ment</h3><h3 class="ysx-title" data-ysx-title="4">Content &amp;<br>Messaging</h3><h3 class="ysx-title" data-ysx-title="5">Motion &amp;<br>Interaction</h3></div>
+        <p class="ysx-live" aria-live="polite" data-ysx-live="">Service 1 of 6: Brand Identity</p>
       </div>
-      <div class="ysx-panel"><ul class="ysx-subs is-on" data-ysx-subs="0"><li>Discovery and problem framing</li><li>User flows and journeys</li><li>End-to-end UX</li><li>Usability testing</li><li>Launch and iteration</li></ul><ul class="ysx-subs" data-ysx-subs="1"><li>Interaction design</li><li>Micro-interactions</li><li>Information architecture</li><li>Accessibility checks</li><li>Visual polish</li></ul><ul class="ysx-subs" data-ysx-subs="2"><li>Responsive websites</li><li>iOS and Android apps</li><li>Dashboards and tools</li><li>Landing pages</li><li>Cross-platform consistency</li></ul><ul class="ysx-subs" data-ysx-subs="3"><li>HTML, CSS and JavaScript</li><li>React components</li><li>Motion and scroll effects</li><li>Design-to-code handoff</li><li>Performance basics</li></ul><ul class="ysx-subs" data-ysx-subs="4"><li>Tokens and theming</li><li>Component libraries</li><li>Figma libraries</li><li>Usage documentation</li><li>Keeping it consistent</li></ul><ul class="ysx-subs" data-ysx-subs="5"><li>Clickable prototypes</li><li>Coded prototypes</li><li>AI-assisted prototyping</li><li>Test-ready builds</li><li>Stakeholder demos</li></ul><span class="ysx-count" aria-hidden="true"><span>.</span><span class="ysx-roll"><span class="ysx-strip" style="--d:0"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span><span class="ysx-roll"><span class="ysx-strip" data-ysx-digit="" style="--d:1"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span></span></div>
-      <p class="ysx-tagline"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0v12M0 6h12M1.8 1.8l8.4 8.4M10.2 1.8l-8.4 8.4"/></svg>Open to new work · Hyderabad</p>
-      <p class="ysx-live" aria-live="polite" data-ysx-live="">Service 1 of 6: Product design, end to end</p>
     </div>
   </div>
-  <div class="ysx-cards"><article class="ysx-card"><p class="ysx-card-name">Product design, end to end</p><h3 class="ysx-card-title">Product</h3><div class="ysx-art ysx-p1" role="img" aria-label="Placeholder artwork in deep blue for product design"></div><div class="ysx-card-foot"><ul><li>Discovery and problem framing</li><li>User flows and journeys</li><li>End-to-end UX</li><li>Usability testing</li><li>Launch and iteration</li></ul><span class="ysx-card-count">.01</span></div></article><article class="ysx-card"><p class="ysx-card-name">Interface &amp; experience</p><h3 class="ysx-card-title">Interface</h3><div class="ysx-art ysx-p2" role="img" aria-label="Placeholder artwork in lime and white for interface design"></div><div class="ysx-card-foot"><ul><li>Interaction design</li><li>Micro-interactions</li><li>Information architecture</li><li>Accessibility checks</li><li>Visual polish</li></ul><span class="ysx-card-count">.02</span></div></article><article class="ysx-card"><p class="ysx-card-name">Web &amp; app design</p><h3 class="ysx-card-title">Web &amp; App</h3><div class="ysx-art ysx-p3" role="img" aria-label="Placeholder artwork in soft blue for web and app design"></div><div class="ysx-card-foot"><ul><li>Responsive websites</li><li>iOS and Android apps</li><li>Dashboards and tools</li><li>Landing pages</li><li>Cross-platform consistency</li></ul><span class="ysx-card-count">.03</span></div></article><article class="ysx-card"><p class="ysx-card-name">Front-end development</p><h3 class="ysx-card-title">Front-end</h3><div class="ysx-art ysx-p4" role="img" aria-label="Placeholder artwork in black and blue for front-end development"></div><div class="ysx-card-foot"><ul><li>HTML, CSS and JavaScript</li><li>React components</li><li>Motion and scroll effects</li><li>Design-to-code handoff</li><li>Performance basics</li></ul><span class="ysx-card-count">.04</span></div></article><article class="ysx-card"><p class="ysx-card-name">Design systems</p><h3 class="ysx-card-title">Systems</h3><div class="ysx-art ysx-p5" role="img" aria-label="Placeholder artwork in grey and lime for design systems"></div><div class="ysx-card-foot"><ul><li>Tokens and theming</li><li>Component libraries</li><li>Figma libraries</li><li>Usage documentation</li><li>Keeping it consistent</li></ul><span class="ysx-card-count">.05</span></div></article><article class="ysx-card"><p class="ysx-card-name">Prototypes worth testing</p><h3 class="ysx-card-title">Prototype</h3><div class="ysx-art ysx-p6" role="img" aria-label="Placeholder artwork in blue and lime for prototyping"></div><div class="ysx-card-foot"><ul><li>Clickable prototypes</li><li>Coded prototypes</li><li>AI-assisted prototyping</li><li>Test-ready builds</li><li>Stakeholder demos</li></ul><span class="ysx-card-count">.06</span></div></article></div>
+  <div class="ysx-cards"><article class="ysx-card"><p class="ysx-card-name">Brand Identity</p><h3 class="ysx-card-title">Brand Identity</h3><div class="ysx-art ysx-p2" role="img" aria-label="Placeholder artwork for brand identity"></div><div class="ysx-card-foot"><ul><li>Brand Strategy</li><li>Logo &amp; Marks</li><li>Visual Language</li><li>Typography</li><li>Guidelines</li></ul><span class="ysx-card-count">.01</span></div><p class="ysx-card-tag"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0v12M0 6h12M1.8 1.8l8.4 8.4M10.2 1.8l-8.4 8.4"/></svg><span>A brand should be recognised before it is read.</span></p></article><article class="ysx-card"><p class="ysx-card-name">Product Design</p><h3 class="ysx-card-title">Product Design</h3><div class="ysx-art ysx-p1" role="img" aria-label="Placeholder artwork for product design"></div><div class="ysx-card-foot"><ul><li>User Experience Design</li><li>Visual Design</li><li>Design Systems</li><li>Flows</li><li>Prototypes</li><li>Interaction</li></ul><span class="ysx-card-count">.02</span></div><p class="ysx-card-tag"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0v12M0 6h12M1.8 1.8l8.4 8.4M10.2 1.8l-8.4 8.4"/></svg><span>Every screen has one job. I design the path, not just the page.</span></p></article><article class="ysx-card"><p class="ysx-card-name">Web Systems</p><h3 class="ysx-card-title">Web Systems</h3><div class="ysx-art ysx-p3" role="img" aria-label="Placeholder artwork for web systems"></div><div class="ysx-card-foot"><ul><li>Marketing Sites</li><li>Page Templates</li><li>CMS Structure</li><li>Responsive Layouts</li><li>Launch Support</li></ul><span class="ysx-card-count">.03</span></div><p class="ysx-card-tag"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0v12M0 6h12M1.8 1.8l8.4 8.4M10.2 1.8l-8.4 8.4"/></svg><span>Sites built to grow page by page without falling apart.</span></p></article><article class="ysx-card"><p class="ysx-card-name">Development</p><h3 class="ysx-card-title">Development</h3><div class="ysx-art ysx-p4" role="img" aria-label="Placeholder artwork for development"></div><div class="ysx-card-foot"><ul><li>Front-end Build</li><li>Component Libraries</li><li>Design-to-Code</li><li>Performance</li><li>Accessibility</li></ul><span class="ysx-card-count">.04</span></div><p class="ysx-card-tag"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0v12M0 6h12M1.8 1.8l8.4 8.4M10.2 1.8l-8.4 8.4"/></svg><span>I build what I draw, so what ships matches the design.</span></p></article><article class="ysx-card"><p class="ysx-card-name">Content &amp; Messaging</p><h3 class="ysx-card-title">Content &amp; Messaging</h3><div class="ysx-art ysx-p5" role="img" aria-label="Placeholder artwork for content and messaging"></div><div class="ysx-card-foot"><ul><li>Voice &amp; Tone</li><li>UX Writing</li><li>Product Copy</li><li>Onboarding</li><li>Microcopy</li></ul><span class="ysx-card-count">.05</span></div><p class="ysx-card-tag"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0v12M0 6h12M1.8 1.8l8.4 8.4M10.2 1.8l-8.4 8.4"/></svg><span>Words are interface too. Clear copy removes friction.</span></p></article><article class="ysx-card"><p class="ysx-card-name">Motion &amp; Interaction</p><h3 class="ysx-card-title">Motion &amp; Interaction</h3><div class="ysx-art ysx-p6" role="img" aria-label="Placeholder artwork for motion and interaction"></div><div class="ysx-card-foot"><ul><li>Micro-interactions</li><li>Transitions</li><li>Scroll Effects</li><li>Prototyped Motion</li><li>Motion Guidelines</li></ul><span class="ysx-card-count">.06</span></div><p class="ysx-card-tag"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0v12M0 6h12M1.8 1.8l8.4 8.4M10.2 1.8l-8.4 8.4"/></svg><span>Motion that explains what just happened, never decoration.</span></p></article></div>
 </section>
 
 <section id="spline" style="position: relative; z-index: 30; width: 100%; box-sizing: border-box; background: #ffffff; font-family: 'Plus Jakarta Sans', system-ui, sans-serif;">
@@ -61489,6 +61497,7 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
   const arts = Array.from(sec.querySelectorAll("[data-ysx-art]"));
   const titles = Array.from(sec.querySelectorAll("[data-ysx-title]"));
   const subs = Array.from(sec.querySelectorAll("[data-ysx-subs]"));
+  const tags = Array.from(sec.querySelectorAll("[data-ysx-tag]"));
   const digit = sec.querySelector("[data-ysx-digit]");
   const bar = sec.querySelector("[data-ysx-bar]");
   const live = sec.querySelector("[data-ysx-live]");
@@ -61522,6 +61531,7 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
     });
     requestAnimationFrame(() => titles.forEach((t, k) => { if (k !== i && k !== prev) t.classList.remove("no-t"); }));
     subs.forEach((u, k) => u.classList.toggle("is-on", k === i));
+    tags.forEach((t, k) => t.classList.toggle("is-on", k === i));
     const lis = subs[i] ? Array.from(subs[i].children) : [];
     if (!reduce && lis.length && lis[0].animate) {
       lis.forEach((li, k) => li.animate(
