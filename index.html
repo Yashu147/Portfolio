@@ -58021,11 +58021,13 @@ renderer.setAnimationLoop(now => {
   [data-yph="14"]:hover { transform: translateY(-2px) !important; color: #ffffff !important; }
   /* ── About me: ID card on a lanyard + statement carousel. Same type, ink and accent as the
      rest of the page: Plus Jakarta Sans, #101014 on white, #2b3a9e, Instrument Serif accents. ── */
-  #about .ypa-grid { display: grid; grid-template-columns: minmax(260px, 5fr) minmax(0, 7fr); gap: clamp(32px, 6vw, 110px); align-items: start; margin-top: clamp(40px, 7vh, 90px); }
-  #about .ypa-stage { position: relative; height: clamp(640px, 76vh, 700px); touch-action: pan-y; }
+  #about .ypa-grid { display: grid; grid-template-columns: minmax(300px, 4fr) minmax(0, 6fr); gap: clamp(36px, 6vw, 120px); align-items: center; }
+  #about .ypa-stage { position: relative; height: clamp(660px, 86vh, 780px); touch-action: pan-y; }
+  /* the blue panel the card hangs in (the page accent, lit softly from the top) */
+  #about .ypa-panel { overflow: hidden; border-radius: 24px; background: radial-gradient(120% 60% at 50% 0%, #3a4bc0 0%, rgba(58,75,192,0) 70%), linear-gradient(180deg, #2b3a9e 0%, #25338c 100%); box-shadow: inset 0 0 0 1px rgba(255,255,255,.06); }
   #about .ypa-stage canvas.ypa-rope { position: absolute; inset: 0; width: 100% !important; height: 100% !important; z-index: 0; pointer-events: none; cursor: default; }
-  #about .ypa-rail { position: absolute; top: 0; width: 64px; height: 6px; transform: translateX(-50%); background: linear-gradient(180deg, #2a2b31, #101014); border-radius: 0 0 4px 4px; box-shadow: 0 2px 6px rgba(16,16,20,.35); pointer-events: none; }
-  #about .ypa-card { position: absolute; left: 0; top: 0; z-index: 1; width: clamp(204px, 17vw, 240px); aspect-ratio: 236 / 440; perspective: 1400px; cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; transform-origin: top center; }
+  #about .ypa-rail { position: absolute; top: 0; width: 64px; height: 6px; transform: translateX(-50%); background: linear-gradient(180deg, #1c1d24, #0b0b0e); border-radius: 0 0 4px 4px; box-shadow: 0 2px 6px rgba(16,16,20,.35); pointer-events: none; }
+  #about .ypa-card { position: absolute; left: 0; top: 0; z-index: 1; width: clamp(230px, 17vw, 240px); aspect-ratio: 236 / 440; perspective: 1400px; cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; transform-origin: top center; }
   #about .ypa-card:active { cursor: grabbing; }
   #about .ypa-flipper { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; }
   #about .ypa-face { position: absolute; inset: 0; border-radius: 18px; padding: 16px 16px 14px; display: flex; flex-direction: column; backface-visibility: hidden; -webkit-backface-visibility: hidden; color: #101014; font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
@@ -58038,7 +58040,7 @@ renderer.setAnimationLoop(now => {
   #about .ypa-holo { position: absolute; top: 14px; bottom: 14px; right: 5px; width: 6px; border-radius: 5px; background: repeating-linear-gradient(125deg, #eef0fa 0%, #c9cfee 10%, #aab4e4 20%, #e4e8f8 30%, #eef0fa 40%); background-size: 220% 220%; animation: ypa-foil 7s linear infinite; box-shadow: inset 0 0 0 1px rgba(43,58,158,.14); }
   @keyframes ypa-foil { to { background-position: 220% 0%; } }
   #about .ypa-hole { width: 32px; height: 9px; background: #101014; border-radius: 5px; margin: 0 auto 10px; flex-shrink: 0; opacity: .85; }
-  #about .ypa-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+  #about .ypa-header { flex-shrink: 0; display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
   #about .ypa-brand { display: flex; align-items: center; gap: 7px; }
   #about .ypa-brand-mark { width: 20px; height: 20px; display: block; flex: none; }
   #about .ypa-brand-text { display: flex; flex-direction: column; }
@@ -58047,19 +58049,19 @@ renderer.setAnimationLoop(now => {
   #about .ypa-pillars { display: flex; flex-direction: column; align-items: flex-end; gap: 1px; }
   #about .ypa-pillars span { font-size: 7px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: rgba(16,16,20,.55); }
   #about .ypa-pillars i { width: 16px; height: 2px; background: #2b3a9e; margin-top: 3px; }
-  #about .ypa-photo { position: relative; width: 100%; height: 128px; border-radius: 10px; background: #e9e7e3; margin-bottom: 12px; flex-shrink: 0; box-shadow: inset 0 0 0 1px rgba(16,16,20,.08); }
-  #about .ypa-photo img { width: 100%; height: 100%; display: block; object-fit: cover; object-position: 50% 28%; border-radius: 10px; pointer-events: none; }
+  #about .ypa-photo { position: relative; width: 100%; flex: 1 1 0; min-height: 0; border-radius: 10px; background: #e9e7e3; margin-bottom: 12px; flex-shrink: 0; box-shadow: inset 0 0 0 1px rgba(16,16,20,.08); }
+  #about .ypa-photo img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; object-fit: cover; object-position: 50% 28%; border-radius: 10px; pointer-events: none; }
   #about .ypa-verified { position: absolute; right: -6px; bottom: -6px; width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(160deg, #4758c9, #2b3a9e); display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(16,16,20,.3), 0 0 0 3px #ffffff; }
   #about .ypa-verified svg { width: 11px; height: 11px; }
   #about .ypa-name { margin: 0 0 2px; font-weight: 800; font-size: 18px; letter-spacing: -.02em; color: #101014; }
   #about .ypa-role { margin: 0 0 10px; font-size: 9.5px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; color: #2b3a9e; }
   #about .ypa-divider { width: 100%; height: 1px; background: rgba(16,16,20,.1); margin-bottom: 10px; }
-  #about .ypa-idrow { width: 100%; display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+  #about .ypa-idrow { width: 100%; flex-shrink: 0; display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
   #about .ypa-idrow-labels { display: flex; flex-direction: column; gap: 5px; }
   #about .ypa-idrow-labels div { display: flex; gap: 8px; align-items: baseline; }
   #about .ypa-idrow-labels span { width: 50px; flex-shrink: 0; font-size: 7.2px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: rgba(16,16,20,.5); }
-  #about .ypa-idrow-labels b { font-size: 9.5px; font-weight: 600; font-variant-numeric: tabular-nums; }
-  #about .ypa-footer { width: 100%; margin-top: auto; padding-top: 10px; border-top: 1px solid rgba(16,16,20,.1); text-align: center; font-size: 8.5px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: rgba(16,16,20,.55); }
+  #about .ypa-idrow-labels b { font-size: 9.5px; font-weight: 600; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  #about .ypa-footer { width: 100%; margin-top: 12px; padding-top: 10px; border-top: 1px solid rgba(16,16,20,.1); text-align: center; font-size: 8.5px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: rgba(16,16,20,.55); }
   #about .ypa-footer i { color: #2b3a9e; font-style: normal; margin: 0 5px; }
   #about .ypa-stripe { width: 100%; height: 30px; background: repeating-linear-gradient(45deg, #101014, #101014 6px, #1c1d24 6px, #1c1d24 12px); border-radius: 3px; margin-bottom: 12px; }
   #about .ypa-barcode { display: flex; align-items: flex-end; gap: 2px; height: 32px; width: 100%; background: #fff; border-radius: 3px; padding: 0 4px; margin-bottom: 10px; overflow: hidden; box-shadow: 0 0 0 1px rgba(16,16,20,.08); }
@@ -58082,49 +58084,53 @@ renderer.setAnimationLoop(now => {
   #about .ypa-sig { margin-top: auto; }
   #about .ypa-script { font-family: 'Instrument Serif', 'Times New Roman', serif; font-style: italic; font-size: 30px; line-height: 1; color: #101014; }
   #about .ypa-sig small { display: block; font-size: 7.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: rgba(16,16,20,.5); border-top: 1px solid rgba(16,16,20,.1); margin-top: 4px; padding-top: 4px; }
-  #about .ypa-hint { position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); margin: 0; display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: rgba(16,16,20,.45); white-space: nowrap; transition: opacity .5s ease; pointer-events: none; }
+  #about .ypa-hint { position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%); margin: 0; display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.62); white-space: nowrap; transition: opacity .5s ease; pointer-events: none; }
   #about .ypa-hint svg { width: 14px; height: 14px; }
   #about .ypa-stage.ypa-touched .ypa-hint { opacity: 0; }
 
-  /* statement column */
-  #about .ypa-copy { padding-top: clamp(24px, 12vh, 150px); display: flex; flex-direction: column; }
-  #about .ypa-kicker { display: flex; align-items: center; gap: 14px; font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: rgba(16,16,20,.55); }
-  #about .ypa-kicker span:first-child { color: #2b3a9e; }
-  #about .ypa-kicker i { width: 24px; height: 1px; background: rgba(16,16,20,.2); }
-  #about .ypa-kicker [data-ypa-count] { font-variant-numeric: tabular-nums; }
-  #about .ypa-slides { display: grid; margin-top: clamp(20px, 3vh, 32px); }
-  #about .ypa-slide { grid-area: 1 / 1; margin: 0; opacity: 0; visibility: hidden; transform: translate3d(0, 18px, 0); filter: blur(6px); transition: opacity 700ms cubic-bezier(0.22,1,0.36,1), transform 900ms cubic-bezier(0.22,1,0.36,1), filter 700ms cubic-bezier(0.22,1,0.36,1), visibility 0s linear 700ms; }
-  #about .ypa-slide[data-active] { opacity: 1; visibility: visible; transform: none; filter: none; transition-delay: 0s; }
-  #about .ypa-quote { position: relative; margin: 0; max-width: 24ch; font-size: clamp(24px, 2.7vw, 44px); font-weight: 500; line-height: 1.32; letter-spacing: -0.022em; color: #101014; text-wrap: pretty; }
-  #about .ypa-q { font-family: 'Instrument Serif', 'Times New Roman', serif; font-style: italic; font-weight: 400; font-size: 1.3em; line-height: 0; color: #2b3a9e; margin-right: .06em; vertical-align: -0.12em; }
-  #about .ypa-q:last-child { margin: 0 0 0 .06em; }
-  #about .ypa-quote mark { color: #2b3a9e; background: linear-gradient(rgba(43,58,158,.12), rgba(43,58,158,.12)) no-repeat 0 0 / 0% 100%; border-radius: .18em; padding: 0 .16em; margin: 0 -.04em; -webkit-box-decoration-break: clone; box-decoration-break: clone; transition: background-size 900ms cubic-bezier(0.65,0,0.35,1) 350ms; }
-  #about .ypa-slide[data-active] mark { background-size: 100% 100%; }
+  /* statement column: no heading, just the words */
+  #about .ypa-copy { display: flex; flex-direction: column; }
+  #about .ypa-hello { margin: 0 0 clamp(20px, 3.2vh, 36px); font-family: 'Instrument Serif', 'Times New Roman', serif; font-style: italic; font-weight: 400; font-size: clamp(46px, 5.4vw, 92px); line-height: 0.95; letter-spacing: -0.015em; color: #2b3a9e; }
+  #about .ypa-hello span { color: #101014; }
+  #about .ypa-lead { margin: 0; max-width: 25ch; font-size: clamp(24px, 2.35vw, 40px); font-weight: 500; line-height: 1.3; letter-spacing: -0.022em; color: #101014; text-wrap: pretty; }
+  #about .ypa-body { margin: clamp(18px, 2.6vh, 26px) 0 0; max-width: 44ch; font-size: clamp(16px, 1.3vw, 20px); font-weight: 500; line-height: 1.62; letter-spacing: -0.008em; color: rgba(16,16,20,.62); text-wrap: pretty; }
+  #about .ypa-lead + .ypa-body { margin-top: clamp(26px, 4vh, 40px); }
+  #about .ypa-copy mark { color: #2b3a9e; background: linear-gradient(rgba(43,58,158,.12), rgba(43,58,158,.12)) no-repeat 0 0 / 0% 100%; border-radius: .2em; padding: 0 .16em; margin: 0 -.04em; -webkit-box-decoration-break: clone; box-decoration-break: clone; transition: background-size 900ms cubic-bezier(0.65,0,0.35,1) calc(var(--d, 0) * 380ms); }
+  #about .ypa-copy.ypa-lit mark { background-size: 100% 100%; }
   #about .ypa-cursor { display: inline-block; width: 0; position: relative; vertical-align: top; }
-  #about .ypa-cursor svg { position: absolute; left: -.2em; top: .78em; width: .78em; height: .78em; fill: #101014; stroke: #ffffff; stroke-width: 1.6; stroke-linejoin: round; filter: drop-shadow(0 2px 3px rgba(16,16,20,.25)); opacity: 0; transform: translate(.5em, .6em); transition: opacity 400ms ease 900ms, transform 900ms cubic-bezier(0.22,1,0.36,1) 900ms; }
-  #about .ypa-slide[data-active] .ypa-cursor svg { opacity: 1; transform: none; }
-  #about .ypa-slide figcaption { margin-top: clamp(18px, 2.6vh, 28px); font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: rgba(16,16,20,.55); }
-  #about .ypa-nav { display: flex; align-items: center; gap: 14px; margin-top: clamp(24px, 4vh, 44px); }
-  #about .ypa-nav button { appearance: none; border: 0; padding: 0; margin: 0; font: inherit; cursor: pointer; }
-  #about .ypa-arrow { width: 40px; height: 40px; border-radius: 50% !important; display: grid; place-items: center; background: transparent !important; color: #101014 !important; box-shadow: inset 0 0 0 1px rgba(16,16,20,.16); transition: background 300ms ease, color 300ms ease, box-shadow 300ms ease !important; }
-  #about .ypa-arrow:hover { background: #101014 !important; color: #ffffff !important; box-shadow: inset 0 0 0 1px #101014; }
-  #about .ypa-arrow svg { width: 16px; height: 16px; }
-  #about .ypa-dots { display: flex; align-items: center; gap: 8px; }
-  #about .ypa-dots button { width: 6px; height: 6px; border-radius: 999px !important; background: rgba(16,16,20,.2) !important; transition: width 500ms cubic-bezier(0.22,1,0.36,1), background 300ms ease !important; }
-  #about .ypa-dots button[aria-selected="true"] { width: 22px; background: #2b3a9e !important; }
-  #about .ypa-arrow:focus-visible, #about .ypa-dots button:focus-visible, #about .ypa-connect-icons a:focus-visible { outline: 2px solid #2b3a9e; outline-offset: 3px; }
-  #about .ypa-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px clamp(20px, 3vw, 40px); margin: clamp(40px, 7vh, 80px) 0 0; }
-  #about .ypa-facts div { border-top: 1px solid rgba(16,16,20,.14); padding-top: 14px; }
-  #about .ypa-facts dt { font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: rgba(16,16,20,.55); }
-  #about .ypa-facts dd { margin: 6px 0 0; display: flex; align-items: center; gap: 10px; font-size: clamp(15px, 1.2vw, 18px); font-weight: 500; letter-spacing: -0.01em; color: #101014; }
-  #about .ypa-facts dd i { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 0 4px rgba(34,197,94,0.22); flex: none; }
+  #about .ypa-cursor svg { position: absolute; left: -.25em; top: .9em; width: 1.05em; height: 1.05em; fill: #101014; stroke: #ffffff; stroke-width: 1.6; stroke-linejoin: round; filter: drop-shadow(0 2px 3px rgba(16,16,20,.25)); opacity: 0; transform: translate(1.2em, 1em); transition: opacity 400ms ease 1500ms, transform 1000ms cubic-bezier(0.22,1,0.36,1) 1500ms; }
+  #about .ypa-copy.ypa-lit .ypa-cursor svg { opacity: 1; transform: none; }
+  #about .ypa-sign { position: relative; margin: clamp(34px, 5.5vh, 60px) 0 0; padding-top: clamp(18px, 2.6vh, 26px); font-family: 'Instrument Serif', 'Times New Roman', serif; font-style: italic; font-size: clamp(20px, 1.75vw, 28px); line-height: 1.25; color: rgba(16,16,20,.5); }
+  #about .ypa-sign::before { content: ""; position: absolute; left: 0; top: 0; width: 34px; height: 2px; background: #2b3a9e; }
+  #about .ypa-sign span { display: block; }
   @media (max-width: 900px) {
-    #about .ypa-grid { grid-template-columns: 1fr; gap: 12px; }
-    #about .ypa-stage { height: 620px; }
-    #about .ypa-copy { padding-top: 0; }
+    #about .ypa-grid { grid-template-columns: 1fr; gap: clamp(36px, 7vh, 56px); }
+    #about .ypa-stage { height: 640px; }
   }
-  @media (max-width: 520px) { #about .ypa-facts { grid-template-columns: 1fr; } }
   @media (prefers-reduced-motion: reduce) { #about .ypa-holo { animation: none; } #about .ypa-face::after { transition: none; } }
+
+  /* ── section heads (reference: label + underline, right-hand note, two big lines on hairlines) ── */
+  .yph { display: flex; flex-direction: column; width: 100%; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
+  .yph-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; margin-bottom: clamp(36px, 6vh, 72px); }
+  .yph-label span { display: inline-flex; align-items: center; gap: 12px; font-size: clamp(18px, 1.6vw, 26px); font-weight: 500; letter-spacing: -0.02em; color: #101014; white-space: nowrap; }
+  .yph-label img { flex: none; display: block; width: 1.3em; height: 1.3em; will-change: transform; }
+  .yph-label i { display: block; width: 30px; height: 2px; margin-top: 14px; background: rgba(16,16,20,0.16); }
+  .yph-note { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; text-align: right; }
+  .yph-note-row { display: inline-flex; align-items: center; gap: 10px; font-size: clamp(13px, 1vw, 16px); font-weight: 500; color: rgba(16,16,20,0.55); }
+  .yph-dots { display: inline-flex; }
+  .yph-dots b { width: 15px; height: 15px; border-radius: 50%; background: #101014; }
+  .yph-dots b + b { margin-left: -6px; background: #2b3a9e; }
+  .yph-note strong { font-size: clamp(16px, 1.35vw, 22px); font-weight: 700; letter-spacing: -0.03em; color: #101014; }
+  .yph-title { margin: 0; font: inherit; }
+  .yph-line { display: block; font-weight: 800; font-size: clamp(34px, 6.6vw, 118px); line-height: 1.02; letter-spacing: -0.05em; text-transform: uppercase; padding: 0.04em 0 0.06em; }
+  .yph-grey { color: #b0b0b3; }
+  .yph-ink { color: #101014; padding-left: 9vw; }
+  .yph-rule { width: 100%; height: 1px; background: rgba(16,16,20,0.12); transform-origin: 0 50%; }
+  @media (max-width: 760px) {
+    .yph-top { flex-direction: column; gap: 18px; }
+    .yph-note { align-items: flex-start; text-align: left; }
+    .yph-ink { padding-left: 6vw; }
+  }
 
   /* case study pages replace the home page while they are open */
   #yp-page { display: none; position: relative; z-index: 30; }
@@ -58140,16 +58146,7 @@ window.__ypImgs = function (r) { r.querySelectorAll('img[data-yp-src]').forEach(
 <section style="position: absolute; inset: 0; z-index: 30; width: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; background: transparent; padding: clamp(110px, 17vh, 200px) clamp(20px, 4vw, 56px) clamp(40px, 7vh, 90px); font-family: 'Plus Jakarta Sans', system-ui, sans-serif;">
 
   <div style="width: 100%; display: flex; flex-direction: column;">
-      <div data-sec-head="" data-reveal-group="" data-reveal-x="" style="display: flex; flex-direction: column; width: 100%;">
-        <div style="display: flex; align-items: center; gap: clamp(14px, 1.6vw, 24px); padding-bottom: clamp(14px, 2vh, 22px);">
-          <span style="display: inline-flex; align-items: center; gap: 10px; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: clamp(19px, 1.9vw, 29px); font-weight: 600; letter-spacing: -0.024em; color: #101014; white-space: nowrap;"><img data-yp-src="0" alt="" data-bloom="" draggable="false" style="flex: none; display: block; width: 1.35em; height: 1.35em; will-change: transform;">Some stories from my work</span>
-          <span aria-hidden="true" style="flex: none; width: 1px; height: clamp(22px, 2.2vw, 34px); background: rgba(16,16,20,0.2);"></span>
-          <span style="font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: clamp(13px, 1.05vw, 16px); font-weight: 500; letter-spacing: -0.005em; color: rgba(16,16,20,0.6);">two projects</span>
-        </div>
-        <div aria-hidden="true" data-sec-rule="" style="width: 100%; height: 1px; background: rgba(16,16,20,0.14); transform-origin: 100% 50%;"></div>
-        <h2 style="margin: clamp(32px, 5.4vh, 70px) 0 0; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-weight: 700; font-size: clamp(33px, 5.5vw, 80px); line-height: 1.06; letter-spacing: -0.037em; color: #101014; text-wrap: pretty;"><span style="display: block;">A few projects where I helped</span><span style="display: block;">turn ideas into real products.</span></h2>
-        <p style="margin: clamp(16px, 2.4vh, 26px) 0 0; max-width: 32ch; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: clamp(16px, 1.65vw, 26px); font-weight: 500; letter-spacing: -0.018em; line-height: 1.3; color: rgba(16,16,20,0.6); text-wrap: pretty;">Each one began as a rough idea. Here is what it became.</p>
-      </div>
+      <div class="yph" data-reveal-group="" data-reveal-x=""><div class="yph-top"><div class="yph-label"><span><img data-yp-src="0" alt="" data-bloom="" draggable="false">Some stories from my work</span><i aria-hidden="true"></i></div><div class="yph-note"><span class="yph-note-row"><span class="yph-dots" aria-hidden="true"><b></b><b></b></span>two projects</span><strong>Idea to product.</strong></div></div><h2 class="yph-title" aria-label="Rough ideas in, real products out."><span class="yph-line yph-grey" aria-hidden="true">Rough ideas in,</span></h2><div class="yph-rule" data-sec-rule="" aria-hidden="true"></div><div class="yph-line yph-ink" aria-hidden="true">real products out.</div><div class="yph-rule" data-sec-rule="" aria-hidden="true"></div></div>
   </div>
 </section>
 </div>
@@ -58239,122 +58236,12 @@ window.__ypImgs = function (r) { r.querySelectorAll('img[data-yp-src]').forEach(
   <div data-ref="caseCursorRef" aria-hidden="true" style="position: fixed; left: 0; top: 0; z-index: 60; width: 96px; height: 96px; margin: -48px 0 0 -48px; border-radius: 50%; background: #ffffff; color: #0f0f10; display: grid; place-items: center; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; pointer-events: none; opacity: 0; transform: translate3d(-200px,-200px,0) scale(0.6); will-change: transform, opacity;">View</div>
   <div aria-hidden="true" data-blur-bar="" style="position: sticky; bottom: 0; z-index: 3; height: 180px; margin-top: -180px; pointer-events: none; -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); -webkit-mask-image: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 45%, rgba(0,0,0,0) 100%); mask-image: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 45%, rgba(0,0,0,0) 100%);"></div>
 </section>
-<section id="about" style="position: relative; z-index: 30; width: 100%; box-sizing: border-box; background: #ffffff; padding: clamp(110px, 17vh, 200px) clamp(20px, 4vw, 56px) clamp(96px, 14vh, 170px); font-family: 'Plus Jakarta Sans', system-ui, sans-serif; color: #101014;">
-  <div data-sec-head="" data-reveal-group="" data-reveal-x="" style="display: flex; flex-direction: column; width: 100%;">
-    <div style="display: flex; align-items: center; gap: clamp(14px, 1.6vw, 24px); padding-bottom: clamp(14px, 2vh, 22px);">
-      <span style="display: inline-flex; align-items: center; gap: 10px; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: clamp(19px, 1.9vw, 29px); font-weight: 600; letter-spacing: -0.024em; color: #101014; white-space: nowrap;"><img data-yp-src="0" alt="" data-bloom="" draggable="false" style="flex: none; display: block; width: 1.35em; height: 1.35em; will-change: transform;">About me</span>
-      <span aria-hidden="true" style="flex: none; width: 1px; height: clamp(22px, 2.2vw, 34px); background: rgba(16,16,20,0.2);"></span>
-      <span style="font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: clamp(13px, 1.05vw, 16px); font-weight: 500; letter-spacing: -0.005em; color: rgba(16,16,20,0.6);">the person behind the work</span>
-    </div>
-    <div aria-hidden="true" data-sec-rule="" style="width: 100%; height: 1px; background: rgba(16,16,20,0.14); transform-origin: 100% 50%;"></div>
-    <h2 style="margin: clamp(32px, 5.4vh, 70px) 0 0; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-weight: 700; font-size: clamp(33px, 5.5vw, 80px); line-height: 1.06; letter-spacing: -0.037em; color: #101014; text-wrap: pretty;"><span style="display: block;">I still take apps apart to see</span><span style="display: block;">what makes them feel easy.</span></h2>
-    <p style="margin: clamp(16px, 2.4vh, 26px) 0 0; max-width: 32ch; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: clamp(16px, 1.65vw, 26px); font-weight: 500; letter-spacing: -0.018em; line-height: 1.3; color: rgba(16,16,20,0.6); text-wrap: pretty;">Two years into product design, and just as curious as day one.</p>
-  </div>
-
-  <div class="ypa-grid">
-    <!-- the ID card hangs from the top of this column on a lanyard: drag to swing, click to flip -->
-    <div class="ypa-stage" data-ypa-stage="">
-      <canvas class="ypa-rope" aria-hidden="true"></canvas>
-      <div class="ypa-rail" aria-hidden="true"></div>
-      <div class="ypa-card" role="img" aria-label="ID card: Yashwant Ponde, Product Designer, Hyderabad. Drag to swing, click to flip.">
-        <div class="ypa-flipper">
-          <div class="ypa-face ypa-front">
-            <div class="ypa-hole"></div>
-            <div class="ypa-holo"></div>
-            <div class="ypa-header">
-              <div class="ypa-brand">
-                <img class="ypa-brand-mark" data-yp-src="4" alt="" draggable="false">
-                <div class="ypa-brand-text"><b>YASHWANT PONDE</b><small>A studio of one</small></div>
-              </div>
-              <div class="ypa-pillars"><span>Design</span><span>Build</span><span>Ship</span><i></i></div>
-            </div>
-            <div class="ypa-photo">
-              <img data-yp-src="5" alt="" draggable="false">
-              <span class="ypa-verified" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"></path></svg></span>
-            </div>
-            <h3 class="ypa-name">Yashwant Ponde</h3>
-            <p class="ypa-role">Product Designer</p>
-            <div class="ypa-divider"></div>
-            <div class="ypa-idrow">
-              <div class="ypa-idrow-labels">
-                <div><span>ID</span><b>YP-2023</b></div>
-                <div><span>Based in</span><b>Hyderabad, IN</b></div>
-                <div><span>Status</span><b>Open to work</b></div>
-              </div>
-              <div class="ypa-qr ypa-small" data-ypa-qr="574123"></div>
-            </div>
-            <div class="ypa-footer">Design<i>·</i>Build<i>·</i>Ship</div>
-          </div>
-          <div class="ypa-face ypa-back">
-            <div class="ypa-hole"></div>
-            <div class="ypa-holo"></div>
-            <div class="ypa-stripe"></div>
-            <div class="ypa-idnum"><span>NO. YP-2023</span><em>Hyderabad</em></div>
-            <div class="ypa-barcode" data-ypa-barcode=""></div>
-            <div class="ypa-backrow">
-              <div class="ypa-qr" data-ypa-qr="928371"></div>
-              <div class="ypa-scan"><b>Say hello</b>ponde.yashwant<br>@gmail.com<br>Replies within a day.</div>
-            </div>
-            <div class="ypa-connect">
-              <span>Connect</span>
-              <div class="ypa-connect-icons">
-                <a href="mailto:ponde.yashwant@gmail.com" aria-label="Email Yashwant"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="m3 7 9 6 9-6"></path></svg></a>
-                <a href="#work" aria-label="See the work"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"></path><path d="M8 7h9v9"></path></svg></a>
-              </div>
-            </div>
-            <div class="ypa-sig"><div class="ypa-script">Yashwant</div><small>Authorized signature</small></div>
-          </div>
-        </div>
-      </div>
-      <p class="ypa-hint" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M7 8l-4 4 4 4M17 8l4 4-4 4"></path></svg>Drag to swing · Click to flip</p>
-    </div>
-
-    <div class="ypa-copy" data-reveal-group="">
-      <div class="ypa-kicker"><span>About</span><i aria-hidden="true"></i><span data-ypa-count="">01 / 03</span></div>
-      <div class="ypa-slides" data-ypa-slides="" aria-live="polite">
-        <figure class="ypa-slide" data-active="">
-          <blockquote class="ypa-quote"><span class="ypa-q" aria-hidden="true">“</span>I’m Yashwant, a product designer in Hyderabad. I like the unglamorous half of the job: watching someone get stuck, then <mark>quietly taking away</mark><span class="ypa-cursor" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 3l14 7.5-6.2 1.6L9.6 18z"></path></svg></span> whatever stopped them.<span class="ypa-q" aria-hidden="true">”</span></blockquote>
-          <figcaption>Who I am</figcaption>
-        </figure>
-        <figure class="ypa-slide">
-          <blockquote class="ypa-quote"><span class="ypa-q" aria-hidden="true">“</span>I <mark>build what I draw</mark>, so the last mile still looks like the first sketch. Most of my work lives in <mark>AI products</mark><span class="ypa-cursor" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 3l14 7.5-6.2 1.6L9.6 18z"></path></svg></span> and design systems.<span class="ypa-q" aria-hidden="true">”</span></blockquote>
-          <figcaption>How I work</figcaption>
-        </figure>
-        <figure class="ypa-slide">
-          <blockquote class="ypa-quote"><span class="ypa-q" aria-hidden="true">“</span>At Narrative Intelligence I took an AI assistant from a first sketch to <mark>a shipped desktop app</mark><span class="ypa-cursor" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 3l14 7.5-6.2 1.6L9.6 18z"></path></svg></span>, with agents, routines and a browser that remembers.<span class="ypa-q" aria-hidden="true">”</span></blockquote>
-          <figcaption>Most recently</figcaption>
-        </figure>
-      </div>
-      <div class="ypa-nav">
-        <button type="button" class="ypa-arrow" data-ypa-prev="" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg></button>
-        <div class="ypa-dots" role="tablist" aria-label="About slides"><button type="button" role="tab" aria-label="Who I am" aria-selected="true"></button><button type="button" role="tab" aria-label="How I work" aria-selected="false"></button><button type="button" role="tab" aria-label="Most recently" aria-selected="false"></button></div>
-        <button type="button" class="ypa-arrow" data-ypa-next="" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"></path></svg></button>
-      </div>
-      <dl class="ypa-facts">
-        <div><dt>Based in</dt><dd>Hyderabad, India</dd></div>
-        <div><dt>Focus</dt><dd>AI products · Design systems</dd></div>
-        <div><dt>Most recently</dt><dd>Narrative Intelligence</dd></div>
-        <div><dt>Status</dt><dd><i aria-hidden="true"></i>Open to new work</dd></div>
-      </dl>
-    </div>
-  </div>
-</section>
-
 <section id="spline" style="position: relative; z-index: 30; width: 100%; box-sizing: border-box; background: #ffffff; font-family: 'Plus Jakarta Sans', system-ui, sans-serif;">
 
   <div data-ref="splineCanvasRef" data-flow-stage="" aria-hidden="true" style="position: absolute; inset: 0; z-index: 0; pointer-events: none;"></div>
   <div data-reveal-group="" style="position: relative; z-index: 2; box-sizing: border-box; padding: clamp(110px, 17vh, 200px) clamp(20px, 4vw, 56px) clamp(8px, 1.4vh, 18px);">
     <div style="position: relative; z-index: 2; width: 100%; box-sizing: border-box; display: flex; flex-direction: column; gap: clamp(22px, 3.6vh, 40px);">
-      <div data-sec-head="" data-reveal-group="" data-reveal-x="" style="display: flex; flex-direction: column; width: 100%;">
-        <div style="display: flex; align-items: center; gap: clamp(14px, 1.6vw, 24px); padding-bottom: clamp(14px, 2vh, 22px);">
-          <span style="display: inline-flex; align-items: center; gap: 10px; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: clamp(19px, 1.9vw, 29px); font-weight: 600; letter-spacing: -0.024em; color: #101014; white-space: nowrap;"><img data-yp-src="0" alt="" data-bloom="" draggable="false" style="flex: none; display: block; width: 1.35em; height: 1.35em; will-change: transform;">How I work</span>
-          <span aria-hidden="true" style="flex: none; width: 1px; height: clamp(22px, 2.2vw, 34px); background: rgba(16,16,20,0.2);"></span>
-          <span style="font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: clamp(13px, 1.05vw, 16px); font-weight: 500; letter-spacing: -0.005em; color: rgba(16,16,20,0.6);">six steps</span>
-        </div>
-        <div aria-hidden="true" data-sec-rule="" style="width: 100%; height: 1px; background: rgba(16,16,20,0.14); transform-origin: 100% 50%;"></div>
-        <h2 style="margin: clamp(32px, 5.4vh, 70px) 0 0; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-weight: 700; font-size: clamp(33px, 5.5vw, 80px); line-height: 1.06; letter-spacing: -0.037em; color: #101014; text-wrap: pretty;"><span style="display: block;">From a rough idea to</span><span style="display: block;">something people can use.</span></h2>
-        <p style="margin: clamp(16px, 2.4vh, 26px) 0 0; max-width: 32ch; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: clamp(16px, 1.65vw, 26px); font-weight: 500; letter-spacing: -0.018em; line-height: 1.3; color: rgba(16,16,20,0.6); text-wrap: pretty;">Six steps I follow on every project.</p>
-      </div>
+      <div class="yph" data-reveal-group="" data-reveal-x=""><div class="yph-top"><div class="yph-label"><span><img data-yp-src="0" alt="" data-bloom="" draggable="false">How I work</span><i aria-hidden="true"></i></div><div class="yph-note"><span class="yph-note-row"><span class="yph-dots" aria-hidden="true"><b></b><b></b></span>every project</span><strong>Same six steps.</strong></div></div><h2 class="yph-title" aria-label="Six steps. No shortcuts."><span class="yph-line yph-grey" aria-hidden="true">Six steps.</span></h2><div class="yph-rule" data-sec-rule="" aria-hidden="true"></div><div class="yph-line yph-ink" aria-hidden="true">No shortcuts.</div><div class="yph-rule" data-sec-rule="" aria-hidden="true"></div></div>
     </div>
   </div>
   <div data-flow-runway="" style="position: relative; z-index: 2; width: 100%; height: var(--yp-run-spline, 320vh);">
@@ -58587,6 +58474,73 @@ window.__ypImgs = function (r) { r.querySelectorAll('img[data-yp-src]').forEach(
     </div>
   </div>
 </section>
+<section id="about" style="position: relative; z-index: 30; width: 100%; box-sizing: border-box; background: #ffffff; padding: clamp(40px, 8vh, 110px) clamp(20px, 4vw, 56px) clamp(80px, 12vh, 150px); font-family: 'Plus Jakarta Sans', system-ui, sans-serif; color: #101014;">
+  <div class="ypa-grid">
+    <div class="ypa-stage ypa-panel" data-ypa-stage="">
+      <canvas class="ypa-rope" aria-hidden="true"></canvas>
+      <div class="ypa-rail" aria-hidden="true"></div>
+      <div class="ypa-card" role="img" aria-label="ID card: Yashwant Ponde, Product Designer, Hyderabad. Drag to swing, click to flip.">
+        <div class="ypa-flipper">
+          <div class="ypa-face ypa-front">
+            <div class="ypa-hole"></div>
+            <div class="ypa-holo"></div>
+            <div class="ypa-header">
+              <div class="ypa-brand">
+                <img class="ypa-brand-mark" data-yp-src="4" alt="" draggable="false">
+                <div class="ypa-brand-text"><b>YASHWANT PONDE</b><small>A studio of one</small></div>
+              </div>
+              <div class="ypa-pillars"><span>Design</span><span>Build</span><span>Ship</span><i></i></div>
+            </div>
+            <div class="ypa-photo">
+              <img data-yp-src="5" alt="" draggable="false">
+              <span class="ypa-verified" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"></path></svg></span>
+            </div>
+            <h3 class="ypa-name">Yashwant Ponde</h3>
+            <p class="ypa-role">Product Designer</p>
+            <div class="ypa-divider"></div>
+            <div class="ypa-idrow">
+              <div class="ypa-idrow-labels">
+                <div><span>ID</span><b>YP-2023</b></div>
+                <div><span>Based in</span><b>Hyderabad, IN</b></div>
+                <div><span>Status</span><b>Open to work</b></div>
+              </div>
+              <div class="ypa-qr ypa-small" data-ypa-qr="574123"></div>
+            </div>
+            <div class="ypa-footer">Design<i>·</i>Build<i>·</i>Ship</div>
+          </div>
+          <div class="ypa-face ypa-back">
+            <div class="ypa-hole"></div>
+            <div class="ypa-holo"></div>
+            <div class="ypa-stripe"></div>
+            <div class="ypa-idnum"><span>NO. YP-2023</span><em>Hyderabad</em></div>
+            <div class="ypa-barcode" data-ypa-barcode=""></div>
+            <div class="ypa-backrow">
+              <div class="ypa-qr" data-ypa-qr="928371"></div>
+              <div class="ypa-scan"><b>Say hello</b>ponde.yashwant<br>@gmail.com<br>Replies within a day.</div>
+            </div>
+            <div class="ypa-connect">
+              <span>Connect</span>
+              <div class="ypa-connect-icons">
+                <a href="mailto:ponde.yashwant@gmail.com" aria-label="Email Yashwant"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="m3 7 9 6 9-6"></path></svg></a>
+                <a href="#work" aria-label="See the work"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"></path><path d="M8 7h9v9"></path></svg></a>
+              </div>
+            </div>
+            <div class="ypa-sig"><div class="ypa-script">Yashwant</div><small>Authorized signature</small></div>
+          </div>
+        </div>
+      </div>
+      <p class="ypa-hint" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M7 8l-4 4 4 4M17 8l4 4-4 4"></path></svg>Drag to swing · Click to flip</p>
+    </div>
+    <div class="ypa-copy" data-reveal-group="">
+      <p class="ypa-hello">Hi, I’m Yashwant<span aria-hidden="true">.</span></p>
+      <p class="ypa-lead">A product designer in Hyderabad who loves the unglamorous half of the job: watching someone get stuck, then <mark style="--d:0">quietly taking away</mark> whatever stopped them.</p>
+      <p class="ypa-body">Most of my work lives in <mark style="--d:1">AI products</mark> and <mark style="--d:2">design systems</mark>. I build what I draw, so the last mile still looks like the first sketch.</p>
+      <p class="ypa-body">Most recently, at Narrative Intelligence, I took an AI assistant from a first sketch to <mark style="--d:3">a shipped desktop app</mark><span class="ypa-cursor" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 3l14 7.5-6.2 1.6L9.6 18z"></path></svg></span>, with agents, routines and a browser that remembers.</p>
+      <p class="ypa-sign"><span>Two years in, and I still take apps apart</span><span>to see what makes them feel easy.</span></p>
+    </div>
+  </div>
+</section>
+
 </main>
 <script>window.__ypImgs(document.getElementById('yp-work'));</script>
 <div id="yp-page"></div>
@@ -61400,30 +61354,12 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
   if (!sec) return;
   const reduce = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
 
-  // ── statement carousel ──
-  (function carousel() {
-    const slides = Array.from(sec.querySelectorAll(".ypa-slide"));
-    const dots = Array.from(sec.querySelectorAll(".ypa-dots button"));
-    const count = sec.querySelector("[data-ypa-count]");
+  // ── statement: the highlights sweep in one after another the first time it is read ──
+  (function () {
     const copy = sec.querySelector(".ypa-copy");
-    let at = 0, timer = 0, paused = false, seen = false;
-    const show = i => {
-      at = (i + slides.length) % slides.length;
-      slides.forEach((s, k) => { if (k === at) s.setAttribute("data-active", ""); else s.removeAttribute("data-active"); });
-      dots.forEach((d, k) => d.setAttribute("aria-selected", String(k === at)));
-      if (count) count.textContent = "0" + (at + 1) + " / 0" + slides.length;
-    };
-    const arm = () => { clearTimeout(timer); if (!paused && seen && !reduce) timer = setTimeout(() => { show(at + 1); arm(); }, 7000); };
-    sec.querySelector("[data-ypa-prev]").addEventListener("click", () => { show(at - 1); arm(); });
-    sec.querySelector("[data-ypa-next]").addEventListener("click", () => { show(at + 1); arm(); });
-    dots.forEach((d, k) => d.addEventListener("click", () => { show(k); arm(); }));
-    copy.addEventListener("pointerenter", () => { paused = true; clearTimeout(timer); });
-    copy.addEventListener("pointerleave", () => { paused = false; arm(); });
-    // the first slide replays its highlight when the section first comes into view
-    slides[0].removeAttribute("data-active");
-    if (typeof IntersectionObserver !== "undefined") {
-      new IntersectionObserver((es, io) => { if (!es[0].isIntersecting) return; io.disconnect(); seen = true; show(0); arm(); }, { threshold: 0.35 }).observe(copy);
-    } else { seen = true; show(0); arm(); }
+    if (!copy) return;
+    if (typeof IntersectionObserver === "undefined") { copy.classList.add("ypa-lit"); return; }
+    new IntersectionObserver((es, io) => { if (!es[0].isIntersecting) return; io.disconnect(); setTimeout(() => copy.classList.add("ypa-lit"), 500); }, { threshold: 0.4 }).observe(copy);
   })();
 
   // ── ID card on a lanyard ──
