@@ -58132,7 +58132,7 @@ renderer.setAnimationLoop(now => {
   @media (max-width: 760px) {
     body.hero .hx-top { gap: 8px; padding: 14px 16px; }
     .hx-dp { width: 44px; height: 44px; }
-    body.hero .hx-top .hx-theme { width: 74px; height: 40px; }
+    body.hero .hx-top .hx-theme { width: 44px; height: 44px; }
         .hx-idtext { display: none; }
     body.hero .hx-glass-in a { height: 34px; padding: 0 10px; font-size: 13px; }
     .hx-slot { height: 34px; width: calc(var(--tk) * 34px); }
@@ -58293,6 +58293,28 @@ renderer.setAnimationLoop(now => {
   .yp-btn:hover i { transform: rotate(-45deg); }
   .yp-btn:focus-visible { outline: 2px solid #ffffff; outline-offset: 3px; }
   #spline { --yp-run-spline: 520vh; }   /* four steps: ~1.3 screens of scroll each */
+  /* ── One vertical rhythm for every section: section top → head, head → the section's content,
+     content → section end. Each section used to stack its own paddings (and the pinned stages
+     centred their content), so the head-to-content gap ran 82–246px. Now all read from these. ── */
+  :root { --yp-top: clamp(110px, 17vh, 200px); --yp-gap: clamp(80px, 11vh, 120px); --yp-bot: clamp(96px, 14vh, 160px); --yp-side: clamp(20px, 4vw, 56px); }
+  /* Work: the head no longer floats centred in a full screen; the gallery follows at the gap */
+  #work > div { height: auto !important; overflow: visible !important; }
+  #work > div > section { position: relative !important; inset: auto !important; justify-content: flex-start !important; padding: var(--yp-top) var(--yp-side) var(--yp-gap) !important; }
+  /* Services: the pinned stage holds the showcase at the gap under the head, not centred */
+  #services .ysx-headwrap { padding: var(--yp-top) var(--yp-side) 0; }
+  #services .ysx-stage { height: auto; align-items: flex-start; padding: var(--yp-gap) var(--yp-side) var(--yp-bot); }
+  #services .ysx-cards { padding-top: var(--yp-gap); }
+  #services .ysx-card:last-child { padding-bottom: var(--yp-bot); }
+  /* My story */
+  #timeline .ytl-headwrap { padding: var(--yp-top) var(--yp-side) var(--yp-gap); }
+  #timeline .ytl-list { padding: 0; }
+  #timeline .ytl-item:first-child { padding-top: 0; }
+  #timeline .ytl-item:last-child { padding-bottom: 0; }
+  #timeline .ytl-end { height: var(--yp-bot); }
+  @media (max-width: 760px) { #timeline .ytl-item:first-child .ytl-dot { top: 10px; } }
+  /* How I work */
+  #spline > div:nth-of-type(2) { padding: var(--yp-top) var(--yp-side) 0 !important; }
+  #spline [data-flow-runway] > div { padding: var(--yp-gap) 0 var(--yp-bot) !important; }
 
   /* ── section heads (reference: label + underline, right-hand note, two big lines on hairlines) ── */
   .yph { display: flex; flex-direction: column; width: 100%; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
@@ -60150,7 +60172,7 @@ const ypMakeScroll = function () {
       if (Math.abs(d) >= 0.5) {
         // ScrollEase: currentY += (targetY - currentY) * (0.16 - intensity/100 * 0.14), authored
         // per 60Hz frame — compounded over dt*60 so 120Hz panels trace the identical curve.
-        const k = Math.min(0.4, (0.22 - (intensity / 100) * 0.115) * (soft() ? 3 : 1));
+        const k = Math.min(0.4, (0.22 - (intensity / 100) * 0.15) * (soft() ? 3 : 1));
         y += d * (1 - Math.pow(1 - k, dt * 60));
         if (Math.abs(target - y) < 0.5) y = target;
         window.scrollTo(0, y);
@@ -60216,7 +60238,7 @@ const ypMakeScroll = function () {
     const d = e.deltaMode === 1 ? e.deltaY * 17 : e.deltaMode === 2 ? e.deltaY * window.innerHeight : e.deltaY;
     // A notch is thrown FURTHER than it was pushed and then eased down over about a second, so
     // the page keeps travelling after the hand stops — one scroll carries you on.
-    const next = clamp(target + d * (soft() ? 1 : 0.92 + (intensity / 100) * 0.3));
+    const next = clamp(target + d * (soft() ? 1 : 0.92 + (intensity / 100) * 0.18));
     if (next === target) return;   // at either end, let the browser have the gesture
     e.preventDefault();
     anim = null;
@@ -60312,7 +60334,7 @@ const ypMakeScroll = function () {
 
 
 const YPScroll = (window.__ypScroll && window.__ypScroll.v === YP_SCROLL_V) ? window.__ypScroll : (window.__ypScroll = ypMakeScroll());
-YPScroll.setIntensity(62); YPScroll.setMode("on");   // smooth, momentum scrolling across the page
+YPScroll.setIntensity(100); YPScroll.setMode("on");   // smooth, momentum scrolling across the page
 // Reveal on arrival, shared by every page. A container marked data-reveal-group hands its
 // flow children to one observer in source order and each lands a beat after the one before,
 // so a section assembles itself rather than appearing. data-reveal marks a lone element.
@@ -61213,7 +61235,7 @@ class YPSections {
     // turns the card and locks; everything after it is dropped until BOTH the glide has landed
     // and the stream reads as a new hand movement. Touch and scrollbar drags stay native and are
     // caught by the settle below.
-    const STOPS = [0, 1, 2, 3, 4, 5].map(i => (i + 0.5) * SEG);
+    const STOPS = Array.from({ length: Math.max(1, Math.round(1 / SEG)) }, (_, i) => (i + 0.5) * SEG), LAST = STOPS.length - 1;
     const syFor = p => secTop + (LEAD + p * BEATS) * Math.max(1, secH - secVH);
     const snap = { t: 0, lastY: window.scrollY, dir: 0, self: 0 };
     const TURN = 640;                              // ms, one card glide
@@ -61241,7 +61263,7 @@ class YPSections {
       const m = stopsNow(); if (!m) return;
       const { sy, ys } = m, dir = e.deltaY > 0 ? 1 : -1;
       // Catch zone: from a little above the first card to a little below the last.
-      if (sy < ys[0] - secVH * 0.45 || sy > ys[5] + secVH * 0.45) { pg.dest = -1; return; }
+      if (sy < ys[0] - secVH * 0.45 || sy > ys[LAST] + secVH * 0.45) { pg.dest = -1; return; }
       const now = performance.now(), ts = e.timeStamp || now;
       const px = e.deltaMode === 1 ? 17 : e.deltaMode === 2 ? window.innerHeight : 1, abs = Math.abs(e.deltaY) * px;
       const fresh = abs >= FLOOR && (dir !== pg.prevDir || ts - pg.prevT > QUIET || abs > pg.prev * RISE + 2);
@@ -61249,14 +61271,14 @@ class YPSections {
       // Where would this gesture take us? While a turn is in flight, measure from where it will land.
       const inFlight = now < pg.lockUntil && pg.dest >= 0;
       const from = inFlight ? ys[pg.dest] : sy;
-      let i = 0; while (i < 5 && ys[i + 1] - 4 <= from) i++;
+      let i = 0; while (i < LAST && ys[i + 1] - 4 <= from) i++;
       const onStop = inFlight ? pg.dest : (Math.abs(from - ys[i]) < 4 ? i : -1);
       let dest;
       if (from < ys[0] - 4) dest = dir > 0 ? 0 : -1;
-      else if (from > ys[5] + 4) dest = dir < 0 ? 5 : -1;
+      else if (from > ys[LAST] + 4) dest = dir < 0 ? LAST : -1;
       else if (onStop >= 0) dest = onStop + dir;
       else dest = dir > 0 ? i + 1 : i;
-      if (dest < 0 || dest > 5) { if (!inFlight) return; e.preventDefault(); return; }   // leaving: hand the gesture back
+      if (dest < 0 || dest > LAST) { if (!inFlight) return; e.preventDefault(); return; }   // leaving: hand the gesture back
       e.preventDefault();                                                                  // ours — the engine must not move too
       if (inFlight || (pg.dest >= 0 && !fresh)) return;
       pg.dest = dest; pg.lockUntil = now + TURN + 60;
@@ -61268,15 +61290,15 @@ class YPSections {
     const settle = () => {
       const m = stopsNow(); if (!m) return;
       const { sy, ys } = m;
-      if (sy < ys[0] - 2 || sy > ys[5] + 2) { pg.dest = -1; return; }
-      let i = 0; while (i < 5 && ys[i + 1] <= sy) i++;
-      const lo = ys[i], hi = ys[Math.min(5, i + 1)];
+      if (sy < ys[0] - 2 || sy > ys[LAST] + 2) { pg.dest = -1; return; }
+      let i = 0; while (i < LAST && ys[i + 1] <= sy) i++;
+      const lo = ys[i], hi = ys[Math.min(LAST, i + 1)];
       if (Math.abs(sy - lo) < 2) { pg.dest = i; return; }
-      if (Math.abs(sy - hi) < 2 || hi === lo) { pg.dest = Math.min(5, i + 1); return; }
+      if (Math.abs(sy - hi) < 2 || hi === lo) { pg.dest = Math.min(LAST, i + 1); return; }
       if (performance.now() < pg.lockUntil) return;                                       // a turn is still landing
       const f = (sy - lo) / (hi - lo);
       const to = snap.dir > 0 ? (f > 0.28 ? hi : lo) : snap.dir < 0 ? (f < 0.72 ? lo : hi) : (f > 0.5 ? hi : lo);
-      pg.dest = to === hi ? Math.min(5, i + 1) : i;
+      pg.dest = to === hi ? Math.min(LAST, i + 1) : i;
       glideTo(to);
     };
     this.flowSettle = () => {
