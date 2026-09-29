@@ -57323,14 +57323,19 @@ if (HERO) {
       <span class="hx-thumb-icon hx-thumb-moon"><svg viewBox="0 0 24 24"><path d="M20.9 13A9 9 0 0 1 11 3.1 9 9 0 1 0 20.9 13Z"></path></svg></span>
     </span>
   </button></div>`);
-    const sign = el("figure", "hx-sign", `<blockquote class="hx-quote"><p><span class="hx-rise" style="--hd:.55s">“Good design is as little design</span></p><p><span class="hx-rise" style="--hd:.63s">as possible.”</span></p></blockquote><figcaption><span class="hx-rise" style="--hd:.74s">Dieter Rams</span></figcaption>`);
+    const sign = el("figure", "hx-sign", `<blockquote class="hx-quote"><p><span class="hx-rise" style="--hd:.55s">I find the problem everyone</span></p><p><span class="hx-rise" style="--hd:.63s">learned to live with.</span></p></blockquote><figcaption><span class="hx-rise" style="--hd:.74s">My first principle</span></figcaption>`);
   document.body.append(top, sign);
   // ── header: the photo and the theme circle travel into the pill as you scroll, while the pill
   //    opens room for them. Driven by scroll position (reversible, lands exactly), smoothed every
   //    frame on requestAnimationFrame so it runs at the display's own rate (120 Hz where it can).
   { const dp = top.querySelector(".hx-dp"), tb = top.querySelector(".hx-right .hx-theme"), idt = top.querySelector(".hx-idtext");
     const sl = top.querySelector(".hx-slot-l"), sr = top.querySelector(".hx-slot-r");
-    tb.insertAdjacentHTML("beforeend", '<svg class="hx-ti hx-ti-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></svg><svg class="hx-ti hx-ti-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.4 14.2A8.4 8.4 0 0 1 9.8 3.6a8.4 8.4 0 1 0 10.6 10.6Z"/></svg>');
+    // sun to moon: the rays spin away, the disc swells, and a round bite slides across it to leave a crescent
+    tb.insertAdjacentHTML("beforeend", '<svg class="hx-sm" viewBox="0 0 24 24" aria-hidden="true"><defs><mask id="hx-sm-mask"><rect width="24" height="24" fill="#fff"/><circle class="hx-sm-bite" cx="16.8" cy="7.2" r="6.4" fill="#000"/></mask></defs><circle class="hx-sm-core" cx="12" cy="12" r="8.2" fill="currentColor" mask="url(#hx-sm-mask)"/><g class="hx-sm-rays" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><line x1="12" y1="1.6" x2="12" y2="3.6" transform="rotate(0 12 12)"/><line x1="12" y1="1.6" x2="12" y2="3.6" transform="rotate(45 12 12)"/><line x1="12" y1="1.6" x2="12" y2="3.6" transform="rotate(90 12 12)"/><line x1="12" y1="1.6" x2="12" y2="3.6" transform="rotate(135 12 12)"/><line x1="12" y1="1.6" x2="12" y2="3.6" transform="rotate(180 12 12)"/><line x1="12" y1="1.6" x2="12" y2="3.6" transform="rotate(225 12 12)"/><line x1="12" y1="1.6" x2="12" y2="3.6" transform="rotate(270 12 12)"/><line x1="12" y1="1.6" x2="12" y2="3.6" transform="rotate(315 12 12)"/></g></svg>');
+    // the name is set to the exact width of the status line beneath it
+    { const nm = top.querySelector(".hx-idname"), st = top.querySelector(".hx-idstat");
+      const fit = () => { nm.style.fontSize = "20px"; const w = nm.getBoundingClientRect().width, t = st.getBoundingClientRect().width; if (!w || !t) return; let fs = 20 * t / w; nm.style.fontSize = fs + "px"; const w2 = nm.getBoundingClientRect().width; if (w2) nm.style.fontSize = (fs * t / w2).toFixed(3) + "px"; };
+      fit(); addEventListener("resize", fit); if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit); }
     const SLOT = () => (innerWidth <= 760 ? 34 : 40);
     let rest = null, cur = 0, raf = 0, last = 0;
     const measure = () => { dp.style.transform = tb.style.transform = ""; const a = dp.getBoundingClientRect(), b = tb.getBoundingClientRect();
@@ -58059,9 +58064,9 @@ renderer.setAnimationLoop(now => {
   .hx-id { justify-self: start; display: flex; align-items: center; gap: 12px; }
   .hx-dp { position: relative; z-index: 2; display: block; flex: none; width: 50px; height: 50px; border-radius: 50%; overflow: hidden; transform-origin: 50% 50%; will-change: transform; }
   .hx-dp img { display: block; width: 100%; height: 100%; object-fit: cover; background: #fff; }
-  .hx-idtext { display: flex; flex-direction: column; gap: 3px; will-change: transform, opacity; }
-  .hx-idname { font-size: 15px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; color: var(--ink); transition: color .45s ease; }
-  .hx-idstat { display: flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 500; line-height: 1.1; color: var(--soft); transition: color .45s ease; }
+  .hx-idtext { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; will-change: transform, opacity; }
+  .hx-idname { display: block; font-size: 16px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.05; white-space: nowrap; color: var(--ink); transition: color .45s ease; }
+  .hx-idstat { display: inline-flex; align-items: center; white-space: nowrap; gap: 7px; font-size: 13px; font-weight: 500; line-height: 1.1; color: var(--soft); transition: color .45s ease; }
   .hx-idstat i { width: 7px; height: 7px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 0 3px rgba(34,197,94,.2); animation: hx-live 2.6s ease-in-out infinite; }
 
   /* centre: the pill; its end slots open as the photo and the circle arrive */
@@ -58079,13 +58084,16 @@ renderer.setAnimationLoop(now => {
   body.hero .hx-top .hx-right { justify-self: end; display: flex; }
   body.hero .hx-top .hx-theme { position: relative; z-index: 2; display: grid; place-items: center; width: 50px; height: 50px; padding: 0; border-radius: 50%; overflow: hidden; cursor: pointer; color: var(--ink); transform-origin: 50% 50%; will-change: transform; transition: color .45s ease; }
   body.hero .hx-top .hx-theme > span { display: none !important; }
-  .hx-ti { grid-area: 1 / 1; width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; transition: opacity 420ms ease, transform 620ms cubic-bezier(0.34, 1.4, 0.64, 1); }
-  .hx-ti-moon { opacity: 0; transform: rotate(-90deg) scale(.5); }
-  html.hero.dark .hx-ti-sun { opacity: 0; transform: rotate(90deg) scale(.5); }
-  html.hero.dark .hx-ti-moon { opacity: 1; transform: none; }
-  body.hero .hx-top .hx-theme:hover .hx-ti { transform: rotate(18deg); }
-  html.hero.dark body.hero .hx-top .hx-theme:hover .hx-ti-sun { transform: rotate(90deg) scale(.5); }
-  html.hero:not(.dark) body.hero .hx-top .hx-theme:hover .hx-ti-moon { transform: rotate(-90deg) scale(.5); }
+  .hx-sm { width: 22px; height: 22px; overflow: visible; transition: transform 700ms cubic-bezier(0.34, 1.3, 0.64, 1); }
+  .hx-sm-core { transform-box: fill-box; transform-origin: 50% 50%; transform: scale(.56); transition: transform 600ms cubic-bezier(0.34, 1.3, 0.64, 1); }
+  .hx-sm-bite { transform-box: fill-box; transform-origin: 50% 50%; transform: translate(9px, -9px); transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1); }
+  .hx-sm-rays { transform-box: fill-box; transform-origin: 50% 50%; transition: transform 600ms cubic-bezier(0.34, 1.3, 0.64, 1), opacity 360ms ease; }
+  html.hero.dark .hx-sm { transform: rotate(-8deg); }
+  html.hero.dark .hx-sm-core { transform: scale(1); }
+  html.hero.dark .hx-sm-bite { transform: none; transition-delay: 60ms; }
+  html.hero.dark .hx-sm-rays { opacity: 0; transform: rotate(-90deg) scale(.4); }
+  html.hero:not(.dark) body.hero .hx-top .hx-theme:hover .hx-sm-rays { transform: rotate(45deg); }
+  html.hero.dark body.hero .hx-top .hx-theme:hover .hx-sm { transform: rotate(-20deg); }
   body.hero .hx-top .hx-theme:focus-visible, .hx-dp:focus-visible { outline: 2px solid #2b3a9e; outline-offset: 3px; }
 
   /* the quote, bottom left, set as two lines with the author under it */
@@ -58123,7 +58131,7 @@ renderer.setAnimationLoop(now => {
     body.hero #acts { right: 16px; bottom: 22px !important; }
     body.hero #acts button { width: 40px; height: 40px; }
   }
-  @media (prefers-reduced-motion: reduce) { .hx-rise, .hx-in-view .hx-rise, .hx-fade, .hx-in-view .hx-fade { transform: none; opacity: 1; transition: none; } .hx-ti { transition: opacity 200ms ease; } }
+  @media (prefers-reduced-motion: reduce) { .hx-rise, .hx-in-view .hx-rise, .hx-fade, .hx-in-view .hx-fade { transform: none; opacity: 1; transition: none; } .hx-sm, .hx-sm-core, .hx-sm-bite, .hx-sm-rays { transition: none; } }
   /* ── Services: pinned showcase, after the reference. Accent #2b3a9e, text #111, muted #B5B5B5,
      divider #E5E5E5. Proportions from the reference: list column 33%, image 45.6% (near square),
      sub-items panel the rest; image and panel form one block, rounded on the right only. ── */
