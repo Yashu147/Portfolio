@@ -57393,7 +57393,7 @@ if (HERO) {
   // letters: shared size fitted to the layout bands; gradient + dot grid run continuously across each word
   const fitTitle = () => { h1.style.fontSize = "100px";
     const w = Math.max(L1.firstChild.getBoundingClientRect().width, L2.firstChild.getBoundingClientRect().width) || 1, portrait = innerHeight > innerWidth;
-    h1.style.fontSize = Math.min(100 * innerWidth * (portrait ? 0.92 : 0.6) / w, innerHeight * (portrait ? 0.15 : 0.27)) + "px"; };
+    h1.style.fontSize = Math.min(100 * innerWidth * (portrait ? 0.92 : 0.6) / w, innerHeight * (portrait ? 0.15 : innerHeight < 500 ? 0.2 : 0.27)) + "px"; };
   fitTitle(); addEventListener("resize", fitTitle); if (document.fonts) { document.fonts.ready.then(fitTitle); document.fonts.load('400 100px "Anton"').then(fitTitle).catch(() => {}); }
   const heroGo = () => { if (heroGo.done) return; heroGo.done = true; requestAnimationFrame(() => requestAnimationFrame(() => { document.body.classList.add("hx-in-view"); setTimeout(() => document.body.classList.add("hx-done"), 2700); })); };
   (document.fonts && document.fonts.ready ? Promise.race([document.fonts.ready, new Promise(r => setTimeout(r, 900))]) : Promise.resolve()).then(heroGo, heroGo);   // after the reveal, stop clipping so the soft shadow has no hard edges
@@ -58315,6 +58315,29 @@ renderer.setAnimationLoop(now => {
   /* How I work */
   #spline > div:nth-of-type(2) { padding: var(--yp-top) var(--yp-side) 0 !important; }
   #spline [data-flow-runway] > div { padding: var(--yp-gap) 0 var(--yp-bot) !important; }
+  /* Nothing may widen the page. The slide-in entrances stage their blocks off to the side, and on
+     phones a browser widens the whole layout to fit anything that pokes out (the header, the hero
+     words and the robot canvas then size themselves to that wider page). html's own clip is not
+     honoured for that on mobile, so the content is clipped where it lives. */
+  #yp-work, #yp-work > section, #work, #showcase { overflow-x: clip; }
+  body.hero { overflow-x: clip; }
+  /* the hero words are measured at 100px before being fitted to the screen; clipped here so that
+     first measurement cannot widen a phone's page (the fit would then read the widened width) */
+  body.hero .hx-title { overflow: clip; }
+  /* How I work, desktop: the four cards share the row edge to edge at every monitor width (they
+     were fixed at up to 400px, which left an empty band on wide screens). Narrower screens keep the
+     sliding row. */
+  @media (min-width: 1100px) {
+    #spline [data-flow-rail] { width: 100% !important; box-sizing: border-box; }
+    #spline [data-flow-rail] > article[data-step] { flex: 1 1 0 !important; width: auto !important; min-width: 0; }
+  }
+  /* phones: a shorter run, so the last card is not held for several screens */
+  @media (max-width: 767px) { #spline { --yp-run-spline: 400vh; } }
+  /* phones held sideways: the hero words sit clear of the header above and the buttons below */
+  @media (orientation: landscape) and (max-height: 500px) {
+    body.hero .hx-l1 { top: 74px; }
+    body.hero .hx-l2 { bottom: 84px; }
+  }
 
   /* ── section heads (reference: label + underline, right-hand note, two big lines on hairlines) ── */
   .yph { display: flex; flex-direction: column; width: 100%; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
