@@ -88,7 +88,7 @@ try { var s = null; try { s = localStorage.getItem("hx-theme"); } catch (e) {}
   html.dark .hx-theme:hover .hx-toggle-thumb { box-shadow: inset 2px 2px 4px rgba(100,116,139,.4),inset -2px -2px 4px rgba(0,0,0,.8),0 0 12px rgba(147,197,253,.45),0 3px 8px rgba(0,0,0,.4); }
   .hx-theme:active .hx-toggle-thumb { transform: scale(.98); } html.dark .hx-theme:active .hx-toggle-thumb { transform: translateX(30px) scale(.98); }
   @media (max-width: 480px) { .hx-top nav { display: none; } .hx-top { padding: 16px 5vw; } }
-  @media (prefers-reduced-motion: reduce) { .hx-toggle-thumb { transition: none; } .hx-particle { animation: none; } }
+  @media (max-width: 0px) { .hx-toggle-thumb { transition: none; } .hx-particle { animation: none; } }
   ::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
   .hx-top a:focus-visible, body.hero #acts button:focus-visible, .hx-theme:focus-visible { outline: 2px solid var(--violet); outline-offset: 4px; }
   .hx-foot { position: absolute; right: 3.2vw; bottom: 36px; z-index: 3; pointer-events: none; }
@@ -108,7 +108,7 @@ try { var s = null; try { s = localStorage.getItem("hx-theme"); } catch (e) {}
   @media (max-width: 760px) {
     .hx-l1 { left: 4vw; top: 12vh; } .hx-l2 { right: 4vw; bottom: 20vh; }
     .hx-right, .hx-top nav { gap: 16px; } .hx-foot { display: none; } body.hero #acts { bottom: 22px; } }
-  @media (prefers-reduced-motion: reduce) { .hx-in, .hx-in-view .hx-in { transition: none; animation: none; transform: none; } .hx-status i, html.dark .hx-star { animation: none; } .hx-sel { transition: none; } }
+  @media (max-width: 0px) { .hx-in, .hx-in-view .hx-in { transition: none; animation: none; transform: none; } .hx-status i, html.dark .hx-star { animation: none; } .hx-sel { transition: none; } }
   body.hero:not(.ui) #gpuwarn { display: none; }
   body.hero #ui, body.hero #views, body.hero #emo, body.hero #arms, body.hero #fps { display: none !important; }
   body.hero.ui #ui, body.hero.ui #views, body.hero.ui #emo, body.hero.ui #acts { display: flex !important; }
@@ -57051,7 +57051,7 @@ const blinkCurve = ph => { if (ph < 0) return 0; if (ph < 0.075) { const u = ph 
 
 
 // ─── Subtle life ────────────────────────────────────────────
-const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const reduced = matchMedia("(max-width: 0px)").matches;
 let heroEnter = HERO && !Q.has("noenter") ? 0 : 1, nextBlink2 = 2.0, frameNo = 0, ftAvg = 16, prChanged = 0, dragging = false, dragTimer = 0;
 controls.addEventListener("start", () => { clearTimeout(dragTimer); dragging = true; controls.enableDamping = false; });
 controls.addEventListener("end", () => { controls.enableDamping = true; dragTimer = setTimeout(() => { dragging = false; }, 250); });
@@ -57372,7 +57372,7 @@ if (HERO) {
   const playThemeParticles = next => {
     const thumb = themeBtn.querySelector(".hx-toggle-thumb");
     thumb.querySelectorAll(".hx-particle").forEach(p => p.remove());
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (matchMedia("(max-width: 0px)").matches) return;
     for (let i = 0; i < 3; i++) {
       const particle = el("span", "hx-particle " + (next === "dark" ? "is-dark" : "is-light"));
       particle.style.setProperty("--delay", (i * 0.1) + "s");
@@ -57383,7 +57383,7 @@ if (HERO) {
   };
   // switching sweeps the new theme out from the switch as a growing circle (where the browser supports it)
   themeBtn.onclick = () => { const next = html.classList.contains("dark") ? "light" : "dark"; playThemeParticles(next);
-    if (!document.startViewTransition || matchMedia("(prefers-reduced-motion: reduce)").matches) { setTheme(next); return; }
+    if (!document.startViewTransition || matchMedia("(max-width: 0px)").matches) { setTheme(next); return; }
     const r = themeBtn.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2, end = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
     let done = false; const apply = () => { if (!done) { done = true; setTheme(next); } };
     const vt = document.startViewTransition(apply); setTimeout(apply, 900);            // never leave the switch waiting on a slow frame
@@ -57401,7 +57401,7 @@ if (HERO) {
   window.robot.setTheme = setTheme;
   // ─── Background: charcoal tiles; light appears in the gaps only around the pointer ───
   // The pointer also gently lifts the grid (a soft lens bulge) that springs back with a small wobble.
-  const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const still = matchMedia("(max-width: 0px)").matches;
   const gl2 = dots.getContext("webgl2", { alpha: false, antialias: false, premultipliedAlpha: false });
   let mx = -1e4, my = -1e4, loop = 0, lastT = 0;
   const lift = { x: -1e4, y: -1e4, k: 0, vk: 0, vx: 0, vy: 0 };
@@ -57647,11 +57647,11 @@ renderer.setAnimationLoop(now => {
   [data-game-band]:hover [data-game-track], [data-game-band]:focus-visible [data-game-track] { animation-play-state: paused; }
   [data-game-band]:hover [data-game-word] { color: #2b3a9e; }
   [data-game-band]:hover [data-game-pad] { transform: translateY(-6px) rotate(-6deg) scale(1.06); }
-  @media (prefers-reduced-motion: reduce) { [data-game-track] { animation-duration: 96s; } }
+  @media (max-width: 0px) { [data-game-track] { animation-duration: 96s; } }
   /* Reduced motion slows the ring rather than stopping it: a continuous, non-vestibular turn
      at a minute per revolution is nearly imperceptible frame to frame, and stopping it dead
      reads as a broken element to anyone whose system reports the preference by default. */
-  @media (prefers-reduced-motion: reduce) { [data-badge-ring] { animation-duration: 60s; } }
+  @media (max-width: 0px) { [data-badge-ring] { animation-duration: 60s; } }
   /* Each knob names itself on hover: a pill in that icon's own colour, lifting off the top
      edge. A descendant-of-hover rule, which an inline style-hover cannot express. */
   [data-knob-pill] {
@@ -57660,7 +57660,7 @@ renderer.setAnimationLoop(now => {
   }
   [data-knob]:hover [data-knob-pill],
   [data-knob]:focus-visible [data-knob-pill] { opacity: 1; transform: translate(-50%, 0) scale(1); }
-  @media (prefers-reduced-motion: reduce) { [data-knob-pill] { transition: opacity 180ms ease; transform: translate(-50%, 0); } }
+  @media (max-width: 0px) { [data-knob-pill] { transition: opacity 180ms ease; transform: translate(-50%, 0); } }
   /* The fact bubble floats over the display word and over the robot, and a purely optical
      glass let both read straight through the sentence. The surface frosts instead: a light
      veil plus a real blur, so whatever is behind it goes soft and the fact stays legible.
@@ -58010,7 +58010,7 @@ renderer.setAnimationLoop(now => {
 [data-sb-panels] > article:hover { opacity: 1 !important; transform: scale(1.06) !important; box-shadow: 0 22px 40px -24px rgba(0,0,0,0.55) !important; z-index: 3; }
 [data-sb-note]:hover { transform: var(--th) !important; box-shadow: 0 24px 44px -24px rgba(0,0,0,0.5) !important; }
 </style>
-<style>@keyframes yp-amb-a { from { transform: translate3d(0,0,0) scale(1); } to { transform: translate3d(9%,-7%,0) scale(1.14); } } @keyframes yp-amb-b { from { transform: translate3d(0,0,0) scale(1); } to { transform: translate3d(10%,-6%,0) scale(1.08); } } @keyframes yp-amb-c { from { transform: translate3d(0,0,0) scale(1); } to { transform: translate3d(-8%,8%,0) scale(0.92); } } @media (prefers-reduced-motion: reduce) { [data-intro-ambient] div { animation: none !important; } }</style>
+<style>@keyframes yp-amb-a { from { transform: translate3d(0,0,0) scale(1); } to { transform: translate3d(9%,-7%,0) scale(1.14); } } @keyframes yp-amb-b { from { transform: translate3d(0,0,0) scale(1); } to { transform: translate3d(10%,-6%,0) scale(1.08); } } @keyframes yp-amb-c { from { transform: translate3d(0,0,0) scale(1); } to { transform: translate3d(-8%,8%,0) scale(0.92); } } @media (max-width: 0px) { [data-intro-ambient] div { animation: none !important; } }</style>
 <style>@keyframes veMic { 0%, 100% { transform: scaleY(0.35); } 50% { transform: scaleY(1); } }</style>
 <style id="yp-pages-css">
   /* ── Carried over from Work_Y ── */
@@ -58141,7 +58141,7 @@ renderer.setAnimationLoop(now => {
     body.hero #acts { right: 16px; bottom: 22px !important; }
     body.hero #acts button { width: 40px; height: 40px; }
   }
-  @media (prefers-reduced-motion: reduce) { .hx-rise, .hx-in-view .hx-rise, .hx-fade, .hx-in-view .hx-fade { transform: none; opacity: 1; transition: none; } .hx-tb-i { transition: none; } }
+  @media (max-width: 0px) { .hx-rise, .hx-in-view .hx-rise, .hx-fade, .hx-in-view .hx-fade { transform: none; opacity: 1; transition: none; } .hx-tb-i { transition: none; } }
   /* ── Services: pinned showcase, after the reference. Accent #2b3a9e, text #111, muted #B5B5B5,
      divider #E5E5E5. Proportions from the reference: list column 33%, image 45.6% (near square),
      sub-items panel the rest; image and panel form one block, rounded on the right only. ── */
@@ -58222,7 +58222,7 @@ renderer.setAnimationLoop(now => {
     #services .ysx-pin { display: none; }
     #services .ysx-cards { display: block; }
   }
-  @media (prefers-reduced-motion: reduce) {
+  @media (max-width: 0px) {
     #services .ysx-image .ysx-art, #services .ysx-title, #services .ysx-tag { transition: opacity 200ms linear; transform: none !important; }
     #services .ysx-strip { transition: none; }
     #services .ysx-card { transition: opacity 300ms linear; transform: none; }
@@ -58282,7 +58282,7 @@ renderer.setAnimationLoop(now => {
   .yph.is-in .yph-label img { animation: yp-bloom-turn 2200ms cubic-bezier(0.16, 1, 0.3, 1) both; }
   [data-rise] { will-change: transform; }
   #timeline .ytl-media, #timeline .ytl-text { will-change: transform, opacity; }
-  @media (prefers-reduced-motion: reduce) { .yph .yph-label > span, .yph .yph-in, .yph .yph-label > i, .yph .yph-rule { transform: none; opacity: 1; transition: none; } .yph.is-in .yph-label img { animation: none; } }
+  @media (max-width: 0px) { .yph .yph-label > span, .yph .yph-in, .yph .yph-label > i, .yph .yph-rule { transform: none; opacity: 1; transition: none; } .yph.is-in .yph-label img { animation: none; } }
   /* one button style for the site */
   .yp-btn { position: relative; display: inline-flex; align-items: center; gap: 14px; height: 56px; padding: 0 8px 0 26px; border-radius: 999px; box-sizing: border-box;
     background: #ffffff; color: #0f0f10 !important; font: 600 16px/1 'Plus Jakarta Sans', system-ui, sans-serif; letter-spacing: -0.01em; text-decoration: none; white-space: nowrap;
@@ -59242,7 +59242,7 @@ window.__ypImgs = function (r) { r.querySelectorAll('img[data-yp-src]').forEach(
     '  animation:om-slot-spin .7s linear infinite}' +
     '@keyframes om-slot-spin{to{transform:rotate(360deg)}}' +
     // Reduced motion: the static two-tone ring still reads as "working".
-    '@media (prefers-reduced-motion:reduce){.loading::after{animation:none}}' +
+    '@media (max-width:0px){.loading::after{animation:none}}' +
     '.credit{position:absolute;left:6px;bottom:6px;max-width:calc(100% - 12px);display:none;' +
     '  padding:3px 7px;border-radius:5px;background:rgba(0,0,0,.55);color:#fff;' +
     '  font:10px/1.2 system-ui,-apple-system,sans-serif;text-decoration:none;' +
@@ -60107,7 +60107,7 @@ const ypMakeScroll = function () {
   // ScrollEase intensity, 0-100. Drives both the follow ease and the wheel gain.
   let intensity = 70;
   let y = window.scrollY || 0, target = y;
-  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const reduce = window.matchMedia("(max-width: 0px)");
   // "auto" honours prefers-reduced-motion for the easing curve; "on"/"off" are the overrides.
   const on = () => mode !== "off";
   // Damping is the default everywhere: "auto" and "on" both ease, "off" hands the scroll back
@@ -60464,7 +60464,7 @@ class YPSections {
     if (!marks.length) return;
     const still = el => { el.style.animation = "none"; el.style.opacity = "1"; el.style.transform = "none"; };
     if (typeof IntersectionObserver === "undefined") { marks.forEach(still); return; }
-    const reduced = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+    const reduced = !!(window.matchMedia && window.matchMedia("(max-width: 0px)").matches);
     const spin = el => {
       el.style.animation = "none"; void el.offsetWidth;
       el.style.animation = "yp-bloom-in 1000ms cubic-bezier(0.33, 1, 0.68, 1) both";
@@ -61361,7 +61361,7 @@ class CasePage {
     YPScroll.add(this._tick);
     // Parallax hand-off: as the next section slides up over the current one, the current one
     // drifts down at a fraction of scroll speed, so each section reads as sinking beneath the next.
-    if (!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+    if (!(window.matchMedia && window.matchMedia('(max-width: 0px)').matches)) {
       let secs = [], rootTop = 0;
       const measurePx = () => {
         const root = document.querySelector('[data-case-root]');
@@ -61446,7 +61446,7 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
 (function () {
   const sec = document.getElementById("services");
   if (!sec) return;
-  const reduce = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  const reduce = !!(window.matchMedia && window.matchMedia("(max-width: 0px)").matches);
   const pin = sec.querySelector("[data-ysx-pin]");
   const names = Array.from(sec.querySelectorAll("[data-ysx-go]"));
   const arts = Array.from(sec.querySelectorAll("[data-ysx-art]"));
@@ -61570,7 +61570,7 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
    resets once the head drops below the screen again, so it replays on the way back down.
    Content blocks ([data-rise]) rise from below (or in from their side) with the scroll. ── */
 (function () {
-  const reduce = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  const reduce = !!(window.matchMedia && window.matchMedia("(max-width: 0px)").matches);
   const out = t => 1 - Math.pow(1 - t, 3);
   const heads = Array.from(document.querySelectorAll("#yp-work .yph"));
   const headCheck = () => { const vh = innerHeight || 1;
