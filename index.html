@@ -57330,8 +57330,8 @@ if (HERO) {
   //    frame on requestAnimationFrame so it runs at the display's own rate (120 Hz where it can).
   { const dp = top.querySelector(".hx-dp"), tb = top.querySelector(".hx-right .hx-theme"), idt = top.querySelector(".hx-idtext");
     const sl = top.querySelector(".hx-slot-l"), sr = top.querySelector(".hx-slot-r");
-    // theme switch: a track with a sun and a moon; the knob (orange sun / violet moon) slides between them
-    tb.insertAdjacentHTML("beforeend", '<span class="hx-tg" aria-hidden="true"><span class="hx-tg-ic hx-tg-l"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6 6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/></svg></span><span class="hx-tg-ic hx-tg-r"><svg viewBox="0 0 24 24"><path d="M20.3 14.6A8.3 8.3 0 0 1 9.4 3.7 8.3 8.3 0 1 0 20.3 14.6Z"/></svg></span><span class="hx-tg-knob"><span class="hx-tg-k hx-tg-ks"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6 6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/></svg></span><span class="hx-tg-k hx-tg-km"><svg viewBox="0 0 24 24"><path d="M20.3 14.6A8.3 8.3 0 0 1 9.4 3.7 8.3 8.3 0 1 0 20.3 14.6Z"/></svg></span></span></span>');
+    // theme button: one circle showing the current mode (orange with a sun, violet with a moon); press to switch
+    tb.insertAdjacentHTML("beforeend", '<span class="hx-tb" aria-hidden="true"><span class="hx-tb-i hx-tb-s"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6 6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/></svg></span><span class="hx-tb-i hx-tb-m"><svg viewBox="0 0 24 24"><path d="M20.3 14.6A8.3 8.3 0 0 1 9.4 3.7 8.3 8.3 0 1 0 20.3 14.6Z"/></svg></span></span>');
     // the name is set to the exact width of the status line beneath it
     { const nm = top.querySelector(".hx-idname"), st = top.querySelector(".hx-idstat");
       const fit = () => { nm.style.fontSize = "20px"; const w = nm.getBoundingClientRect().width, t = st.getBoundingClientRect().width; if (!w || !t) return; let fs = 20 * t / w; nm.style.fontSize = fs + "px"; const w2 = nm.getBoundingClientRect().width; if (w2) nm.style.fontSize = (fs * t / w2).toFixed(3) + "px"; };
@@ -58049,9 +58049,9 @@ renderer.setAnimationLoop(now => {
   body.hero, body.hero button, body.hero #acts button, .hx-top { font-family: 'Plus Jakarta Sans', system-ui, sans-serif !important; }
   .hx-title { font-family: 'Plus Jakarta Sans', system-ui, sans-serif !important; font-weight: 800 !important; letter-spacing: -0.05em !important; line-height: 0.9 !important; }
   body.hero .hx-top { --tk: 0; --ring: linear-gradient(180deg, rgba(255,255,255,.95) 0%, rgba(201,201,201,.9) 12%, rgba(150,150,150,.75) 40%, rgba(117,117,117,.7) 72%, rgba(255,255,255,.95) 100%);
-    --fill: rgba(255,255,255,.52); position: fixed; z-index: 90; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 16px; padding: 18px 3.2vw; pointer-events: none; }
+    --fill: rgba(255,255,255,.74); position: fixed; z-index: 90; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 16px; padding: 18px 3.2vw; pointer-events: none; }
   body.hero .hx-top > * { pointer-events: auto; }
-  html.hero.dark body.hero .hx-top { --ring: linear-gradient(180deg, rgba(120,122,130,.75) 0%, rgba(60,62,70,.7) 14%, rgba(28,29,34,.7) 50%, rgba(20,21,25,.7) 80%, rgba(100,102,110,.75) 100%); --fill: rgba(24,25,30,.52); }
+  html.hero.dark body.hero .hx-top { --ring: linear-gradient(180deg, rgba(120,122,130,.75) 0%, rgba(60,62,70,.7) 14%, rgba(28,29,34,.7) 50%, rgba(20,21,25,.7) 80%, rgba(100,102,110,.75) 100%); --fill: rgba(24,25,30,.74); }
   /* one glass recipe for the pill and the theme circle: a hairline metal rim, a light see-through fill */
   body.hero .hx-top nav.hx-glass, body.hero .hx-top .hx-theme { position: relative; border: 0; background: var(--fill);
     -webkit-backdrop-filter: blur(16px) saturate(1.4); backdrop-filter: blur(16px) saturate(1.4); box-shadow: 0 1px 1px rgba(0,0,0,.03), 0 8px 20px -8px rgba(0,0,0,.14), 0 24px 44px -24px rgba(0,0,0,.18); }
@@ -58078,33 +58078,31 @@ renderer.setAnimationLoop(now => {
   .hx-slot-l { margin-right: calc(var(--tk) * 2px); }
   .hx-slot-r { margin-left: calc(var(--tk) * 2px); width: calc(var(--tk) * var(--tw, 76px)); }
 
-  /* right: the theme switch (after the reference): a glass pill with a sun and a moon, and a knob that
-     slides across, orange with the sun in light mode, violet with the moon in dark mode */
+  /* right: the theme button, one circle the size of the photo: orange with a sun in light mode,
+     violet with a moon in dark mode; pressing it switches the mode */
   body.hero .hx-top .hx-right { justify-self: end; display: flex; }
-  body.hero .hx-top .hx-theme { position: relative; z-index: 2; display: block; width: 84px; height: 44px; padding: 0; border-radius: 999px; overflow: visible; cursor: pointer;
-    transform-origin: 50% 50%; will-change: transform; background: rgba(255,255,255,.55) !important; border: 1px solid rgba(255,255,255,.85) !important;
-    -webkit-backdrop-filter: blur(14px) saturate(1.3); backdrop-filter: blur(14px) saturate(1.3);
-    box-shadow: inset 0 1px 2px rgba(0,0,0,.06), 0 1px 1px rgba(0,0,0,.04), 0 8px 18px -8px rgba(0,0,0,.18) !important; transition: background .45s ease, border-color .45s ease; }
-  html.hero.dark body.hero .hx-top .hx-theme { background: rgba(28,29,34,.62) !important; border-color: rgba(255,255,255,.1) !important; box-shadow: inset 0 1px 2px rgba(0,0,0,.4), 0 8px 18px -8px rgba(0,0,0,.6) !important; }
+  body.hero .hx-top .hx-theme { position: relative; z-index: 2; display: block; width: 50px; height: 50px; padding: 0; border: 0 !important; border-radius: 50%; overflow: hidden; cursor: pointer;
+    transform-origin: 50% 50%; will-change: transform; color: #ffffff; -webkit-backdrop-filter: none; backdrop-filter: none;
+    background: radial-gradient(circle at 34% 28%, #ffc56b 0%, #ff9f1c 52%, #f07b05 100%) !important;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.35), inset 0 -3px 6px rgba(160,70,0,.25), 0 6px 16px -4px rgba(240,123,5,.55), 0 0 20px rgba(255,159,28,.3) !important;
+    transition: box-shadow 420ms ease; }
+  body.hero .hx-top .hx-theme::after { content: ""; position: absolute; inset: 0; border-radius: 50%; opacity: 0; transition: opacity 480ms ease;
+    background: radial-gradient(circle at 34% 28%, #a99bff 0%, #7b61ff 52%, #5b3fe6 100%); }
+  html.hero.dark body.hero .hx-top .hx-theme::after { opacity: 1; }
+  html.hero.dark body.hero .hx-top .hx-theme { box-shadow: inset 0 0 0 1px rgba(255,255,255,.25), inset 0 -3px 6px rgba(40,20,140,.3), 0 6px 16px -4px rgba(91,63,230,.6), 0 0 20px rgba(123,97,255,.35) !important; }
   body.hero .hx-top .hx-theme::before { display: none !important; }
-  body.hero .hx-top .hx-theme > span:not(.hx-tg) { display: none !important; }
-  .hx-tg { position: absolute; inset: 0; display: block; }
-  .hx-tg svg { display: block; width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
-  .hx-tg-ic { position: absolute; top: 50%; width: 34px; height: 34px; margin-top: -17px; display: grid; place-items: center; color: #8a8f99; transition: color .45s ease, opacity .3s ease; }
-  .hx-tg-l { left: 4px; } .hx-tg-r { right: 4px; }
-  .hx-tg-r svg { fill: none; }
-  .hx-tg-knob { position: absolute; top: 50%; left: 4px; width: 34px; height: 34px; margin-top: -17px; border-radius: 50%; color: #fff;
-    background: radial-gradient(circle at 35% 30%, #ffc56b 0%, #ff9f1c 55%, #f07b05 100%); box-shadow: 0 0 0 1px rgba(255,255,255,.35) inset, 0 4px 12px -2px rgba(240,123,5,.55), 0 0 18px rgba(255,159,28,.35);
-    transition: transform 560ms cubic-bezier(0.34, 1.35, 0.64, 1), background 420ms ease, box-shadow 420ms ease; }
-  .hx-tg-k { position: absolute; inset: 0; display: grid; place-items: center; transition: opacity 320ms ease, transform 520ms cubic-bezier(0.34, 1.35, 0.64, 1); }
-  .hx-tg-km { opacity: 0; transform: rotate(-90deg) scale(.5); }
-  .hx-tg-km svg { fill: currentColor; stroke: none; }
-  html.hero.dark .hx-tg-knob { transform: translateX(40px); background: radial-gradient(circle at 35% 30%, #a99bff 0%, #7b61ff 55%, #5b3fe6 100%); box-shadow: 0 0 0 1px rgba(255,255,255,.25) inset, 0 4px 12px -2px rgba(91,63,230,.6), 0 0 18px rgba(123,97,255,.4); }
-  html.hero.dark .hx-tg-ks { opacity: 0; transform: rotate(90deg) scale(.5); }
-  html.hero.dark .hx-tg-km { opacity: 1; transform: none; }
-  html.hero.dark .hx-tg-ic { color: #7d818c; }
-  body.hero .hx-top .hx-theme:hover .hx-tg-knob { box-shadow: 0 0 0 1px rgba(255,255,255,.35) inset, 0 6px 16px -2px rgba(240,123,5,.6), 0 0 24px rgba(255,159,28,.45); }
-  html.hero.dark body.hero .hx-top .hx-theme:hover .hx-tg-knob { box-shadow: 0 0 0 1px rgba(255,255,255,.25) inset, 0 6px 16px -2px rgba(91,63,230,.7), 0 0 24px rgba(123,97,255,.5); }
+  body.hero .hx-top .hx-theme > span:not(.hx-tb) { display: none !important; }
+  .hx-tb { position: absolute; inset: 0; z-index: 1; display: grid; place-items: center; }
+  .hx-tb-i { grid-area: 1 / 1; display: grid; place-items: center; transition: opacity 360ms ease, transform 620ms cubic-bezier(0.34, 1.35, 0.64, 1); }
+  .hx-tb svg { display: block; width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .hx-tb-m svg { fill: currentColor; stroke: none; }
+  .hx-tb-m { opacity: 0; transform: rotate(-90deg) scale(.4); }
+  html.hero.dark .hx-tb-s { opacity: 0; transform: rotate(90deg) scale(.4); }
+  html.hero.dark .hx-tb-m { opacity: 1; transform: none; }
+  body.hero .hx-top .hx-theme:hover { box-shadow: inset 0 0 0 1px rgba(255,255,255,.35), inset 0 -3px 6px rgba(160,70,0,.25), 0 8px 20px -4px rgba(240,123,5,.65), 0 0 28px rgba(255,159,28,.45) !important; }
+  html.hero:not(.dark) body.hero .hx-top .hx-theme:hover .hx-tb-s { transform: rotate(45deg); }
+  html.hero.dark body.hero .hx-top .hx-theme:hover { box-shadow: inset 0 0 0 1px rgba(255,255,255,.25), inset 0 -3px 6px rgba(40,20,140,.3), 0 8px 20px -4px rgba(91,63,230,.7), 0 0 28px rgba(123,97,255,.5) !important; }
+  html.hero.dark body.hero .hx-top .hx-theme:hover .hx-tb-m { transform: rotate(-18deg); }
   body.hero .hx-top .hx-theme:focus-visible, .hx-dp:focus-visible { outline: 2px solid #2b3a9e; outline-offset: 3px; }
 
   /* the quote, bottom left, set as two lines with the author under it */
@@ -58135,18 +58133,15 @@ renderer.setAnimationLoop(now => {
     body.hero .hx-top { gap: 8px; padding: 14px 16px; }
     .hx-dp { width: 44px; height: 44px; }
     body.hero .hx-top .hx-theme { width: 74px; height: 40px; }
-    .hx-tg-ic, .hx-tg-knob { width: 30px; height: 30px; margin-top: -15px; }
-    html.hero.dark .hx-tg-knob { transform: translateX(34px); }
-    .hx-idtext { display: none; }
+        .hx-idtext { display: none; }
     body.hero .hx-glass-in a { height: 34px; padding: 0 10px; font-size: 13px; }
     .hx-slot { height: 34px; width: calc(var(--tk) * 34px); }
-    .hx-slot-r { width: calc(var(--tk) * var(--tw, 62px)); }
     .hx-sign { left: 16px; right: 16px; bottom: 92px; }
     .hx-quote p { font-size: 19px; }
     body.hero #acts { right: 16px; bottom: 22px !important; }
     body.hero #acts button { width: 40px; height: 40px; }
   }
-  @media (prefers-reduced-motion: reduce) { .hx-rise, .hx-in-view .hx-rise, .hx-fade, .hx-in-view .hx-fade { transform: none; opacity: 1; transition: none; } .hx-tg-knob, .hx-tg-k { transition: none; } }
+  @media (prefers-reduced-motion: reduce) { .hx-rise, .hx-in-view .hx-rise, .hx-fade, .hx-in-view .hx-fade { transform: none; opacity: 1; transition: none; } .hx-tb-i { transition: none; } }
   /* ── Services: pinned showcase, after the reference. Accent #2b3a9e, text #111, muted #B5B5B5,
      divider #E5E5E5. Proportions from the reference: list column 33%, image 45.6% (near square),
      sub-items panel the rest; image and panel form one block, rounded on the right only. ── */
@@ -58154,7 +58149,7 @@ renderer.setAnimationLoop(now => {
     position: relative; z-index: 30; background: #ffffff; color: var(--ink); font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-weight: 500; }
   #services .ysx-headwrap { padding: clamp(110px, 17vh, 200px) clamp(20px, 4vw, 56px) 0; }
 
-  #services .ysx-pin { position: relative; height: calc(var(--n) * 100vh); }
+  #services .ysx-pin { position: relative; height: calc(var(--n) * 55vh + 100vh); }
   #services .ysx-stage { position: sticky; top: 0; height: 100vh; display: flex; align-items: center; padding: 0 clamp(20px, 4vw, 56px); box-sizing: border-box; }
   #services .ysx-frame { --h: min(78vh, 43vw, 760px); position: relative; width: 100%; height: var(--h); display: grid; grid-template-columns: 33% minmax(0, 1fr); }
 
@@ -58273,10 +58268,21 @@ renderer.setAnimationLoop(now => {
     #timeline .ytl-img { width: 100%; }
     #timeline .ytl-dot { left: 20px; top: calc(clamp(28px, 4vh, 44px) + 10px); }
   }
-  /* entrances are driven from script (rise.js); these only keep first paint and hover tidy */
+  /* section heads: Work_Y's entrance (slide in from the right, fade up, staggered; hairlines draw) */
   .yph .yph-in { display: inline-block; }
-  .yph .yph-label > span, .yph .yph-in, [data-rise] { will-change: transform; }
+  .yph .yph-label > span, .yph .yph-in { opacity: 0; transform: translate3d(120px, 0, 0); will-change: transform, opacity;
+    transition: opacity 900ms cubic-bezier(0.22,1,0.36,1) var(--d, 0ms), transform 1300ms cubic-bezier(0.16,1,0.3,1) var(--d, 0ms); }
+  .yph .yph-label > i, .yph .yph-rule { transform: scaleX(0); transform-origin: 100% 50%; transition: transform 1300ms cubic-bezier(0.65,0,0.35,1) var(--d, 0ms); }
+  .yph .yph-label > span { --d: 0ms; } .yph .yph-label > i { --d: 120ms; }
+  .yph .yph-grey .yph-in { --d: 240ms; } .yph .yph-rule { --d: 360ms; }
+  .yph .yph-ink .yph-in { --d: 480ms; } .yph .yph-ink + .yph-rule { --d: 600ms; }
+  .yph.is-in .yph-label > span, .yph.is-in .yph-in { opacity: 1; transform: none; }
+  .yph.is-in .yph-label > i, .yph.is-in .yph-rule { transform: scaleX(1); }
+  .yph .yph-label img { will-change: transform; }
+  .yph.is-in .yph-label img { animation: yp-bloom-turn 2200ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+  [data-rise] { will-change: transform; }
   #timeline .ytl-media, #timeline .ytl-text { will-change: transform, opacity; }
+  @media (prefers-reduced-motion: reduce) { .yph .yph-label > span, .yph .yph-in, .yph .yph-label > i, .yph .yph-rule { transform: none; opacity: 1; transition: none; } .yph.is-in .yph-label img { animation: none; } }
   /* one button style for the site */
   .yp-btn { position: relative; display: inline-flex; align-items: center; gap: 14px; height: 56px; padding: 0 8px 0 26px; border-radius: 999px; box-sizing: border-box;
     background: #ffffff; color: #0f0f10 !important; font: 600 16px/1 'Plus Jakarta Sans', system-ui, sans-serif; letter-spacing: -0.01em; text-decoration: none; white-space: nowrap;
@@ -60559,6 +60565,7 @@ class YPSections {
     const frame = () => { raf = 0; if (step()) raf = requestAnimationFrame(frame); else live = false; };
     const wake = () => { if (!raf) { live = true; raf = requestAnimationFrame(frame); } };
     st.forEach(c => {
+      if (!c.img) return;
       c.el.addEventListener("pointerenter", () => { c.hover = true; c.tsc = 1; cur.on = true; wake(); });
       c.el.addEventListener("pointerleave", () => { c.hover = false; c.tsc = 1.06; cur.on = false; wake(); });
     });
@@ -61485,63 +61492,43 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
     top = r.top + window.scrollY; span = Math.max(1, pin.offsetHeight - window.innerHeight);
   };
   const pinned = () => pin.offsetParent !== null;   // hidden on phones
-  const yFor = i => top + span * (i / (N - 1));
-  // every programmatic move rides the page's smooth-scroll engine when it is on
-  let gliding = 0;
-  const glide = y => { gliding = performance.now() + 1000; const E = window.__ypScroll;
-    if (E && E.enabled && E.to) E.to(y, 900); else window.scrollTo({ top: y, behavior: reduce ? "auto" : "smooth" }); };
+
+  // Carousel: while the showcase is on screen, the bar along the bottom of the picture fills over a
+  // few seconds, then the next service comes in, looping back to the first after the last.
+  // Scrolling through the section still steps through the services, and a click on a name jumps
+  // straight to it; either restarts the bar.
+  const DUR = 4200;
+  let from = performance.now(), arafId = 0, scrollIdx = -1;
+  const go = i => { activate(((i % N) + N) % N); from = performance.now(); };
   function update() {
     scrubHead();
     if (!pinned()) return;
     measure();
     const p = Math.max(0, Math.min(1, (window.scrollY - top) / span));
-    activate(Math.min(N - 1, Math.floor(p * (N - 1) + 0.5)));
+    const idx = Math.min(N - 1, Math.floor(p * N * 0.9999));
+    if (idx !== scrollIdx) { const first = scrollIdx < 0; scrollIdx = idx; if (!first) go(idx); }
   }
   let raf = 0;
   const onScroll = () => { if (!raf) raf = requestAnimationFrame(() => { raf = 0; update(); }); };
   addEventListener("scroll", onScroll, { passive: true });
   addEventListener("resize", onScroll);
   update();
+  names.forEach((b, i) => b.addEventListener("click", () => go(i)));
 
-  // clicking a service scrolls to its step
-  names.forEach((b, i) => b.addEventListener("click", () => { measure(); glide(yFor(i)); }));
-
-  // Auto-play: while the section holds the screen and the reader is not scrolling, the bar under
-  // the picture fills over a few seconds and then the showcase moves on to the next service. Any
-  // scroll by the reader restarts the count; it stops on the last service.
-  const DUR = 4200;
-  let lastUser = performance.now(), from = performance.now(), arafId = 0, lastY = window.scrollY;
-  addEventListener("scroll", () => { if (performance.now() > gliding) lastUser = performance.now(); }, { passive: true });
-  const inPin = () => { if (!pinned()) return false; const r = pin.getBoundingClientRect(); return r.top <= 2 && r.bottom >= innerHeight - 2; };
+  const onStage = () => { if (!pinned()) return false; const r = sec.querySelector(".ysx-frame").getBoundingClientRect(); return r.top < innerHeight * 0.75 && r.bottom > innerHeight * 0.25; };
   const auto = now => {
     arafId = 0;
-    if (!inPin() || reduce) { if (bar) bar.style.transform = "scaleX(0)"; from = now; arafId = requestAnimationFrame(auto); return; }
-    if (now - lastUser < 650 || now < gliding) from = now;
-    const f = active === N - 1 ? 1 : Math.min(1, (now - from) / DUR);
-    if (bar) bar.style.transform = "scaleX(" + f.toFixed(4) + ")";
-    if (f >= 1 && active < N - 1) { measure(); glide(yFor(active + 1)); from = now + 900; }
+    if (reduce || !onStage()) { from = now; if (bar) bar.style.transform = "scaleX(0)"; }
+    else {
+      const f = Math.min(1, (now - from) / DUR);
+      if (bar) bar.style.transform = "scaleX(" + f.toFixed(4) + ")";
+      if (f >= 1) go(active + 1);
+    }
     arafId = requestAnimationFrame(auto);
   };
   if (typeof IntersectionObserver !== "undefined") {
     new IntersectionObserver(es => { if (es[0].isIntersecting) { if (!arafId) { from = performance.now(); arafId = requestAnimationFrame(auto); } } else if (arafId) { cancelAnimationFrame(arafId); arafId = 0; } }).observe(pin);
-  }
-
-  // Settle: once the reader stops scrolling inside the pinned range, glide to the nearest service.
-  if (!reduce) {
-    let t = 0;
-    addEventListener("scroll", () => {
-      clearTimeout(t);
-      t = setTimeout(() => {
-        if (!pinned() || performance.now() < gliding) return;
-        measure();
-        const y = window.scrollY;
-        if (y < top - 2 || y > top + span + 2) return;
-        const target = yFor(Math.round(((y - top) / span) * (N - 1)));
-        if (Math.abs(target - y) < 3) return;
-        glide(target);
-      }, 200);
-    }, { passive: true });
-  }
+  } else arafId = requestAnimationFrame(auto);
 
   // ── phone cards fade up as they arrive ──
   const cards = Array.from(sec.querySelectorAll(".ysx-card"));
@@ -61577,46 +61564,38 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
 })();
 </script>
 <script>
-/* ── Entrances, tied to scroll. Each section head slides in from the left and wipes into view
-   as it rises, finishing by the time it reaches the middle of the screen: the mark spins in,
-   the label, then each big line, then the hairlines. Content blocks ([data-rise]) come up from
-   below, or in from the side ([data-rise-x]). Progress follows the scroll position and is
-   eased every animation frame, so it is continuous, reversible and runs at the display's rate. ── */
+/* ── Entrances. Section heads use Work_Y's own entrance: once the head is about halfway up the
+   screen, the label, each big line and the hairlines come in one after another, sliding from the
+   right into place as they fade up (1.3 s, expo-out), and the fan mark makes its full turn. It
+   resets once the head drops below the screen again, so it replays on the way back down.
+   Content blocks ([data-rise]) rise from below (or in from their side) with the scroll. ── */
 (function () {
   const reduce = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
-  const seg = (p, a, b) => Math.max(0, Math.min(1, (p - a) / (b - a)));
   const out = t => 1 - Math.pow(1 - t, 3);
-  const heads = Array.from(document.querySelectorAll("#yp-work .yph")).map(h => ({ el: h, p: -1, t: 0,
-    label: h.querySelector(".yph-label > span"), img: h.querySelector(".yph-label img"), tick: h.querySelector(".yph-label > i"),
-    lines: Array.from(h.querySelectorAll(".yph-in")), rules: Array.from(h.querySelectorAll(".yph-rule")) }));
+  const heads = Array.from(document.querySelectorAll("#yp-work .yph"));
+  const headCheck = () => { const vh = innerHeight || 1;
+    heads.forEach(h => { const top = h.getBoundingClientRect().top;
+      if (!h.classList.contains("is-in") && top < vh * 0.62) h.classList.add("is-in");
+      else if (h.classList.contains("is-in") && top > vh * 1.02) h.classList.remove("is-in"); }); };
+  if (reduce) heads.forEach(h => h.classList.add("is-in"));
   const rises = Array.from(document.querySelectorAll("#yp-work [data-rise]")).map(el => ({ el, p: -1, t: 0, dx: +(el.getAttribute("data-rise-x") || 0) }));
-  const wipe = (el, s, dx) => { if (!el) return; el.style.transform = s >= 1 ? "" : "translate3d(" + ((1 - s) * dx).toFixed(2) + "px,0,0)";
-    el.style.clipPath = el.style.webkitClipPath = s >= 1 ? "" : "inset(-20% " + ((1 - s) * 100).toFixed(2) + "% -30% 0)"; };
-  const paintHead = h => { const p = h.p;
-    const a = out(seg(p, 0, 0.55)); wipe(h.label, a, -60);
-    if (h.img) { h.img.style.transform = a >= 1 ? "" : "rotate(" + ((1 - a) * -300).toFixed(1) + "deg) scale(" + (0.6 + 0.4 * a).toFixed(3) + ")"; h.img.style.opacity = a.toFixed(3); }
-    if (h.tick) h.tick.style.transform = "scaleX(" + out(seg(p, 0.3, 0.7)).toFixed(3) + ")";
-    h.lines.forEach((l, i) => wipe(l, out(seg(p, 0.12 + i * 0.14, 0.72 + i * 0.14)), -80));
-    h.rules.forEach((r, i) => { r.style.transform = "scaleX(" + out(seg(p, 0.22 + i * 0.14, 0.86 + i * 0.14)).toFixed(4) + ")"; }); };
   const paintRise = r => { const s = out(r.p);
     r.el.style.opacity = s >= 1 ? "" : s.toFixed(3);
     r.el.style.transform = s >= 1 ? "" : (r.dx ? "translate3d(" + ((1 - s) * r.dx * 90).toFixed(2) + "px,0,0)" : "translate3d(0," + ((1 - s) * 90).toFixed(2) + "px,0)"); };
-  heads.forEach(h => { h.el.querySelectorAll(".yph-rule, .yph-label > i").forEach(x => x.style.transformOrigin = "0 50%"); });
   let raf = 0, last = 0;
   const targets = () => { const vh = innerHeight || 1;
-    heads.forEach(h => { const r = h.el.getBoundingClientRect(); h.t = reduce ? 1 : Math.max(0, Math.min(1, (vh - r.top) / (vh * 0.5))); });
     rises.forEach(o => { const r = o.el.getBoundingClientRect(); o.t = reduce ? 1 : Math.max(0, Math.min(1, (vh - r.top) / (vh * 0.42))); }); };
   const frame = now => {
     raf = 0; const dt = Math.min(0.05, last ? (now - last) / 1000 : 0.016); last = now;
     const k = 1 - Math.exp(-dt / 0.1); let busy = false;
     targets();
     const step = (o, paint) => { if (o.p < 0) o.p = o.t; const d = o.t - o.p; if (Math.abs(d) > 0.0005) { o.p += d * k; busy = true; } else if (o.p !== o.t) { o.p = o.t; } else return; paint(o); };
-    heads.forEach(h => step(h, paintHead)); rises.forEach(r => step(r, paintRise));
+    rises.forEach(r => step(r, paintRise));
     if (busy) raf = requestAnimationFrame(frame); else last = 0;
   };
   const wake = () => { if (!raf) raf = requestAnimationFrame(frame); };
-  targets(); heads.forEach(h => { h.p = h.t; paintHead(h); }); rises.forEach(r => { r.p = r.t; paintRise(r); });
-  addEventListener("scroll", wake, { passive: true }); addEventListener("resize", wake);
+  targets(); rises.forEach(r => { r.p = r.t; paintRise(r); }); headCheck();
+  addEventListener("scroll", () => { wake(); headCheck(); }, { passive: true }); addEventListener("resize", () => { wake(); headCheck(); });
   window.__ypRise = wake;
 })();
 </script>
