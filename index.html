@@ -10,6 +10,10 @@ try { var s = null; try { s = localStorage.getItem("hx-theme"); } catch (e) {}
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0d0d11">
 <script>document.documentElement.classList.add("js");</script>
+<script>(function () { var touch = matchMedia("(hover: none)").matches, w = -1, h = 0;
+  window.__SH = function () { if (!touch) return innerHeight; if (innerWidth !== w) { w = innerWidth; var d = document.createElement("div");
+    d.style.cssText = "position:fixed;left:0;top:0;width:1px;height:100vh;height:100lvh;visibility:hidden;pointer-events:none"; (document.body || document.documentElement).appendChild(d);
+    h = Math.max(innerHeight, d.getBoundingClientRect().height); d.remove(); } return h; }; })();</script>
 <title>Product Designer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -56438,7 +56442,7 @@ let perfMode = Q.has("perf"), perfSlowFor = 0;
   window.__gpu = rn; if (/swiftshader|llvmpipe|software/i.test(rn)) { const w = document.createElement("div"); w.id = "gpuwarn";
     w.textContent = "Your browser is drawing with software rendering (graphics acceleration is off), so the robot will be slow. Turn on \"Use graphics acceleration\" in the browser settings and reload."; document.body.appendChild(w); } }
 renderer.setPixelRatio(prNow);
-renderer.setSize(innerWidth, innerHeight);
+renderer.setSize(innerWidth, window.__SH());
 renderer.toneMapping = Q.get("tm") === "aces" ? THREE.ACESFilmicToneMapping : THREE.NeutralToneMapping;
 renderer.toneMappingExposure = +(Q.get("exp") || 0.88);
 renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -56498,7 +56502,7 @@ const blob = (() => {
 })();
 scene.add(blob);
 
-const camera = new THREE.PerspectiveCamera(24, innerWidth / innerHeight, 0.1, 80);
+const camera = new THREE.PerspectiveCamera(24, innerWidth / window.__SH(), 0.1, 80);
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true; controls.dampingFactor = 0.22; controls.rotateSpeed = 1.3; controls.zoomSpeed = 1.2;
 controls.minDistance = 4; controls.maxDistance = 24; controls.maxPolarAngle = Math.PI * 0.6;
@@ -56513,7 +56517,7 @@ const setView = (i, instant) => {
   requestAnimationFrame(step);
 };
 // hero: keep the whole robot (arms included) inside ~80% of the width on any screen shape
-const heroDist = () => Math.max(16.5, 16.5 * 1.35 / Math.max(0.3, innerWidth / innerHeight) * (innerWidth < innerHeight ? 0.8 : 1));
+const heroDist = () => Math.max(16.5, 16.5 * 1.35 / Math.max(0.3, innerWidth / window.__SH()) * (innerWidth < window.__SH() ? 0.72 : 1));
 if (HERO && !Q.has("view")) { VIEWS[0] = [0, 1.3, heroDist()]; addEventListener("resize", () => { const d = heroDist(), v = camera.position.clone().sub(controls.target).setLength(d); camera.position.copy(controls.target).add(v); VIEWS[0] = [0, 1.3, d]; controls.update(); }); }
 setView(+(Q.get("view") || 0), true);
 if (Q.has("zoom")) { camera.zoom = +Q.get("zoom"); camera.updateProjectionMatrix(); }
@@ -57015,7 +57019,7 @@ $("bReset").onclick = () => setView(0);
 document.querySelectorAll("[data-view]").forEach(b => b.onclick = () => setView(+b.dataset.view));
 sync();
 
-addEventListener("resize", () => { camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); });
+addEventListener("resize", () => { camera.aspect = innerWidth / window.__SH(); camera.updateProjectionMatrix(); renderer.setSize(innerWidth, window.__SH()); });
 
 // ─── LED eyes: emotions + autonomous mood ───────────────────
 const EMO_CSS = ["#4debff", "#6bff42", "#ff8014", "#ff140d", "#ffd61a", "#ff42a8", "#7a66ff", "#c74dff", "#408cff", "#ebf2ff", "#1affb3", "conic-gradient(#f44, #fd4, #4f8, #4df, #a4f, #f44)"];
@@ -57176,12 +57180,12 @@ if (Q.has("shot")) rigState.idle = 0;
 // robot.setPose("Arm out →" | { right: { raise, swing, twist, elbow, wristBend, wristTwist }, left: {...} }, seconds)
 // robot.getPose()   robot.poses   robot.emotions   robot.setIdleMotion(true|false)
 const applyPerf = () => { renderer.shadowMap.enabled = !perfMode; if (window.__backMesh) window.__backMesh.visible = !perfMode; U.uPerf.value = perfMode ? 1 : 0;
-  if (perfMode) { prCeil = Math.min(prCeil, 0.75); prNow = Math.min(prNow, 0.75); renderer.setPixelRatio(prNow); renderer.setSize(innerWidth, innerHeight); } else { prCeil = PR_MAX; } };
+  if (perfMode) { prCeil = Math.min(prCeil, 0.75); prNow = Math.min(prNow, 0.75); renderer.setPixelRatio(prNow); renderer.setSize(innerWidth, window.__SH()); } else { prCeil = PR_MAX; } };
 if (perfMode) applyPerf();
 window.robot = {
   setPerformanceMode(on) { perfMode = !!on; applyPerf(); },
   // "high" renders at the screen's full pixel density (sharpest, costs the most), "balanced" is the default
-  setQuality(level) { perfMode = level === "low"; PR_MAX = Math.min(window.devicePixelRatio || 1, level === "high" ? 2.0 : HERO ? 1.0 : 1.25); prCeil = PR_MAX; prNow = PR_MAX; prUp = -1e9; renderer.setPixelRatio(prNow); renderer.setSize(innerWidth, innerHeight); applyPerf(); },
+  setQuality(level) { perfMode = level === "low"; PR_MAX = Math.min(window.devicePixelRatio || 1, level === "high" ? 2.0 : HERO ? 1.0 : 1.25); prCeil = PR_MAX; prNow = PR_MAX; prUp = -1e9; renderer.setPixelRatio(prNow); renderer.setSize(innerWidth, window.__SH()); applyPerf(); },
   emotions: EMOS.slice(), poses: Object.keys(POSES),
   setEmotion(e, hold = 5) { const i = typeof e === "number" ? e : EMOS.findIndex(n => n.toLowerCase() === String(e).toLowerCase()); if (i < 0) return false; setEmo(i); emo.hold = emo.auto ? te + hold : 0; emo.next = te + hold; drawEmo(); return true; },
   setAutoMood(on) { emo.auto = !!on; emo.hold = 0; emo.next = te + 0.5; drawEmo(); },
@@ -57342,17 +57346,24 @@ if (HERO) {
     right.insertAdjacentHTML("beforeend", '<a class="hx-cta start-build" href="mailto:ponde.yashwant@gmail.com"><span class="tile"></span><svg class="icon" viewBox="0 0 30 15" aria-hidden="true"></svg><span class="label">Let\u2019s Talk</span></a>');
     const tb = right.querySelector(".hx-cta");
     if (window.__ypStartBuild) window.__ypStartBuild(tb);   // otherwise the page's Start Build script picks it up when it runs
-    // phones: the name and status sit in a tag under the photo; it shows for a few seconds on arrival,
-    // and a tap on the photo (while the header is open) shows or hides it
+    // The photo is not a link: a tap or click shows the name and status as a tag under the nav, and a
+    // tap anywhere else hides it again (once the header has merged; on phones it always is). Only the
+    // home button goes back to the top. On phones the tag also shows briefly on arrival.
     { const idw = top.querySelector(".hx-id"), phone = () => innerWidth <= 760;
-      setTimeout(() => { if (phone() && scrollY < 40) { idw.classList.add("is-open"); setTimeout(() => idw.classList.remove("is-open"), 4200); } }, 1600);
-      dp.addEventListener("click", e => { if (!phone() || scrollY > 40) return; e.preventDefault(); idw.classList.toggle("is-open"); }, true);
-      addEventListener("scroll", () => { if (scrollY > 40) idw.classList.remove("is-open"); }, { passive: true }); }
+      dp.removeAttribute("data-hx-home"); dp.removeAttribute("href"); dp.setAttribute("role", "button"); dp.setAttribute("tabindex", "0");
+      dp.setAttribute("aria-label", "Yashwant Ponde, open to new work"); dp.setAttribute("aria-expanded", "false");
+      const place = () => { const n = top.querySelector("nav.hx-glass").getBoundingClientRect(); top.style.setProperty("--tag-top", Math.round(n.bottom + 10) + "px"); };
+      const setOpen = on => { place(); idw.classList.toggle("is-open", on); dp.setAttribute("aria-expanded", String(on)); };
+      dp.addEventListener("click", e => { e.preventDefault(); e.stopImmediatePropagation(); setOpen(!idw.classList.contains("is-open")); });
+      dp.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setOpen(!idw.classList.contains("is-open")); } });
+      document.addEventListener("click", e => { if (!dp.contains(e.target)) setOpen(false); });
+      addEventListener("resize", place);
+      setTimeout(() => { if (phone()) { setOpen(true); setTimeout(() => setOpen(false), 3800); } }, 1800); }
     // the name is set to the exact width of the status line beneath it
     { const nm = top.querySelector(".hx-idname"), st = top.querySelector(".hx-idstat");
       const fit = () => { nm.style.fontSize = "20px"; const w = nm.getBoundingClientRect().width, t = st.getBoundingClientRect().width; if (!w || !t) return; let fs = 20 * t / w; nm.style.fontSize = fs + "px"; const w2 = nm.getBoundingClientRect().width; if (w2) nm.style.fontSize = (fs * t / w2).toFixed(3) + "px"; };
       fit(); addEventListener("resize", fit); if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit); }
-    const SLOT = () => (innerWidth <= 760 ? 46 : 46);
+    const SLOT = () => (innerWidth <= 760 ? 50 : 46);
     // A spring, not an ease: the photo and the Let's Talk pill carry a little momentum into the pill,
     // overshoot by a few percent and settle, both ways. A frame costs one layout read: the slots the
     // pill is opening and the resting spots, taken from the (untransformed) parents together.
@@ -57361,7 +57372,8 @@ if (HERO) {
     const measure = () => { dp.style.transform = tb.style.transform = ""; const a = dp.getBoundingClientRect(), b = tb.getBoundingClientRect();
       rest = { a: { x: a.left + a.width / 2, y: a.top + a.height / 2, s: a.height }, b: { x: b.left + b.width / 2, y: b.top + b.height / 2, s: b.height, w: b.width } };
       top.style.setProperty("--tw", (rest.b.w * SLOT() / rest.b.s).toFixed(2) + "px"); };
-    const goal = () => Math.max(0, Math.min(1, scrollY / (innerHeight * 0.32)));
+    // phones: the header starts merged and stays merged
+    const goal = () => innerWidth <= 760 ? 1 : Math.max(0, Math.min(1, scrollY / (innerHeight * 0.32)));
     const smooth = t => t * t * (3 - 2 * t);
     const apply = () => {
       if (!rest) measure();
@@ -57457,8 +57469,8 @@ void main() {
   // the gap light is off everywhere except a soft circle around the pointer
   // full-strength light in a circle centred exactly on the pointer, fading only near its rim
   float reveal = K * (1.0 - smoothstep(0.16 * MN, 0.3 * MN, length(gl_FragCoord.xy - P)));
-  float lit = min(1.0, g * reveal * 1.55);
-  float soft = clamp(e * 3.0 / abs(sx * sy + 1e-4), 0.0, 1.0) * reveal * 0.12;
+  float lit = min(1.0, g * reveal * 1.9);
+  float soft = clamp(e * 3.0 / abs(sx * sy + 1e-4), 0.0, 1.0) * reveal * 0.17;
   // the design process colours, two to a side: orange into blue on the left half of the screen,
   // purple into pink on the right, crossfading as the pointer passes the middle
   vec3 c1 = vec3(0.95, 0.52, 0.06), c2 = vec3(0.06, 0.48, 0.96);
@@ -57467,7 +57479,7 @@ void main() {
   float chroma = smoothstep(-0.12 * MN, 0.12 * MN, (f.x - P.x) + 0.32 * (f.y - P.y));
   vec3 glow = mix(mix(c1, c3, side), mix(c2, c4, side), chroma);
   vec3 base = paper * (0.955 + 0.9 * (tile - 0.045));
-  vec3 col = dark > 0.5 ? vec3(tile) + glow * (lit + soft) : base * (1.0 - 0.72 * lit - soft) + glow * (0.72 * lit + soft);
+  vec3 col = dark > 0.5 ? vec3(tile) + glow * (lit + soft) : base * (1.0 - 0.82 * lit - soft) + glow * (0.82 * lit + soft);
   O = vec4(col, 1.0);
 }`;
     const sh = (type, src) => { const s = gl2.createShader(type); gl2.shaderSource(s, src); gl2.compileShader(s); if (!gl2.getShaderParameter(s, gl2.COMPILE_STATUS)) throw new Error(gl2.getShaderInfoLog(s)); return s; };
@@ -57475,7 +57487,7 @@ void main() {
     const buf = gl2.createBuffer(); gl2.bindBuffer(gl2.ARRAY_BUFFER, buf); gl2.bufferData(gl2.ARRAY_BUFFER, new Float32Array([-1, 1, -1, -1, 1, 1, 1, -1]), gl2.STATIC_DRAW);
     const pl = gl2.getAttribLocation(pr, "p"); gl2.enableVertexAttribArray(pl); gl2.vertexAttribPointer(pl, 2, gl2.FLOAT, false, 0, 0);
     const uR = gl2.getUniformLocation(pr, "R"), uM = gl2.getUniformLocation(pr, "M"), uK = gl2.getUniformLocation(pr, "K"), uP = gl2.getUniformLocation(pr, "paper"), uD = gl2.getUniformLocation(pr, "dark"), uT = gl2.getUniformLocation(pr, "T"), uPtr = gl2.getUniformLocation(pr, "P");
-    drawGrid = () => { const dpr = Math.min(1.5, devicePixelRatio || 1), W = Math.round(innerWidth * dpr), H = Math.round(innerHeight * dpr);
+    drawGrid = () => { const dpr = Math.min(1.5, devicePixelRatio || 1), W = Math.round(innerWidth * dpr), H = Math.round(window.__SH() * dpr);
       if (dots.width !== W || dots.height !== H) { dots.width = W; dots.height = H; } gl2.viewport(0, 0, W, H);
       const dark = html.classList.contains("dark");
       // tile size: an exact number of rows fills the height (about 100 px each, about 72 px on phones)
@@ -57589,7 +57601,7 @@ renderer.setAnimationLoop(now => {
   // very slow frames for a while -> performance mode: no shadows, lighter surface, lower resolution
   perfSlowFor = ftAvg > 55 ? perfSlowFor + dt : 0;
   if (!perfMode && perfSlowFor > 2.5) { perfMode = true; applyPerf(); }
-  if (want !== prNow && now - prChanged > (want < prNow ? 1200 : 5000)) { if (want > prNow) prUp = now; prNow = want; prChanged = now; renderer.setPixelRatio(prNow); renderer.setSize(innerWidth, innerHeight); }
+  if (want !== prNow && now - prChanged > (want < prNow ? 1200 : 5000)) { if (want > prNow) prUp = now; prNow = want; prChanged = now; renderer.setPixelRatio(prNow); renderer.setSize(innerWidth, window.__SH()); }
   renderer.render(scene, camera);
   if (window.__heroFrame) window.__heroFrame();
 });
@@ -58862,19 +58874,41 @@ renderer.setAnimationLoop(now => {
     /* nav: the pill sits exactly in the centre; Let's Talk is a narrower pill on the right */
     body.hero .hx-top { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 6px; }
     body.hero .hx-top .hx-right { justify-self: end; min-width: 0; }
-    .hx-cta.start-build { width: 124px !important; }
-    .hx-cta.start-build .label { font-size: 14px; left: calc(var(--sb) * 62px + (124px - var(--sb) * 62px - var(--lw, 62px)) / 2) !important; transform: none !important; color: #fff !important; }
+    .hx-cta.start-build { width: 132px !important; }
+    .hx-cta.start-build .label { font-size: 14px; left: calc(var(--sb) * 62px + (132px - var(--sb) * 62px - var(--lw, 62px)) / 2) !important; transform: none !important; color: #fff !important; }
     .hx-cta.start-build:hover .tile { width: calc(var(--sb) * 59px) !important; }
     .hx-cta.start-build:hover .icon { transform: none !important; }
 
-    /* name and status: a small glass tag under the photo, shown on arrival and on a tap of the photo */
-    .hx-id { position: relative; }
-    .hx-idtext { display: flex !important; position: absolute; left: 0; top: calc(100% + 10px); z-index: 3; padding: 9px 12px 10px; border-radius: 14px;
-      background: var(--fill, rgba(255,255,255,.52)); -webkit-backdrop-filter: blur(22px) saturate(1.6); backdrop-filter: blur(22px) saturate(1.6);
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,.35), 0 10px 24px -12px rgba(0,0,0,.35); pointer-events: none; }
-    .hx-idname { font-size: 15px !important; }
-    .hx-id:not(.is-open) .hx-idtext { opacity: 0 !important; visibility: hidden !important; }
-    .hx-id .hx-idtext { transition: opacity 300ms ease, visibility 300ms; }
+  }
+
+  /* ── the name tag: floats centred under the merged nav when the photo is tapped ── */
+  .hx-top.is-tucked .hx-idtext { position: fixed !important; left: 50% !important; top: var(--tag-top, 96px); z-index: 95; display: flex !important;
+    padding: 10px 14px 11px; border-radius: 16px; align-items: center; text-align: center;
+    background: var(--fill, rgba(255,255,255,.52)); -webkit-backdrop-filter: blur(22px) saturate(1.6); backdrop-filter: blur(22px) saturate(1.6);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.35), 0 12px 28px -12px rgba(0,0,0,.4); pointer-events: none;
+    transform: translate3d(-50%, -6px, 0) !important; transition: opacity 260ms ease, transform 360ms cubic-bezier(0.22,1,0.36,1), visibility 260ms; }
+  html.dark .hx-top.is-tucked .hx-idtext { box-shadow: inset 0 0 0 1px rgba(255,255,255,.14), 0 12px 28px -12px rgba(0,0,0,.6); }
+  .hx-top.is-tucked .hx-id:not(.is-open) .hx-idtext { opacity: 0 !important; visibility: hidden !important; }
+  .hx-top.is-tucked .hx-id.is-open .hx-idtext { opacity: 1 !important; visibility: visible !important; transform: translate3d(-50%, 0, 0) !important; }
+  .hx-dp { cursor: pointer; }
+
+  @media (max-width: 760px) {
+    /* the merged nav, one size up again: photo, home and theme at 50px, spanning most of the width */
+    .hx-dp { width: 50px; height: 50px; }
+    .hx-slot { height: 50px; width: calc(var(--tk) * 50px); }
+    .hx-slot-r { width: calc(var(--tk) * var(--tw, 76px)); }   /* the Let's Talk slot is as wide as the button */
+    body.hero .hx-glass-in a { height: 50px; }
+    body.hero .hx-glass-in a.hx-home { width: 50px; height: 50px; }
+    .hx-home i { width: 23px; height: 23px; }
+    body.hero .hx-top .hx-glass-in .hx-theme { width: 50px; height: 50px; }
+    body.hero .hx-top .hx-glass-in .hx-tb svg { width: 22px; height: 22px; }
+    body.hero .hx-top .hx-tb svg.hx-moon { width: 23px; height: 23px; }
+    .hx-cta.start-build { --sb: 0.7692; }
+    .hx-cta.start-build .label { font-size: 15px; }
+
+    /* About drum: bigger type; rows turned away are not painted at all */
+    #about-drum { --font-size: clamp(44px, 12vw, 60px) !important; }
+    #about-drum .stage { contain: layout paint; }
   }
 
   /* ── section heads (reference: label + underline, right-hand note, two big lines on hairlines) ── */
@@ -62299,9 +62333,14 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
       // front = bright, back = dim
       const opacity = Math.max(0.06, Math.pow((1 + cos) / 2, 1.3));
       const r = rows[i];
-      r.style.transform =
-        `translate(-50%, -50%) translate3d(0, ${y}px, ${z}px) rotateX(${deg}deg)`;
-      r.style.opacity = opacity.toFixed(3);
+      // rows turned right away are not painted (fewer layers to composite while scrolling on phones)
+      const hide = opacity <= 0.07;
+      if (r.__hide !== hide) { r.__hide = hide; r.style.visibility = hide ? "hidden" : ""; }
+      if (hide) continue;
+      const tf = `translate(-50%, -50%) translate3d(0, ${y.toFixed(1)}px, ${z.toFixed(1)}px) rotateX(${deg.toFixed(2)}deg)`;
+      if (r.__tf !== tf) { r.__tf = tf; r.style.transform = tf; }
+      const op = opacity.toFixed(2);
+      if (r.__op !== op) { r.__op = op; r.style.opacity = op; }
       const zi = Math.round(z / 8) + 1000;               // stacking only needs the order, so it rarely changes
       if (r.__zi !== zi) { r.__zi = zi; r.style.zIndex = zi; }
     }
@@ -62536,13 +62575,21 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
   const ready = () => v.classList.add("is-ready");
   ["loadeddata", "canplay", "playing"].forEach(ev => v.addEventListener(ev, ready, { once: true }));
   if (v.readyState >= 2) ready();
-  let onScreen = false;
-  const play = () => { if (!onScreen) return; const p = v.play(); if (p && p.catch) p.catch(() => {}); };
-  const kick = () => { play(); if (!v.paused) { removeEventListener("touchstart", kick); removeEventListener("click", kick); } };
-  addEventListener("touchstart", kick, { passive: true }); addEventListener("click", kick);
+  // Keep trying while the footer is on screen: a play() made before the file has any data is refused
+  // and nothing asks again, which is why it only appeared sometimes. Now any time data arrives, the
+  // page returns to the foreground, the reader touches the screen, or a second passes with the video
+  // still paused on screen, it tries again; a stalled or failed load is started over (at most 3 times).
+  let onScreen = false, tries = 0;
+  const play = () => { if (!onScreen || !v.paused) return; const p = v.play(); if (p && p.catch) p.catch(() => {}); };
+  ["loadedmetadata", "loadeddata", "canplay", "canplaythrough"].forEach(ev => v.addEventListener(ev, play));
+  const reload = () => { if (tries >= 3) return; tries++; setTimeout(() => { v.load(); play(); }, 1200 * tries); };
+  v.addEventListener("error", reload); v.addEventListener("stalled", () => { if (v.readyState < 2) reload(); });
+  addEventListener("touchstart", play, { passive: true }); addEventListener("click", play);
   document.addEventListener("visibilitychange", () => { if (!document.hidden) play(); });
+  addEventListener("pageshow", play);
+  setInterval(() => { if (onScreen && v.paused && !document.hidden) { if (v.readyState === 0 && v.networkState === 3) reload(); else play(); } }, 1000);
   if (typeof IntersectionObserver === "undefined") { onScreen = true; play(); return; }
-  new IntersectionObserver(es => { onScreen = es[0].isIntersecting; if (onScreen) play(); else v.pause(); }, { rootMargin: "200px 0px" }).observe(v.closest("footer") || v);
+  new IntersectionObserver(es => { onScreen = es[0].isIntersecting; if (onScreen) play(); else if (!v.paused) v.pause(); }, { rootMargin: "300px 0px" }).observe(v.closest("footer") || v);
 })();
 
 /* Bottom progressive blur (case-study-motion.html): 8 stacked backdrop-filter layers, each masked to
@@ -62551,7 +62598,9 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
 (function () {
   const first = document.getElementById("about-drum"), foot = document.getElementById("site-foot");
   const el = document.createElement("div"); el.className = "progressive-blur"; el.setAttribute("aria-hidden", "true");
-  const blurs = [0.3, 1.3, 2.8, 5, 7.8, 11.3, 15.3, 20], step = 8.75;   // px, % per layer
+  // phones get 4 layers covering the same ramp: each backdrop blur is redrawn every scrolled frame
+  const phone = matchMedia("(max-width: 760px)").matches;
+  const blurs = phone ? [1, 4.5, 10, 18] : [0.3, 1.3, 2.8, 5, 7.8, 11.3, 15.3, 20], step = phone ? 17.5 : 8.75;   // px, % per layer
   blurs.forEach((b, i) => {
     const d = document.createElement("div"), a = (i * step).toFixed(2), z = ((i + 1) * step).toFixed(2);
     const mask = "linear-gradient(to bottom, transparent 0%, transparent " + a + "%, #000 " + z + "%, #000 100%)";
