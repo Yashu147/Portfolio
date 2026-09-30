@@ -58914,7 +58914,6 @@ renderer.setAnimationLoop(now => {
 
     /* About drum: bigger type; rows turned away are not painted at all */
     #about-drum { --font-size: clamp(44px, 12vw, 60px) !important; }
-    #about-drum .stage { contain: layout paint; }
   }
 
   /* the robot scene is taller than the hero (full screen height, so the toolbar never resizes it):
@@ -61657,6 +61656,7 @@ class YPSections {
       const p = Math.max(0, Math.min(1, (raw - LEAD) / BEATS));
       if (p === st.target) return;
       st.target = p;
+      if (window.__flowRaw != null) st.p = p;   // the phone pager eases the row itself
       clearTimeout(st.settleT);
       // Only a real stretch of motion (more than a frame or two of glide) leaves the crisp still;
       // a single wheel notch is finished at the resolution it started at.
@@ -62413,13 +62413,18 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
     }
   };
 
-  let raf = 0, on = false;
-  const tick = () => {
+  // The drum eases toward the scroll on a clock (the same feel at 60 and 120 Hz) and lands in one
+  // clean step once it is within a quarter of a degree: no long sub-pixel crawl at the end, which
+  // Safari redraws as a tremble in the 3D text as the scroll comes to rest.
+  let raf = 0, on = false, lastT = 0;
+  const tick = now => {
     raf = 0;
+    const dt = Math.min(0.05, lastT ? (now - lastT) / 1000 : 1 / 60); lastT = now;
     target = progress();
-    current += (target - current) * SMOOTH;
-    if (Math.abs(target - current) < 0.0001) current = target;
+    current += (target - current) * (1 - Math.pow(1 - SMOOTH, dt * 60));
+    if (Math.abs(target - current) * TOTAL < 0.25) current = target;
     render(current);
+    if (current === target) lastT = 0;
     if (current !== target) raf = requestAnimationFrame(tick);   // settles, then sleeps until the next scroll
   };
   const wake = () => { if (!raf) raf = requestAnimationFrame(tick); };
@@ -62732,69 +62737,112 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
 })();
 </script>
 <script>
-/* How I work on phones: the row is its own carousel, no longer tied to the page's scroll. The
-   section is an ordinary block; the four cards change only here, one card per swipe, so the page's
-   momentum can never carry the row past a card.
-   - A swipe up (or left) with the row in place shows the next card; down (or right) the previous one.
-   - At the last card a swipe up is left to the page and normal scrolling carries on; at the first
-     card a swipe down does the same.
-   - Scrolling down onto the row (or back up onto it), the first swipe settles the row into place. */
+/* How I work on phones: the row is its own carousel, no longer tied to the page's scroll.
+   - The page stops on the row by itself: scrolling (or a fling) that reaches it is caught and the
+     row settles under the nav, whatever the speed.
+   - Held there, each swipe (up/left or down/right) slides exactly one card; a caught swipe never
+     scrolls the page, so no momentum follows it.
+   - After the last card a swipe up lets the page go on to the footer; before the first card a
+     swipe down lets it go back up. */
 (function () {
   if (!matchMedia("(max-width: 760px) and (hover: none)").matches) return;
-  const LEAD = 0.05, BEATS = 0.86;               // the row's own timeline (initFlow)
-  const TOP = 92, GAP = 48;                      // the row settles 92px from the top, under the nav
+  const LEAD = 0.05, BEATS = 0.86;   // the row's own timeline (initFlow)
+  const TOP = 92, GAP = 48;                       // the row settles 92px from the top, under the nav
+  const html = document.documentElement;
   let box = null, wrap = null, n = 0, k = 0;
   const find = () => {
     if (!box) { box = document.querySelector("#spline [data-flow-box]"); wrap = box && box.parentElement; n = box ? box.querySelectorAll("[data-step]").length : 0; }
     return box && n;
   };
-  const rawFor = i => LEAD + (i / n + 0.48 / n) * BEATS;   // card i fully lit, the row holding still
+  // positions on the row's timeline (0..1): card i lit and still; the hand-off from card i to i+1
+  // (where the row actually travels) runs from go(i) to end(i)
+  const rest = i => (i + 0.48) / n, go = i => (i + 0.58) / n, end = i => (i + 0.98) / n;   // measured: the row travels between these
+  const toRaw = p => LEAD + p * BEATS;
 
-  // the row's timeline, eased between cards
-  let raw = null, rAnim = 0;
-  const paint = () => { window.__flowRaw = raw; if (window.__flowApply) window.__flowApply(); };
-  const toCard = i => {
-    const from = raw, to = rawFor(i), t0 = performance.now(), dur = 700;
-    cancelAnimationFrame(rAnim);
+  let p = null, pAnimId = 0;
+  const paint = () => { window.__flowRaw = toRaw(p); if (window.__flowApply) window.__flowApply(); };
+  // the slide, in the row's own order: the lit card dims (going back), the row travels one card at
+  // an easy pace, the new card lights (going forward); every step eased, nothing skipped
+  const slide = (from, to) => {
+    cancelAnimationFrame(pAnimId);
+    const fwd = to > from, i = fwd ? from : to;
+    const ease = t => 1 - Math.pow(1 - t, 3), glide = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    const segs = fwd
+      ? [[rest(from), go(i), 0, ease], [go(i), end(i), 720, t => Math.sin(t * Math.PI / 2)], [end(i), rest(to), 380, ease]]
+      : [[rest(from), end(i), 300, ease], [end(i), go(i), 720, t => Math.sin(t * Math.PI / 2)], [go(i), rest(to), 0, ease]];
+    let si = 0, t0 = performance.now();
     const step = now => {
-      const t = Math.min(1, (now - t0) / dur), e = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-      raw = from + (to - from) * e; paint();
-      rAnim = t < 1 ? requestAnimationFrame(step) : 0;
+      while (si < segs.length) {
+        const [a, b, dur, fn] = segs[si], t = dur ? Math.min(1, (now - t0) / dur) : 1;
+        p = a + (b - a) * fn(t);
+        if (t < 1) break;
+        si++; t0 = now;
+      }
+      paint();
+      pAnimId = si < segs.length ? requestAnimationFrame(step) : 0;
     };
-    rAnim = requestAnimationFrame(step);
+    pAnimId = requestAnimationFrame(step);
   };
   const start = () => {
     if (!find()) return setTimeout(start, 300);
-    raw = rawFor(k); paint();
-    if (!window.__flowApply) { let tries = 0; const again = () => { paint(); if (!window.__flowApply && ++tries < 40) setTimeout(again, 150); }; again(); }
+    p = rest(k); paint();
+    let tries = 0; const again = () => { paint(); if (!window.__flowApply && ++tries < 40) setTimeout(again, 150); }; again();
   };
   start();
 
-  // the page glides so the row sits in place
-  let pAnim = 0, pEnd = 0;
   const rowTop = () => wrap.getBoundingClientRect().top + GAP;        // the cards' top edge, without their entrance offset
+  const placed = () => Math.abs(rowTop() - TOP) < 70;
+
+  // the page glides so the row sits in place
+  let gAnim = 0, gEnd = 0;
   const settle = () => {
     const from = scrollY, dist = rowTop() - TOP;
-    if (Math.abs(dist) < 2) return;
-    const t0 = performance.now(), dur = Math.min(750, Math.max(420, Math.abs(dist) * 0.8));
-    cancelAnimationFrame(pAnim); pEnd = t0 + dur + 80;
+    if (Math.abs(dist) < 1) return;
+    const t0 = performance.now(), dur = Math.min(650, Math.max(360, Math.abs(dist) * 0.8));
+    cancelAnimationFrame(gAnim); gEnd = t0 + dur + 120;
     const step = now => {
-      const t = Math.min(1, (now - t0) / dur), e = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      const t = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - t, 3);
       scrollTo(0, from + dist * e);
-      pAnim = t < 1 ? requestAnimationFrame(step) : 0;
+      gAnim = t < 1 ? requestAnimationFrame(step) : 0;
     };
-    pAnim = requestAnimationFrame(step);
+    gAnim = requestAnimationFrame(step);
   };
 
-  // what a swipe does, decided on its first movement: "next", "prev", "settle" or null (the page scrolls)
+  // catching the page: stop its momentum (a scroller switched to overflow:hidden drops its fling),
+  // put the row exactly in place, and keep it there for a moment against any leftover glide
+  let holdUntil = 0, released = 0, swipedAt = -1e9;
+  const stopMomentum = () => { html.style.overflow = "hidden"; requestAnimationFrame(() => requestAnimationFrame(() => { html.style.overflow = ""; })); };
+  const pinNow = () => {
+    html.style.overflow = "hidden";
+    scrollTo(0, scrollY + rowTop() - TOP);
+    requestAnimationFrame(() => requestAnimationFrame(() => { html.style.overflow = ""; }));
+    holdUntil = performance.now() + 1000;
+  };
+
+  let touching = false, prevT = null;
+  addEventListener("scroll", () => {
+    if (!find()) return;
+    const T = rowTop(), was = prevT; prevT = T;
+    if (gAnim || performance.now() < gEnd) return;
+    if (performance.now() < holdUntil) { if (!touching && Math.abs(T - TOP) > 0.5) scrollTo(0, scrollY + T - TOP); return; }
+    if (was == null || performance.now() < released) return;
+    if (!touching && performance.now() - swipedAt > 4000) return;   // only the reader's own scrolling, never the nav's or back-to-top's
+    // the row's top edge crossed its resting line: from below it (scrolling down) or above it (scrolling up)
+    const down = was > TOP + 1 && T < TOP - 1, up = was < TOP - 1 && T > TOP + 1;
+    if (!down && !up) return;
+    if (touching) { pendingPin = true; return; }     // a finger is still dragging: pin as soon as it lifts
+    pinNow();
+  }, { passive: true });
+  let pendingPin = false;
+
+  // what a swipe does, decided on its first movement: "next", "prev", "hold", "settle" or null (the page scrolls)
   const decide = (fwd, sideways) => {
     const T = rowTop(), H = innerHeight, B = T + box.offsetHeight;
-    const placed = Math.abs(T - TOP) < 70;
     if (sideways) {
       if (T > H || B < 0) return null;
       return fwd ? (k < n - 1 ? "next" : "hold") : (k > 0 ? "prev" : "hold");
     }
-    if (placed) return fwd ? (k < n - 1 ? "next" : null) : (k > 0 ? "prev" : null);
+    if (placed()) return fwd ? (k < n - 1 ? "next" : "leave") : (k > 0 ? "prev" : "leave");
     if (fwd && T > TOP && T < H * 0.72) return "settle";        // coming down onto the row
     if (!fwd && T < TOP && B > H * 0.3) return "settle";        // coming back up onto it
     return null;
@@ -62802,10 +62850,10 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
 
   let sx = 0, sy = 0, act = null, decided = false;
   addEventListener("touchstart", e => {
-    decided = false; act = null;
+    touching = true; decided = false; act = null; pendingPin = false;
     if (e.touches.length !== 1 || !find()) { decided = true; return; }
     sx = e.touches[0].clientX; sy = e.touches[0].clientY;
-    if (pAnim) { cancelAnimationFrame(pAnim); pAnim = 0; }
+    if (gAnim) { cancelAnimationFrame(gAnim); gAnim = 0; gEnd = 0; }
   }, { passive: true });
   addEventListener("touchmove", e => {
     if (!decided) {
@@ -62814,21 +62862,27 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
       const side = Math.abs(dx) > Math.abs(dy);
       act = decide(side ? dx > 0 : dy > 0, side);
       decided = true;
+      // leaving the row: this swipe scrolls the page as usual, and the row lets it pass
+      if (act === "leave") { act = null; released = performance.now() + 1500; holdUntil = 0; }
     }
-    if (act && e.cancelable) e.preventDefault();       // a caught swipe never scrolls the page, so no momentum follows
+    if (act && e.cancelable) e.preventDefault();       // a caught swipe never scrolls the page
   }, { passive: false });
-  const end = e => {
+  const finish = e => {
+    touching = false;
     const a = act; act = null;
-    if (!a) return;
     const t = e.changedTouches && e.changedTouches[0];
-    if (t && Math.max(Math.abs(sx - t.clientX), Math.abs(sy - t.clientY)) < 16) return;
-    if (a === "next") { k++; toCard(k); settle(); }
-    else if (a === "prev") { k--; toCard(k); settle(); }
+    const moved = t ? Math.max(Math.abs(sx - t.clientX), Math.abs(sy - t.clientY)) : 0;
+    if (!a && moved > 10) swipedAt = performance.now();
+    if (pendingPin) { pendingPin = false; if (!a) { stopMomentum(); requestAnimationFrame(settle); return; } }
+    if (!a) return;
+    if (moved < 16) return;
+    if (a === "next" && !pAnimId) { slide(k, k + 1); k++; settle(); }
+    else if (a === "prev" && !pAnimId) { slide(k, k - 1); k--; settle(); }
     else if (a === "settle") settle();
   };
-  addEventListener("touchend", end, { passive: true });
-  addEventListener("touchcancel", () => { act = null; }, { passive: true });
-  window.__flowPlaced = () => find() && Math.abs(rowTop() - TOP) < 70;
+  addEventListener("touchend", finish, { passive: true });
+  addEventListener("touchcancel", e => { touching = false; act = null; }, { passive: true });
+  window.__flowPlaced = () => find() && placed();
 })();
 </script>
 <script>setTimeout(function () { if (!document.querySelector(".hx-top")) document.documentElement.classList.add("hx-fallback"); }, 5000);</script>
