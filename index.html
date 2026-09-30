@@ -57344,35 +57344,43 @@ if (HERO) {
       const fit = () => { nm.style.fontSize = "20px"; const w = nm.getBoundingClientRect().width, t = st.getBoundingClientRect().width; if (!w || !t) return; let fs = 20 * t / w; nm.style.fontSize = fs + "px"; const w2 = nm.getBoundingClientRect().width; if (w2) nm.style.fontSize = (fs * t / w2).toFixed(3) + "px"; };
       fit(); addEventListener("resize", fit); if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit); }
     const SLOT = () => (innerWidth <= 760 ? 38 : 46);
-    let rest = null, cur = 0, raf = 0, last = 0;
+    // A spring, not an ease: the photo and the Let's Talk pill carry a little momentum into the pill,
+    // overshoot by a few percent and settle, both ways. Resting spots are cached (they only move on
+    // resize), so a frame costs one layout read, for the slots the pill is opening.
+    let rest = null, cur = 0, vel = 0, raf = 0, last = 0;
+    const K = 260, C = 2 * 0.72 * Math.sqrt(260);   // stiffness, damping: ~4% overshoot, settles in ~0.35 s
     const measure = () => { dp.style.transform = tb.style.transform = ""; const a = dp.getBoundingClientRect(), b = tb.getBoundingClientRect();
-      rest = { a: { x: a.left + a.width / 2, y: a.top + a.height / 2, s: a.height }, b: { x: b.left + b.width / 2, y: b.top + b.height / 2, s: b.height, w: b.width } }; };
+      rest = { a: { x: a.left + a.width / 2, y: a.top + a.height / 2, s: a.height }, b: { x: b.left + b.width / 2, y: b.top + b.height / 2, s: b.height, w: b.width } };
+      top.style.setProperty("--tw", (rest.b.w * SLOT() / rest.b.s).toFixed(2) + "px"); };
     const goal = () => Math.max(0, Math.min(1, scrollY / (innerHeight * 0.32)));
     const smooth = t => t * t * (3 - 2 * t);
     const apply = () => {
-      const e = smooth(cur), s = SLOT();
-      top.style.setProperty("--tk", e.toFixed(4));
+      if (!rest) measure();
+      const e = cur, s = SLOT();
+      top.style.setProperty("--tk", Math.max(0, e).toFixed(4));
       top.classList.toggle("is-tucked", e > 0.98);
-      measure(); top.style.setProperty("--tw", (rest.b.w * s / rest.b.s).toFixed(2) + "px");   // resting spots can shift as the pill widens on narrow screens, so read them every frame
-      const put = (el, r, slot) => { const q = slot.getBoundingClientRect(), tx = (q.left + q.width / 2 - r.x) * e, ty = (q.top + q.height / 2 - r.y) * e, k = 1 + (s / r.s - 1) * e;
+      const qa = sl.getBoundingClientRect(), qb = sr.getBoundingClientRect();   // one layout read per frame
+      const put = (el, r, q) => { const tx = (q.left + q.width / 2 - r.x) * e, ty = (q.top + q.height / 2 - r.y) * e, k = 1 + (s / r.s - 1) * e;
         el.style.transform = e ? "translate3d(" + tx.toFixed(2) + "px," + ty.toFixed(2) + "px,0) scale(" + k.toFixed(4) + ")" : ""; };
-      put(dp, rest.a, sl); put(tb, rest.b, sr);
-      const f = Math.min(1, e * 4);   // the name and status step aside first
+      put(dp, rest.a, qa); put(tb, rest.b, qb);
+      const f = Math.max(0, Math.min(1, e * 4));   // the name and status step aside first
       idt.style.opacity = (1 - f).toFixed(3); idt.style.transform = f ? "translate3d(" + (-14 * f).toFixed(2) + "px,0,0)" : "";
       idt.style.visibility = f >= 1 ? "hidden" : "";
     };
     const frame = now => {
-      raf = 0; const dt = Math.min(0.05, last ? (now - last) / 1000 : 0.016); last = now;
-      const g = goal(); cur += (g - cur) * (1 - Math.exp(-dt / 0.085));
-      if (Math.abs(g - cur) < 0.0006) cur = g;
+      raf = 0; const dt = Math.min(0.05, last ? (now - last) / 1000 : 1 / 120); last = now;
+      const g = smooth(goal());
+      for (let t = dt; t > 1e-6; t -= 1 / 240) { const h = Math.min(t, 1 / 240); vel += (K * (g - cur) - C * vel) * h; cur += vel * h; }
+      if (Math.abs(g - cur) < 0.0004 && Math.abs(vel) < 0.004) { cur = g; vel = 0; }
       apply();
-      if (cur !== g) raf = requestAnimationFrame(frame); else last = 0;
+      if (cur !== g || vel !== 0) raf = requestAnimationFrame(frame); else last = 0;
     };
     const wake = () => { if (!raf) raf = requestAnimationFrame(frame); };
+    const reset = () => { rest = null; measure(); cur = smooth(goal()); vel = 0; apply(); };
     addEventListener("scroll", wake, { passive: true });
-    addEventListener("resize", () => { rest = null; cur = goal(); apply(); });
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { rest = null; apply(); });
-    cur = goal(); apply(); }
+    addEventListener("resize", reset);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(reset);
+    reset(); }
   top.querySelectorAll("[data-hx-home]").forEach(a => a.addEventListener("click", e => { if ((location.hash || "#/") === "#/" || location.hash === "") { e.preventDefault(); scrollTo({ top: 0, behavior: "smooth" }); } }));
   const themeBtn = top.querySelector(".hx-theme"); window.__themeBtn = themeBtn;
   const playThemeParticles = next => {
@@ -57437,10 +57445,13 @@ void main() {
   float reveal = K * (1.0 - smoothstep(0.16 * MN, 0.3 * MN, length(gl_FragCoord.xy - P)));
   float lit = min(1.0, g * reveal * 1.55);
   float soft = clamp(e * 3.0 / abs(sx * sy + 1e-4), 0.0, 1.0) * reveal * 0.12;
-  vec3 blue = vec3(0.08, 0.58, 1.0);
-  vec3 pink = vec3(1.0, 0.12, 0.42);
+  // the design process colours, two to a side: orange into blue on the left half of the screen,
+  // purple into pink on the right, crossfading as the pointer passes the middle
+  vec3 c1 = vec3(0.95, 0.52, 0.06), c2 = vec3(0.06, 0.48, 0.96);
+  vec3 c3 = vec3(0.52, 0.24, 0.96), c4 = vec3(0.94, 0.15, 0.52);
+  float side = smoothstep(0.42 * R.x, 0.58 * R.x, P.x);
   float chroma = smoothstep(-0.12 * MN, 0.12 * MN, (f.x - P.x) + 0.32 * (f.y - P.y));
-  vec3 glow = mix(blue, pink, chroma);
+  vec3 glow = mix(mix(c1, c3, side), mix(c2, c4, side), chroma);
   vec3 base = paper * (0.955 + 0.9 * (tile - 0.045));
   vec3 col = dark > 0.5 ? vec3(tile) + glow * (lit + soft) : base * (1.0 - 0.72 * lit - soft) + glow * (0.72 * lit + soft);
   O = vec4(col, 1.0);
@@ -58361,6 +58372,22 @@ renderer.setAnimationLoop(now => {
   #services .ysx-card .ysx-art { position: relative; overflow: hidden; }
   #services .ysx-art::after { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .22; mix-blend-mode: overlay;
     background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 1.4 -0.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+
+  /* each skill carries its own colour (the design process hues); the bar and the active name follow it */
+  #services .ysx-name:hover, #services .ysx-name[aria-current="true"] { color: var(--c, var(--acc)) !important; }
+  #services .ysx-tag svg, #services .ysx-card-tag svg { stroke: var(--c, var(--acc)); }
+  #services .ysx-progress i { background: var(--acc); transition: background 500ms ease; }
+  #services .ysx-card-name { color: var(--c, var(--acc)); }
+  /* the counter: clip only top and bottom, so the digits' edges (tight letter-spacing) are never cut */
+  #services .ysx-count { padding: 0 0.06em; }
+  #services .ysx-roll { overflow: visible; overflow-y: clip; padding: 0 0.04em; margin: 0 -0.04em; }
+  /* UI Development in its colour: rose, magenta, lilac */
+  #services .ysx-p3 { background:
+    radial-gradient(70% 60% at 92% 8%, #b0125f 0%, rgba(176,18,95,0) 62%),
+    radial-gradient(55% 50% at 60% 38%, #ff5fa2 0%, rgba(255,95,162,0) 66%),
+    radial-gradient(50% 45% at 98% 80%, #a78bfa 0%, rgba(167,139,250,0) 66%),
+    radial-gradient(75% 65% at 6% 96%, #fff1f6 0%, rgba(255,241,246,0) 70%),
+    linear-gradient(155deg, #ffc6de 0%, #ffe8f1 100%); }
   /* ── Timeline, on black, after the reference: a centre line; entries alternate, text beside the
      line (right-aligned on the left side) and a picture on the other side. The line fills white
      as you read and a dot marks the entry you are on. ── */
@@ -58641,7 +58668,7 @@ window.__ypImgs = function (r) { r.querySelectorAll('img[data-yp-src]').forEach(
 <section style="position: absolute; inset: 0; z-index: 30; width: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; background: transparent; padding: clamp(110px, 17vh, 200px) clamp(20px, 4vw, 56px) clamp(40px, 7vh, 90px); font-family: 'Plus Jakarta Sans', system-ui, sans-serif;">
 
   <div style="width: 100%; display: flex; flex-direction: column;">
-      <div class="yph"><div class="yph-top"><div class="yph-label"><span><img data-yp-src="0" alt="" draggable="false">Some stories from my work</span><i aria-hidden="true"></i></div></div><h2 class="yph-title" aria-label="Rough ideas in, real products out."><span class="yph-line yph-grey" aria-hidden="true"><span class="yph-in">Rough ideas in,</span></span></h2><div class="yph-rule" aria-hidden="true"></div><div class="yph-line yph-ink" aria-hidden="true"><span class="yph-in">real products out.</span></div><div class="yph-rule" aria-hidden="true"></div></div>
+      <div class="yph"><div class="yph-top"><div class="yph-label"><span><img data-yp-src="0" alt="" draggable="false">Selected work</span><i aria-hidden="true"></i></div></div><h2 class="yph-title" aria-label="Hard problems, made simple."><span class="yph-line yph-grey" aria-hidden="true"><span class="yph-in">Hard problems,</span></span></h2><div class="yph-rule" aria-hidden="true"></div><div class="yph-line yph-ink" aria-hidden="true"><span class="yph-in">made simple.</span></div><div class="yph-rule" aria-hidden="true"></div></div>
   </div>
 </section>
 </div>
@@ -58728,16 +58755,16 @@ window.__ypImgs = function (r) { r.querySelectorAll('img[data-yp-src]').forEach(
   <div data-ref="caseCursorRef" aria-hidden="true" style="position: fixed; left: 0; top: 0; z-index: 60; width: 96px; height: 96px; margin: -48px 0 0 -48px; border-radius: 50%; background: #ffffff; color: #0f0f10; display: grid; place-items: center; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; pointer-events: none; opacity: 0; transform: translate3d(-200px,-200px,0) scale(0.6); will-change: transform, opacity;">View</div>
   <div aria-hidden="true" data-blur-bar="" style="position: sticky; bottom: 0; z-index: 3; height: 180px; margin-top: -180px; pointer-events: none; -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); -webkit-mask-image: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 45%, rgba(0,0,0,0) 100%); mask-image: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 45%, rgba(0,0,0,0) 100%);"></div>
 </section>
-<section id="services" class="ysx" style="--n:4">
+<section id="services" class="ysx" style="--n:4; --acc:#7433d9">
   <div class="ysx-headwrap">
-<div class="yph"><div class="yph-top"><div class="yph-label"><span><img data-yp-src="0" alt="" draggable="false">What I offer</span><i aria-hidden="true"></i></div></div><h2 class="yph-title" aria-label="Four ways to work together."><span class="yph-line yph-grey" aria-hidden="true"><span class="yph-in">Four ways</span></span></h2><div class="yph-rule" aria-hidden="true"></div><div class="yph-line yph-ink" aria-hidden="true"><span class="yph-in">to work together.</span></div><div class="yph-rule" aria-hidden="true"></div></div>
+<div class="yph"><div class="yph-top"><div class="yph-label"><span><img data-yp-src="0" alt="" draggable="false">What I do</span><i aria-hidden="true"></i></div></div><h2 class="yph-title" aria-label="From the first idea to the final pixel."><span class="yph-line yph-grey" aria-hidden="true"><span class="yph-in">From the first idea</span></span></h2><div class="yph-rule" aria-hidden="true"></div><div class="yph-line yph-ink" aria-hidden="true"><span class="yph-in">to the final pixel.</span></div><div class="yph-rule" aria-hidden="true"></div></div>
   </div>
   <div class="ysx-pin" data-ysx-pin="">
     <div class="ysx-stage">
       <div class="ysx-frame" data-rise="">
         <div class="ysx-side">
-          <nav class="ysx-list" aria-label="Services"><ul><li><button type="button" class="ysx-name" data-ysx-go="0" aria-current="true">Product Design</button></li><li><button type="button" class="ysx-name" data-ysx-go="1">UI/UX Design</button></li><li><button type="button" class="ysx-name" data-ysx-go="2">UI Development</button></li><li><button type="button" class="ysx-name" data-ysx-go="3">Motion &amp; Interaction</button></li></ul></nav>
-          <div class="ysx-tags"><p class="ysx-tag is-on" data-ysx-tag="0"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0v12M0 6h12M1.8 1.8l8.4 8.4M10.2 1.8l-8.4 8.4"/></svg><span>Every screen has one job. I design the path, not just the page.</span></p><p class="ysx-tag" data-ysx-tag="1"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0v12M0 6h12M1.8 1.8l8.4 8.4M10.2 1.8l-8.4 8.4"/></svg><span>Screens people understand on the first try.</span></p><p class="ysx-tag" data-ysx-tag="2"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0v12M0 6h12M1.8 1.8l8.4 8.4M10.2 1.8l-8.4 8.4"/></svg><span>I build what I draw, so what ships matches the design.</span></p><p class="ysx-tag" data-ysx-tag="3"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0v12M0 6h12M1.8 1.8l8.4 8.4M10.2 1.8l-8.4 8.4"/></svg><span>Motion that explains what just happened, never decoration.</span></p></div>
+          <nav class="ysx-list" aria-label="Services"><ul><li><button type="button" class="ysx-name" data-ysx-go="0" data-c="#7433d9" style="--c:#7433d9" aria-current="true">Product Design</button></li><li><button type="button" class="ysx-name" data-ysx-go="1" data-c="#1170cf" style="--c:#1170cf">UI/UX Design</button></li><li><button type="button" class="ysx-name" data-ysx-go="2" data-c="#d32279" style="--c:#d32279">UI Development</button></li><li><button type="button" class="ysx-name" data-ysx-go="3" data-c="#d97e16" style="--c:#d97e16">Motion &amp; Interaction</button></li></ul></nav>
+          <div class="ysx-tags"><p class="ysx-tag is-on" data-ysx-tag="0" style="--c:#7433d9"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0v12M0 6h12M1.8 1.8l8.4 8.4M10.2 1.8l-8.4 8.4"/></svg><span>Every screen has one job. I design the path, not just the page.</span></p><p class="ysx-tag" data-ysx-tag="1" style="--c:#1170cf"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0v12M0 6h12M1.8 1.8l8.4 8.4M10.2 1.8l-8.4 8.4"/></svg><span>Screens people understand on the first try.</span></p><p class="ysx-tag" data-ysx-tag="2" style="--c:#d32279"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0v12M0 6h12M1.8 1.8l8.4 8.4M10.2 1.8l-8.4 8.4"/></svg><span>I build what I draw, so what ships matches the design.</span></p><p class="ysx-tag" data-ysx-tag="3" style="--c:#d97e16"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0v12M0 6h12M1.8 1.8l8.4 8.4M10.2 1.8l-8.4 8.4"/></svg><span>Motion that explains what just happened, never decoration.</span></p></div>
         </div>
         <div class="ysx-block">
           <div class="ysx-image"><div class="ysx-art ysx-p1 is-on" role="img" aria-label="Placeholder artwork for product design" data-ysx-art="0"></div><div class="ysx-art ysx-p2" role="img" aria-label="Placeholder artwork for UI/UX design" data-ysx-art="1"></div><div class="ysx-art ysx-p3" role="img" aria-label="Placeholder artwork for UI development" data-ysx-art="2"></div><div class="ysx-art ysx-p4" role="img" aria-label="Placeholder artwork for motion and interaction" data-ysx-art="3"></div><div class="ysx-progress" aria-hidden="true"><i data-ysx-bar=""></i></div></div>
@@ -58748,12 +58775,12 @@ window.__ypImgs = function (r) { r.querySelectorAll('img[data-yp-src]').forEach(
       </div>
     </div>
   </div>
-  <div class="ysx-cards"><article class="ysx-card"><p class="ysx-card-name">Product Design</p><h3 class="ysx-card-title">Product Design</h3><div class="ysx-art ysx-p1" role="img" aria-label="Placeholder artwork for product design"></div><div class="ysx-card-foot"><ul><li>Product Strategy</li><li>User Research</li><li>Flows &amp; Journeys</li><li>Prototyping</li><li>AI Products</li></ul><span class="ysx-card-count">.01</span></div><p class="ysx-card-tag"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0v12M0 6h12M1.8 1.8l8.4 8.4M10.2 1.8l-8.4 8.4"/></svg><span>Every screen has one job. I design the path, not just the page.</span></p></article><article class="ysx-card"><p class="ysx-card-name">UI/UX Design</p><h3 class="ysx-card-title">UI/UX Design</h3><div class="ysx-art ysx-p2" role="img" aria-label="Placeholder artwork for UI/UX design"></div><div class="ysx-card-foot"><ul><li>Wireframes</li><li>Visual Design</li><li>Design Systems</li><li>Usability Testing</li><li>Accessibility</li></ul><span class="ysx-card-count">.02</span></div><p class="ysx-card-tag"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0v12M0 6h12M1.8 1.8l8.4 8.4M10.2 1.8l-8.4 8.4"/></svg><span>Screens people understand on the first try.</span></p></article><article class="ysx-card"><p class="ysx-card-name">UI Development</p><h3 class="ysx-card-title">UI Development</h3><div class="ysx-art ysx-p3" role="img" aria-label="Placeholder artwork for UI development"></div><div class="ysx-card-foot"><ul><li>Front-end Build</li><li>Component Libraries</li><li>Design-to-Code</li><li>Responsive Layouts</li><li>Performance</li></ul><span class="ysx-card-count">.03</span></div><p class="ysx-card-tag"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0v12M0 6h12M1.8 1.8l8.4 8.4M10.2 1.8l-8.4 8.4"/></svg><span>I build what I draw, so what ships matches the design.</span></p></article><article class="ysx-card"><p class="ysx-card-name">Motion &amp; Interaction</p><h3 class="ysx-card-title">Motion &amp; Interaction</h3><div class="ysx-art ysx-p4" role="img" aria-label="Placeholder artwork for motion and interaction"></div><div class="ysx-card-foot"><ul><li>Micro-interactions</li><li>Transitions</li><li>Scroll Effects</li><li>Prototyped Motion</li><li>Motion Guidelines</li></ul><span class="ysx-card-count">.04</span></div><p class="ysx-card-tag"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0v12M0 6h12M1.8 1.8l8.4 8.4M10.2 1.8l-8.4 8.4"/></svg><span>Motion that explains what just happened, never decoration.</span></p></article></div>
+  <div class="ysx-cards"><article class="ysx-card" style="--c:#7433d9"><p class="ysx-card-name">Product Design</p><h3 class="ysx-card-title">Product Design</h3><div class="ysx-art ysx-p1" role="img" aria-label="Placeholder artwork for product design"></div><div class="ysx-card-foot"><ul><li>Product Strategy</li><li>User Research</li><li>Flows &amp; Journeys</li><li>Prototyping</li><li>AI Products</li></ul><span class="ysx-card-count">.01</span></div><p class="ysx-card-tag"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0v12M0 6h12M1.8 1.8l8.4 8.4M10.2 1.8l-8.4 8.4"/></svg><span>Every screen has one job. I design the path, not just the page.</span></p></article><article class="ysx-card" style="--c:#1170cf"><p class="ysx-card-name">UI/UX Design</p><h3 class="ysx-card-title">UI/UX Design</h3><div class="ysx-art ysx-p2" role="img" aria-label="Placeholder artwork for UI/UX design"></div><div class="ysx-card-foot"><ul><li>Wireframes</li><li>Visual Design</li><li>Design Systems</li><li>Usability Testing</li><li>Accessibility</li></ul><span class="ysx-card-count">.02</span></div><p class="ysx-card-tag"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0v12M0 6h12M1.8 1.8l8.4 8.4M10.2 1.8l-8.4 8.4"/></svg><span>Screens people understand on the first try.</span></p></article><article class="ysx-card" style="--c:#d32279"><p class="ysx-card-name">UI Development</p><h3 class="ysx-card-title">UI Development</h3><div class="ysx-art ysx-p3" role="img" aria-label="Placeholder artwork for UI development"></div><div class="ysx-card-foot"><ul><li>Front-end Build</li><li>Component Libraries</li><li>Design-to-Code</li><li>Responsive Layouts</li><li>Performance</li></ul><span class="ysx-card-count">.03</span></div><p class="ysx-card-tag"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0v12M0 6h12M1.8 1.8l8.4 8.4M10.2 1.8l-8.4 8.4"/></svg><span>I build what I draw, so what ships matches the design.</span></p></article><article class="ysx-card" style="--c:#d97e16"><p class="ysx-card-name">Motion &amp; Interaction</p><h3 class="ysx-card-title">Motion &amp; Interaction</h3><div class="ysx-art ysx-p4" role="img" aria-label="Placeholder artwork for motion and interaction"></div><div class="ysx-card-foot"><ul><li>Micro-interactions</li><li>Transitions</li><li>Scroll Effects</li><li>Prototyped Motion</li><li>Motion Guidelines</li></ul><span class="ysx-card-count">.04</span></div><p class="ysx-card-tag"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0v12M0 6h12M1.8 1.8l8.4 8.4M10.2 1.8l-8.4 8.4"/></svg><span>Motion that explains what just happened, never decoration.</span></p></article></div>
 </section>
 
 <section id="timeline" class="ytl">
   <div class="ytl-headwrap">
-<div class="yph"><div class="yph-top"><div class="yph-label"><span><img data-yp-src="0" alt="" draggable="false">My story</span><i aria-hidden="true"></i></div></div><h2 class="yph-title" aria-label="Eight years of curiosity, so far."><span class="yph-line yph-grey" aria-hidden="true"><span class="yph-in">Eight years of</span></span></h2><div class="yph-rule" aria-hidden="true"></div><div class="yph-line yph-ink" aria-hidden="true"><span class="yph-in">curiosity, so far.</span></div><div class="yph-rule" aria-hidden="true"></div></div>
+<div class="yph"><div class="yph-top"><div class="yph-label"><span><img data-yp-src="0" alt="" draggable="false">My journey</span><i aria-hidden="true"></i></div></div><h2 class="yph-title" aria-label="From 3D animation to AI products."><span class="yph-line yph-grey" aria-hidden="true"><span class="yph-in">From 3D animation</span></span></h2><div class="yph-rule" aria-hidden="true"></div><div class="yph-line yph-ink" aria-hidden="true"><span class="yph-in">to AI products.</span></div><div class="yph-rule" aria-hidden="true"></div></div>
   </div>
   <div class="ytl-frame">
     <div class="ytl-rail" aria-hidden="true"><i data-ytl-fill=""></i></div>
@@ -58783,7 +58810,7 @@ window.__ypImgs = function (r) { r.querySelectorAll('img[data-yp-src]').forEach(
   <div data-ref="splineCanvasRef" data-flow-stage="" aria-hidden="true" style="position: absolute; inset: 0; z-index: 0; pointer-events: none;"></div>
   <div style="position: relative; z-index: 2; box-sizing: border-box; padding: clamp(110px, 17vh, 200px) clamp(20px, 4vw, 56px) clamp(8px, 1.4vh, 18px);">
     <div style="position: relative; z-index: 2; width: 100%; box-sizing: border-box; display: flex; flex-direction: column; gap: clamp(22px, 3.6vh, 40px);">
-      <div class="yph"><div class="yph-top"><div class="yph-label"><span><img data-yp-src="0" alt="" draggable="false">How I work</span><i aria-hidden="true"></i></div></div><h2 class="yph-title" aria-label="Four steps. No shortcuts."><span class="yph-line yph-grey" aria-hidden="true"><span class="yph-in">Four steps.</span></span></h2><div class="yph-rule" aria-hidden="true"></div><div class="yph-line yph-ink" aria-hidden="true"><span class="yph-in">No shortcuts.</span></div><div class="yph-rule" aria-hidden="true"></div></div>
+      <div class="yph"><div class="yph-top"><div class="yph-label"><span><img data-yp-src="0" alt="" draggable="false">How I work</span><i aria-hidden="true"></i></div></div><h2 class="yph-title" aria-label="Listen first, then build it right."><span class="yph-line yph-grey" aria-hidden="true"><span class="yph-in">Listen first,</span></span></h2><div class="yph-rule" aria-hidden="true"></div><div class="yph-line yph-ink" aria-hidden="true"><span class="yph-in">then build it right.</span></div><div class="yph-rule" aria-hidden="true"></div></div>
     </div>
   </div>
   <div data-flow-runway="" style="position: relative; z-index: 2; width: 100%; height: var(--yp-run-spline, 320vh);">
@@ -61839,6 +61866,7 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
         { duration: 400, delay: k * 50, easing: "cubic-bezier(0.215,0.61,0.355,1)", fill: "backwards" }));
     }
     if (digit) digit.style.setProperty("--d", String(i + 1));
+    if (names[i] && names[i].dataset.c) sec.style.setProperty("--acc", names[i].dataset.c);   // bar and accents take the skill's colour
     if (live) live.textContent = "Service " + (i + 1) + " of " + N + ": " + names[i].textContent;
   }
 
@@ -61865,7 +61893,9 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
     if (idx !== scrollIdx) { const first = scrollIdx < 0; scrollIdx = idx; if (!first) go(idx); }
   }
   let raf = 0;
-  const onScroll = () => { if (!raf) raf = requestAnimationFrame(() => { raf = 0; update(); }); };
+  let near = true;
+  if (typeof IntersectionObserver !== "undefined") new IntersectionObserver(es => { near = es[0].isIntersecting; if (near) onScroll(); }, { rootMargin: "200px 0px" }).observe(sec);
+  const onScroll = () => { if (near && !raf) raf = requestAnimationFrame(() => { raf = 0; update(); }); };
   addEventListener("scroll", onScroll, { passive: true });
   addEventListener("resize", onScroll);
   update();
@@ -61913,7 +61943,9 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
     items.forEach((it, i) => { if (it.getBoundingClientRect().top + it.offsetHeight / 2 <= mid + 1) cur = i; });
     items.forEach((it, i) => it.classList.toggle("is-current", i === cur));
   }
-  const on = () => { if (!raf) raf = requestAnimationFrame(update); };
+  let vis = true;
+  if (typeof IntersectionObserver !== "undefined") new IntersectionObserver(es => { vis = es[0].isIntersecting; if (vis) on(); }, { rootMargin: "200px 0px" }).observe(sec);
+  const on = () => { if (vis && !raf) raf = requestAnimationFrame(update); };
   addEventListener("scroll", on, { passive: true });
   addEventListener("resize", on);
   update();
@@ -62002,7 +62034,8 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
       r.style.transform =
         `translate(-50%, -50%) translate3d(0, ${y}px, ${z}px) rotateX(${deg}deg)`;
       r.style.opacity = opacity.toFixed(3);
-      r.style.zIndex = Math.round(z + 1000);
+      const zi = Math.round(z / 8) + 1000;               // stacking only needs the order, so it rarely changes
+      if (r.__zi !== zi) { r.__zi = zi; r.style.zIndex = zi; }
     }
   };
 
@@ -62013,7 +62046,7 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
     current += (target - current) * SMOOTH;
     if (Math.abs(target - current) < 0.0001) current = target;
     render(current);
-    if (on || current !== target) raf = requestAnimationFrame(tick);
+    if (current !== target) raf = requestAnimationFrame(tick);   // settles, then sleeps until the next scroll
   };
   const wake = () => { if (!raf) raf = requestAnimationFrame(tick); };
 
@@ -62021,6 +62054,7 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
   window.addEventListener('resize', () => { measure(); wake(); });
   if (document.fonts) document.fonts.ready.then(() => { measure(); render(current); });
   setTimeout(() => { measure(); wake(); }, 1200);   // images and fonts above can move the track
+  addEventListener("scroll", () => { if (on) wake(); }, { passive: true });
   if (typeof IntersectionObserver !== "undefined") {
     new IntersectionObserver(es => { on = es[0].isIntersecting; if (on) { measure(); wake(); } }, { rootMargin: "100px 0px" }).observe(track);
   } else { on = true; wake(); }
