@@ -58616,6 +58616,22 @@ renderer.setAnimationLoop(now => {
   .yft-line { text-wrap: balance; }
   .yft-ink { margin-left: 0 !important; }
   .yft-links { justify-content: center; }
+
+  /* footer background video (from the Prisma hero): it fills the footer behind the content, under a
+     shade that blends out of the site black at the top and deepens at the bottom for the text */
+  .yft { overflow: hidden; isolation: isolate; }
+  .yft > :not(.yft-media) { position: relative; z-index: 1; }
+  .yft-media { position: absolute; inset: 0; z-index: 0; pointer-events: none; background: var(--yp-black, #0d0d11); }
+  .yft-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 900ms ease; }
+  .yft-video.is-ready { opacity: 1; }
+  .yft-shade { position: absolute; inset: 0;
+    background: linear-gradient(180deg, var(--yp-black, #0d0d11) 0%, rgba(13,13,17,.35) 22%, rgba(13,13,17,.18) 50%, rgba(13,13,17,.72) 100%); }
+  /* over the video the grey line becomes a soft translucent white, and the shade is a touch deeper
+     through the middle, so the line reads on any frame */
+  .yft-shade { background: linear-gradient(180deg, var(--yp-black, #0d0d11) 0%, rgba(13,13,17,.5) 20%, rgba(13,13,17,.42) 50%, rgba(13,13,17,.78) 100%); }
+  .yft .yft-mute { color: rgba(244,242,237,.55); }
+  .yft-line { text-shadow: 0 2px 30px rgba(0,0,0,.25); }
+  .yft-clock { color: rgba(244,242,237,.6); }
   /* ── Dark mode for the whole page (the theme button toggles html.dark). The sections that are
      already dark (About drum, case gallery, My journey, footer) stay as they are; the white ones
      turn to the same near-black family: background #0d0d11, raised panels #16161c, hairlines at
@@ -59043,6 +59059,10 @@ window.__ypImgs = function (r) { r.querySelectorAll('img[data-yp-src]').forEach(
 </section>
 <!-- ================= FOOTER ================= -->
 <footer id="site-foot" class="yft">
+  <div class="yft-media" aria-hidden="true">
+    <video class="yft-video" data-yft-video="" autoplay loop muted playsinline preload="metadata"></video>
+    <div class="yft-shade"></div>
+  </div>
   <div class="yft-top">
     <span class="yft-clock">Hyderabad, IN <b data-yft-time="">&nbsp;</b></span>
   </div>
@@ -62078,7 +62098,7 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
   const N = rows.length;
 
   const STEP = 21.35;          // degrees between rows on the drum
-  const Y_OFFSET = -0.063;     // small upward bias of the whole ring (× viewport height)
+  const Y_OFFSET = 0.05;       // the ring sits a little below centre (× viewport height), so its top rows clear the nav
   const SMOOTH = 0.12;         // 0..1 lerp factor; 1 = no smoothing
   const TOTAL = (N + 1) * STEP; // total rotation across the full scroll
 
@@ -62325,5 +62345,19 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
   document.querySelectorAll(".start-build").forEach(init);
 })();
 
+
+/* footer video: fades in once it can play, and only plays while the footer is on screen */
+(function () {
+  const v = document.querySelector("[data-yft-video]");
+  if (!v) return;
+  // the source is set here, not in the markup (the build reads ids like the one in this address as assets)
+  v.src = "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260405_170732_8a9ccda6-5cff-4628-b164-059c500a2b41.mp4";
+  const ready = () => v.classList.add("is-ready");
+  if (v.readyState >= 3) ready(); else v.addEventListener("canplay", ready, { once: true });
+  if (typeof IntersectionObserver === "undefined") return;
+  new IntersectionObserver(es => {
+    if (es[0].isIntersecting) { const p = v.play(); if (p && p.catch) p.catch(() => {}); } else v.pause();
+  }, { rootMargin: "200px 0px" }).observe(v.closest("footer") || v);
+})();
 </script>
 </body></html>
