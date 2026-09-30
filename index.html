@@ -62382,9 +62382,13 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
     top = track.getBoundingClientRect().top + window.scrollY;   // page offset (offsetTop is relative to #yp-work)
   };
 
+  // The drum finishes turning at 84% of its track and holds the last line still for the rest, so it
+  // has fully landed before the section lets go of the screen. (Landing exactly as the page starts
+  // to move on made the two motions fight: the last line trembled at the end of the section.)
+  const END = 0.84;
   const progress = () => {
     const max = track.offsetHeight - vh;
-    return Math.min(1, Math.max(0, (window.scrollY - top) / Math.max(1, max)));
+    return Math.min(1, Math.max(0, (window.scrollY - top) / Math.max(1, max) / END));
   };
 
   let current = 0, target = 0;
@@ -62416,11 +62420,13 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
   // The drum eases toward the scroll on a clock (the same feel at 60 and 120 Hz) and lands in one
   // clean step once it is within a quarter of a degree: no long sub-pixel crawl at the end, which
   // Safari redraws as a tremble in the 3D text as the scroll comes to rest.
-  let raf = 0, on = false, lastT = 0;
+  let raf = 0, on = false, lastT = 0, dir = 0;
   const tick = now => {
     raf = 0;
     const dt = Math.min(0.05, lastT ? (now - lastT) / 1000 : 1 / 60); lastT = now;
-    target = progress();
+    // a reversal of under 0.3° (the tail of a fling settling on the screen) is ignored
+    const t = progress(), d = t - target;
+    if (Math.abs(d) * TOTAL >= 0.3 || Math.sign(d) === dir) { if (d) dir = Math.sign(d); target = t; }
     current += (target - current) * (1 - Math.pow(1 - SMOOTH, dt * 60));
     if (Math.abs(target - current) * TOTAL < 0.25) current = target;
     render(current);
