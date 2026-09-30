@@ -57345,8 +57345,8 @@ if (HERO) {
       fit(); addEventListener("resize", fit); if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit); }
     const SLOT = () => (innerWidth <= 760 ? 38 : 46);
     // A spring, not an ease: the photo and the Let's Talk pill carry a little momentum into the pill,
-    // overshoot by a few percent and settle, both ways. Resting spots are cached (they only move on
-    // resize), so a frame costs one layout read, for the slots the pill is opening.
+    // overshoot by a few percent and settle, both ways. A frame costs one layout read: the slots the
+    // pill is opening and the resting spots, taken from the (untransformed) parents together.
     let rest = null, cur = 0, vel = 0, raf = 0, last = 0;
     const K = 260, C = 2 * 0.72 * Math.sqrt(260);   // stiffness, damping: ~4% overshoot, settles in ~0.35 s
     const measure = () => { dp.style.transform = tb.style.transform = ""; const a = dp.getBoundingClientRect(), b = tb.getBoundingClientRect();
@@ -57360,6 +57360,11 @@ if (HERO) {
       top.style.setProperty("--tk", Math.max(0, e).toFixed(4));
       top.classList.toggle("is-tucked", e > 0.98);
       const qa = sl.getBoundingClientRect(), qb = sr.getBoundingClientRect();   // one layout read per frame
+      // On narrow phones the header's side columns shift as the pill widens, so the resting spots are
+      // read from the untransformed parents (the photo's group and the Let's Talk box) in the same pass.
+      const pa = dp.parentElement.getBoundingClientRect(), pb = tb.parentElement.getBoundingClientRect();
+      rest.a.x = pa.left + dp.offsetWidth / 2; rest.a.y = pa.top + pa.height / 2;
+      rest.b.x = pb.right - tb.offsetWidth / 2; rest.b.y = pb.top + pb.height / 2;
       const put = (el, r, q) => { const tx = (q.left + q.width / 2 - r.x) * e, ty = (q.top + q.height / 2 - r.y) * e, k = 1 + (s / r.s - 1) * e;
         el.style.transform = e ? "translate3d(" + tx.toFixed(2) + "px," + ty.toFixed(2) + "px,0) scale(" + k.toFixed(4) + ")" : ""; };
       put(dp, rest.a, qa); put(tb, rest.b, qb);
@@ -58066,12 +58071,12 @@ renderer.setAnimationLoop(now => {
   body.hero, body.hero button, body.hero #acts button, .hx-top { font-family: 'Plus Jakarta Sans', system-ui, sans-serif !important; }
   .hx-title { font-family: 'Plus Jakarta Sans', system-ui, sans-serif !important; font-weight: 800 !important; letter-spacing: -0.05em !important; line-height: 0.9 !important; }
   body.hero .hx-top { --tk: 0; --ring: linear-gradient(180deg, rgba(255,255,255,.95) 0%, rgba(201,201,201,.9) 12%, rgba(150,150,150,.75) 40%, rgba(117,117,117,.7) 72%, rgba(255,255,255,.95) 100%);
-    --fill: rgba(255,255,255,.74); position: fixed; z-index: 90; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 16px; padding: 18px 3.2vw; pointer-events: none; }
+    --fill: rgba(255,255,255,.52); position: fixed; z-index: 90; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 16px; padding: 18px 3.2vw; pointer-events: none; }
   body.hero .hx-top > * { pointer-events: auto; }
-  html.hero.dark body.hero .hx-top { --ring: linear-gradient(180deg, rgba(120,122,130,.75) 0%, rgba(60,62,70,.7) 14%, rgba(28,29,34,.7) 50%, rgba(20,21,25,.7) 80%, rgba(100,102,110,.75) 100%); --fill: rgba(24,25,30,.74); }
+  html.hero.dark body.hero .hx-top { --ring: linear-gradient(180deg, rgba(120,122,130,.75) 0%, rgba(60,62,70,.7) 14%, rgba(28,29,34,.7) 50%, rgba(20,21,25,.7) 80%, rgba(100,102,110,.75) 100%); --fill: rgba(24,25,30,.5); }
   /* one glass recipe for the pill and the theme circle: a hairline metal rim, a light see-through fill */
   body.hero .hx-top nav.hx-glass, body.hero .hx-top .hx-theme { position: relative; border: 0; background: var(--fill);
-    -webkit-backdrop-filter: blur(16px) saturate(1.4); backdrop-filter: blur(16px) saturate(1.4); box-shadow: 0 1px 1px rgba(0,0,0,.03), 0 8px 20px -8px rgba(0,0,0,.14), 0 24px 44px -24px rgba(0,0,0,.18); }
+    -webkit-backdrop-filter: blur(22px) saturate(1.6); backdrop-filter: blur(22px) saturate(1.6); box-shadow: 0 1px 1px rgba(0,0,0,.03), 0 8px 20px -8px rgba(0,0,0,.14), 0 24px 44px -24px rgba(0,0,0,.18); }
   body.hero .hx-top nav.hx-glass::before, body.hero .hx-top .hx-theme::before { content: ""; position: absolute; inset: 0; z-index: 1; padding: 1.25px; border-radius: inherit; background: var(--ring); pointer-events: none;
     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); }
 
@@ -58590,7 +58595,6 @@ renderer.setAnimationLoop(now => {
   .yft-line { margin: 0; font-size: clamp(40px, 7.4vw, 132px); font-weight: 800; line-height: 1; letter-spacing: -0.05em; text-transform: uppercase; }
   .yft-mute { color: #5f5f66; }
   .yft-ink { display: inline-block; margin-left: 9vw; color: #f4f2ed; }
-  .yft-rule { height: 1px; margin-bottom: 22px; background: rgba(255,255,255,.12); }
   .yft-links { display: flex; gap: clamp(20px, 3vw, 40px); }
   #yp-work .yft-links a { position: relative; display: inline-flex; align-items: center; gap: 4px; color: #f4f2ed; text-decoration: none; padding: 6px 0; }
   .yft-links a i { font-style: normal; color: rgba(244,242,237,.45); transition: transform 300ms cubic-bezier(0.22,1,0.36,1), color 300ms ease; }
@@ -58609,6 +58613,53 @@ renderer.setAnimationLoop(now => {
   .yft-line { text-wrap: balance; }
   .yft-ink { margin-left: 0 !important; }
   .yft-links { justify-content: center; }
+  /* ── Dark mode for the whole page (the theme button toggles html.dark). The sections that are
+     already dark (About drum, case gallery, My journey, footer) stay as they are; the white ones
+     turn to the same near-black family: background #0d0d11, raised panels #16161c, hairlines at
+     10% white, ink #f4f2ed, secondary text at 55-80%. ── */
+  html.dark { --dk-bg: #0d0d11; --dk-panel: #16161c; --dk-line: rgba(255,255,255,.1); --dk-ink: #f4f2ed; color-scheme: dark; }
+  html.dark body { background: var(--dk-bg); }
+
+  /* section heads */
+  html.dark .yph-label span { color: var(--dk-ink); }
+  html.dark .yph-label i { background: rgba(255,255,255,.22); }
+  html.dark .yph-grey { color: #55555d; }
+  html.dark .yph-ink { color: var(--dk-ink); }
+  html.dark .yph-rule { background: rgba(255,255,255,.12); }
+
+  /* Selected work: the head's screen */
+  html.dark #work > div { background: var(--dk-bg) !important; }
+
+  /* What I do */
+  html.dark #services.ysx { --ink: #f4f2ed; --mut: #4e4e56; --div: var(--dk-line); background: var(--dk-bg); }
+  html.dark #services .ysx-panel { background: var(--dk-panel); }
+  html.dark #services .ysx-image { background: var(--dk-panel); }
+  html.dark #services .ysx-titles { mix-blend-mode: normal; }
+  html.dark #services .ysx-title { color: #f4f2ed; text-shadow: 0 2px 24px rgba(0,0,0,.35); }
+  /* the big title crosses the picture's lower left: a soft shade there keeps it readable in dark */
+  html.dark #services .ysx-image::before { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: radial-gradient(85% 75% at 0% 100%, rgba(13,13,17,.72) 0%, rgba(13,13,17,.35) 45%, rgba(13,13,17,0) 75%); }
+  html.dark #services .ysx-card-foot { background: var(--dk-panel); }
+  html.dark #services .ysx-card .ysx-art { box-shadow: inset 0 0 0 1px var(--dk-line); }
+
+  /* How I work */
+  html.dark #spline { background: var(--dk-bg) !important; }
+  html.dark #spline [data-flow-rail] > div[aria-hidden="true"]:first-child { background: var(--dk-bg) !important; }
+  html.dark #spline [data-step] { --sk-ink: #f4f2ed; --sk-body: rgba(244,242,237,.8); --sk-dim: rgba(244,242,237,.48); --sk-line: rgba(255,255,255,.1);
+    color: #f4f2ed !important; border-left-color: rgba(255,255,255,.1) !important; }
+  html.dark #spline [data-step-slab] { background: #1d1d24 !important; box-shadow: inset 0 0 0 1px rgba(255,255,255,.08); }
+
+  /* nothing on the page flashes white while the theme sweeps across */
+  html.dark #yp-work { background: var(--dk-bg); }
+
+  /* Case study pages: their light sections (white and cream) are inverted with a hue turn, which
+     keeps each colour's hue while swapping light for dark; pictures are turned back so they show as
+     they are. The sections that are already dark are left alone. */
+  html.dark [data-case-root] { background: var(--dk-bg) !important; color: var(--dk-ink) !important; }
+  html.dark [data-case-root] > section:not(#problem):not(#final),
+  html.dark [data-case-root] > div[style*="sticky"] { filter: invert(1) hue-rotate(180deg); }
+  html.dark [data-case-root] > section:not(#problem):not(#final) :is(img, video, canvas, picture, [style*="url("]),
+  html.dark [data-case-root] > div[style*="sticky"] :is(img, video, canvas, picture, [style*="url("]) { filter: invert(1) hue-rotate(180deg); }
 
   /* ── section heads (reference: label + underline, right-hand note, two big lines on hairlines) ── */
   .yph { display: flex; flex-direction: column; width: 100%; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
@@ -58978,7 +59029,6 @@ window.__ypImgs = function (r) { r.querySelectorAll('img[data-yp-src]').forEach(
     <p class="yft-line"><span class="yft-mute">If you&rsquo;ve read this far,</span><br><span class="yft-ink">we should talk.</span></p>
   </div>
   <div class="yft-bot">
-    <div class="yft-rule" aria-hidden="true"></div>
     <nav class="yft-links" aria-label="Elsewhere">
       <a href="mailto:ponde.yashwant@gmail.com">Email<i aria-hidden="true">&#8599;</i></a>
       <a href="#resume" data-link="resume" target="_blank" rel="noopener">Resume<i aria-hidden="true">&#8599;</i></a>
@@ -61873,16 +61923,20 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
   let top = 0, span = 1;
   const measure = () => {
     const r = pin.getBoundingClientRect();
-    top = r.top + window.scrollY; span = Math.max(1, pin.offsetHeight - window.innerHeight);
+    const stage = pin.firstElementChild;   // the sticky stage; it is pinned for (pin height - stage height)
+    top = r.top + window.scrollY; span = Math.max(1, pin.offsetHeight - (stage ? stage.offsetHeight : window.innerHeight));
   };
   const pinned = () => pin.offsetParent !== null;   // hidden on phones
 
   // Carousel: while the showcase is on screen, the bar along the bottom of the picture fills over a
   // few seconds, then the next service comes in, looping back to the first after the last.
-  // Scrolling through the section still steps through the services, and a click on a name jumps
-  // straight to it; either restarts the bar.
+  // Scrolling steps through the services RELATIVE to the one showing: each step boundary crossed
+  // moves one service on (or back). It used to jump to the service for that scroll position, which,
+  // once the carousel had moved on by itself, could skip one (Product Design -> UI Development).
+  // While the reader is scrolling the bar holds, so the carousel and the scroll never both advance.
+  // A click on a name jumps straight to it; any change restarts the bar.
   const DUR = 4200;
-  let from = performance.now(), arafId = 0, scrollIdx = -1;
+  let from = performance.now(), arafId = 0, scrollIdx = -1, lastScroll = 0, lastT = 0;
   const go = i => { activate(((i % N) + N) % N); from = performance.now(); };
   function update() {
     scrubHead();
@@ -61890,12 +61944,12 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
     measure();
     const p = Math.max(0, Math.min(1, (window.scrollY - top) / span));
     const idx = Math.min(N - 1, Math.floor(p * N * 0.9999));
-    if (idx !== scrollIdx) { const first = scrollIdx < 0; scrollIdx = idx; if (!first) go(idx); }
+    if (idx !== scrollIdx) { const d = scrollIdx < 0 ? 0 : idx - scrollIdx; scrollIdx = idx; if (d) go(active + d); }
   }
   let raf = 0;
   let near = true;
   if (typeof IntersectionObserver !== "undefined") new IntersectionObserver(es => { near = es[0].isIntersecting; if (near) onScroll(); }, { rootMargin: "200px 0px" }).observe(sec);
-  const onScroll = () => { if (near && !raf) raf = requestAnimationFrame(() => { raf = 0; update(); }); };
+  const onScroll = () => { lastScroll = performance.now(); if (near && !raf) raf = requestAnimationFrame(() => { raf = 0; update(); }); };
   addEventListener("scroll", onScroll, { passive: true });
   addEventListener("resize", onScroll);
   update();
@@ -61904,7 +61958,9 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
   const onStage = () => { if (!pinned()) return false; const r = sec.querySelector(".ysx-frame").getBoundingClientRect(); return r.top < innerHeight * 0.75 && r.bottom > innerHeight * 0.25; };
   const auto = now => {
     arafId = 0;
+    const dt = lastT ? now - lastT : 0; lastT = now;
     if (reduce || !onStage()) { from = now; if (bar) bar.style.transform = "scaleX(0)"; }
+    else if (now - lastScroll < 700) { from += dt; }   // scrolling: the bar holds where it is
     else {
       const f = Math.min(1, (now - from) / DUR);
       if (bar) bar.style.transform = "scaleX(" + f.toFixed(4) + ")";
