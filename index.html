@@ -57331,7 +57331,7 @@ if (HERO) {
   { const dp = top.querySelector(".hx-dp"), th = top.querySelector(".hx-right .hx-theme"), idt = top.querySelector(".hx-idtext");
     const sl = top.querySelector(".hx-slot-l"), sr = top.querySelector(".hx-slot-r");
     // theme button: one circle showing the current mode (orange with a sun, violet with a moon); press to switch
-    th.insertAdjacentHTML("beforeend", '<span class="hx-tb" aria-hidden="true"><span class="hx-tb-i hx-tb-s"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6 6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/></svg></span><span class="hx-tb-i hx-tb-m"><svg viewBox="0 0 24 24"><path d="M20.3 14.6A8.3 8.3 0 0 1 9.4 3.7 8.3 8.3 0 1 0 20.3 14.6Z"/></svg></span></span>');
+    th.insertAdjacentHTML("beforeend", '<span class="hx-tb" aria-hidden="true"><span class="hx-tb-i hx-tb-s"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6 6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/></svg></span><span class="hx-tb-i hx-tb-m"><svg class="hx-moon" viewBox="0 0 1024 1024"><defs><clipPath id="hxMoonC"><circle cx="512" cy="512" r="512"/></clipPath><clipPath id="hxMoonA"><circle cx="510" cy="222" r="124"/></clipPath><clipPath id="hxMoonB"><circle cx="930" cy="187" r="206"/></clipPath><clipPath id="hxMoonD"><circle cx="818" cy="540" r="62"/></clipPath><clipPath id="hxMoonE"><circle cx="835" cy="835" r="124"/></clipPath></defs><g clip-path="url(#hxMoonC)"><circle cx="512" cy="512" r="512" fill="#dcdde8"/><circle cx="574" cy="512" r="512" fill="#ffffff"/><circle cx="510" cy="222" r="124" fill="#cfd0dc"/><circle cx="572" cy="222" r="124" fill="#e7e8f0" clip-path="url(#hxMoonA)"/><circle cx="930" cy="187" r="206" fill="#cfd0dc"/><circle cx="992" cy="187" r="206" fill="#e7e8f0" clip-path="url(#hxMoonB)"/><circle cx="818" cy="540" r="62" fill="#cfd0dc"/><circle cx="880" cy="540" r="62" fill="#e7e8f0" clip-path="url(#hxMoonD)"/><circle cx="835" cy="835" r="124" fill="#cfd0dc"/><circle cx="897" cy="835" r="124" fill="#e7e8f0" clip-path="url(#hxMoonE)"/><circle cx="558" cy="518" r="38" fill="#cfd0dc"/><circle cx="587" cy="835" r="29" fill="#cfd0dc"/></g></svg></span></span>');
     // the theme circle lives in the pill, next to the home icon; the Let's Talk pill (start-build-button.html)
     // stands top right and travels into the pill on scroll, as the photo does from the left
     sr.parentNode.insertBefore(th, sr);
@@ -58262,6 +58262,9 @@ renderer.setAnimationLoop(now => {
   .start-build .label { left: calc(var(--sb) * 62px + (var(--sb) * 138px - var(--lw, 62px)) / 2); }
   .start-build:hover .label { transform: translateX(calc(var(--sb) * -51px)); }
   .start-build:hover .icon { transform: translateX(calc(var(--sb) * 72.5px + var(--lw, 62px) / 2)); }
+  /* the dark-mode icon: a full white moon with its craters (drawn in its own fills, no stroke) */
+  body.hero .hx-top .hx-tb svg.hx-moon { width: 22px; height: 22px; stroke: none; filter: drop-shadow(0 1px 2px rgba(40,20,120,.35)); }
+  @media (max-width: 760px) { body.hero .hx-top .hx-tb svg.hx-moon { width: 19px; height: 19px; } }
   /* ── Services: pinned showcase, after the reference. Accent #2b3a9e, text #111, muted #B5B5B5,
      divider #E5E5E5. Proportions from the reference: list column 33%, image 45.6% (near square),
      sub-items panel the rest; image and panel form one block, rounded on the right only. ── */
@@ -59044,7 +59047,7 @@ window.__ypImgs = function (r) { r.querySelectorAll('img[data-yp-src]').forEach(
     <span class="yft-clock">Hyderabad, IN <b data-yft-time="">&nbsp;</b></span>
   </div>
   <div class="yft-mid" data-rise="">
-    <p class="yft-line"><span class="yft-mute">If you&rsquo;ve read this far,</span><br><span class="yft-ink">we should talk.</span></p>
+    <p class="yft-line"><span class="yft-mute">Have a problem worth solving?</span><br><span class="yft-ink">I&rsquo;m listening.</span></p>
   </div>
   <div class="yft-bot">
     <nav class="yft-links" aria-label="Elsewhere">
@@ -61951,11 +61954,12 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
   // Scrolling steps through the services RELATIVE to the one showing: each step boundary crossed
   // moves one service on (or back). It used to jump to the service for that scroll position, which,
   // once the carousel had moved on by itself, could skip one (Product Design -> UI Development).
-  // While the reader is scrolling the bar holds, so the carousel and the scroll never both advance.
+  // The bar always runs; the automatic switch alone waits while the reader is scrolling.
   // A click on a name jumps straight to it; any change restarts the bar.
   const DUR = 4200;
-  let from = performance.now(), arafId = 0, scrollIdx = -1, lastScroll = 0, lastT = 0;
-  const go = i => { activate(((i % N) + N) % N); from = performance.now(); };
+  let from = performance.now(), arafId = 0, scrollIdx = -1, lastScroll = 0;
+  // any change of service starts the bar again from empty, at once, whatever caused it
+  const go = i => { activate(((i % N) + N) % N); from = performance.now(); if (bar) bar.style.transform = "scaleX(0)"; };
   function update() {
     scrubHead();
     if (!pinned()) return;
@@ -61976,13 +61980,13 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
   const onStage = () => { if (!pinned()) return false; const r = sec.querySelector(".ysx-frame").getBoundingClientRect(); return r.top < innerHeight * 0.75 && r.bottom > innerHeight * 0.25; };
   const auto = now => {
     arafId = 0;
-    const dt = lastT ? now - lastT : 0; lastT = now;
     if (reduce || !onStage()) { from = now; if (bar) bar.style.transform = "scaleX(0)"; }
-    else if (now - lastScroll < 700) { from += dt; }   // scrolling: the bar holds where it is
     else {
+      // the bar always shows the true time; only the automatic switch waits for the reader to stop
+      // scrolling, so a scroll step and the carousel never land on the same moment
       const f = Math.min(1, (now - from) / DUR);
       if (bar) bar.style.transform = "scaleX(" + f.toFixed(4) + ")";
-      if (f >= 1) go(active + 1);
+      if (f >= 1 && now - lastScroll > 250) go(active + 1);
     }
     arafId = requestAnimationFrame(auto);
   };
