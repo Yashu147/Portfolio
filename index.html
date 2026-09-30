@@ -57343,7 +57343,7 @@ if (HERO) {
     { const nm = top.querySelector(".hx-idname"), st = top.querySelector(".hx-idstat");
       const fit = () => { nm.style.fontSize = "20px"; const w = nm.getBoundingClientRect().width, t = st.getBoundingClientRect().width; if (!w || !t) return; let fs = 20 * t / w; nm.style.fontSize = fs + "px"; const w2 = nm.getBoundingClientRect().width; if (w2) nm.style.fontSize = (fs * t / w2).toFixed(3) + "px"; };
       fit(); addEventListener("resize", fit); if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit); }
-    const SLOT = () => (innerWidth <= 760 ? 34 : 40);
+    const SLOT = () => (innerWidth <= 760 ? 38 : 46);
     let rest = null, cur = 0, raf = 0, last = 0;
     const measure = () => { dp.style.transform = tb.style.transform = ""; const a = dp.getBoundingClientRect(), b = tb.getBoundingClientRect();
       rest = { a: { x: a.left + a.width / 2, y: a.top + a.height / 2, s: a.height }, b: { x: b.left + b.width / 2, y: b.top + b.height / 2, s: b.height, w: b.width } }; };
@@ -58214,6 +58214,38 @@ renderer.setAnimationLoop(now => {
   .start-build .label { left: calc(var(--sb) * 84px); }
   .start-build:hover .label { transform: translateX(calc(var(--sb) * -44px)); }
   .start-build:hover .icon { transform: translateX(calc(var(--sb) * 110px)); }
+
+  /* ── Nav, one size up: photo 58, pill circles 46, Let's Talk as tall as the photo (phones 48 / 38) ── */
+  .hx-dp { width: 58px; height: 58px; }
+  .hx-idstat { font-size: 14px; }
+  .hx-glass-in { padding: 6px; }
+  .hx-slot { height: 46px; width: calc(var(--tk) * 46px); }
+  .hx-slot-r { width: calc(var(--tk) * var(--tw, 76px)); }
+  body.hero .hx-glass-in a { height: 46px; }
+  body.hero .hx-glass-in a.hx-home { width: 46px; height: 46px; }
+  .hx-home i { width: 22px; height: 22px; }
+  body.hero .hx-top .hx-glass-in .hx-theme { width: 46px; height: 46px; margin-left: 5px; }
+  body.hero .hx-top .hx-glass-in .hx-tb svg { width: 20px; height: 20px; }
+  .hx-cta.start-build { --sb: 0.8923; }
+  .hx-cta.start-build .label { font-size: 16px; }
+  @media (max-width: 760px) {
+    .hx-dp { width: 48px; height: 48px; }
+    .hx-glass-in { padding: 5px; }
+    .hx-slot { height: 38px; width: calc(var(--tk) * 38px); }
+    .hx-slot-r { width: calc(var(--tk) * var(--tw, 76px)); }
+    body.hero .hx-glass-in a { height: 38px; }
+    body.hero .hx-glass-in a.hx-home { width: 38px; height: 38px; }
+    .hx-home i { width: 19px; height: 19px; }
+    body.hero .hx-top .hx-glass-in .hx-theme { width: 38px; height: 38px; margin-left: 3px; }
+    body.hero .hx-top .hx-glass-in .hx-tb svg { width: 17px; height: 17px; }
+    .hx-cta.start-build { --sb: 0.7385; }
+    .hx-cta.start-build .label { font-size: 14px; }
+  }
+  /* Let's Talk label: centred in the space beside the round tile at rest; on hover the label and
+     the pixel arrow sit centred together in the pill. --lw (the label's width) is measured in JS. */
+  .start-build .label { left: calc(var(--sb) * 62px + (var(--sb) * 138px - var(--lw, 62px)) / 2); }
+  .start-build:hover .label { transform: translateX(calc(var(--sb) * -51px)); }
+  .start-build:hover .icon { transform: translateX(calc(var(--sb) * 72.5px + var(--lw, 62px) / 2)); }
   /* ── Services: pinned showcase, after the reference. Accent #2b3a9e, text #111, muted #B5B5B5,
      divider #E5E5E5. Proportions from the reference: list column 33%, image 45.6% (near square),
      sub-items panel the rest; image and panel form one block, rounded on the right only. ── */
@@ -58299,6 +58331,36 @@ renderer.setAnimationLoop(now => {
     #services .ysx-strip { transition: none; }
     #services .ysx-card { transition: opacity 300ms linear; transform: none; }
   }
+
+  /* ── Placeholder art, four mesh gradients (one palette per skill): deep colour top right, a soft
+     blend through the middle, light in the lower left where the big title sits, and a fine grain. ── */
+  #services .ysx-p1 { background:   /* Product Design: indigo, violet, peach */
+    radial-gradient(70% 60% at 92% 8%, #2f24c9 0%, rgba(47,36,201,0) 62%),
+    radial-gradient(55% 50% at 62% 36%, #9f7bff 0%, rgba(159,123,255,0) 66%),
+    radial-gradient(50% 45% at 98% 78%, #ff8fb1 0%, rgba(255,143,177,0) 66%),
+    radial-gradient(75% 65% at 6% 96%, #fff3ea 0%, rgba(255,243,234,0) 70%),
+    linear-gradient(155deg, #c9c0ff 0%, #ffd9c8 100%); }
+  #services .ysx-p2 { background:   /* UI/UX Design: ocean blue, aqua, lilac */
+    radial-gradient(70% 60% at 92% 8%, #0a56d6 0%, rgba(10,86,214,0) 62%),
+    radial-gradient(55% 50% at 60% 38%, #22c7ee 0%, rgba(34,199,238,0) 66%),
+    radial-gradient(50% 45% at 98% 80%, #b8a6ff 0%, rgba(184,166,255,0) 66%),
+    radial-gradient(75% 65% at 6% 96%, #effcff 0%, rgba(239,252,255,0) 70%),
+    linear-gradient(155deg, #a9e6ff 0%, #e6f0ff 100%); }
+  #services .ysx-p3 { background:   /* UI Development: emerald, lime, sky */
+    radial-gradient(70% 60% at 92% 8%, #067a5b 0%, rgba(6,122,91,0) 62%),
+    radial-gradient(55% 50% at 60% 38%, #b8e61a 0%, rgba(184,230,26,0) 66%),
+    radial-gradient(50% 45% at 98% 80%, #38bdf8 0%, rgba(56,189,248,0) 66%),
+    radial-gradient(75% 65% at 6% 96%, #f6fee8 0%, rgba(246,254,232,0) 70%),
+    linear-gradient(155deg, #c9f3d8 0%, #f1fbd2 100%); }
+  #services .ysx-p4 { background:   /* Motion & Interaction: ember orange, coral, violet */
+    radial-gradient(70% 60% at 92% 8%, #e8480c 0%, rgba(232,72,12,0) 62%),
+    radial-gradient(55% 50% at 60% 38%, #ff8a5c 0%, rgba(255,138,92,0) 66%),
+    radial-gradient(50% 45% at 98% 80%, #9b6bff 0%, rgba(155,107,255,0) 66%),
+    radial-gradient(75% 65% at 6% 96%, #fff6ec 0%, rgba(255,246,236,0) 70%),
+    linear-gradient(155deg, #ffc9a8 0%, #ffe9d6 100%); }
+  #services .ysx-card .ysx-art { position: relative; overflow: hidden; }
+  #services .ysx-art::after { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .22; mix-blend-mode: overlay;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 1.4 -0.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
   /* ── Timeline, on black, after the reference: a centre line; entries alternate, text beside the
      line (right-aligned on the left side) and a picture on the other side. The line fills white
      as you read and a dot marks the entry you are on. ── */
@@ -58666,27 +58728,27 @@ window.__ypImgs = function (r) { r.querySelectorAll('img[data-yp-src]').forEach(
   <div data-ref="caseCursorRef" aria-hidden="true" style="position: fixed; left: 0; top: 0; z-index: 60; width: 96px; height: 96px; margin: -48px 0 0 -48px; border-radius: 50%; background: #ffffff; color: #0f0f10; display: grid; place-items: center; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; pointer-events: none; opacity: 0; transform: translate3d(-200px,-200px,0) scale(0.6); will-change: transform, opacity;">View</div>
   <div aria-hidden="true" data-blur-bar="" style="position: sticky; bottom: 0; z-index: 3; height: 180px; margin-top: -180px; pointer-events: none; -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); -webkit-mask-image: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 45%, rgba(0,0,0,0) 100%); mask-image: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 45%, rgba(0,0,0,0) 100%);"></div>
 </section>
-<section id="services" class="ysx" style="--n:6">
+<section id="services" class="ysx" style="--n:4">
   <div class="ysx-headwrap">
-<div class="yph"><div class="yph-top"><div class="yph-label"><span><img data-yp-src="0" alt="" draggable="false">What I offer</span><i aria-hidden="true"></i></div></div><h2 class="yph-title" aria-label="Six ways to work together."><span class="yph-line yph-grey" aria-hidden="true"><span class="yph-in">Six ways</span></span></h2><div class="yph-rule" aria-hidden="true"></div><div class="yph-line yph-ink" aria-hidden="true"><span class="yph-in">to work together.</span></div><div class="yph-rule" aria-hidden="true"></div></div>
+<div class="yph"><div class="yph-top"><div class="yph-label"><span><img data-yp-src="0" alt="" draggable="false">What I offer</span><i aria-hidden="true"></i></div></div><h2 class="yph-title" aria-label="Four ways to work together."><span class="yph-line yph-grey" aria-hidden="true"><span class="yph-in">Four ways</span></span></h2><div class="yph-rule" aria-hidden="true"></div><div class="yph-line yph-ink" aria-hidden="true"><span class="yph-in">to work together.</span></div><div class="yph-rule" aria-hidden="true"></div></div>
   </div>
   <div class="ysx-pin" data-ysx-pin="">
     <div class="ysx-stage">
       <div class="ysx-frame" data-rise="">
         <div class="ysx-side">
-          <nav class="ysx-list" aria-label="Services"><ul><li><button type="button" class="ysx-name" data-ysx-go="0" aria-current="true">Brand Identity</button></li><li><button type="button" class="ysx-name" data-ysx-go="1">Product Design</button></li><li><button type="button" class="ysx-name" data-ysx-go="2">Web Systems</button></li><li><button type="button" class="ysx-name" data-ysx-go="3">Development</button></li><li><button type="button" class="ysx-name" data-ysx-go="4">Content &amp; Messaging</button></li><li><button type="button" class="ysx-name" data-ysx-go="5">Motion &amp; Interaction</button></li></ul></nav>
-          <div class="ysx-tags"><p class="ysx-tag is-on" data-ysx-tag="0"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0v12M0 6h12M1.8 1.8l8.4 8.4M10.2 1.8l-8.4 8.4"/></svg><span>A brand should be recognised before it is read.</span></p><p class="ysx-tag" data-ysx-tag="1"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0v12M0 6h12M1.8 1.8l8.4 8.4M10.2 1.8l-8.4 8.4"/></svg><span>Every screen has one job. I design the path, not just the page.</span></p><p class="ysx-tag" data-ysx-tag="2"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0v12M0 6h12M1.8 1.8l8.4 8.4M10.2 1.8l-8.4 8.4"/></svg><span>Sites built to grow page by page without falling apart.</span></p><p class="ysx-tag" data-ysx-tag="3"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0v12M0 6h12M1.8 1.8l8.4 8.4M10.2 1.8l-8.4 8.4"/></svg><span>I build what I draw, so what ships matches the design.</span></p><p class="ysx-tag" data-ysx-tag="4"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0v12M0 6h12M1.8 1.8l8.4 8.4M10.2 1.8l-8.4 8.4"/></svg><span>Words are interface too. Clear copy removes friction.</span></p><p class="ysx-tag" data-ysx-tag="5"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0v12M0 6h12M1.8 1.8l8.4 8.4M10.2 1.8l-8.4 8.4"/></svg><span>Motion that explains what just happened, never decoration.</span></p></div>
+          <nav class="ysx-list" aria-label="Services"><ul><li><button type="button" class="ysx-name" data-ysx-go="0" aria-current="true">Product Design</button></li><li><button type="button" class="ysx-name" data-ysx-go="1">UI/UX Design</button></li><li><button type="button" class="ysx-name" data-ysx-go="2">UI Development</button></li><li><button type="button" class="ysx-name" data-ysx-go="3">Motion &amp; Interaction</button></li></ul></nav>
+          <div class="ysx-tags"><p class="ysx-tag is-on" data-ysx-tag="0"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0v12M0 6h12M1.8 1.8l8.4 8.4M10.2 1.8l-8.4 8.4"/></svg><span>Every screen has one job. I design the path, not just the page.</span></p><p class="ysx-tag" data-ysx-tag="1"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0v12M0 6h12M1.8 1.8l8.4 8.4M10.2 1.8l-8.4 8.4"/></svg><span>Screens people understand on the first try.</span></p><p class="ysx-tag" data-ysx-tag="2"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0v12M0 6h12M1.8 1.8l8.4 8.4M10.2 1.8l-8.4 8.4"/></svg><span>I build what I draw, so what ships matches the design.</span></p><p class="ysx-tag" data-ysx-tag="3"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0v12M0 6h12M1.8 1.8l8.4 8.4M10.2 1.8l-8.4 8.4"/></svg><span>Motion that explains what just happened, never decoration.</span></p></div>
         </div>
         <div class="ysx-block">
-          <div class="ysx-image"><div class="ysx-art ysx-p2 is-on" role="img" aria-label="Placeholder artwork for brand identity" data-ysx-art="0"></div><div class="ysx-art ysx-p1" role="img" aria-label="Placeholder artwork for product design" data-ysx-art="1"></div><div class="ysx-art ysx-p3" role="img" aria-label="Placeholder artwork for web systems" data-ysx-art="2"></div><div class="ysx-art ysx-p4" role="img" aria-label="Placeholder artwork for development" data-ysx-art="3"></div><div class="ysx-art ysx-p5" role="img" aria-label="Placeholder artwork for content and messaging" data-ysx-art="4"></div><div class="ysx-art ysx-p6" role="img" aria-label="Placeholder artwork for motion and interaction" data-ysx-art="5"></div><div class="ysx-progress" aria-hidden="true"><i data-ysx-bar=""></i></div></div>
-          <div class="ysx-panel"><ul class="ysx-subs is-on" data-ysx-subs="0"><li>Brand Strategy</li><li>Logo &amp; Marks</li><li>Visual Language</li><li>Typography</li><li>Guidelines</li></ul><ul class="ysx-subs" data-ysx-subs="1"><li>User Experience Design</li><li>Visual Design</li><li>Design Systems</li><li>Flows</li><li>Prototypes</li><li>Interaction</li></ul><ul class="ysx-subs" data-ysx-subs="2"><li>Marketing Sites</li><li>Page Templates</li><li>CMS Structure</li><li>Responsive Layouts</li><li>Launch Support</li></ul><ul class="ysx-subs" data-ysx-subs="3"><li>Front-end Build</li><li>Component Libraries</li><li>Design-to-Code</li><li>Performance</li><li>Accessibility</li></ul><ul class="ysx-subs" data-ysx-subs="4"><li>Voice &amp; Tone</li><li>UX Writing</li><li>Product Copy</li><li>Onboarding</li><li>Microcopy</li></ul><ul class="ysx-subs" data-ysx-subs="5"><li>Micro-interactions</li><li>Transitions</li><li>Scroll Effects</li><li>Prototyped Motion</li><li>Motion Guidelines</li></ul><span class="ysx-count" aria-hidden="true"><span>.</span><span class="ysx-roll"><span class="ysx-strip" style="--d:0"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span><span class="ysx-roll"><span class="ysx-strip" data-ysx-digit="" style="--d:1"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span></span></div>
+          <div class="ysx-image"><div class="ysx-art ysx-p1 is-on" role="img" aria-label="Placeholder artwork for product design" data-ysx-art="0"></div><div class="ysx-art ysx-p2" role="img" aria-label="Placeholder artwork for UI/UX design" data-ysx-art="1"></div><div class="ysx-art ysx-p3" role="img" aria-label="Placeholder artwork for UI development" data-ysx-art="2"></div><div class="ysx-art ysx-p4" role="img" aria-label="Placeholder artwork for motion and interaction" data-ysx-art="3"></div><div class="ysx-progress" aria-hidden="true"><i data-ysx-bar=""></i></div></div>
+          <div class="ysx-panel"><ul class="ysx-subs is-on" data-ysx-subs="0"><li>Product Strategy</li><li>User Research</li><li>Flows &amp; Journeys</li><li>Prototyping</li><li>AI Products</li></ul><ul class="ysx-subs" data-ysx-subs="1"><li>Wireframes</li><li>Visual Design</li><li>Design Systems</li><li>Usability Testing</li><li>Accessibility</li></ul><ul class="ysx-subs" data-ysx-subs="2"><li>Front-end Build</li><li>Component Libraries</li><li>Design-to-Code</li><li>Responsive Layouts</li><li>Performance</li></ul><ul class="ysx-subs" data-ysx-subs="3"><li>Micro-interactions</li><li>Transitions</li><li>Scroll Effects</li><li>Prototyped Motion</li><li>Motion Guidelines</li></ul><span class="ysx-count" aria-hidden="true"><span>.</span><span class="ysx-roll"><span class="ysx-strip" style="--d:0"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span><span class="ysx-roll"><span class="ysx-strip" data-ysx-digit="" style="--d:1"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span></span></div>
         </div>
-        <div class="ysx-titles"><h3 class="ysx-title is-on" data-ysx-title="0">Brand<br>Identity</h3><h3 class="ysx-title" data-ysx-title="1">Product<br>Design</h3><h3 class="ysx-title" data-ysx-title="2">Web<br>Systems</h3><h3 class="ysx-title" data-ysx-title="3">Develop-<br>ment</h3><h3 class="ysx-title" data-ysx-title="4">Content &amp;<br>Messaging</h3><h3 class="ysx-title" data-ysx-title="5">Motion &amp;<br>Interaction</h3></div>
-        <p class="ysx-live" aria-live="polite" data-ysx-live="">Service 1 of 6: Brand Identity</p>
+        <div class="ysx-titles"><h3 class="ysx-title is-on" data-ysx-title="0">Product<br>Design</h3><h3 class="ysx-title" data-ysx-title="1">UI/UX<br>Design</h3><h3 class="ysx-title" data-ysx-title="2">UI<br>Development</h3><h3 class="ysx-title" data-ysx-title="3">Motion &amp;<br>Interaction</h3></div>
+        <p class="ysx-live" aria-live="polite" data-ysx-live="">Service 1 of 4: Product Design</p>
       </div>
     </div>
   </div>
-  <div class="ysx-cards"><article class="ysx-card"><p class="ysx-card-name">Brand Identity</p><h3 class="ysx-card-title">Brand Identity</h3><div class="ysx-art ysx-p2" role="img" aria-label="Placeholder artwork for brand identity"></div><div class="ysx-card-foot"><ul><li>Brand Strategy</li><li>Logo &amp; Marks</li><li>Visual Language</li><li>Typography</li><li>Guidelines</li></ul><span class="ysx-card-count">.01</span></div><p class="ysx-card-tag"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0v12M0 6h12M1.8 1.8l8.4 8.4M10.2 1.8l-8.4 8.4"/></svg><span>A brand should be recognised before it is read.</span></p></article><article class="ysx-card"><p class="ysx-card-name">Product Design</p><h3 class="ysx-card-title">Product Design</h3><div class="ysx-art ysx-p1" role="img" aria-label="Placeholder artwork for product design"></div><div class="ysx-card-foot"><ul><li>User Experience Design</li><li>Visual Design</li><li>Design Systems</li><li>Flows</li><li>Prototypes</li><li>Interaction</li></ul><span class="ysx-card-count">.02</span></div><p class="ysx-card-tag"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0v12M0 6h12M1.8 1.8l8.4 8.4M10.2 1.8l-8.4 8.4"/></svg><span>Every screen has one job. I design the path, not just the page.</span></p></article><article class="ysx-card"><p class="ysx-card-name">Web Systems</p><h3 class="ysx-card-title">Web Systems</h3><div class="ysx-art ysx-p3" role="img" aria-label="Placeholder artwork for web systems"></div><div class="ysx-card-foot"><ul><li>Marketing Sites</li><li>Page Templates</li><li>CMS Structure</li><li>Responsive Layouts</li><li>Launch Support</li></ul><span class="ysx-card-count">.03</span></div><p class="ysx-card-tag"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0v12M0 6h12M1.8 1.8l8.4 8.4M10.2 1.8l-8.4 8.4"/></svg><span>Sites built to grow page by page without falling apart.</span></p></article><article class="ysx-card"><p class="ysx-card-name">Development</p><h3 class="ysx-card-title">Development</h3><div class="ysx-art ysx-p4" role="img" aria-label="Placeholder artwork for development"></div><div class="ysx-card-foot"><ul><li>Front-end Build</li><li>Component Libraries</li><li>Design-to-Code</li><li>Performance</li><li>Accessibility</li></ul><span class="ysx-card-count">.04</span></div><p class="ysx-card-tag"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0v12M0 6h12M1.8 1.8l8.4 8.4M10.2 1.8l-8.4 8.4"/></svg><span>I build what I draw, so what ships matches the design.</span></p></article><article class="ysx-card"><p class="ysx-card-name">Content &amp; Messaging</p><h3 class="ysx-card-title">Content &amp; Messaging</h3><div class="ysx-art ysx-p5" role="img" aria-label="Placeholder artwork for content and messaging"></div><div class="ysx-card-foot"><ul><li>Voice &amp; Tone</li><li>UX Writing</li><li>Product Copy</li><li>Onboarding</li><li>Microcopy</li></ul><span class="ysx-card-count">.05</span></div><p class="ysx-card-tag"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0v12M0 6h12M1.8 1.8l8.4 8.4M10.2 1.8l-8.4 8.4"/></svg><span>Words are interface too. Clear copy removes friction.</span></p></article><article class="ysx-card"><p class="ysx-card-name">Motion &amp; Interaction</p><h3 class="ysx-card-title">Motion &amp; Interaction</h3><div class="ysx-art ysx-p6" role="img" aria-label="Placeholder artwork for motion and interaction"></div><div class="ysx-card-foot"><ul><li>Micro-interactions</li><li>Transitions</li><li>Scroll Effects</li><li>Prototyped Motion</li><li>Motion Guidelines</li></ul><span class="ysx-card-count">.06</span></div><p class="ysx-card-tag"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0v12M0 6h12M1.8 1.8l8.4 8.4M10.2 1.8l-8.4 8.4"/></svg><span>Motion that explains what just happened, never decoration.</span></p></article></div>
+  <div class="ysx-cards"><article class="ysx-card"><p class="ysx-card-name">Product Design</p><h3 class="ysx-card-title">Product Design</h3><div class="ysx-art ysx-p1" role="img" aria-label="Placeholder artwork for product design"></div><div class="ysx-card-foot"><ul><li>Product Strategy</li><li>User Research</li><li>Flows &amp; Journeys</li><li>Prototyping</li><li>AI Products</li></ul><span class="ysx-card-count">.01</span></div><p class="ysx-card-tag"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0v12M0 6h12M1.8 1.8l8.4 8.4M10.2 1.8l-8.4 8.4"/></svg><span>Every screen has one job. I design the path, not just the page.</span></p></article><article class="ysx-card"><p class="ysx-card-name">UI/UX Design</p><h3 class="ysx-card-title">UI/UX Design</h3><div class="ysx-art ysx-p2" role="img" aria-label="Placeholder artwork for UI/UX design"></div><div class="ysx-card-foot"><ul><li>Wireframes</li><li>Visual Design</li><li>Design Systems</li><li>Usability Testing</li><li>Accessibility</li></ul><span class="ysx-card-count">.02</span></div><p class="ysx-card-tag"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0v12M0 6h12M1.8 1.8l8.4 8.4M10.2 1.8l-8.4 8.4"/></svg><span>Screens people understand on the first try.</span></p></article><article class="ysx-card"><p class="ysx-card-name">UI Development</p><h3 class="ysx-card-title">UI Development</h3><div class="ysx-art ysx-p3" role="img" aria-label="Placeholder artwork for UI development"></div><div class="ysx-card-foot"><ul><li>Front-end Build</li><li>Component Libraries</li><li>Design-to-Code</li><li>Responsive Layouts</li><li>Performance</li></ul><span class="ysx-card-count">.03</span></div><p class="ysx-card-tag"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0v12M0 6h12M1.8 1.8l8.4 8.4M10.2 1.8l-8.4 8.4"/></svg><span>I build what I draw, so what ships matches the design.</span></p></article><article class="ysx-card"><p class="ysx-card-name">Motion &amp; Interaction</p><h3 class="ysx-card-title">Motion &amp; Interaction</h3><div class="ysx-art ysx-p4" role="img" aria-label="Placeholder artwork for motion and interaction"></div><div class="ysx-card-foot"><ul><li>Micro-interactions</li><li>Transitions</li><li>Scroll Effects</li><li>Prototyped Motion</li><li>Motion Guidelines</li></ul><span class="ysx-card-count">.04</span></div><p class="ysx-card-tag"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0v12M0 6h12M1.8 1.8l8.4 8.4M10.2 1.8l-8.4 8.4"/></svg><span>Motion that explains what just happened, never decoration.</span></p></article></div>
 </section>
 
 <section id="timeline" class="ytl">
@@ -62137,6 +62199,9 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
     }
     grids.push(cells); paint(cells);
     const label = btn.querySelector(".label");
+    // the label's width drives where it and the arrow land on hover, so the pair stays centred
+    const fit = () => { const w = label.offsetWidth; if (w) btn.style.setProperty("--lw", w + "px"); };
+    fit(); addEventListener("resize", fit); if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
     btn.addEventListener("mouseleave", () => {
       if (!label.animate) return;
       const cs = getComputedStyle(btn), u = parseFloat(cs.getPropertyValue("--sb")) || 1;
