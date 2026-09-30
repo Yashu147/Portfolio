@@ -56439,7 +56439,7 @@ void part(vec3 p, vec3 n, out int b, out ivec3 o, out vec3 d){
 // ─── Renderer / scene ───────────────────────────────────────
 const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance", preserveDrawingBuffer: Q.has("shot"), alpha: HERO });
 if (HERO) renderer.setClearColor(0x000000, 0);
-let PR_MAX = Math.min(window.devicePixelRatio || 1, Q.has("hq") || HERO ? (matchMedia("(hover: none)").matches ? 3.0 : 2.0) : 1.25); let prNow = PR_MAX, prCeil = PR_MAX, prUp = -1e9;
+let PR_MAX = Q.has("hq") || HERO ? (matchMedia("(hover: none)").matches ? Math.min(window.devicePixelRatio || 1, 3.0) : Math.min(3.0, (window.devicePixelRatio || 1) * 1.5)) : Math.min(window.devicePixelRatio || 1, 1.25); let prNow = PR_MAX, prCeil = PR_MAX, prUp = -1e9;
 let perfMode = Q.has("perf"), perfSlowFor = 0; const PR_LOCK = matchMedia("(hover: none)").matches;
 { const gl = renderer.getContext(), ext = gl.getExtension("WEBGL_debug_renderer_info"); const rn = ext ? String(gl.getParameter(ext.UNMASKED_RENDERER_WEBGL)) : "";
   window.__gpu = rn; if (/swiftshader|llvmpipe|software/i.test(rn)) { const w = document.createElement("div"); w.id = "gpuwarn";
@@ -57599,7 +57599,7 @@ renderer.setAnimationLoop(now => {
   if (++frameNo % (action.name ? 1 : 2) === 0) renderer.shadowMap.needsUpdate = true;
   // adaptive resolution: keep ~60 fps; never below 1x, lower while dragging
   ftAvg = ftAvg * 0.92 + dt * 1000 * 0.08;
-  let want = PR_LOCK ? prNow : ftAvg > 21 ? Math.max(1.0, prNow - 0.25) : ftAvg < 12 ? Math.min(prCeil, prNow + 0.25) : prNow;
+  let want = PR_LOCK ? prNow : ftAvg > 21 ? Math.max(Math.min(window.devicePixelRatio || 1, 2), prNow - 0.25) : ftAvg < 12 ? Math.min(prCeil, prNow + 0.25) : prNow;
   if (want < prNow && now - prUp < 6000) prCeil = want;          // the last step up was too much: stay below it
   // very slow frames for a while -> performance mode: no shadows, lighter surface, lower resolution
   perfSlowFor = ftAvg > 55 ? perfSlowFor + dt : 0;
@@ -58953,6 +58953,23 @@ renderer.setAnimationLoop(now => {
       box-shadow: inset 0 0 0 1px rgba(255,255,255,.14), 0 28px 60px -26px rgba(0,0,0,.95); }
     /* the footer starts closer to the last section */
     #site-foot { padding-top: 72px !important; }
+  }
+
+  /* How I work on phones is an ordinary section with its own one-swipe-one-card row (flowpager.js):
+     the cards sit 48px under the head and 24px above the footer, as tall as the screen allows */
+  @media (max-width: 760px) and (hover: none) {
+    #spline [data-flow-runway] { height: auto !important; margin-top: 0 !important; }
+    #spline [data-flow-runway] > div { position: relative !important; top: auto !important; height: auto !important; max-height: none !important; padding: 48px 0 24px !important; }
+    #spline [data-flow-box] { flex: none !important; height: calc(100vh - 116px); height: calc(100svh - 116px); max-height: 760px !important; }
+    #spline [data-flow-rail] { touch-action: pan-y; }
+  }
+
+  @media (max-width: 760px) {
+    /* section titles: air between each line and the rule under it */
+    .yph-line { padding-top: 8px !important; padding-bottom: 12px !important; }
+    /* the short line under the spinning mark sits closer to it, and the title closer to both */
+    .yph-label > i { margin-top: 8px !important; }
+    .yph-top { margin-bottom: 28px !important; }
   }
 
   /* ── section heads (reference: label + underline, right-hand note, two big lines on hairlines) ── */
@@ -61632,10 +61649,11 @@ class YPSections {
     // pin releases into the footer. Scrolling back up runs the same timeline in reverse.
     const runway = () => (box && box.closest("[data-flow-runway]")) || cv.closest("section");
     const apply = () => {
+      window.__flowApply = apply;
       const sy = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
       const sec = runway();
       if (sec) { const r = sec.getBoundingClientRect(); secTop = r.top + sy; secH = r.height; secVH = window.innerHeight; }
-      const raw = Math.max(0, Math.min(1, (sy - secTop) / Math.max(1, secH - secVH)));
+      const raw = window.__flowRaw != null ? window.__flowRaw : Math.max(0, Math.min(1, (sy - secTop) / Math.max(1, secH - secVH)));
       const p = Math.max(0, Math.min(1, (raw - LEAD) / BEATS));
       if (p === st.target) return;
       st.target = p;
@@ -62351,17 +62369,21 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
   const SMOOTH = 0.12;         // 0..1 lerp factor; 1 = no smoothing
   const TOTAL = (N + 1) * STEP; // total rotation across the full scroll
 
-  let lift = 0, reach = 0, vh = 0, top = 0;
+  // Safari's toolbar changes the visible height as a swipe ends; the drum reads the full, stable
+  // screen height on phones instead, so the text never jumps when the toolbar moves
+  const touch = matchMedia("(hover: none)").matches;
+  const H = () => (touch && window.__SH ? window.__SH() : window.innerHeight);
+  let lift = 0, reach = 0, vh = 0, top = 0, lastW = 0;
   const measure = () => {
     const probe = (v) => { const d = document.createElement('div'); d.style.height = v; stage.appendChild(d); const h = d.getBoundingClientRect().height; d.remove(); return h; };
     lift = probe('var(--lift)');
     reach = probe('var(--reach)');
-    vh = window.innerHeight;
+    vh = H(); lastW = window.innerWidth;
     top = track.getBoundingClientRect().top + window.scrollY;   // page offset (offsetTop is relative to #yp-work)
   };
 
   const progress = () => {
-    const max = track.offsetHeight - window.innerHeight;
+    const max = track.offsetHeight - vh;
     return Math.min(1, Math.max(0, (window.scrollY - top) / Math.max(1, max)));
   };
 
@@ -62382,7 +62404,7 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
       const hide = opacity <= 0.07;
       if (r.__hide !== hide) { r.__hide = hide; r.style.visibility = hide ? "hidden" : ""; }
       if (hide) continue;
-      const tf = `translate(-50%, -50%) translate3d(0, ${y.toFixed(1)}px, ${z.toFixed(1)}px) rotateX(${deg.toFixed(2)}deg)`;
+      const tf = `translate(-50%, -50%) translate3d(0, ${y.toFixed(2)}px, ${z.toFixed(2)}px) rotateX(${deg.toFixed(3)}deg)`;
       if (r.__tf !== tf) { r.__tf = tf; r.style.transform = tf; }
       const op = opacity.toFixed(2);
       if (r.__op !== op) { r.__op = op; r.style.opacity = op; }
@@ -62403,7 +62425,7 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
   const wake = () => { if (!raf) raf = requestAnimationFrame(tick); };
 
   measure(); current = target = progress(); render(current);
-  window.addEventListener('resize', () => { measure(); wake(); });
+  window.addEventListener('resize', () => { if (touch && window.innerWidth === lastW) return; measure(); wake(); });
   if (document.fonts) document.fonts.ready.then(() => { measure(); render(current); });
   setTimeout(() => { measure(); wake(); }, 1200);   // images and fonts above can move the track
   addEventListener("scroll", () => { if (on) wake(); }, { passive: true });
@@ -62658,7 +62680,7 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
   let raf = 0;
   // off while How I work is pinned: its cards reach the bottom of the screen and nothing scrolls under them
   const run = document.querySelector("#spline [data-flow-runway]");
-  const pinned = () => { if (!run) return false; const r = run.getBoundingClientRect(); return r.top <= 1 && r.bottom >= innerHeight - 1; };
+  const pinned = () => { if (window.__flowPlaced) return window.__flowPlaced(); if (!run) return false; const r = run.getBoundingClientRect(); return r.top <= 1 && r.bottom >= innerHeight - 1; };
   const update = () => { raf = 0; const h = innerHeight; el.classList.toggle("is-on", first.getBoundingClientRect().top < h - 120 && foot.getBoundingClientRect().top > h && !pinned()); };
   addEventListener("scroll", () => { if (!raf) raf = requestAnimationFrame(update); }, { passive: true });
   addEventListener("resize", update);
@@ -62710,89 +62732,103 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
 })();
 </script>
 <script>
-/* How I work on touch screens: one swipe moves exactly one card. While the row is pinned, a swipe
-   (up/down or left/right) is caught and the page glides to the next or previous card's resting
-   spot; at the first and last card a swipe outwards is left to the page, so the section releases.
-   A fling that carries the page into the row from above or below is caught on its first card. */
+/* How I work on phones: the row is its own carousel, no longer tied to the page's scroll. The
+   section is an ordinary block; the four cards change only here, one card per swipe, so the page's
+   momentum can never carry the row past a card.
+   - A swipe up (or left) with the row in place shows the next card; down (or right) the previous one.
+   - At the last card a swipe up is left to the page and normal scrolling carries on; at the first
+     card a swipe down does the same.
+   - Scrolling down onto the row (or back up onto it), the first swipe settles the row into place. */
 (function () {
-  if (!matchMedia("(hover: none)").matches) return;
+  if (!matchMedia("(max-width: 760px) and (hover: none)").matches) return;
   const LEAD = 0.05, BEATS = 0.86;               // the row's own timeline (initFlow)
-  let sec = null, n = 0;
-  const geo = () => {
-    sec = sec || document.querySelector("[data-flow-runway]");
-    if (!sec) return null;
-    n = n || sec.querySelectorAll("[data-step]").length;
-    if (!n) return null;
-    const r = sec.getBoundingClientRect();
-    return { top: r.top + scrollY, len: Math.max(1, r.height - innerHeight) };
+  const TOP = 92, GAP = 48;                      // the row settles 92px from the top, under the nav
+  let box = null, wrap = null, n = 0, k = 0;
+  const find = () => {
+    if (!box) { box = document.querySelector("#spline [data-flow-box]"); wrap = box && box.parentElement; n = box ? box.querySelectorAll("[data-step]").length : 0; }
+    return box && n;
   };
-  // a card's resting spot: its light is full and the row holds still
-  const rest = (g, k) => Math.round(g.top + (LEAD + (k / n + 0.48 / n) * BEATS) * g.len);
+  const rawFor = i => LEAD + (i / n + 0.48 / n) * BEATS;   // card i fully lit, the row holding still
 
-  let anim = 0, animEnd = 0;
-  const glide = dest => {
-    cancelAnimationFrame(anim);
-    const from = scrollY, dist = dest - from, dur = Math.min(900, Math.max(520, Math.abs(dist) * 0.9)), t0 = performance.now();
-    animEnd = t0 + dur + 80;
+  // the row's timeline, eased between cards
+  let raw = null, rAnim = 0;
+  const paint = () => { window.__flowRaw = raw; if (window.__flowApply) window.__flowApply(); };
+  const toCard = i => {
+    const from = raw, to = rawFor(i), t0 = performance.now(), dur = 700;
+    cancelAnimationFrame(rAnim);
     const step = now => {
-      const k = Math.min(1, (now - t0) / dur), e = k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
-      scrollTo(0, from + dist * e);
-      anim = k < 1 ? requestAnimationFrame(step) : 0;
+      const t = Math.min(1, (now - t0) / dur), e = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      raw = from + (to - from) * e; paint();
+      rAnim = t < 1 ? requestAnimationFrame(step) : 0;
     };
-    anim = requestAnimationFrame(step);
+    rAnim = requestAnimationFrame(step);
   };
-  const gliding = () => anim !== 0 || performance.now() < animEnd;
+  const start = () => {
+    if (!find()) return setTimeout(start, 300);
+    raw = rawFor(k); paint();
+    if (!window.__flowApply) { let tries = 0; const again = () => { paint(); if (!window.__flowApply && ++tries < 40) setTimeout(again, 150); }; again(); }
+  };
+  start();
 
-  // the next resting spot in the swipe's direction, or null when the swipe should leave the row
-  const pick = (g, fwd) => {
-    const y = scrollY, first = rest(g, 0), last = rest(g, n - 1);
-    if (y < first - 6 || y > last + 6) return null;
-    if (fwd) { for (let k = 0; k < n; k++) if (rest(g, k) > y + 6) return rest(g, k); }
-    else { for (let k = n - 1; k >= 0; k--) if (rest(g, k) < y - 6) return rest(g, k); }
+  // the page glides so the row sits in place
+  let pAnim = 0, pEnd = 0;
+  const rowTop = () => wrap.getBoundingClientRect().top + GAP;        // the cards' top edge, without their entrance offset
+  const settle = () => {
+    const from = scrollY, dist = rowTop() - TOP;
+    if (Math.abs(dist) < 2) return;
+    const t0 = performance.now(), dur = Math.min(750, Math.max(420, Math.abs(dist) * 0.8));
+    cancelAnimationFrame(pAnim); pEnd = t0 + dur + 80;
+    const step = now => {
+      const t = Math.min(1, (now - t0) / dur), e = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      scrollTo(0, from + dist * e);
+      pAnim = t < 1 ? requestAnimationFrame(step) : 0;
+    };
+    pAnim = requestAnimationFrame(step);
+  };
+
+  // what a swipe does, decided on its first movement: "next", "prev", "settle" or null (the page scrolls)
+  const decide = (fwd, sideways) => {
+    const T = rowTop(), H = innerHeight, B = T + box.offsetHeight;
+    const placed = Math.abs(T - TOP) < 70;
+    if (sideways) {
+      if (T > H || B < 0) return null;
+      return fwd ? (k < n - 1 ? "next" : "hold") : (k > 0 ? "prev" : "hold");
+    }
+    if (placed) return fwd ? (k < n - 1 ? "next" : null) : (k > 0 ? "prev" : null);
+    if (fwd && T > TOP && T < H * 0.72) return "settle";        // coming down onto the row
+    if (!fwd && T < TOP && B > H * 0.3) return "settle";        // coming back up onto it
     return null;
   };
 
-  let sx = 0, sy = 0, mode = 0, dest = null, touching = false, flungAt = -1e9;   // mode: 0 undecided, 1 caught, -1 left to the page
+  let sx = 0, sy = 0, act = null, decided = false;
   addEventListener("touchstart", e => {
-    if (e.touches.length !== 1) { mode = -1; return; }
-    touching = true; sx = e.touches[0].clientX; sy = e.touches[0].clientY; mode = 0; dest = null;
-    if (gliding()) { cancelAnimationFrame(anim); anim = 0; animEnd = 0; }
+    decided = false; act = null;
+    if (e.touches.length !== 1 || !find()) { decided = true; return; }
+    sx = e.touches[0].clientX; sy = e.touches[0].clientY;
+    if (pAnim) { cancelAnimationFrame(pAnim); pAnim = 0; }
   }, { passive: true });
   addEventListener("touchmove", e => {
-    if (mode === -1) return;
-    const dx = sx - e.touches[0].clientX, dy = sy - e.touches[0].clientY;
-    if (mode === 0) {
-      if (Math.abs(dx) < 3 && Math.abs(dy) < 3) return;
-      const g = geo(); if (!g) { mode = -1; return; }
-      const fwd = Math.abs(dx) > Math.abs(dy) ? dx > 0 : dy > 0;
-      dest = pick(g, fwd);
-      mode = dest == null ? -1 : 1;
+    if (!decided) {
+      const dx = sx - e.touches[0].clientX, dy = sy - e.touches[0].clientY;
+      if (Math.abs(dx) < 4 && Math.abs(dy) < 4) return;
+      const side = Math.abs(dx) > Math.abs(dy);
+      act = decide(side ? dx > 0 : dy > 0, side);
+      decided = true;
     }
-    if (mode === 1 && e.cancelable) e.preventDefault();
+    if (act && e.cancelable) e.preventDefault();       // a caught swipe never scrolls the page, so no momentum follows
   }, { passive: false });
   const end = e => {
-    touching = false;
+    const a = act; act = null;
+    if (!a) return;
     const t = e.changedTouches && e.changedTouches[0];
-    const moved = t ? Math.max(Math.abs(sx - t.clientX), Math.abs(sy - t.clientY)) : 99;
-    if (mode !== 1 && moved > 12) flungAt = performance.now();   // a swipe the page scrolled: momentum may follow
-    if (mode !== 1 || dest == null) return;
-    if (moved > 18) glide(dest);
-    mode = 0; dest = null;
+    if (t && Math.max(Math.abs(sx - t.clientX), Math.abs(sy - t.clientY)) < 16) return;
+    if (a === "next") { k++; toCard(k); settle(); }
+    else if (a === "prev") { k--; toCard(k); settle(); }
+    else if (a === "settle") settle();
   };
   addEventListener("touchend", end, { passive: true });
-  addEventListener("touchcancel", end, { passive: true });
-
-  // a fling crossing into the row lands on its first (or, from below, its last) card; only the momentum
-  // of a real swipe is caught, never a scroll the page makes itself (the nav, back to top)
-  let prev = scrollY;
-  addEventListener("scroll", () => {
-    const y = scrollY, was = prev; prev = y;
-    if (touching || gliding() || performance.now() - flungAt > 2500) return;
-    const g = geo(); if (!g) return;
-    const first = rest(g, 0), last = rest(g, n - 1);
-    if (was < first && y > first + 4) { flungAt = -1e9; glide(first); }
-    else if (was > last && y < last - 4) { flungAt = -1e9; glide(last); }
-  }, { passive: true });
+  addEventListener("touchcancel", () => { act = null; }, { passive: true });
+  window.__flowPlaced = () => find() && Math.abs(rowTop() - TOP) < 70;
 })();
 </script>
 <script>setTimeout(function () { if (!document.querySelector(".hx-top")) document.documentElement.classList.add("hx-fallback"); }, 5000);</script>
