@@ -57346,7 +57346,7 @@ if (HERO) {
     { const nm = top.querySelector(".hx-idname"), st = top.querySelector(".hx-idstat");
       const fit = () => { nm.style.fontSize = "20px"; const w = nm.getBoundingClientRect().width, t = st.getBoundingClientRect().width; if (!w || !t) return; let fs = 20 * t / w; nm.style.fontSize = fs + "px"; const w2 = nm.getBoundingClientRect().width; if (w2) nm.style.fontSize = (fs * t / w2).toFixed(3) + "px"; };
       fit(); addEventListener("resize", fit); if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit); }
-    const SLOT = () => (innerWidth <= 760 ? 38 : 46);
+    const SLOT = () => (innerWidth <= 760 ? 46 : 46);
     // A spring, not an ease: the photo and the Let's Talk pill carry a little momentum into the pill,
     // overshoot by a few percent and settle, both ways. A frame costs one layout read: the slots the
     // pill is opening and the resting spots, taken from the (untransformed) parents together.
@@ -58791,6 +58791,51 @@ renderer.setAnimationLoop(now => {
   html:not(.js) #spline [data-flow-rail] > article[data-step] { flex: 1 1 280px !important; width: auto !important; min-height: 420px; }
   html:not(.js) #spline [data-flow-stage] { display: none; }
   html:not(.js) img[data-yp-src] { display: none; }
+  /* ── Phones (checked on iPhone) ── */
+  /* the footer and the rocket bar meet with no seam */
+  .btt { border-top: 0 !important; margin-top: -1px; }
+  #site-foot { margin-bottom: 0; }
+  @media (max-width: 760px) {
+    /* nav: one size up, so the merged pill spans most of the width */
+    .hx-dp { width: 50px; height: 50px; }
+    .hx-glass-in { padding: 6px; }
+    .hx-slot { height: 46px; width: calc(var(--tk) * 46px); }
+    .hx-slot-l { margin-right: calc(var(--tk) * 4px); }
+    .hx-slot-r { margin-left: calc(var(--tk) * 4px); width: calc(var(--tk) * var(--tw, 76px)); }
+    body.hero .hx-glass-in a { height: 46px; }
+    body.hero .hx-glass-in a.hx-home { width: 46px; height: 46px; }
+    .hx-home i { width: 21px; height: 21px; }
+    body.hero .hx-top .hx-glass-in .hx-theme { width: 46px; height: 46px; margin-left: 4px; }
+    body.hero .hx-top .hx-glass-in .hx-tb svg { width: 20px; height: 20px; }
+    body.hero .hx-top .hx-tb svg.hx-moon { width: 21px; height: 21px; }
+    .hx-cta.start-build { --sb: 0.7692; }
+    .hx-cta.start-build .label { font-size: 15px; }
+
+    /* case cards: the label rows wrap inside their columns instead of running off the screen */
+    #showcase a[data-case] > div:first-child, #showcase a[data-case] > div:last-child,
+    [data-screen-label="Coming soon"] > div:first-child, [data-screen-label="Coming soon"] > div:last-child {
+      height: auto !important; min-height: 0; column-gap: 10px; font-size: 10px !important; letter-spacing: .05em !important; line-height: 1.35; }
+    #showcase a[data-case] > div:first-child, [data-screen-label="Coming soon"] > div:first-child { padding: 12px 0 10px !important; align-items: end; }
+    #showcase a[data-case] span, [data-screen-label="Coming soon"] > div span { padding-left: 0 !important; flex-wrap: wrap; column-gap: 6px !important; row-gap: 2px; min-width: 0; overflow-wrap: anywhere; }
+    /* less space between the cards */
+    #showcase > div[style*="flex-direction: column"] { gap: clamp(72px, 11vh, 120px) !important; padding-top: clamp(72px, 11vh, 120px) !important; padding-bottom: clamp(72px, 11vh, 120px) !important; }
+    /* the Coming soon card: calmer type */
+    [data-screen-label="Coming soon"] [data-cs-title] { font-size: clamp(34px, 10.5vw, 48px) !important; }
+    [data-screen-label="Coming soon"] [data-cs-title] ~ p { font-size: 14px !important; }
+
+    /* How I work: taller cards and a bigger glowing icon */
+    #spline [data-flow-runway] > div { padding: 92px 0 72px !important; }
+    #spline [data-flow-box] { max-height: none !important; }
+    #spline [data-tile] { width: 112px !important; height: 112px !important; }
+    #spline [data-tile] svg, #spline [data-tile] img { transform: scale(1.35); }
+    #spline [data-spill] { width: 230px !important; height: 230px !important; }
+    #spline [data-ground] { width: 104px !important; height: 22px !important; transform: translate(-50%, 66px) !important; }
+    #spline [data-plate-box] { min-height: 200px !important; }
+
+    /* rocket bar: both lines, smaller, either side of the rocket */
+    .btt-l { display: block !important; }
+    .btt-say { font-size: 12px; }
+  }
 
   /* ── section heads (reference: label + underline, right-hand note, two big lines on hairlines) ── */
   .yph { display: flex; flex-direction: column; width: 100%; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
@@ -62432,18 +62477,28 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
 })();
 
 
-/* footer video: fades in once it can play, and only plays while the footer is on screen */
+/* footer video. iPhone rules: it must be muted and inline (set as properties, not only attributes)
+   before the source is set; "canplay" can stay silent there until playback starts, so the picture
+   shows as soon as the first frame is in; and in Low Power Mode autoplay is refused, in which case the
+   still first frame stays and playback retries on the next touch. It plays only while on screen. */
 (function () {
   const v = document.querySelector("[data-yft-video]");
   if (!v) return;
+  v.muted = true; v.defaultMuted = true; v.playsInline = true; v.loop = true; v.autoplay = true;
+  v.setAttribute("muted", ""); v.setAttribute("playsinline", ""); v.setAttribute("webkit-playsinline", "");
+  v.preload = "auto";
   // the source is set here, not in the markup (the build reads ids like the one in this address as assets)
   v.src = "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260405_170732_8a9ccda6-5cff-4628-b164-059c500a2b41.mp4";
   const ready = () => v.classList.add("is-ready");
-  if (v.readyState >= 3) ready(); else v.addEventListener("canplay", ready, { once: true });
-  if (typeof IntersectionObserver === "undefined") return;
-  new IntersectionObserver(es => {
-    if (es[0].isIntersecting) { const p = v.play(); if (p && p.catch) p.catch(() => {}); } else v.pause();
-  }, { rootMargin: "200px 0px" }).observe(v.closest("footer") || v);
+  ["loadeddata", "canplay", "playing"].forEach(ev => v.addEventListener(ev, ready, { once: true }));
+  if (v.readyState >= 2) ready();
+  let onScreen = false;
+  const play = () => { if (!onScreen) return; const p = v.play(); if (p && p.catch) p.catch(() => {}); };
+  const kick = () => { play(); if (!v.paused) { removeEventListener("touchstart", kick); removeEventListener("click", kick); } };
+  addEventListener("touchstart", kick, { passive: true }); addEventListener("click", kick);
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) play(); });
+  if (typeof IntersectionObserver === "undefined") { onScreen = true; play(); return; }
+  new IntersectionObserver(es => { onScreen = es[0].isIntersecting; if (onScreen) play(); else v.pause(); }, { rootMargin: "200px 0px" }).observe(v.closest("footer") || v);
 })();
 
 /* Bottom progressive blur (case-study-motion.html): 8 stacked backdrop-filter layers, each masked to
