@@ -58930,11 +58930,29 @@ renderer.setAnimationLoop(now => {
     #work > div > section { padding-top: 88px !important; padding-bottom: 48px !important; }
     #services .ysx-headwrap, #timeline .ytl-headwrap { padding-top: 88px; }
     #timeline .ytl-headwrap { padding-bottom: 48px; }
-    #spline > div[style*="z-index: 2"] { padding-top: 88px !important; }
+    #spline > div:nth-of-type(2) { padding-top: 88px !important; }
     .yph-top { margin-bottom: 36px !important; }
     /* What I do: the cards follow the head closely; the first card needs no line above it */
     #services .ysx-cards { padding-top: 48px !important; }
     #services .ysx-card:first-child .ysx-card-name { border-top: 0; padding-top: 0; }
+  }
+
+  @media (max-width: 760px) {
+    /* How I work: the cards follow the head as closely as in the other sections (48px), and sit
+       24px above the footer. When pinned they still clear the nav (92px from the top). */
+    #spline [data-flow-runway] { margin-top: -44px; }
+    #spline [data-flow-runway] > div { padding-bottom: 24px !important; }
+    #spline [data-flow-box] { max-height: none !important; }
+    /* the dark card is the card itself, not a plate sliding behind the row: its face and its text
+       change together, so no line of text is ever dark on dark or white on white mid-slide */
+    #spline [data-step-slab] { display: none !important; }
+    #spline [data-step] { transition: background-color .3s ease, filter .3s ease, opacity .3s ease; }
+    #spline [data-step] * { transition: color .3s ease; }
+    #spline [data-step].is-lit { background: #0f0f10 !important; box-shadow: 0 28px 60px -30px rgba(0,0,0,.55); }
+    html.dark #spline [data-step].is-lit { background: radial-gradient(120% 55% at 50% 0%, rgba(255,255,255,.07) 0%, rgba(255,255,255,0) 62%), #040406 !important;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.14), 0 28px 60px -26px rgba(0,0,0,.95); }
+    /* the footer starts closer to the last section */
+    #site-foot { padding-top: 72px !important; }
   }
 
   /* ── section heads (reference: label + underline, right-hand note, two big lines on hairlines) ── */
@@ -61355,6 +61373,7 @@ class YPSections {
         const covered = k === on;
         if (el.__skDark === covered) return;
         el.__skDark = covered;
+        el.classList.toggle("is-lit", covered);
         el.style.filter = covered ? "none" : "blur(1.1px)";
         el.style.opacity = covered ? "1" : "0.6";
         Object.keys(DARK).forEach(k2 => { if (covered) el.style.setProperty(k2, DARK[k2]); else el.style.removeProperty(k2); });
@@ -62637,7 +62656,10 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
   document.body.appendChild(el);
   if (!first || !foot) { el.classList.add("is-on"); return; }
   let raf = 0;
-  const update = () => { raf = 0; const h = innerHeight; el.classList.toggle("is-on", first.getBoundingClientRect().top < h - 120 && foot.getBoundingClientRect().top > h); };
+  // off while How I work is pinned: its cards reach the bottom of the screen and nothing scrolls under them
+  const run = document.querySelector("#spline [data-flow-runway]");
+  const pinned = () => { if (!run) return false; const r = run.getBoundingClientRect(); return r.top <= 1 && r.bottom >= innerHeight - 1; };
+  const update = () => { raf = 0; const h = innerHeight; el.classList.toggle("is-on", first.getBoundingClientRect().top < h - 120 && foot.getBoundingClientRect().top > h && !pinned()); };
   addEventListener("scroll", () => { if (!raf) raf = requestAnimationFrame(update); }, { passive: true });
   addEventListener("resize", update);
   addEventListener("hashchange", () => setTimeout(update, 60));
@@ -62730,7 +62752,7 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
     return null;
   };
 
-  let sx = 0, sy = 0, mode = 0, dest = null, touching = false;   // mode: 0 undecided, 1 caught, -1 left to the page
+  let sx = 0, sy = 0, mode = 0, dest = null, touching = false, flungAt = -1e9;   // mode: 0 undecided, 1 caught, -1 left to the page
   addEventListener("touchstart", e => {
     if (e.touches.length !== 1) { mode = -1; return; }
     touching = true; sx = e.touches[0].clientX; sy = e.touches[0].clientY; mode = 0; dest = null;
@@ -62750,24 +62772,26 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
   }, { passive: false });
   const end = e => {
     touching = false;
-    if (mode !== 1 || dest == null) return;
     const t = e.changedTouches && e.changedTouches[0];
     const moved = t ? Math.max(Math.abs(sx - t.clientX), Math.abs(sy - t.clientY)) : 99;
+    if (mode !== 1 && moved > 12) flungAt = performance.now();   // a swipe the page scrolled: momentum may follow
+    if (mode !== 1 || dest == null) return;
     if (moved > 18) glide(dest);
     mode = 0; dest = null;
   };
   addEventListener("touchend", end, { passive: true });
   addEventListener("touchcancel", end, { passive: true });
 
-  // a fling crossing into the row lands on its first (or, from below, its last) card
+  // a fling crossing into the row lands on its first (or, from below, its last) card; only the momentum
+  // of a real swipe is caught, never a scroll the page makes itself (the nav, back to top)
   let prev = scrollY;
   addEventListener("scroll", () => {
     const y = scrollY, was = prev; prev = y;
-    if (touching || gliding()) return;
+    if (touching || gliding() || performance.now() - flungAt > 2500) return;
     const g = geo(); if (!g) return;
     const first = rest(g, 0), last = rest(g, n - 1);
-    if (was < first && y > first + 4) glide(first);
-    else if (was > last && y < last - 4) glide(last);
+    if (was < first && y > first + 4) { flungAt = -1e9; glide(first); }
+    else if (was > last && y < last - 4) { flungAt = -1e9; glide(last); }
   }, { passive: true });
 })();
 </script>
