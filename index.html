@@ -57332,57 +57332,27 @@ if (HERO) {
     const sl = top.querySelector(".hx-slot-l"), sr = top.querySelector(".hx-slot-r");
     // theme button: one circle showing the current mode (orange with a sun, violet with a moon); press to switch
     th.insertAdjacentHTML("beforeend", '<span class="hx-tb" aria-hidden="true"><span class="hx-tb-i hx-tb-s"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6 6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/></svg></span><span class="hx-tb-i hx-tb-m"><svg viewBox="0 0 24 24"><path d="M20.3 14.6A8.3 8.3 0 0 1 9.4 3.7 8.3 8.3 0 1 0 20.3 14.6Z"/></svg></span></span>');
-    // the theme circle now lives in the pill, next to the home icon; its old place on the right
-    // takes the Start Build button (start-build-button.html), which is what travels into the pill
+    // the theme circle lives in the pill, next to the home icon; only the photo travels in on scroll
     sr.parentNode.insertBefore(th, sr);
-    th.setAttribute("data-tip", "");
-    const right = top.querySelector(".hx-right");
-    right.insertAdjacentHTML("beforeend", '<a class="hx-cta start-build" href="mailto:ponde.yashwant@gmail.com"><span class="tile"></span><svg class="icon" viewBox="0 0 30 15" aria-hidden="true"></svg><span class="label">Let’s Talk</span></a>');
-    const tb = right.querySelector(".hx-cta");
-    { /* Start Build: 10x5 grid of 3px cells, 14 frames of two chevrons scrolling right and wrapping */
-      const FRAMES = [
-        "o##oo##ooo/oo##oo##oo/ooo##oo##o/oo##oo##oo/o##oo##ooo", "oo##oo##oo/ooo##oo##o/oooo##oo##/ooo##oo##o/oo##oo##oo",
-        "ooo##oo##o/oooo##oo##/ooooo##oo#/oooo##oo##/ooo##oo##o", "oooo##oo#o/ooooo##oo#/oooooo##oo/ooooo##oo#/oooo##oo#o",
-        "ooooo##oo#/oooooo##oo/ooooooo##o/oooooo##oo/ooooo##oo#", "oooooo##oo/ooooooo##o/oooooooo##/ooooooo##o/oooooo##oo",
-        "ooooooo##o/oooooooo##/#oooooooo#/oooooooo##/ooooooo##o", "oooooooo##/#oooooooo#/##oooooooo/#oooooooo#/oooooooo##",
-        "#oooooooo#/##oooooooo/o##ooooooo/##oooooooo/#oooooooo#", "##oooooooo/o##ooooooo/oo##oooooo/o##ooooooo/##oooooooo",
-        "o##ooooooo/oo##oooooo/#oo##ooooo/oo##oooooo/o##ooooooo", "oo##oooooo/#oo##ooooo/##oo##oooo/#oo##ooooo/oo##oooooo",
-        "#oo##ooooo/##oo##oooo/o##oo##ooo/##oo##oooo/#oo##ooooo", "##oo##oooo/o##oo##ooo/oo##oo##oo/o##oo##ooo/##oo##oooo"
-      ].map(f => f.replace(/\//g, ""));
-      const svg = tb.querySelector(".icon"), NS = "http://www.w3.org/2000/svg", cells = [];
-      for (let y = 0; y < 5; y++) for (let x = 0; x < 10; x++) {
-        const r = document.createElementNS(NS, "rect");
-        r.setAttribute("x", x * 3); r.setAttribute("y", y * 3); r.setAttribute("width", 3); r.setAttribute("height", 3);
-        r.setAttribute("stroke", "#fff"); r.setAttribute("stroke-width", 0.2);   // thin white grid line, as in the original
-        svg.appendChild(r); cells.push(r);
-      }
-      let f = 0; const draw = () => { const s = FRAMES[f]; cells.forEach((c, i) => c.setAttribute("fill", s[i] === "#" ? "#1f1f1f" : "transparent")); };
-      draw(); setInterval(() => { if (!document.hidden) { f = (f + 1) % FRAMES.length; draw(); } }, 210);
-      // on leave the label glides back from the right edge, as in the original
-      const label = tb.querySelector(".label");
-      const SPRING = getComputedStyle(tb).getPropertyValue("--sb-spring").trim() || "cubic-bezier(0.22, 1, 0.36, 1)";
-      tb.addEventListener("mouseleave", () => { if (!label.animate) return; const u = parseFloat(getComputedStyle(tb).getPropertyValue("--sb")) || 0.77;
-        label.animate([{ transform: "translateX(" + (68 * u).toFixed(1) + "px)" }, { transform: "translateX(0)" }], { duration: 420, easing: SPRING }); });
-    }
+    top.querySelector(".hx-right").setAttribute("hidden", "");
     // the name is set to the exact width of the status line beneath it
     { const nm = top.querySelector(".hx-idname"), st = top.querySelector(".hx-idstat");
       const fit = () => { nm.style.fontSize = "20px"; const w = nm.getBoundingClientRect().width, t = st.getBoundingClientRect().width; if (!w || !t) return; let fs = 20 * t / w; nm.style.fontSize = fs + "px"; const w2 = nm.getBoundingClientRect().width; if (w2) nm.style.fontSize = (fs * t / w2).toFixed(3) + "px"; };
       fit(); addEventListener("resize", fit); if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit); }
     const SLOT = () => (innerWidth <= 760 ? 34 : 40);
     let rest = null, cur = 0, raf = 0, last = 0;
-    const measure = () => { dp.style.transform = tb.style.transform = ""; const a = dp.getBoundingClientRect(), b = tb.getBoundingClientRect();
-      rest = { a: { x: a.left + a.width / 2, y: a.top + a.height / 2, s: a.height }, b: { x: b.left + b.width / 2, y: b.top + b.height / 2, s: b.height, w: b.width } }; };
+    const measure = () => { dp.style.transform = ""; const a = dp.getBoundingClientRect();
+      rest = { a: { x: a.left + a.width / 2, y: a.top + a.height / 2, s: a.height } }; };
     const goal = () => Math.max(0, Math.min(1, scrollY / (innerHeight * 0.32)));
     const smooth = t => t * t * (3 - 2 * t);
     const apply = () => {
       const e = smooth(cur), s = SLOT();
       top.style.setProperty("--tk", e.toFixed(4));
-      if (rest) top.style.setProperty("--tw", (rest.b.w * s / rest.b.s).toFixed(2) + "px");
       top.classList.toggle("is-tucked", e > 0.98);
-      measure(); top.style.setProperty("--tw", (rest.b.w * s / rest.b.s).toFixed(2) + "px");   // resting spots can shift as the pill widens on narrow screens, so read them every frame
+      measure();   // resting spots can shift as the pill widens on narrow screens, so read them every frame
       const put = (el, r, slot) => { const q = slot.getBoundingClientRect(), tx = (q.left + q.width / 2 - r.x) * e, ty = (q.top + q.height / 2 - r.y) * e, k = 1 + (s / r.s - 1) * e;
         el.style.transform = e ? "translate3d(" + tx.toFixed(2) + "px," + ty.toFixed(2) + "px,0) scale(" + k.toFixed(4) + ")" : ""; };
-      put(dp, rest.a, sl); put(tb, rest.b, sr);
+      put(dp, rest.a, sl);
       const f = Math.min(1, e * 4);   // the name and status step aside first
       idt.style.opacity = (1 - f).toFixed(3); idt.style.transform = f ? "translate3d(" + (-14 * f).toFixed(2) + "px,0,0)" : "";
       idt.style.visibility = f >= 1 ? "hidden" : "";
@@ -58180,18 +58150,23 @@ renderer.setAnimationLoop(now => {
   body.hero #acts button:active img { transform: scale(0.94); }
   @media (max-width: 760px) { body.hero #acts button img { width: 23px; height: 23px; } }
 
-  /* ── Nav: the pill holds the home icon and the theme circle; the Start Build button
-     (start-build-button.html) stands where the theme circle was and travels into the pill on scroll ── */
-  body.hero .hx-glass-in a.hx-home { position: relative; display: grid; place-items: center; width: 40px; height: 40px; padding: 0; border-radius: 50%; color: var(--ink);
-    transition: background 250ms ease, color .45s ease; }
-  .hx-home i { display: block; width: 18px; height: 18px; background: currentColor;
+  /* ── Nav: the pill holds the home button and the theme circle, both circles the size the photo
+     takes in the pill; only the photo travels in on scroll ── */
+  body.hero .hx-top .hx-right[hidden] { display: none !important; }
+  body.hero .hx-top .hx-slot-r { width: 0 !important; margin: 0 !important; }
+  body.hero .hx-glass-in a.hx-home { position: relative; display: grid; place-items: center; flex: none; width: 40px; height: 40px; padding: 0; border-radius: 50%;
+    color: var(--ink); background: rgba(15,18,24,.06); box-shadow: inset 0 0 0 1px rgba(15,18,24,.05);
+    transition: background 380ms cubic-bezier(0.22, 1, 0.36, 1), color 380ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 380ms ease, transform 380ms cubic-bezier(0.34, 1.56, 0.64, 1); }
+  html.hero.dark body.hero .hx-glass-in a.hx-home { background: rgba(255,255,255,.08); box-shadow: inset 0 0 0 1px rgba(255,255,255,.06); }
+  .hx-home i { display: block; width: 20px; height: 20px; background: currentColor;
     -webkit-mask: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAFeUlEQVR42u2dz4scRRTHP90z+GMNKm5AApEY2IBCUKMRD9H8cA97DihEMIf1IAEFIewlf0B+QBAi5KSIkENyyElQWIiH9ddBTIiaQySLwWWFRUgCS+JGzEyPh35F3hYz2Zmd6erqmfegYHdmuvvV99vvW6+qu6oS4rMEqAEN9dkzwBvALuBFYAvwFPCofH8XuAUsAL8CP0hZVOeoA02ghVlHq6m/x4ADwJcCbqvHckuOPaCI8q9h1gaYh4APgXkP0KZERRPI2gCeeb/R380DH8i5jQTPUpEdgDeBywq4hpRsHRGQqePdZ5eBSSV1qd319+2oAupem7u4n9KUc7r/j5ok5Y0iwCZgVgE1SODbEeHOPyvX1r6MhCXqrtsjmUvLu0OLLu5aC+KDi4RkFPTe2UdKnxsBwW9512yIL+18HErJ2QCc8TKXVklFZ1RnxLehk6REVWg78IuSgaxE8HW2dE9lSdsVCckwSI6rxDvAcgl632u7sCy+Vj5VrSkSTrbR3hiL9u2kAr9WVb3fDHyjKpdFDL7fgWuJ75ur1C7oFHMS+CtiyelWkhZV7znqVFWH6YzKbhoVBN+XpKbUKdreswvPx4FzgXq1ZaSqZ6WO0UiSTjFfAq5ElmIWkapekbqWnqrqFPMgcLvCet9ru3Bb6lxaqlpTd8ApL1xbQ150HU8pBaiF1vstwFzFUswiUtU5waLwdkGnmFPA0ghITreStCSYFJaq6vA6UpFebRm95yNFpKourJ4Ezg9ZilnEg57zgtVAJMmdYCdw1SSna0m6CrzSDwla76eBFQO/ZxJWBLue2wUN/vERSzGLSFVP9EqCC5nTQ9qrLaP3fLpbOXI/OCYH/mdA9l0chsfXIsHJzrvqQLvzB0vCwU4pqhvXmQDu0Pn1Pyvrl6OmYDvRbvzIMXLBOliFd9gu+FHgNGm/pZrBSNivsU+Fjd+8QSYrxRCQCdY1LUNTJj3Bo2AKxcB76gdmxZrDedr1ejcCvwPj8kViGBVOQALcBJ5Lyd8OHhdtMvDDPEfPBPPdjgBMfoJHAcCeFNihmDELFwUAO1LgWSOgNAK2JsA/5FNCzcLbSmKNb7ltQWKNb7mWGgRGgBFgZgQYAWZGgBFgZgQYAWZGgBFgZgQYAWZGgBFgZgQYAWZGgBFgZgQYAWZGwFBaGas+ublnsZHv3o8K6lfo94KyCkRdUB9DEuDei78EfAz8KZWNRYq3AofJ13gIOk8i5NyoS6zeTiQ2GxMfQ86VCzov6m2p6MPcnxwYQ0nFJ4C3CDhfrh4wxBHZqamIiMka4ttCyAwxFAFNudbLwM/AI8T3RnYd+Fd81D4PRRvglj5YBLZF3AZMiI/B9jUoIwu6CXwB/EEcU2MTBf40gWeLJsJ0GpiEmC2kj1mdfBvAxwL3O5qRgh96dfS7deCGEBCK+YQR2zbqAVF2IwWuqw/NwhEAcD0FLhoBpRFwMQW+DdnxMFuF9VwCPEG+0OgmbLGOkPq/BDyfkm/bNBt5djJMpveyXHah8Dm2vWtI+UkE81V69CO2alaoUeHvNfZu9b69RkAwAvaqjt+qP85iKycWvaj3OY154snQOPmKfk8T54Pzqpp74P838AL5gKT7HD8KJhnNfWFC7Dcz6UuPb26M5hC2cvqgV1A/5GHMWiTMYNuVDGpbk5luwfdJeF+FjzXMvTe4TcGwJ/B9EvbJiKk7oaWpa79+0xLM9q0XfJ+EjcBnbbTNpCnHwG8rPxXM+gKfNi32LuCrDsy7B+/ZkDeq2QOU4Gvg9Q7Y9f0US59sJ/k+itcsArgGfAK86gGfdAtsr9HQUh2IMeA1YLc4sE06cRuo4D7sXYxi3pHO1Dz5+03fAT+Rb1mlB9q6HlX+HyV9NGHAODiCAAAAAElFTkSuQmCC") center / contain no-repeat; mask: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAFeUlEQVR42u2dz4scRRTHP90z+GMNKm5AApEY2IBCUKMRD9H8cA97DihEMIf1IAEFIewlf0B+QBAi5KSIkENyyElQWIiH9ddBTIiaQySLwWWFRUgCS+JGzEyPh35F3hYz2Zmd6erqmfegYHdmuvvV99vvW6+qu6oS4rMEqAEN9dkzwBvALuBFYAvwFPCofH8XuAUsAL8CP0hZVOeoA02ghVlHq6m/x4ADwJcCbqvHckuOPaCI8q9h1gaYh4APgXkP0KZERRPI2gCeeb/R380DH8i5jQTPUpEdgDeBywq4hpRsHRGQqePdZ5eBSSV1qd319+2oAupem7u4n9KUc7r/j5ok5Y0iwCZgVgE1SODbEeHOPyvX1r6MhCXqrtsjmUvLu0OLLu5aC+KDi4RkFPTe2UdKnxsBwW9512yIL+18HErJ2QCc8TKXVklFZ1RnxLehk6REVWg78IuSgaxE8HW2dE9lSdsVCckwSI6rxDvAcgl632u7sCy+Vj5VrSkSTrbR3hiL9u2kAr9WVb3fDHyjKpdFDL7fgWuJ75ur1C7oFHMS+CtiyelWkhZV7znqVFWH6YzKbhoVBN+XpKbUKdreswvPx4FzgXq1ZaSqZ6WO0UiSTjFfAq5ElmIWkapekbqWnqrqFPMgcLvCet9ru3Bb6lxaqlpTd8ApL1xbQ150HU8pBaiF1vstwFzFUswiUtU5waLwdkGnmFPA0ghITreStCSYFJaq6vA6UpFebRm95yNFpKourJ4Ezg9ZilnEg57zgtVAJMmdYCdw1SSna0m6CrzSDwla76eBFQO/ZxJWBLue2wUN/vERSzGLSFVP9EqCC5nTQ9qrLaP3fLpbOXI/OCYH/mdA9l0chsfXIsHJzrvqQLvzB0vCwU4pqhvXmQDu0Pn1Pyvrl6OmYDvRbvzIMXLBOliFd9gu+FHgNGm/pZrBSNivsU+Fjd+8QSYrxRCQCdY1LUNTJj3Bo2AKxcB76gdmxZrDedr1ejcCvwPj8kViGBVOQALcBJ5Lyd8OHhdtMvDDPEfPBPPdjgBMfoJHAcCeFNihmDELFwUAO1LgWSOgNAK2JsA/5FNCzcLbSmKNb7ltQWKNb7mWGgRGgBFgZgQYAWZGgBFgZgQYAWZGgBFgZgQYAWZGgBFgZgQYAWZGgBFgZgQYAWZGwFBaGas+ublnsZHv3o8K6lfo94KyCkRdUB9DEuDei78EfAz8KZWNRYq3AofJ13gIOk8i5NyoS6zeTiQ2GxMfQ86VCzov6m2p6MPcnxwYQ0nFJ4C3CDhfrh4wxBHZqamIiMka4ttCyAwxFAFNudbLwM/AI8T3RnYd+Fd81D4PRRvglj5YBLZF3AZMiI/B9jUoIwu6CXwB/EEcU2MTBf40gWeLJsJ0GpiEmC2kj1mdfBvAxwL3O5qRgh96dfS7deCGEBCK+YQR2zbqAVF2IwWuqw/NwhEAcD0FLhoBpRFwMQW+DdnxMFuF9VwCPEG+0OgmbLGOkPq/BDyfkm/bNBt5djJMpveyXHah8Dm2vWtI+UkE81V69CO2alaoUeHvNfZu9b69RkAwAvaqjt+qP85iKycWvaj3OY154snQOPmKfk8T54Pzqpp74P838AL5gKT7HD8KJhnNfWFC7Dcz6UuPb26M5hC2cvqgV1A/5GHMWiTMYNuVDGpbk5luwfdJeF+FjzXMvTe4TcGwJ/B9EvbJiKk7oaWpa79+0xLM9q0XfJ+EjcBnbbTNpCnHwG8rPxXM+gKfNi32LuCrDsy7B+/ZkDeq2QOU4Gvg9Q7Y9f0US59sJ/k+itcsArgGfAK86gGfdAtsr9HQUh2IMeA1YLc4sE06cRuo4D7sXYxi3pHO1Dz5+03fAT+Rb1mlB9q6HlX+HyV9NGHAODiCAAAAAElFTkSuQmCC") center / contain no-repeat;
     transition: transform 560ms cubic-bezier(0.34, 1.56, 0.64, 1); }
-  body.hero .hx-glass-in a.hx-home:hover, body.hero .hx-glass-in a.hx-home:focus-visible { background: rgba(15,18,24,.07); }
-  html.hero.dark body.hero .hx-glass-in a.hx-home:hover, html.hero.dark body.hero .hx-glass-in a.hx-home:focus-visible { background: rgba(255,255,255,.1); }
-  .hx-home:hover i, .hx-home:focus-visible i { transform: translateY(-2px) scale(1.1); }
-  .hx-home:active i { transform: translateY(0) scale(.9); transition-duration: 160ms; }
-  /* a small tag under the icon on hover */
+  /* hover: the circle fills dark and the house turns white (inverted in dark mode so it still reads) */
+  body.hero .hx-glass-in a.hx-home:hover, body.hero .hx-glass-in a.hx-home:focus-visible { background: #101014; color: #ffffff; box-shadow: 0 6px 14px -6px rgba(16,16,20,.55); }
+  html.hero.dark body.hero .hx-glass-in a.hx-home:hover, html.hero.dark body.hero .hx-glass-in a.hx-home:focus-visible { background: #f4f2ed; color: #101014; box-shadow: 0 6px 14px -6px rgba(0,0,0,.6); }
+  .hx-home:hover i, .hx-home:focus-visible i { transform: translateY(-1px) scale(1.06); }
+  body.hero .hx-glass-in a.hx-home:active { transform: scale(.92); transition-duration: 160ms; }
+  /* a small tag under the button on hover */
   body.hero .hx-glass-in a.hx-home::before { content: "Home"; position: absolute; left: 50%; top: calc(100% + 14px); padding: 6px 10px; border-radius: 6px;
     background: var(--ink); color: var(--paper); font-size: 12px; font-weight: 500; line-height: 1; white-space: nowrap; pointer-events: none;
     opacity: 0; transform: translate(-50%, -4px); transition: opacity 200ms ease, transform 300ms cubic-bezier(0.22, 1, 0.36, 1); }
@@ -58200,20 +58175,20 @@ renderer.setAnimationLoop(now => {
   body.hero .hx-top .hx-glass-in .hx-theme { flex: none; width: 40px; height: 40px; margin-left: 4px; transform: none !important; }
   body.hero .hx-top .hx-glass-in .hx-tb svg { width: 18px; height: 18px; }
 
-  /* Start Build, scaled from its 200 x 65 original by --sb so it stands the height of the photo */
-  .hx-cta.start-build { --sb: 0.7692; --sb-spring: cubic-bezier(0.22, 1, 0.36, 1); --sb-dur: 0.42s;
+  /* Start Build (start-build-button.html); --sb scales it from its 200 x 65 original */
+  .start-build { --sb: 1; --sb-spring: cubic-bezier(0.22, 1, 0.36, 1); --sb-dur: 0.42s;
     position: relative; z-index: 2; display: inline-block; flex: none; width: calc(var(--sb) * 200px); height: calc(var(--sb) * 65px); border-radius: calc(var(--sb) * 16px);
     background: #1a1a1a; overflow: clip; text-decoration: none; cursor: pointer; font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
     transform-origin: 50% 50%; will-change: transform; box-shadow: 0 10px 22px -10px rgba(0,0,0,.45); }
   @supports (transition-timing-function: linear(0, 1)) {
-    .hx-cta.start-build { --sb-spring: linear(0, 0.025 3.75%, 0.13 8%, 0.27 12%, 0.43 16.25%, 0.58 20.25%, 0.70 24.5%, 0.81 28.75%, 0.87 33%, 0.93 37.25%, 0.96 41.25%, 0.985 45.5%, 1 49.5%, 1.012 53.75%, 1.01 62%, 1.005 75%, 1); }
+    .start-build { --sb-spring: linear(0, 0.025 3.75%, 0.13 8%, 0.27 12%, 0.43 16.25%, 0.58 20.25%, 0.70 24.5%, 0.81 28.75%, 0.87 33%, 0.93 37.25%, 0.96 41.25%, 0.985 45.5%, 1 49.5%, 1.012 53.75%, 1.01 62%, 1.005 75%, 1); }
   }
-  html.hero.dark .hx-cta.start-build { box-shadow: inset 0 0 0 1px rgba(255,255,255,.14), 0 10px 22px -10px rgba(0,0,0,.6); }
+  html.hero.dark .start-build { box-shadow: inset 0 0 0 1px rgba(255,255,255,.14), 0 10px 22px -10px rgba(0,0,0,.6); }
   /* white tile that fills the button on hover */
   .start-build .tile { position: absolute; top: calc(var(--sb) * 3px); left: calc(var(--sb) * 3px); width: calc(var(--sb) * 65px); height: calc(var(--sb) * 59px);
     border-radius: calc(var(--sb) * 14px); background: #fff; transition: width var(--sb-dur) var(--sb-spring); }
   /* label: right of the tile, slides left and turns dark on hover */
-  .start-build .label { position: absolute; top: 50%; left: calc(var(--sb) * 94px); margin: -12px 0 0; font-size: 14px; line-height: 24px; font-weight: 600; letter-spacing: -0.01em; color: #fff; white-space: nowrap; }
+  .start-build .label { position: absolute; top: 50%; left: calc(var(--sb) * 94px); margin: -12px 0 0; font-size: calc(var(--sb) * 16px); line-height: 24px; font-weight: 600; letter-spacing: -0.01em; color: #fff; white-space: nowrap; }
   /* pixel arrow: centred in the tile, slides to the right of the label on hover */
   .start-build .icon { position: absolute; top: calc(var(--sb) * 25px); left: calc(var(--sb) * 21px); width: calc(var(--sb) * 30px); height: calc(var(--sb) * 15px);
     transition: transform var(--sb-dur) var(--sb-spring); }
@@ -58225,10 +58200,7 @@ renderer.setAnimationLoop(now => {
     body.hero .hx-glass-in a.hx-home { width: 34px; height: 34px; }
     body.hero .hx-top .hx-glass-in .hx-theme { width: 34px; height: 34px; margin-left: 2px; }
     body.hero .hx-top .hx-glass-in .hx-tb svg { width: 16px; height: 16px; }
-    .hx-home i { width: 16px; height: 16px; }
-    .hx-cta.start-build { --sb: 0.6769; }
-    .start-build .label { font-size: 13px; }
-    .hx-slot-r { width: calc(var(--tk) * var(--tw, 76px)); }   /* room for the whole button, not a circle */
+    .hx-home i { width: 17px; height: 17px; }
   }
   /* ── Services: pinned showcase, after the reference. Accent #2b3a9e, text #111, muted #B5B5B5,
      divider #E5E5E5. Proportions from the reference: list column 33%, image 45.6% (near square),
@@ -58512,18 +58484,27 @@ renderer.setAnimationLoop(now => {
   .yft-status i { width: 7px; height: 7px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 0 3px rgba(34,197,94,.2); animation: hx-live 2.6s ease-in-out infinite; }
   .yft-clock { color: rgba(244,242,237,.45); }
   .yft-clock b { margin-left: 8px; font-weight: 500; color: rgba(244,242,237,.78); font-variant-numeric: tabular-nums; }
-  .yft-mid { padding: clamp(48px, 8vh, 96px) 0; }
+  .yft-mid { padding: clamp(40px, 7vh, 88px) 0; }
   .yft-line { margin: 0; font-size: clamp(40px, 7.4vw, 132px); font-weight: 800; line-height: 1; letter-spacing: -0.05em; text-transform: uppercase; }
   .yft-mute { color: #5f5f66; }
-  /* inline, so on a phone the arrow stays right after "talk." when the line wraps; the underline
-     is drawn as a background so it follows the text across both lines */
-  #yp-work a.yft-talk { display: inline-block; margin-left: 9vw; color: #f4f2ed; text-decoration: none; }
-  .yft-talk span { background: linear-gradient(currentColor, currentColor) 0 94% / 0% 0.05em no-repeat; transition: background-size 700ms cubic-bezier(0.22,1,0.36,1); }
-  .yft-talk i { display: inline-block; vertical-align: top; margin-left: 0.08em; font-style: normal; font-size: 0.42em; font-weight: 600; line-height: 1; margin-top: 0.12em;
-    color: rgba(244,242,237,.45); transition: transform 500ms cubic-bezier(0.22,1,0.36,1), color 300ms ease; }
-  .yft-talk:hover span, .yft-talk:focus-visible span { background-size: 100% 0.05em; }
-  .yft-talk:hover i, .yft-talk:focus-visible i { transform: translate(0.08em, -0.08em); color: #f4f2ed; }
-  .yft-talk:focus-visible { outline: none; }
+  .yft-ink { display: inline-block; margin-left: 9vw; color: #f4f2ed; }
+  /* the call to action sits under "we should talk", on the same indent */
+  .yft-act { display: flex; align-items: center; flex-wrap: wrap; gap: 16px 28px; margin: clamp(36px, 6vh, 64px) 0 0 9vw; }
+  .yft .start-build { box-shadow: inset 0 0 0 1px rgba(255,255,255,.16), 0 18px 36px -18px rgba(0,0,0,.9); }
+  .yft .start-build:focus-visible { outline: 2px solid #f4f2ed; outline-offset: 4px; }
+  /* the address, with a chip that copies it */
+  #yp-work .yft-mail { appearance: none; display: inline-flex; align-items: center; gap: 12px; padding: 0 !important; border: 0 !important; background: none !important; box-shadow: none !important; border-radius: 0 !important; cursor: pointer;
+    font: 500 15px/1 'Plus Jakarta Sans', system-ui, sans-serif; letter-spacing: -0.005em; color: rgba(244,242,237,.62); transition: color 300ms ease; }
+  .yft-mail:hover, .yft-mail:focus-visible { color: #f4f2ed; outline: none; }
+  .yft-mail-chip { position: relative; display: inline-grid; height: 28px; padding: 0 12px; border-radius: 999px; overflow: hidden;
+    font-size: 12px; font-weight: 600; color: #f4f2ed; box-shadow: inset 0 0 0 1px rgba(255,255,255,.18); transition: background 300ms ease, box-shadow 300ms ease; }
+  .yft-mail-chip > span { grid-area: 1 / 1; display: grid; place-items: center; transition: transform 420ms cubic-bezier(0.22,1,0.36,1), opacity 300ms ease; }
+  .yft-mail-d { transform: translateY(100%); opacity: 0; color: #22c55e; }
+  .yft-mail:hover .yft-mail-chip, .yft-mail:focus-visible .yft-mail-chip { background: rgba(255,255,255,.08); }
+  .yft-mail.is-copied .yft-mail-c { transform: translateY(-100%); opacity: 0; }
+  .yft-mail.is-copied .yft-mail-d { transform: none; opacity: 1; }
+  .yft-mail.is-copied .yft-mail-chip { box-shadow: inset 0 0 0 1px rgba(34,197,94,.45); }
+  .yft-mail-live { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
   .yft-rule { height: 1px; margin-bottom: 22px; background: rgba(255,255,255,.12); }
   .yft-copy { color: rgba(244,242,237,.45); }
   .yft-links { display: flex; gap: clamp(20px, 3vw, 40px); }
@@ -58535,7 +58516,10 @@ renderer.setAnimationLoop(now => {
   .yft-links a:focus-visible { outline: 2px solid #f4f2ed; outline-offset: 4px; }
   @media (max-width: 640px) {
     .yft-row { flex-direction: column-reverse; align-items: flex-start; }
-    #yp-work a.yft-talk { margin-left: 6vw; }
+    .yft-ink { margin-left: 6vw; }
+    .yft-act { margin-left: 6vw; gap: 18px; }
+    .yft .start-build { --sb: 0.9; }
+    .yft-mail { font-size: 14px; }
   }
 
   /* ── section heads (reference: label + underline, right-hand note, two big lines on hairlines) ── */
@@ -58904,7 +58888,14 @@ window.__ypImgs = function (r) { r.querySelectorAll('img[data-yp-src]').forEach(
     <span class="yft-clock">Hyderabad, IN <b data-yft-time="">&nbsp;</b></span>
   </div>
   <div class="yft-mid" data-rise="">
-    <p class="yft-line"><span class="yft-mute">If you&rsquo;ve read this far,</span><br><a class="yft-talk" href="mailto:ponde.yashwant@gmail.com"><span>we should talk.</span><i aria-hidden="true">&#8599;</i></a></p>
+    <p class="yft-line"><span class="yft-mute">If you&rsquo;ve read this far,</span><br><span class="yft-ink">we should talk.</span></p>
+    <div class="yft-act">
+      <a class="start-build yft-cta" href="mailto:ponde.yashwant@gmail.com"><span class="tile"></span><svg class="icon" viewBox="0 0 30 15" aria-hidden="true"></svg><span class="label">Let&rsquo;s Talk</span></a>
+      <button type="button" class="yft-mail" data-copy="ponde.yashwant@gmail.com" aria-label="Copy email address ponde.yashwant@gmail.com">
+        <span class="yft-mail-t">ponde.yashwant@gmail.com</span><span class="yft-mail-chip" aria-hidden="true"><span class="yft-mail-c">Copy</span><span class="yft-mail-d">Copied</span></span>
+      </button>
+      <span class="yft-mail-live" aria-live="polite"></span>
+    </div>
   </div>
   <div class="yft-bot">
     <div class="yft-rule" aria-hidden="true"></div>
@@ -62130,6 +62121,55 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
   let fmt; try { fmt = new Intl.DateTimeFormat("en-IN", { hour: "numeric", minute: "2-digit", hour12: true, timeZone: "Asia/Kolkata" }); } catch (e) { return; }
   const set = () => { el.textContent = fmt.format(new Date()).toUpperCase() + " IST"; };
   set(); setInterval(set, 30000);
+})();
+
+/* Start Build buttons (start-build-button.html): a 10x5 grid of 3px cells running 14 frames of two
+   chevrons scrolling right; on leave the label glides back in from the right edge. */
+(function () {
+  const FRAMES = [
+    "o##oo##ooo/oo##oo##oo/ooo##oo##o/oo##oo##oo/o##oo##ooo", "oo##oo##oo/ooo##oo##o/oooo##oo##/ooo##oo##o/oo##oo##oo",
+    "ooo##oo##o/oooo##oo##/ooooo##oo#/oooo##oo##/ooo##oo##o", "oooo##oo#o/ooooo##oo#/oooooo##oo/ooooo##oo#/oooo##oo#o",
+    "ooooo##oo#/oooooo##oo/ooooooo##o/oooooo##oo/ooooo##oo#", "oooooo##oo/ooooooo##o/oooooooo##/ooooooo##o/oooooo##oo",
+    "ooooooo##o/oooooooo##/#oooooooo#/oooooooo##/ooooooo##o", "oooooooo##/#oooooooo#/##oooooooo/#oooooooo#/oooooooo##",
+    "#oooooooo#/##oooooooo/o##ooooooo/##oooooooo/#oooooooo#", "##oooooooo/o##ooooooo/oo##oooooo/o##ooooooo/##oooooooo",
+    "o##ooooooo/oo##oooooo/#oo##ooooo/oo##oooooo/o##ooooooo", "oo##oooooo/#oo##ooooo/##oo##oooo/#oo##ooooo/oo##oooooo",
+    "#oo##ooooo/##oo##oooo/o##oo##ooo/##oo##oooo/#oo##ooooo", "##oo##oooo/o##oo##ooo/oo##oo##oo/o##oo##ooo/##oo##oooo"
+  ].map(f => f.replace(/\//g, ""));
+  const NS = "http://www.w3.org/2000/svg", grids = [];
+  document.querySelectorAll(".start-build").forEach(btn => {
+    const svg = btn.querySelector(".icon"), cells = [];
+    for (let y = 0; y < 5; y++) for (let x = 0; x < 10; x++) {
+      const r = document.createElementNS(NS, "rect");
+      r.setAttribute("x", x * 3); r.setAttribute("y", y * 3); r.setAttribute("width", 3); r.setAttribute("height", 3);
+      r.setAttribute("stroke", "#fff"); r.setAttribute("stroke-width", 0.2);   // thin white grid line, as in the original
+      svg.appendChild(r); cells.push(r);
+    }
+    grids.push(cells);
+    const label = btn.querySelector(".label");
+    btn.addEventListener("mouseleave", () => {
+      if (!label.animate) return;
+      const cs = getComputedStyle(btn), u = parseFloat(cs.getPropertyValue("--sb")) || 1;
+      label.animate([{ transform: "translateX(" + (68 * u).toFixed(1) + "px)" }, { transform: "translateX(0)" }], { duration: 420, easing: cs.getPropertyValue("--sb-spring").trim() || "ease-out" });
+    });
+  });
+  if (!grids.length) return;
+  let f = 0;
+  const draw = () => { const s = FRAMES[f]; grids.forEach(cells => cells.forEach((c, i) => c.setAttribute("fill", s[i] === "#" ? "#1f1f1f" : "transparent"))); };
+  draw();
+  setInterval(() => { if (!document.hidden) { f = (f + 1) % FRAMES.length; draw(); } }, 210);
+})();
+
+/* footer: copy the email address */
+(function () {
+  const b = document.querySelector(".yft-mail"), live = document.querySelector(".yft-mail-live");
+  if (!b) return;
+  let t = 0;
+  b.addEventListener("click", () => {
+    const v = b.getAttribute("data-copy");
+    const ok = () => { b.classList.add("is-copied"); if (live) live.textContent = "Email address copied"; clearTimeout(t); t = setTimeout(() => { b.classList.remove("is-copied"); if (live) live.textContent = ""; }, 1800); };
+    const fallback = () => { const a = document.createElement("textarea"); a.value = v; a.setAttribute("readonly", ""); a.style.position = "fixed"; a.style.opacity = "0"; document.body.appendChild(a); a.select(); try { document.execCommand("copy"); ok(); } catch (e) {} a.remove(); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(v).then(ok, fallback); else fallback();
+  });
 })();
 </script>
 </body></html>
