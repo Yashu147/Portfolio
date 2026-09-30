@@ -13,7 +13,10 @@ try { var s = null; try { s = localStorage.getItem("hx-theme"); } catch (e) {}
 <script>(function () { var touch = matchMedia("(hover: none)").matches, w = -1, h = 0;
   window.__SH = function () { if (!touch) return innerHeight; if (innerWidth !== w) { w = innerWidth; var d = document.createElement("div");
     d.style.cssText = "position:fixed;left:0;top:0;width:1px;height:100vh;height:100lvh;visibility:hidden;pointer-events:none"; (document.body || document.documentElement).appendChild(d);
-    h = Math.max(innerHeight, d.getBoundingClientRect().height); d.remove(); } return h; }; })();</script>
+    h = Math.max(innerHeight, d.getBoundingClientRect().height); d.remove();
+    // the scene is centred on the hero (the visible screen with the toolbar showing), not on the taller full screen
+    var ch = document.documentElement.clientHeight || innerHeight; window.__SHtop = Math.round((ch - h) / 2);
+    document.documentElement.style.setProperty("--hx-sh", h + "px"); document.documentElement.style.setProperty("--hx-sht", window.__SHtop + "px"); } return h; }; })();</script>
 <title>Product Designer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -56437,7 +56440,7 @@ void part(vec3 p, vec3 n, out int b, out ivec3 o, out vec3 d){
 const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance", preserveDrawingBuffer: Q.has("shot"), alpha: HERO });
 if (HERO) renderer.setClearColor(0x000000, 0);
 let PR_MAX = Math.min(window.devicePixelRatio || 1, Q.has("hq") || HERO ? (matchMedia("(hover: none)").matches ? 3.0 : 2.0) : 1.25); let prNow = PR_MAX, prCeil = PR_MAX, prUp = -1e9;
-let perfMode = Q.has("perf"), perfSlowFor = 0;
+let perfMode = Q.has("perf"), perfSlowFor = 0; const PR_LOCK = matchMedia("(hover: none)").matches;
 { const gl = renderer.getContext(), ext = gl.getExtension("WEBGL_debug_renderer_info"); const rn = ext ? String(gl.getParameter(ext.UNMASKED_RENDERER_WEBGL)) : "";
   window.__gpu = rn; if (/swiftshader|llvmpipe|software/i.test(rn)) { const w = document.createElement("div"); w.id = "gpuwarn";
     w.textContent = "Your browser is drawing with software rendering (graphics acceleration is off), so the robot will be slow. Turn on \"Use graphics acceleration\" in the browser settings and reload."; document.body.appendChild(w); } }
@@ -57530,7 +57533,7 @@ void main() {
   window.__heroFrame = () => {
     let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
     for (const [b, x, y, z] of KEY) { vv.set(x, y, z).applyMatrix4(boneMats[b]).applyMatrix4(root.matrixWorld).project(camera);
-      const sx = (vv.x + 1) / 2 * innerWidth, sy = (1 - vv.y) / 2 * innerHeight; x0 = Math.min(x0, sx); x1 = Math.max(x1, sx); y0 = Math.min(y0, sy); y1 = Math.max(y1, sy); }
+      const sx = (vv.x + 1) / 2 * innerWidth, sy = (1 - vv.y) / 2 * window.__SH() + (window.__SHtop || 0); x0 = Math.min(x0, sx); x1 = Math.max(x1, sx); y0 = Math.min(y0, sy); y1 = Math.max(y1, sy); }
     const pad = 14; x0 -= pad; y0 -= pad; x1 += pad; y1 += pad;
     const k = box.init ? 0.35 : 1; box.x0 += (x0 - box.x0) * k; box.y0 += (y0 - box.y0) * k; box.x1 += (x1 - box.x1) * k; box.y1 += (y1 - box.y1) * k; box.init = true;
     overRobot = mx > box.x0 && mx < box.x1 && my > box.y0 && my < box.y1;
@@ -57596,11 +57599,11 @@ renderer.setAnimationLoop(now => {
   if (++frameNo % (action.name ? 1 : 2) === 0) renderer.shadowMap.needsUpdate = true;
   // adaptive resolution: keep ~60 fps; never below 1x, lower while dragging
   ftAvg = ftAvg * 0.92 + dt * 1000 * 0.08;
-  let want = ftAvg > 21 ? Math.max(1.0, prNow - 0.25) : ftAvg < 12 ? Math.min(prCeil, prNow + 0.25) : prNow;
+  let want = PR_LOCK ? prNow : ftAvg > 21 ? Math.max(1.0, prNow - 0.25) : ftAvg < 12 ? Math.min(prCeil, prNow + 0.25) : prNow;
   if (want < prNow && now - prUp < 6000) prCeil = want;          // the last step up was too much: stay below it
   // very slow frames for a while -> performance mode: no shadows, lighter surface, lower resolution
   perfSlowFor = ftAvg > 55 ? perfSlowFor + dt : 0;
-  if (!perfMode && perfSlowFor > 2.5) { perfMode = true; applyPerf(); }
+  if (!perfMode && !PR_LOCK && perfSlowFor > 2.5) { perfMode = true; applyPerf(); }
   if (want !== prNow && now - prChanged > (want < prNow ? 1200 : 5000)) { if (want > prNow) prUp = now; prNow = want; prChanged = now; renderer.setPixelRatio(prNow); renderer.setSize(innerWidth, window.__SH()); }
   renderer.render(scene, camera);
   if (window.__heroFrame) window.__heroFrame();
@@ -58864,6 +58867,9 @@ renderer.setAnimationLoop(now => {
   /* iPhone: the sticky case backdrop is 100svh tall, so it must also give back 100svh (not 100vh);
      Safari's larger 100vh was pulling the first card up under the section head */
   #showcase [data-case-bg] { margin-bottom: -100vh !important; margin-bottom: -100svh !important; }
+  /* iPhone: the backdrop is as tall as the screen with Safari's toolbar tucked away (100lvh), and gives
+     the same amount back, so scrolling the toolbar out of view never uncovers a black band under it */
+  @media (hover: none) { #showcase [data-case-bg] { height: 100vh !important; height: 100lvh !important; margin-bottom: -100vh !important; margin-bottom: -100lvh !important; } }
   /* touch screens have no hover: no "View" disc following taps */
   @media (hover: none) { #showcase [data-ref="caseCursorRef"], [data-ref="caseCursorRef"] { display: none !important; } }
 
@@ -58909,6 +58915,26 @@ renderer.setAnimationLoop(now => {
     /* About drum: bigger type; rows turned away are not painted at all */
     #about-drum { --font-size: clamp(44px, 12vw, 60px) !important; }
     #about-drum .stage { contain: layout paint; }
+  }
+
+  /* the robot scene is taller than the hero (full screen height, so the toolbar never resizes it):
+     it is centred on the hero, so the robot sits between PRODUCT and DESIGNER; the light layer matches it */
+  @media (hover: none) {
+    body.hero > canvas:not(.hx-dots) { top: var(--hx-sht, 0px) !important; }
+    body.hero > .hx-dots { height: var(--hx-sh, 100%); }
+  }
+
+  @media (max-width: 760px) {
+    /* one spacing rhythm on phones: every section head sits 88px below the section's top edge,
+       36px from its label to its title, 48px from the head to what follows */
+    #work > div > section { padding-top: 88px !important; padding-bottom: 48px !important; }
+    #services .ysx-headwrap, #timeline .ytl-headwrap { padding-top: 88px; }
+    #timeline .ytl-headwrap { padding-bottom: 48px; }
+    #spline > div[style*="z-index: 2"] { padding-top: 88px !important; }
+    .yph-top { margin-bottom: 36px !important; }
+    /* What I do: the cards follow the head closely; the first card needs no line above it */
+    #services .ysx-cards { padding-top: 48px !important; }
+    #services .ysx-card:first-child .ysx-card-name { border-top: 0; padding-top: 0; }
   }
 
   /* ── section heads (reference: label + underline, right-hand note, two big lines on hairlines) ── */
@@ -62659,6 +62685,90 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
     dot.style.transform = "translate3d(" + (d.x - ds / 2) + "px," + (d.y - ds / 2) + "px,0)";
     requestAnimationFrame(loop);
   })();
+})();
+</script>
+<script>
+/* How I work on touch screens: one swipe moves exactly one card. While the row is pinned, a swipe
+   (up/down or left/right) is caught and the page glides to the next or previous card's resting
+   spot; at the first and last card a swipe outwards is left to the page, so the section releases.
+   A fling that carries the page into the row from above or below is caught on its first card. */
+(function () {
+  if (!matchMedia("(hover: none)").matches) return;
+  const LEAD = 0.05, BEATS = 0.86;               // the row's own timeline (initFlow)
+  let sec = null, n = 0;
+  const geo = () => {
+    sec = sec || document.querySelector("[data-flow-runway]");
+    if (!sec) return null;
+    n = n || sec.querySelectorAll("[data-step]").length;
+    if (!n) return null;
+    const r = sec.getBoundingClientRect();
+    return { top: r.top + scrollY, len: Math.max(1, r.height - innerHeight) };
+  };
+  // a card's resting spot: its light is full and the row holds still
+  const rest = (g, k) => Math.round(g.top + (LEAD + (k / n + 0.48 / n) * BEATS) * g.len);
+
+  let anim = 0, animEnd = 0;
+  const glide = dest => {
+    cancelAnimationFrame(anim);
+    const from = scrollY, dist = dest - from, dur = Math.min(900, Math.max(520, Math.abs(dist) * 0.9)), t0 = performance.now();
+    animEnd = t0 + dur + 80;
+    const step = now => {
+      const k = Math.min(1, (now - t0) / dur), e = k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
+      scrollTo(0, from + dist * e);
+      anim = k < 1 ? requestAnimationFrame(step) : 0;
+    };
+    anim = requestAnimationFrame(step);
+  };
+  const gliding = () => anim !== 0 || performance.now() < animEnd;
+
+  // the next resting spot in the swipe's direction, or null when the swipe should leave the row
+  const pick = (g, fwd) => {
+    const y = scrollY, first = rest(g, 0), last = rest(g, n - 1);
+    if (y < first - 6 || y > last + 6) return null;
+    if (fwd) { for (let k = 0; k < n; k++) if (rest(g, k) > y + 6) return rest(g, k); }
+    else { for (let k = n - 1; k >= 0; k--) if (rest(g, k) < y - 6) return rest(g, k); }
+    return null;
+  };
+
+  let sx = 0, sy = 0, mode = 0, dest = null, touching = false;   // mode: 0 undecided, 1 caught, -1 left to the page
+  addEventListener("touchstart", e => {
+    if (e.touches.length !== 1) { mode = -1; return; }
+    touching = true; sx = e.touches[0].clientX; sy = e.touches[0].clientY; mode = 0; dest = null;
+    if (gliding()) { cancelAnimationFrame(anim); anim = 0; animEnd = 0; }
+  }, { passive: true });
+  addEventListener("touchmove", e => {
+    if (mode === -1) return;
+    const dx = sx - e.touches[0].clientX, dy = sy - e.touches[0].clientY;
+    if (mode === 0) {
+      if (Math.abs(dx) < 3 && Math.abs(dy) < 3) return;
+      const g = geo(); if (!g) { mode = -1; return; }
+      const fwd = Math.abs(dx) > Math.abs(dy) ? dx > 0 : dy > 0;
+      dest = pick(g, fwd);
+      mode = dest == null ? -1 : 1;
+    }
+    if (mode === 1 && e.cancelable) e.preventDefault();
+  }, { passive: false });
+  const end = e => {
+    touching = false;
+    if (mode !== 1 || dest == null) return;
+    const t = e.changedTouches && e.changedTouches[0];
+    const moved = t ? Math.max(Math.abs(sx - t.clientX), Math.abs(sy - t.clientY)) : 99;
+    if (moved > 18) glide(dest);
+    mode = 0; dest = null;
+  };
+  addEventListener("touchend", end, { passive: true });
+  addEventListener("touchcancel", end, { passive: true });
+
+  // a fling crossing into the row lands on its first (or, from below, its last) card
+  let prev = scrollY;
+  addEventListener("scroll", () => {
+    const y = scrollY, was = prev; prev = y;
+    if (touching || gliding()) return;
+    const g = geo(); if (!g) return;
+    const first = rest(g, 0), last = rest(g, n - 1);
+    if (was < first && y > first + 4) glide(first);
+    else if (was > last && y < last - 4) glide(last);
+  }, { passive: true });
 })();
 </script>
 <script>setTimeout(function () { if (!document.querySelector(".hx-top")) document.documentElement.classList.add("hx-fallback"); }, 5000);</script>
