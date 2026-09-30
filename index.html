@@ -61941,11 +61941,19 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
     const prev = active; active = i;
     names.forEach((b, k) => { if (k === i) b.setAttribute("aria-current", "true"); else b.removeAttribute("aria-current"); });
     arts.forEach((a, k) => a.classList.toggle("is-on", k === i));
-    // old title slides up and out, new title rises from below
+    // Scrolling down: the old title slides up and out while the new one rises from below.
+    // Scrolling back up: the reverse, the old one drops out and the new one comes down from above.
+    const dir = i > prev ? 1 : -1;
     titles.forEach((t, k) => {
-      if (k === i) { t.classList.remove("is-out", "no-t"); t.classList.add("is-on"); }
-      else if (k === prev) { t.classList.remove("is-on"); t.classList.add("is-out"); }
-      else { t.classList.add("no-t"); t.classList.remove("is-on", "is-out"); }
+      if (k === i) {
+        t.classList.add("no-t"); t.classList.remove("is-out", "is-on");
+        t.style.transform = "translate3d(0," + (dir > 0 ? 105 : -105) + "%,0)"; t.style.opacity = "0";
+        void t.offsetWidth;                                   // start from that side, then glide in
+        t.classList.remove("no-t"); t.style.transform = ""; t.style.opacity = ""; t.classList.add("is-on");
+      } else if (k === prev) {
+        t.classList.remove("is-on", "is-out", "no-t");
+        t.style.transform = "translate3d(0," + (dir > 0 ? -105 : 105) + "%,0)"; t.style.opacity = "0";
+      } else { t.classList.add("no-t"); t.classList.remove("is-on", "is-out"); t.style.transform = ""; t.style.opacity = ""; }
     });
     requestAnimationFrame(() => titles.forEach((t, k) => { if (k !== i && k !== prev) t.classList.remove("no-t"); }));
     subs.forEach((u, k) => u.classList.toggle("is-on", k === i));
@@ -61969,50 +61977,32 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
   };
   const pinned = () => pin.offsetParent !== null;   // hidden on phones
 
-  // Carousel: while the showcase is on screen, the bar along the bottom of the picture fills over a
-  // few seconds, then the next service comes in, looping back to the first after the last.
-  // Scrolling steps through the services RELATIVE to the one showing: each step boundary crossed
-  // moves one service on (or back). It used to jump to the service for that scroll position, which,
-  // once the carousel had moved on by itself, could skip one (Product Design -> UI Development).
-  // The bar always runs; the automatic switch alone waits while the reader is scrolling.
-  // A click on a name jumps straight to it; any change restarts the bar.
-  const DUR = 4200;
-  let from = performance.now(), arafId = 0, scrollIdx = -1, lastScroll = 0;
-  // any change of service starts the bar again from empty, at once, whatever caused it
-  const go = i => { activate(((i % N) + N) % N); from = performance.now(); if (bar) bar.style.transform = "scaleX(0)"; };
+  // The scroll alone decides the service: the pinned stretch is split into N equal steps, one per
+  // service, in order. Down the page: 1 -> 2 -> 3 -> 4; back up: the reverse. The last service holds
+  // for a full step before the section lets go and the page moves on. The bar under the picture
+  // fills as you scroll through the current step, so it shows how far until the next one.
+  // (An automatic timer used to move the services too, which is what broke the order.)
   function update() {
     scrubHead();
     if (!pinned()) return;
     measure();
     const p = Math.max(0, Math.min(1, (window.scrollY - top) / span));
-    const idx = Math.min(N - 1, Math.floor(p * N * 0.9999));
-    if (idx !== scrollIdx) { const d = scrollIdx < 0 ? 0 : idx - scrollIdx; scrollIdx = idx; if (d) go(active + d); }
+    const x = Math.min(N - 1e-4, p * N), idx = Math.floor(x);
+    activate(idx);
+    if (bar) bar.style.transform = "scaleX(" + (idx === N - 1 && p >= 1 ? 1 : x - idx).toFixed(4) + ")";
   }
-  let raf = 0;
-  let near = true;
+  let raf = 0, near = true;
+  const onScroll = () => { if (near && !raf) raf = requestAnimationFrame(() => { raf = 0; update(); }); };
   if (typeof IntersectionObserver !== "undefined") new IntersectionObserver(es => { near = es[0].isIntersecting; if (near) onScroll(); }, { rootMargin: "200px 0px" }).observe(sec);
-  const onScroll = () => { lastScroll = performance.now(); if (near && !raf) raf = requestAnimationFrame(() => { raf = 0; update(); }); };
   addEventListener("scroll", onScroll, { passive: true });
   addEventListener("resize", onScroll);
   update();
-  names.forEach((b, i) => b.addEventListener("click", () => go(i)));
-
-  const onStage = () => { if (!pinned()) return false; const r = sec.querySelector(".ysx-frame").getBoundingClientRect(); return r.top < innerHeight * 0.75 && r.bottom > innerHeight * 0.25; };
-  const auto = now => {
-    arafId = 0;
-    if (reduce || !onStage()) { from = now; if (bar) bar.style.transform = "scaleX(0)"; }
-    else {
-      // the bar always shows the true time; only the automatic switch waits for the reader to stop
-      // scrolling, so a scroll step and the carousel never land on the same moment
-      const f = Math.min(1, (now - from) / DUR);
-      if (bar) bar.style.transform = "scaleX(" + f.toFixed(4) + ")";
-      if (f >= 1 && now - lastScroll > 250) go(active + 1);
-    }
-    arafId = requestAnimationFrame(auto);
-  };
-  if (typeof IntersectionObserver !== "undefined") {
-    new IntersectionObserver(es => { if (es[0].isIntersecting) { if (!arafId) { from = performance.now(); arafId = requestAnimationFrame(auto); } } else if (arafId) { cancelAnimationFrame(arafId); arafId = 0; } }).observe(pin);
-  } else arafId = requestAnimationFrame(auto);
+  // a click on a name scrolls to the middle of that service's step, so the page and the showcase agree
+  names.forEach((b, i) => b.addEventListener("click", () => {
+    if (!pinned()) return; measure();
+    const y = top + (i + 0.5) / N * span, S = window.__ypScroll;
+    if (S && S.to && S.enabled) S.to(y, 700); else window.scrollTo({ top: y, behavior: "smooth" });
+  }));
 
   // ── phone cards fade up as they arrive ──
   const cards = Array.from(sec.querySelectorAll(".ysx-card"));
