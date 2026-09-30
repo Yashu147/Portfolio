@@ -56432,7 +56432,7 @@ void part(vec3 p, vec3 n, out int b, out ivec3 o, out vec3 d){
 // ─── Renderer / scene ───────────────────────────────────────
 const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance", preserveDrawingBuffer: Q.has("shot"), alpha: HERO });
 if (HERO) renderer.setClearColor(0x000000, 0);
-let PR_MAX = Math.min(window.devicePixelRatio || 1, Q.has("hq") || HERO ? 2.0 : 1.25); let prNow = PR_MAX, prCeil = PR_MAX, prUp = -1e9;
+let PR_MAX = Math.min(window.devicePixelRatio || 1, Q.has("hq") || HERO ? (matchMedia("(hover: none)").matches ? 3.0 : 2.0) : 1.25); let prNow = PR_MAX, prCeil = PR_MAX, prUp = -1e9;
 let perfMode = Q.has("perf"), perfSlowFor = 0;
 { const gl = renderer.getContext(), ext = gl.getExtension("WEBGL_debug_renderer_info"); const rn = ext ? String(gl.getParameter(ext.UNMASKED_RENDERER_WEBGL)) : "";
   window.__gpu = rn; if (/swiftshader|llvmpipe|software/i.test(rn)) { const w = document.createElement("div"); w.id = "gpuwarn";
@@ -56513,7 +56513,7 @@ const setView = (i, instant) => {
   requestAnimationFrame(step);
 };
 // hero: keep the whole robot (arms included) inside ~80% of the width on any screen shape
-const heroDist = () => Math.max(16.5, 16.5 * 1.35 / Math.max(0.3, innerWidth / innerHeight));
+const heroDist = () => Math.max(16.5, 16.5 * 1.35 / Math.max(0.3, innerWidth / innerHeight) * (innerWidth < innerHeight ? 0.8 : 1));
 if (HERO && !Q.has("view")) { VIEWS[0] = [0, 1.3, heroDist()]; addEventListener("resize", () => { const d = heroDist(), v = camera.position.clone().sub(controls.target).setLength(d); camera.position.copy(controls.target).add(v); VIEWS[0] = [0, 1.3, d]; controls.update(); }); }
 setView(+(Q.get("view") || 0), true);
 if (Q.has("zoom")) { camera.zoom = +Q.get("zoom"); camera.updateProjectionMatrix(); }
@@ -57342,6 +57342,12 @@ if (HERO) {
     right.insertAdjacentHTML("beforeend", '<a class="hx-cta start-build" href="mailto:ponde.yashwant@gmail.com"><span class="tile"></span><svg class="icon" viewBox="0 0 30 15" aria-hidden="true"></svg><span class="label">Let\u2019s Talk</span></a>');
     const tb = right.querySelector(".hx-cta");
     if (window.__ypStartBuild) window.__ypStartBuild(tb);   // otherwise the page's Start Build script picks it up when it runs
+    // phones: the name and status sit in a tag under the photo; it shows for a few seconds on arrival,
+    // and a tap on the photo (while the header is open) shows or hides it
+    { const idw = top.querySelector(".hx-id"), phone = () => innerWidth <= 760;
+      setTimeout(() => { if (phone() && scrollY < 40) { idw.classList.add("is-open"); setTimeout(() => idw.classList.remove("is-open"), 4200); } }, 1600);
+      dp.addEventListener("click", e => { if (!phone() || scrollY > 40) return; e.preventDefault(); idw.classList.toggle("is-open"); }, true);
+      addEventListener("scroll", () => { if (scrollY > 40) idw.classList.remove("is-open"); }, { passive: true }); }
     // the name is set to the exact width of the status line beneath it
     { const nm = top.querySelector(".hx-idname"), st = top.querySelector(".hx-idstat");
       const fit = () => { nm.style.fontSize = "20px"; const w = nm.getBoundingClientRect().width, t = st.getBoundingClientRect().width; if (!w || !t) return; let fs = 20 * t / w; nm.style.fontSize = fs + "px"; const w2 = nm.getBoundingClientRect().width; if (w2) nm.style.fontSize = (fs * t / w2).toFixed(3) + "px"; };
@@ -57502,6 +57508,12 @@ void main() {
   for (const x of [-80, 7]) for (const y of [57, 135]) for (const z of [-30, 72]) KEY.push([0, x, y, z]);
   for (const [sd, b] of [["R", 1], ["L", 5]]) { const S = RIG[sd]; KEY.push([b, S.Ps.x + S.sg * 9, S.Ps.y, S.Ps.z], [b + 2, S.Pw.x, S.Pw.y, S.Pw.z], [b + 3, S.Pk.x, S.Pk.y - 24, S.Pk.z + 10], [b + 3, S.Pk.x + S.sg * 9, S.Pk.y - 12, S.Pk.z + 18], [b + 3, S.Pk.x - S.sg * 10, S.Pk.y - 20, S.Pk.z + 14], [b + 1, S.Pe.x, S.Pe.y, S.Pe.z]); }
   const vv = new THREE.Vector3(), box = { x0: 0, y0: 0, x1: 0, y1: 0, init: false };
+  window.__noHover = matchMedia("(hover: none)").matches;
+  // a touch turns the robot only if it starts on the robot; anywhere else it is left to the page and the light
+  renderer.domElement.addEventListener("pointerdown", e => { if (e.pointerType === "mouse" || Q.has("nodrag")) return;
+    controls.enabled = e.clientX > box.x0 && e.clientX < box.x1 && e.clientY > box.y0 && e.clientY < box.y1; }, { capture: true });
+  const reDrag = () => { if (!Q.has("nodrag")) controls.enabled = true; };
+  addEventListener("pointerup", reDrag); addEventListener("pointercancel", reDrag);
   let overRobot = false;
   window.__heroFrame = () => {
     let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
@@ -57561,7 +57573,7 @@ renderer.setAnimationLoop(now => {
   U.uBlink.value = Q.has("blink") ? +Q.get("blink") : bb;
   U.uEmoA.value = emo.a; U.uEmoB.value = emo.b; U.uMix.value = emo.k > 0 ? km : 0; U.uTime.value = te; U.uLook.value.set(look.x, look.y);
   rigUpdate(dt);
-  if (HERO) { const p = window.__heroPointer, ty = 0, tx = 0, px = p && p.on && !action.name ? p.x * 0.7 : 0, k = 1 - Math.exp(-dt * 2.6);
+  if (HERO) { const p = window.__heroPointer, ty = 0, tx = 0, px = p && p.on && !action.name && !window.__noHover ? p.x * 0.7 : 0, k = 1 - Math.exp(-dt * 2.6);
     actRoot.rotation.y += (ty - actRoot.rotation.y) * k; actRoot.rotation.x += (tx - actRoot.rotation.x) * k; actRoot.position.x += (px - actRoot.position.x) * k;
     // entrance: drop in and land with a small overshoot, surprised then happy
     if (heroEnter < 1) { if (heroEnter === 0) { showEmo(4, 1.2); action.next = te + 14; } heroEnter = Math.min(1, heroEnter + dt / 1.15); const u = heroEnter, c = 1.9, e = 1 + (c + 1) * Math.pow(u - 1, 3) + c * Math.pow(u - 1, 2);
@@ -58835,6 +58847,34 @@ renderer.setAnimationLoop(now => {
     /* rocket bar: both lines, smaller, either side of the rocket */
     .btt-l { display: block !important; }
     .btt-say { font-size: 12px; }
+  }
+
+  /* iPhone: the sticky case backdrop is 100svh tall, so it must also give back 100svh (not 100vh);
+     Safari's larger 100vh was pulling the first card up under the section head */
+  #showcase [data-case-bg] { margin-bottom: -100vh !important; margin-bottom: -100svh !important; }
+  /* touch screens have no hover: no "View" disc following taps */
+  @media (hover: none) { #showcase [data-ref="caseCursorRef"], [data-ref="caseCursorRef"] { display: none !important; } }
+
+  @media (max-width: 760px) {
+    /* one case card in view at a time */
+    #showcase > div[style*="flex-direction: column"] { gap: 46vh !important; gap: 46svh !important; }
+
+    /* nav: the pill sits exactly in the centre; Let's Talk is a narrower pill on the right */
+    body.hero .hx-top { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 6px; }
+    body.hero .hx-top .hx-right { justify-self: end; min-width: 0; }
+    .hx-cta.start-build { width: 124px !important; }
+    .hx-cta.start-build .label { font-size: 14px; left: calc(var(--sb) * 62px + (124px - var(--sb) * 62px - var(--lw, 62px)) / 2) !important; transform: none !important; color: #fff !important; }
+    .hx-cta.start-build:hover .tile { width: calc(var(--sb) * 59px) !important; }
+    .hx-cta.start-build:hover .icon { transform: none !important; }
+
+    /* name and status: a small glass tag under the photo, shown on arrival and on a tap of the photo */
+    .hx-id { position: relative; }
+    .hx-idtext { display: flex !important; position: absolute; left: 0; top: calc(100% + 10px); z-index: 3; padding: 9px 12px 10px; border-radius: 14px;
+      background: var(--fill, rgba(255,255,255,.52)); -webkit-backdrop-filter: blur(22px) saturate(1.6); backdrop-filter: blur(22px) saturate(1.6);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.35), 0 10px 24px -12px rgba(0,0,0,.35); pointer-events: none; }
+    .hx-idname { font-size: 15px !important; }
+    .hx-id:not(.is-open) .hx-idtext { opacity: 0 !important; visibility: hidden !important; }
+    .hx-id .hx-idtext { transition: opacity 300ms ease, visibility 300ms; }
   }
 
   /* ── section heads (reference: label + underline, right-hand note, two big lines on hairlines) ── */
@@ -62418,7 +62458,11 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
 
   /* ---------- States: hover / pressed / click ---------- */
   btt.addEventListener('pointerenter', e => { if (e.pointerType === 'touch') return; btt.classList.add('is-hover'); play(); });
-  btt.addEventListener('pointerleave', () => { btt.classList.remove('is-hover', 'is-pressed'); speed = SPEED_HOVER; stop(); });
+  // touch screens have no hover: the warp runs by itself while the bar is on screen; a tap flies up
+  if (matchMedia('(hover: none)').matches && typeof IntersectionObserver !== 'undefined') {
+    new IntersectionObserver(es => { if (es[0].isIntersecting) { btt.classList.add('is-hover'); play(); } else { btt.classList.remove('is-hover', 'is-pressed'); stop(); } }, { threshold: 0.4 }).observe(btt);
+  }
+  btt.addEventListener('pointerleave', e => { if (e.pointerType === 'touch') { btt.classList.remove('is-pressed'); speed = SPEED_HOVER; return; } btt.classList.remove('is-hover', 'is-pressed'); speed = SPEED_HOVER; stop(); });
   btt.addEventListener('pointerdown',  () => { btt.classList.add('is-pressed'); speed = SPEED_PRESSED; });
   btt.addEventListener('pointerup',    () => { btt.classList.remove('is-pressed'); speed = SPEED_HOVER; });
   const toTop = () => { const S = window.__ypScroll; if (S && S.to && S.enabled) S.to(0, 1400); else window.scrollTo({ top: 0, behavior: 'smooth' }); };   // the site's own glide
