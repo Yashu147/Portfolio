@@ -58958,7 +58958,7 @@ renderer.setAnimationLoop(now => {
   /* How I work on phones: the row steps one card at a time on a compositor transition (smooth
      however busy the page is); no blur on the resting cards, so nothing is repainted mid-slide */
   @media (max-width: 760px) and (hover: none) {
-    #spline [data-flow-rail] { transition: transform 820ms cubic-bezier(0.33, 0, 0.15, 1); }
+    #spline [data-flow-rail] { transition: transform 900ms cubic-bezier(0.3, 0, 0.12, 1); }
     #spline [data-step] { filter: none !important; transition: background-color .45s ease, opacity .45s ease !important; }
     #spline [data-step] * { transition: color .45s ease; }
   }
@@ -58983,6 +58983,12 @@ renderer.setAnimationLoop(now => {
   #services .ysx-card-name { display: none !important; }
   #services .ysx-card-title { color: var(--c, var(--acc)); margin: 0 0 18px; font-size: clamp(26px, 7.4vw, 32px); line-height: 1.05; letter-spacing: -0.04em; }
   #services .ysx-card + .ysx-card .ysx-card-title { border-top: 1px solid var(--div); padding-top: 26px; }
+
+  /* How I work on phones (flowpager.js): the footer sits inside the section, pinned right under the
+     cards, and rises over them after the last card; the pin's length is the spacer after it */
+  html.fp-on #spline [data-flow-runway] { height: auto !important; }
+  html.fp-on #site-foot { position: sticky !important; top: var(--fp-st, 100svh); z-index: 5; }
+  html.fp-on .fp-space { display: block; height: 240vh; height: 240svh; pointer-events: none; }
 
   /* ── section heads (reference: label + underline, right-hand note, two big lines on hairlines) ── */
   .yph { display: flex; flex-direction: column; width: 100%; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
@@ -62714,7 +62720,12 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
   // off while How I work is pinned: its cards reach the bottom of the screen and nothing scrolls under them
   const run = document.querySelector("#spline [data-flow-runway]");
   const pinned = () => { if (window.__flowPlaced) return window.__flowPlaced(); if (!run) return false; const r = run.getBoundingClientRect(); return r.top <= 1 && r.bottom >= innerHeight - 1; };
-  const update = () => { raf = 0; const h = innerHeight; el.classList.toggle("is-on", first.getBoundingClientRect().top < h - 120 && foot.getBoundingClientRect().top > h && !pinned()); };
+  const update = () => { raf = 0; const h = innerHeight;
+    // phones: with the footer pinned under How I work, the blur covers only the band of footer below the cards
+    const fp = window.__fpBlur ? window.__fpBlur() : null;
+    if (fp) { el.style.height = fp.h ? fp.h + "px" : ""; el.classList.toggle("is-on", fp.on); return; }
+    el.style.height = "";
+    el.classList.toggle("is-on", first.getBoundingClientRect().top < h - 120 && foot.getBoundingClientRect().top > h && !pinned()); };
   addEventListener("scroll", () => { if (!raf) raf = requestAnimationFrame(update); }, { passive: true });
   addEventListener("resize", update);
   addEventListener("hashchange", () => setTimeout(update, 60));
@@ -62765,46 +62776,77 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
 })();
 </script>
 <script>
-/* How I work on phones: the section pins as usual, and while it is pinned one swipe moves exactly
-   one card. The page glides to the next card's resting spot (the row itself slides on a CSS
-   transition, see initFlow), a caught swipe never scrolls the page itself, so no momentum can carry
-   it past a card. A fling that reaches the row from above (or below) is stopped on its first (or
-   last) card. After the last card a swipe up scrolls on to the footer as usual; before the first
-   card a swipe down scrolls back up. */
+/* How I work on phones.
+   Layout: the footer is moved into the section and pinned right under the cards, so the space below
+   them is the top of the footer (under the bottom blur), never an empty band. After the last card the
+   footer rises over the cards; scrolling back, it slides away again.
+   Motion: while the cards are pinned every swipe belongs to the row (native scrolling is switched off
+   there, so Safari's momentum can never carry the page past a card): up/left = next card, down/right =
+   previous card; after card 4 the footer comes up, before card 1 the page goes back up. Each change
+   is a slide of the whole row (a compositor transition, see initFlow / phone.css). A fling from above
+   (or from the footer) that reaches the cards is stopped on the first (or last) card. */
 (function () {
   if (!matchMedia("(max-width: 760px) and (hover: none)").matches) return;
-  const LEAD = 0.05, BEATS = 0.86;               // the row's own timeline (initFlow)
   const html = document.documentElement;
-  let sec = null, n = 0;
-  const geo = () => {
-    sec = sec || document.querySelector("#spline [data-flow-runway]");
-    if (!sec) return null;
-    n = n || sec.querySelectorAll("[data-step]").length;
-    if (!n) return null;
-    const r = sec.getBoundingClientRect();
-    return { top: r.top + scrollY, len: Math.max(1, r.height - innerHeight) };
-  };
-  // card k's resting spot: fully lit, the row still
-  const rest = (g, k) => Math.round(g.top + (LEAD + ((k + 0.48) / n) * BEATS) * g.len);
-  const nearestTo = (g, y) => { let b = 0; for (let k = 1; k < n; k++) if (Math.abs(rest(g, k) - y) < Math.abs(rest(g, b) - y)) b = k; return b; };
-  const nearest = g => { let b = 0; for (let k = 1; k < n; k++) if (Math.abs(rest(g, k) - scrollY) < Math.abs(rest(g, b) - scrollY)) b = k; return b; };
+  const LEAD = 0.05, BEATS = 0.86;                  // the row's own timeline (initFlow)
+  let run, stage, foot, space, box, n = 0;
 
-  // the page's glide between two resting spots: quick off the mark (the card change starts at once),
-  // long soft landing (the new card's light comes up as it settles)
-  let anim = 0, animEnd = 0;
-  // the card it is heading for slides in at once (the row's step does not wait for the page)
+  const setup = () => {
+    run = document.querySelector("#spline [data-flow-runway]"); foot = document.getElementById("site-foot");
+    if (!run || !foot) return false;
+    stage = run.firstElementChild; box = run.querySelector("[data-flow-box]");
+    n = run.querySelectorAll("[data-step]").length;
+    if (!stage || !box || !n) return false;
+    space = document.createElement("span"); space.className = "fp-space"; space.setAttribute("aria-hidden", "true");
+    run.appendChild(foot); run.appendChild(space);
+    html.classList.add("fp-on");
+    return true;
+  };
+  if (!setup()) return;
+
+  // geometry (page offsets): s = how far the pin has run; the cards rest at 10%, 35%, 60%, 85% of it
+  const G = () => {
+    const r = run.getBoundingClientRect();
+    return { top: r.top + scrollY, L: space.offsetHeight, st: stage.offsetHeight, fh: foot.offsetHeight };
+  };
+  const STEP = 0.75 / Math.max(1, n - 1);
+  const rest = (g, k) => Math.round(g.top + g.L * (0.1 + k * STEP));
+  const footY = g => Math.min(document.documentElement.scrollHeight - innerHeight, Math.round(g.top + g.L + g.st));   // the footer up to the top, the rocket bar under it
+  const sizeFoot = () => html.style.setProperty("--fp-st", stage.offsetHeight + "px");
+  sizeFoot();
+
+  // the row's position on its timeline follows the page: card k is lit and still at its resting spot
+  const paint = () => {
+    const g = G(), f = (scrollY - g.top) / Math.max(1, g.L);
+    const p = Math.max(0, Math.min(1, ((f - 0.1) / STEP + 0.48) / n));
+    window.__flowRaw = LEAD + p * BEATS;
+    if (window.__flowApply) window.__flowApply();
+  };
+
+  // where the reader is: -1 before the first card (pin just started), 0..n-1 on a card, n after the last
+  const zone = g => scrollY >= g.top - 4 && scrollY <= rest(g, n - 1) + 8;
+  const nearest = (g, y) => {
+    if (y < rest(g, 0) - 8) return -1;
+    if (y > rest(g, n - 1) + 8) return n;
+    let b = 0; for (let k = 1; k < n; k++) if (Math.abs(rest(g, k) - y) < Math.abs(rest(g, b) - y)) b = k;
+    return b;
+  };
+  const setTouch = () => { const g = G(); html.style.touchAction = zone(g) ? "none" : ""; };
+
+  // the page's glide to a spot; the card it heads for slides in at once
+  let anim = 0, animEnd = 0, goal = null, goalCard = null;
   const glide = (dest, card) => {
     cancelAnimationFrame(anim);
-    const from = scrollY, dist = dest - from;
-    window.__flowIdx = card; if (window.__flowApply) window.__flowApply();
-    if (Math.abs(dist) < 1) { window.__flowIdx = null; return; }
-    const t0 = performance.now(), dur = 900;
-    animEnd = t0 + dur + 100;
+    goal = dest; goalCard = card;
+    window.__flowIdx = card == null || card < 0 ? null : card; paint();
+    const from = scrollY, dist = dest - from, t0 = performance.now();
+    const dur = card == null ? Math.min(1100, Math.max(600, Math.abs(dist) * 0.9)) : 850;
+    animEnd = t0 + dur + 120;
     const step = now => {
       const t = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - t, 3);
       scrollTo(0, from + dist * e);
-      anim = t < 1 ? requestAnimationFrame(step) : 0;
-      if (!anim) window.__flowIdx = null;
+      if (t < 1) anim = requestAnimationFrame(step);
+      else { anim = 0; goal = null; goalCard = null; window.__flowIdx = null; paint(); setTouch(); }
     };
     anim = requestAnimationFrame(step);
   };
@@ -62812,73 +62854,79 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
 
   // stopping a fling: a scroller switched to overflow:hidden drops its momentum
   let holdUntil = 0, holdY = 0;
-  const catchAt = y => {
-    html.style.overflow = "hidden";
-    scrollTo(0, y);
-    requestAnimationFrame(() => requestAnimationFrame(() => { html.style.overflow = ""; }));
-    holdUntil = performance.now() + 1000; holdY = y;
-  };
+  const stopMomentum = () => { html.style.overflow = "hidden"; requestAnimationFrame(() => requestAnimationFrame(() => { html.style.overflow = ""; })); };
+  const catchAt = y => { stopMomentum(); scrollTo(0, y); holdUntil = performance.now() + 900; holdY = y; paint(); setTouch(); };
 
-  // what a swipe does, decided on its first movement
-  // (a resting spot to glide to, "leave" to let the page scroll on past an end, or null)
-  const decide = (fwd, sideways) => {
-    const g = geo(); if (!g) return null;
-    const y = scrollY, H = innerHeight, first = rest(g, 0), last = rest(g, n - 1);
-    if (y >= first - 8 && y <= last + 8) {
-      const k = nearest(g), to = fwd ? k + 1 : k - 1;
-      if (to < 0 || to >= n) return sideways ? rest(g, k) : "leave";   // past either end: the page scrolls on
-      return rest(g, to);
+  // one step of the row
+  const act = fwd => {
+    const g = G();
+    const cur = goalCard != null ? goalCard : nearest(g, goal != null ? goal : scrollY);
+    if (fwd) {
+      if (cur < n - 1) glide(rest(g, Math.max(0, cur + 1)), Math.max(0, cur + 1));
+      else glide(footY(g), null);                                      // after the last card: the footer
+    } else {
+      if (cur >= n) glide(rest(g, n - 1), n - 1);                      // from the footer: back to the last card
+      else if (cur > 0) glide(rest(g, cur - 1), cur - 1);
+      else glide(Math.max(0, g.top - innerHeight * 0.6), null);         // before the first card: back up
     }
-    if (sideways) return null;
-    if (fwd && y < first && y > first - H * 0.75) return first;     // coming down onto the row
-    if (!fwd && y > last && y < last + H * 0.75) return last;       // coming back up onto it
-    return null;
   };
 
-  let sx = 0, sy = 0, decided = false, dest = null, touching = false, swipedAt = -1e9, releasedAt = -1e9;
+  let sx = 0, sy = 0, mine = false, fired = false, touching = false, swipedAt = -1e9, crossed = false;
   addEventListener("touchstart", e => {
-    touching = true; decided = false; dest = null;
-    if (e.touches.length !== 1) { decided = true; return; }
+    touching = true; fired = false; crossed = false;
+    if (e.touches.length !== 1) { mine = false; return; }
     sx = e.touches[0].clientX; sy = e.touches[0].clientY;
-    if (anim) { cancelAnimationFrame(anim); anim = 0; animEnd = 0; window.__flowIdx = null; }
+    const g = G();
+    mine = zone(g) || (goal != null && gliding());
     holdUntil = 0;
   }, { passive: true });
   addEventListener("touchmove", e => {
-    if (!decided) {
-      const dx = sx - e.touches[0].clientX, dy = sy - e.touches[0].clientY;
-      if (Math.abs(dx) < 4 && Math.abs(dy) < 4) return;
-      const side = Math.abs(dx) > Math.abs(dy);
-      dest = decide(side ? dx > 0 : dy > 0, side);
-      if (dest === "leave") { dest = null; releasedAt = performance.now(); }
-      decided = true;
-    }
-    if (dest != null && e.cancelable) e.preventDefault();     // a caught swipe never scrolls the page
+    if (!mine) return;
+    if (e.cancelable) e.preventDefault();                 // from the very first movement: Safari never starts its own scroll here
+    if (fired) return;
+    const dx = sx - e.touches[0].clientX, dy = sy - e.touches[0].clientY;
+    if (Math.max(Math.abs(dx), Math.abs(dy)) < 12) return;
+    fired = true;
+    act(Math.abs(dx) > Math.abs(dy) ? dx > 0 : dy > 0);
   }, { passive: false });
   const end = e => {
     touching = false;
     const t = e.changedTouches && e.changedTouches[0];
     const moved = t ? Math.max(Math.abs(sx - t.clientX), Math.abs(sy - t.clientY)) : 0;
-    if (dest == null) { if (moved > 10) swipedAt = performance.now(); return; }
-    if (moved > 16) { const g = geo(); glide(dest, g ? nearestTo(g, dest) : null); }
-    dest = null;
+    if (!mine && moved > 10) swipedAt = performance.now();
+    if (!mine && crossed) {                               // a finger drag carried the page onto the cards
+      stopMomentum(); const g = G(), k = nearest(g, scrollY);
+      const c = Math.max(0, Math.min(n - 1, k)); glide(rest(g, c), c);
+    }
+    mine = false;
   };
   addEventListener("touchend", end, { passive: true });
-  addEventListener("touchcancel", () => { touching = false; dest = null; }, { passive: true });
+  addEventListener("touchcancel", () => { touching = false; mine = false; }, { passive: true });
 
-  // the page's own momentum reaching the row: caught on the first card (from above) or the last (from below)
   let prev = scrollY;
   addEventListener("scroll", () => {
     const y = scrollY, was = prev; prev = y;
-    if (touching || gliding()) return;
+    paint();
+    if (gliding()) return;
     if (performance.now() < holdUntil) { if (Math.abs(y - holdY) > 0.5) scrollTo(0, holdY); return; }
-    if (performance.now() - swipedAt > 4000) return;                 // only the reader's own scrolling, never the nav's
-    const g = geo(); if (!g) return;
-    const first = rest(g, 0), last = rest(g, n - 1);
-    if (was < first - 1 && y > first + 1) catchAt(first);
-    else if (was > last + 1 && y < last - 1 && performance.now() - releasedAt > 1500) catchAt(last);
+    const g = G(), first = rest(g, 0), last = rest(g, n - 1);
+    const down = was < first - 1 && y > first + 1, up = was > last + 1 && y < last - 1;
+    if (touching) { if (!mine && (down || up)) crossed = true; setTouch(); return; }
+    if ((down || up) && performance.now() - swipedAt < 4000) catchAt(down ? first : last);   // only the reader's own fling
+    setTouch();
   }, { passive: true });
+  addEventListener("resize", () => { sizeFoot(); paint(); setTouch(); });
+  paint(); setTouch();
+  setTimeout(() => { sizeFoot(); paint(); }, 1200);
 
-  window.__flowPlaced = () => { const g = geo(); return !!g && scrollY >= rest(g, 0) - 8 && scrollY <= rest(g, n - 1) + 8; };
+  // the bottom blur over the footer's top while the cards are up: only the band below the cards
+  window.__fpBlur = () => {
+    const ih = innerHeight, ft = foot.getBoundingClientRect().top;
+    if (ft >= ih) return null;                                        // footer not in view: the usual rule
+    if (ft < stage.getBoundingClientRect().bottom - 2) return { on: false };   // the footer is rising: no blur
+    const from = Math.max(box.getBoundingClientRect().bottom + 6, ih - 120), h = Math.round(ih - from);
+    return h < 24 ? { on: false } : { on: true, h };
+  };
 })();
 </script>
 <script>setTimeout(function () { if (!document.querySelector(".hx-top")) document.documentElement.classList.add("hx-fallback"); }, 5000);</script>
