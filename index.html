@@ -62877,7 +62877,9 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
   };
 
   // where the reader is: -1 before the first card (pin just started), 0..n-1 on a card, n after the last
-  const zone = g => scrollY >= g.top - 4 && scrollY <= rest(g, n - 1) + 8;
+  // only on the home page with the section laid out: a case study page hides it (size 0), and then nothing here applies
+  const live = () => !html.getAttribute("data-yp-page") && space.offsetHeight > 0 && run.getClientRects().length > 0;
+  const zone = g => live() && scrollY >= g.top - 4 && scrollY <= rest(g, n - 1) + 8;
   const nearest = (g, y) => {
     if (y < rest(g, 0) - 8) return -1;
     if (y > rest(g, n - 1) + 8) return n;
@@ -62960,6 +62962,7 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
   addEventListener("scroll", () => {
     const y = scrollY, was = prev; prev = y;
     paint();
+    if (!live()) { if (html.style.touchAction) html.style.touchAction = ""; holdUntil = 0; return; }
     if (gliding()) return;
     if (performance.now() < holdUntil) { if (Math.abs(y - holdY) > 0.5) scrollTo(0, holdY); return; }
     const g = G(), first = rest(g, 0), last = rest(g, n - 1);
@@ -62968,12 +62971,14 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
     if ((down || up) && performance.now() - swipedAt < 4000) catchAt(down ? first : last);   // only the reader's own fling
     setTouch();
   }, { passive: true });
+  addEventListener("hashchange", () => setTimeout(setTouch, 50));
   addEventListener("resize", () => { sizeFoot(); paint(); setTouch(); });
   paint(); setTouch();
   setTimeout(() => { sizeFoot(); paint(); }, 1200);
 
   // the bottom blur over the footer's top while the cards are up: only the band below the cards
   window.__fpBlur = () => {
+    if (!live()) return null;
     const ih = innerHeight, ft = foot.getBoundingClientRect().top;
     if (ft >= ih) return null;                                        // footer not in view: the usual rule
     if (ft < stage.getBoundingClientRect().bottom - 2) return { on: false };   // the footer is rising: no blur
