@@ -10,6 +10,7 @@ try { var s = null; try { s = localStorage.getItem("hx-theme"); } catch (e) {}
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0d0d11">
 <script>document.documentElement.classList.add("js");</script>
+<style>html.js:not(.hx-fallback) .hx-static { display: none !important; }</style>
 <script>(function () { var touch = matchMedia("(hover: none)").matches, w = -1, h = 0;
   window.__SH = function () { if (!touch) return innerHeight; if (innerWidth !== w) { w = innerWidth; var d = document.createElement("div");
     d.style.cssText = "position:fixed;left:0;top:0;width:1px;height:100vh;height:100lvh;visibility:hidden;pointer-events:none"; (document.body || document.documentElement).appendChild(d);
@@ -58976,6 +58977,12 @@ renderer.setAnimationLoop(now => {
     .yph-label > i { margin-top: 8px !important; }
     .yph-top { margin-bottom: 28px !important; }
   }
+
+  /* What I do, phone cards: one heading per card, in the card's own colour and a size below the
+     section title (the small label that repeated it is gone); a hairline still separates the cards */
+  #services .ysx-card-name { display: none !important; }
+  #services .ysx-card-title { color: var(--c, var(--acc)); margin: 0 0 18px; font-size: clamp(26px, 7.4vw, 32px); line-height: 1.05; letter-spacing: -0.04em; }
+  #services .ysx-card + .ysx-card .ysx-card-title { border-top: 1px solid var(--div); padding-top: 26px; }
 
   /* ── section heads (reference: label + underline, right-hand note, two big lines on hairlines) ── */
   .yph { display: flex; flex-direction: column; width: 100%; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
