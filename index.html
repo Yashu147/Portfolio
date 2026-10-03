@@ -60848,7 +60848,7 @@ class Component extends DCLogic {
     });
 
     // the monitor run: the frame keeps one fixed size with the same room on the left, right and top of the Mac;
-    // pinned, the Mac turns to face you and stops; then the frame opens to the whole screen (masks moved with
+    // pinned, the frame opens to the whole screen; once it is full, the Mac turns to face you (masks moved with
     // transform only, so the 3D layer is never re-clipped). Scrolling back reverses it.
     const mr = q('[data-mon-run]');
     if (mr && near(mr)) {
@@ -60857,7 +60857,7 @@ class Component extends DCLogic {
         const r = mr.getBoundingClientRect(), W = mk.clientWidth || vw, H = mk.clientHeight || vh;
         const p = clamp(-r.top / Math.max(1, mr.offsetHeight - vh));
         mon.progress(p);
-        const ex = motion ? easeIO(seg(p, 0.42, 0.94)) : 0;
+        const ex = motion ? easeIO(seg(p, 0.04, 0.5)) : 0;
         mon.paintFrame(mk, mon.frameFor(W, H), 1 - ex, W, H);
       }
     }
@@ -61292,7 +61292,8 @@ return Component;
   //   moved with transform (paintFrame).
   // The scene is drawn in a box of the proportions it was approved in, sized so the Mac fits the screen with
   // the same room on the left, right and top, and shifted so the Mac sits in the centre.
-  // The turn is the scene's own animation (its hover event): forward when the run pins, reverse above it.
+  // The turn is the scene's own animation (its hover event): forward once the frame fills the screen,
+  // reverse as it starts to close.
   if (!customElements.get("ve-monitor")) {
     const RUNTIMES = [
       "https://unpkg.com/@splinetool/runtime@2.0.66/build/runtime.js",
@@ -61408,9 +61409,10 @@ return Component;
         for (const u of this.uuids || []) { try { fwd ? this.app.emitEvent("mouseHover", u) : this.app.emitEventReverse("mouseHover", u); } catch (e) {} }
         this.renderFor(2800);
       }
-      // where the reader is in the run: the turn plays once it pins, and reverses above it
+      // where the reader is in the run: the turn plays once the frame has filled the screen (it opens over
+      // 4%..50% of the run), and reverses when the frame starts to close again
       progress(p) {
-        if (p >= 0.05) this.want = true; else if (p <= 0.015) this.want = false;
+        if (p >= 0.56) this.want = true; else if (p <= 0.46) this.want = false;
         if (this.ready && this.want !== this.turned) this.turn(this.want);
       }
       disconnectedCallback() {
