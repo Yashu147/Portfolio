@@ -61344,8 +61344,8 @@ return Component;
       geometry(W, H) {
         const P = Math.max(20, Math.min(W, H) * 0.05), side = Math.max(16, W * 0.05), topMin = Math.max(84, H * 0.1);
         const block = (MAC.top + MAC.bottom) * (1 + MAC.stand);
-        // open: the Mac fills about 80% of the width (its screen at most 84% of the height), body centred, clear of the chapter bar
-        const s1 = Math.min(1.8, (W * 0.8) / MAC.w, (H * 0.84) / (MAC.top + MAC.bottom));
+        // open: the Mac fills about 70% of the width (its screen at most 74% of the height), body centred, clear of the chapter bar
+        const s1 = Math.min(1.6, (W * 0.7) / MAC.w, (H * 0.74) / (MAC.top + MAC.bottom));
         // closed: the whole Mac in the frame, the same room P on the left, right and top; it grows a quarter as the frame opens
         const s0 = Math.max(0.1, Math.min((W - 2 * side - 2 * P) / MAC.w, (H - 2 * topMin - P) / block, s1 * 0.8));
         const fw = MAC.w * s0 + 2 * P, fh = P + block * s0;
