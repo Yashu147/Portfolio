@@ -59333,7 +59333,7 @@ renderer.setAnimationLoop(now => {
 
   /* The obvious fix: the laptop leans in on hover */
   .ve6 .vfix img { transition: transform 1100ms cubic-bezier(0.16, 1, 0.3, 1); will-change: transform; }
-  .ve6 .vfix:hover img { transform: scale(1.06); }
+  .ve6 .vfix.ve-hov img { transform: scale(1.06); }
 
   /* What founders told us: quote cards in the challenge / answer language */
   .ve6 .vf { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
@@ -59342,8 +59342,8 @@ renderer.setAnimationLoop(now => {
     box-shadow: inset 0 0 0 1px rgba(11,11,12,0.06); transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 600ms cubic-bezier(0.16, 1, 0.3, 1); }
   .ve6 .vf-c::after { content: "\201C"; position: absolute; top: clamp(-6px, -0.4vw, 0px); right: clamp(20px, 2.4vw, 36px); font-size: clamp(150px, 13vw, 220px); line-height: 1; font-weight: 500;
     color: color-mix(in oklch, var(--acc) 13%, #FFFFFF); pointer-events: none; transition: color 600ms, transform 900ms cubic-bezier(0.16, 1, 0.3, 1); }
-  .ve6 .vf-c:hover { transform: translateY(-4px); box-shadow: inset 0 0 0 1px rgba(11,11,12,0.06), 0 24px 48px -28px rgba(11,11,12,0.28); }
-  .ve6 .vf-c:hover::after { color: color-mix(in oklch, var(--acc) 24%, #FFFFFF); transform: translateY(6px) rotate(-6deg); }
+  .ve6 .vf-c.ve-hov { transform: translateY(-4px); box-shadow: inset 0 0 0 1px rgba(11,11,12,0.06), 0 24px 48px -28px rgba(11,11,12,0.28); }
+  .ve6 .vf-c.ve-hov::after { color: color-mix(in oklch, var(--acc) 24%, #FFFFFF); transform: translateY(6px) rotate(-6deg); }
   .ve6 .vf-c .vca-l { position: relative; z-index: 1; color: var(--acc); }
   .ve6 .vf-t { position: relative; z-index: 1; margin: auto 0 0; font-size: clamp(25px, 2.3vw, 34px); line-height: 1.12; font-weight: 500; letter-spacing: -0.035em; text-indent: -0.36em; text-wrap: balance; }
   .ve6 .vf-m { color: var(--acc); }
@@ -59364,7 +59364,7 @@ renderer.setAnimationLoop(now => {
   .ve6 .vca-q .vca-t { margin-top: auto; color: #9A9A9E; }
   .ve6 .vca-q .vca-t em { color: #0B0B0C; }
   .ve6 .vca-q::after { content: "?"; position: absolute; top: clamp(8px, 1.4vw, 20px); right: clamp(28px, 3.6vw, 56px); font-size: clamp(140px, 13vw, 220px); line-height: 1; font-weight: 500; letter-spacing: -0.06em; color: color-mix(in oklch, var(--acc) 13%, #FFFFFF); pointer-events: none; transition: color 600ms, transform 900ms cubic-bezier(0.16, 1, 0.3, 1); }
-  .ve6 .vca-q:hover::after { color: color-mix(in oklch, var(--acc) 22%, #FFFFFF); transform: rotate(-6deg); }
+  .ve6 .vca-q.ve-hov::after { color: color-mix(in oklch, var(--acc) 22%, #FFFFFF); transform: rotate(-6deg); }
   .ve6 .vca-a .vca-t { color: rgba(255,255,255,0.74); }
   .ve6 .vca-a .vca-t em { color: #FFFFFF; }
   .ve6 .vca-join { position: absolute; z-index: 2; left: -34px; top: 50%; width: 44px; height: 44px; margin-top: -28px; border-radius: 50%; border: 6px solid #F4F4F1;
@@ -59391,33 +59391,116 @@ renderer.setAnimationLoop(now => {
     .ve6 .vca-steps { margin-top: 8px; }
   }
 
-[data-veh="0"]:hover { background-position: 0% 100% !important; transform: translateY(-6px) !important; box-shadow: inset 0 1px 0 rgba(255,255,255,0.22), 0 28px 60px -24px rgba(61,61,240,0.45) !important; }
-[data-veh="1"]:hover { background-position: 0% 100% !important; transform: translateY(-6px) !important; box-shadow: inset 0 1px 0 rgba(255,255,255,0.22), 0 28px 60px -24px rgba(15,143,101,0.45) !important; }
-[data-veh="2"]:hover { background-position: 0% 100% !important; transform: translateY(-6px) !important; box-shadow: inset 0 1px 0 rgba(255,255,255,0.22), 0 28px 60px -24px rgba(226,83,12,0.45) !important; }
-[data-veh="3"]:hover { background-position: 0% 100% !important; transform: translateY(-6px) !important; box-shadow: inset 0 1px 0 rgba(255,255,255,0.22), 0 28px 60px -24px rgba(118,86,245,0.45) !important; }
-[data-veh="4"]:hover { background: #FFFFFF !important; color: #0B0B0C !important; border-color: #FFFFFF !important; }
-[data-veh="5"]:hover { background: #FFFFFF !important; color: #0B0B0C !important; border-color: #FFFFFF !important; }
-[data-veh="6"]:hover { background-position: 0% 100% !important; transform: translateY(-6px) !important; box-shadow: inset 0 1px 0 rgba(255,255,255,0.22), 0 28px 60px -24px rgba(61,61,240,0.45) !important; }
-[data-veh="7"]:hover { background-position: 0% 100% !important; transform: translateY(-6px) !important; box-shadow: inset 0 1px 0 rgba(255,255,255,0.22), 0 28px 60px -24px rgba(15,143,101,0.45) !important; }
-[data-veh="8"]:hover { background-position: 0% 100% !important; transform: translateY(-6px) !important; box-shadow: inset 0 1px 0 rgba(255,255,255,0.22), 0 28px 60px -24px rgba(226,83,12,0.45) !important; }
-[data-veh="9"]:hover { background-position: 0% 100% !important; transform: translateY(-6px) !important; box-shadow: inset 0 1px 0 rgba(255,255,255,0.22), 0 28px 60px -24px rgba(118,86,245,0.45) !important; }
-[data-veh="10"]:hover { background-position: 0% 100% !important; transform: translateY(-6px) !important; box-shadow: inset 0 1px 0 rgba(255,255,255,0.22), 0 28px 60px -24px rgba(61,61,240,0.45) !important; }
-[data-veh="11"]:hover { background-position: 0% 100% !important; transform: translateY(-6px) !important; box-shadow: inset 0 1px 0 rgba(255,255,255,0.22), 0 28px 60px -24px rgba(15,143,101,0.45) !important; }
-[data-veh="12"]:hover { color: #0B0B0C !important; }
-[data-veh="13"]:hover { color: #0B0B0C !important; }
-[data-veh="14"]:hover { color: #0B0B0C !important; }
-[data-veh="15"]:hover { color: #0B0B0C !important; }
-[data-veh="16"]:hover { background: #DCDCD7 !important; }
-[data-veh="17"]:hover { filter: brightness(1.1) !important; }
-[data-veh="18"]:hover { background: #F4F4F1 !important; }
-[data-veh="19"]:hover { filter: brightness(1.1) !important; }
-[data-veh="20"]:hover { background: #F4F4F1 !important; }
-[data-veh="21"]:hover { background: #F4F4F1 !important; }
-[data-veh="22"]:hover { background: #F4F4F1 !important; }
-[data-veh="23"]:hover { transform: translateY(-4px) !important; }
-[data-veh="24"]:hover { transform: translateY(-4px) !important; }
-[data-veh="25"]:hover { transform: translateY(-4px) !important; }
-[data-veh="26"]:hover { color: #FFFFFF !important; }
+  /* 04 The wall (ve6_wall.py) */
+  /* the three limits are the wall: bricks in courses, the blank ones are its texture */
+  .ve6 .vw-wall { margin-top: clamp(56px, 6vw, 88px); display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 8px; }
+  .ve6 .vw-b { position: relative; min-height: clamp(132px, 12vw, 168px); border-radius: 6px; box-sizing: border-box; will-change: transform, opacity; }
+  .ve6 .vw-x { background: linear-gradient(180deg, #121214 0%, #0F0F11 100%); box-shadow: inset 0 0 0 1px #1A1A1D, inset 0 1px 0 rgba(255,255,255,0.025); }
+  .ve6 .vw-on { padding: clamp(20px, 2.2vw, 30px); display: flex; flex-direction: column; justify-content: space-between; gap: 24px;
+    background: linear-gradient(180deg, #1B1B1E 0%, #141416 100%); box-shadow: inset 0 0 0 1px #2A2A2E, inset 0 1px 0 rgba(255,255,255,0.06); }
+  .ve6 .vw-on::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0;
+    box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--acc) 70%, #FFFFFF), 0 18px 40px -22px color-mix(in oklch, var(--acc) 80%, transparent); transition: opacity 450ms; }
+  .ve6 .vw-on.ve-hov::after { opacity: 1; }
+  .ve6 .vw-bt { display: flex; align-items: center; gap: 10px; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: #8A8A8E; }
+  .ve6 .vw-bt b { font-weight: 500; color: color-mix(in oklch, var(--acc) 62%, #FFFFFF); }
+  .ve6 .vw-on p { margin: 0; font-size: clamp(20px, 1.85vw, 26px); line-height: 1.2; font-weight: 600; letter-spacing: -0.025em; color: #FFFFFF; text-wrap: pretty; }
+  .ve6 .vw-c1 { grid-column: 1 / span 3; }  .ve6 .vw-c2 { grid-column: 4 / span 6; }  .ve6 .vw-c3 { grid-column: 10 / span 3; }
+  .ve6 .vw-c4 { grid-column: 1 / span 6; }  .ve6 .vw-c5 { grid-column: 7 / span 6; }
+  .ve6 .vw-c6 { grid-column: 1 / span 4; }  .ve6 .vw-c7 { grid-column: 5 / span 8; }
+  .ve6 .vw-c8 { grid-column: 1 / span 2; }  .ve6 .vw-c9 { grid-column: 3 / span 6; }  .ve6 .vw-c10 { grid-column: 9 / span 4; }
+  .ve6 .vw-c8, .ve6 .vw-c9, .ve6 .vw-c10 { min-height: 56px; }
+  .ve6 .vw-wall { -webkit-mask-image: linear-gradient(180deg, #000 78%, transparent 100%); mask-image: linear-gradient(180deg, #000 78%, transparent 100%); }
+
+  /* how it showed up: two symptoms, each drawn */
+  .ve6 .vw-k { margin: clamp(96px, 10vw, 140px) 0 clamp(28px, 3vw, 40px); display: flex; align-items: center; gap: 16px; font-size: 14px; line-height: 1.4; font-weight: 500; color: #A1A1A6; white-space: nowrap; }
+  .ve6 .vw-k span { flex: 1; height: 1px; background: #232326; }
+  .ve6 .vw-two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ve6 .vw-sym { position: relative; padding: clamp(8px, 1vw, 12px) clamp(24px, 4vw, 64px) 0; display: flex; flex-direction: column; gap: 14px; }
+  .ve6 .vw-sym:first-child { padding-left: 0; }
+  .ve6 .vw-sym + .vw-sym { border-left: 1px solid #232326; padding-right: 0; }
+  .ve6 .vw-sym h3 { margin: 0; font-size: clamp(26px, 2.6vw, 36px); line-height: 1.08; font-weight: 600; letter-spacing: -0.035em; color: #FFFFFF; }
+  .ve6 .vw-sym p { margin: 0; max-width: 40ch; font-size: 17px; line-height: 1.6; color: #A1A1A6; text-wrap: pretty; }
+  .ve6 .vw-sn { margin-top: 18px; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: 0.06em; color: color-mix(in oklch, var(--acc) 62%, #FFFFFF); }
+  .ve6 .vw-viz { height: 72px; }
+  /* guessing: it only ever saw fragments */
+  .ve6 .vw-frag { display: grid; grid-template-columns: repeat(5, 30px); grid-template-rows: repeat(2, 30px); gap: 6px; height: auto; }
+  .ve6 .vw-frag i { border-radius: 6px; background: #151517; box-shadow: inset 0 0 0 1px #232326; transition: background 500ms, box-shadow 500ms; }
+  .ve6 .vw-frag i.on { background: color-mix(in oklch, var(--acc) 60%, #0B0B0C); box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--acc) 70%, #FFFFFF); }
+  .ve6 .vw-sym.ve-hov .vw-frag i:not(.on) { background: #1B1B1E; box-shadow: inset 0 0 0 1px #2E2E32; }
+  /* acting in the dark: four steps, only the last one seen */
+  .ve6 .vw-dark { position: relative; width: 210px; height: 66px; display: flex; align-items: center; justify-content: space-between; }
+  .ve6 .vw-path { position: absolute; left: 7px; right: 7px; top: 50%; border-top: 1px dashed #2E2E32; }
+  .ve6 .vw-dark i { position: relative; width: 14px; height: 14px; border-radius: 50%; background: #0B0B0C; box-shadow: inset 0 0 0 1px #2E2E32; transition: box-shadow 500ms, background 500ms; }
+  .ve6 .vw-dark i.on { background: color-mix(in oklch, var(--acc) 70%, #FFFFFF); box-shadow: 0 0 0 6px color-mix(in oklch, var(--acc) 22%, transparent); }
+  .ve6 .vw-sym.ve-hov .vw-dark i:not(.on) { box-shadow: inset 0 0 0 1px #6B6B70; }
+
+  /* From -> To, read across the wall: each change breaks through it */
+  .ve6 .vw-ft { position: relative; margin-top: clamp(56px, 6vw, 88px); }
+  .ve6 .vw-ft::before { content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 6px; margin-left: -3px; border-radius: 3px;
+    background: repeating-linear-gradient(180deg, #232326 0 22px, #0B0B0C 22px 26px); }
+  .ve6 .vw-h, .ve6 .vw-r { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) 72px minmax(0, 1fr); align-items: center; column-gap: clamp(16px, 3vw, 48px); }
+  .ve6 .vw-h { padding-bottom: 18px; font-size: 14px; font-weight: 500; color: #8A8A8E; }
+  .ve6 .vw-h > :first-child { text-align: right; }
+  .ve6 .vw-acc { color: color-mix(in oklch, var(--acc) 62%, #FFFFFF); }
+  .ve6 .vw-r { padding: clamp(18px, 2vw, 26px) 0; border-top: 1px solid #1D1D20; }
+  .ve6 .vw-r:last-child { border-bottom: 1px solid #1D1D20; }
+  .ve6 .vw-f { text-align: right; font-size: clamp(16px, 1.35vw, 19px); line-height: 1.45; color: #6B6B70; text-decoration: line-through; text-decoration-color: rgba(107,107,112,0); text-decoration-thickness: 1px; transition: color 450ms, text-decoration-color 450ms; }
+  .ve6 .vw-t { font-size: clamp(17px, 1.5vw, 21px); line-height: 1.4; font-weight: 500; letter-spacing: -0.01em; color: #D4D4D8; transition: color 450ms; }
+  .ve6 .vw-hole { justify-self: center; position: relative; z-index: 1; width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; color: #FFFFFF;
+    background: #0B0B0C; box-shadow: 0 0 0 6px #0B0B0C, inset 0 0 0 1px #2E2E32; transition: background 450ms, box-shadow 450ms, transform 600ms cubic-bezier(0.16, 1, 0.3, 1); }
+  .ve6 .vw-r.ve-hov .vw-f { color: #8A8A8E; text-decoration-color: rgba(138,138,142,0.9); }
+  .ve6 .vw-r.ve-hov .vw-t { color: #FFFFFF; }
+  .ve6 .vw-r.ve-hov .vw-hole { background: var(--acc); box-shadow: 0 0 0 6px #0B0B0C, 0 0 28px 2px color-mix(in oklch, var(--acc) 55%, transparent); transform: translateX(4px); }
+
+  @media (max-width: 760px) {
+    /* phones: one brick per course, offset like a bond, with a sliver of blank brick beside each */
+    .ve6 .vw-wall { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+    .ve6 .vw-b { min-height: 0; }
+    .ve6 .vw-on { min-height: 150px; }
+    .ve6 .vw-c1, .ve6 .vw-c5, .ve6 .vw-c10 { display: none; }
+    .ve6 .vw-c2 { grid-column: 1 / span 5; } .ve6 .vw-c3 { grid-column: 6 / span 1; }
+    .ve6 .vw-c4 { grid-column: 2 / span 5; grid-row: 2; } .ve6 .vw-c6 { grid-column: 1 / span 1; grid-row: 2; }
+    .ve6 .vw-c7 { grid-column: 1 / span 5; } .ve6 .vw-c8 { grid-column: 6 / span 1; min-height: 0; }
+    .ve6 .vw-c9 { grid-column: 1 / -1; min-height: 40px; }
+    .ve6 .vw-two { grid-template-columns: 1fr; gap: 40px; }
+    .ve6 .vw-sym, .ve6 .vw-sym + .vw-sym { padding: 0; border-left: 0; }
+    .ve6 .vw-sym + .vw-sym { padding-top: 40px; border-top: 1px solid #232326; }
+    .ve6 .vw-ft::before { display: none; }
+    .ve6 .vw-h { display: none; }
+    .ve6 .vw-r { grid-template-columns: 1fr; row-gap: 10px; }
+    .ve6 .vw-f, .ve6 .vw-h > :first-child { text-align: left; }
+    .ve6 .vw-f::before { content: "Before  "; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; display: block; margin-bottom: 4px; color: #6B6B70; }
+    .ve6 .vw-hole { justify-self: start; width: 32px; height: 32px; transform: rotate(90deg); }
+    .ve6 .vw-t::before { content: "Now"; display: block; margin-bottom: 4px; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: color-mix(in oklch, var(--acc) 62%, #FFFFFF); }
+  }
+
+[data-veh="0"].ve-hov { background-position: 0% 100% !important; transform: translateY(-6px) !important; box-shadow: inset 0 1px 0 rgba(255,255,255,0.22), 0 28px 60px -24px rgba(61,61,240,0.45) !important; }
+[data-veh="1"].ve-hov { background-position: 0% 100% !important; transform: translateY(-6px) !important; box-shadow: inset 0 1px 0 rgba(255,255,255,0.22), 0 28px 60px -24px rgba(15,143,101,0.45) !important; }
+[data-veh="2"].ve-hov { background-position: 0% 100% !important; transform: translateY(-6px) !important; box-shadow: inset 0 1px 0 rgba(255,255,255,0.22), 0 28px 60px -24px rgba(226,83,12,0.45) !important; }
+[data-veh="3"].ve-hov { background-position: 0% 100% !important; transform: translateY(-6px) !important; box-shadow: inset 0 1px 0 rgba(255,255,255,0.22), 0 28px 60px -24px rgba(118,86,245,0.45) !important; }
+[data-veh="4"].ve-hov { background: #FFFFFF !important; color: #0B0B0C !important; border-color: #FFFFFF !important; }
+[data-veh="5"].ve-hov { background: #FFFFFF !important; color: #0B0B0C !important; border-color: #FFFFFF !important; }
+[data-veh="6"].ve-hov { background-position: 0% 100% !important; transform: translateY(-6px) !important; box-shadow: inset 0 1px 0 rgba(255,255,255,0.22), 0 28px 60px -24px rgba(61,61,240,0.45) !important; }
+[data-veh="7"].ve-hov { background-position: 0% 100% !important; transform: translateY(-6px) !important; box-shadow: inset 0 1px 0 rgba(255,255,255,0.22), 0 28px 60px -24px rgba(15,143,101,0.45) !important; }
+[data-veh="8"].ve-hov { background-position: 0% 100% !important; transform: translateY(-6px) !important; box-shadow: inset 0 1px 0 rgba(255,255,255,0.22), 0 28px 60px -24px rgba(226,83,12,0.45) !important; }
+[data-veh="9"].ve-hov { background-position: 0% 100% !important; transform: translateY(-6px) !important; box-shadow: inset 0 1px 0 rgba(255,255,255,0.22), 0 28px 60px -24px rgba(118,86,245,0.45) !important; }
+[data-veh="10"].ve-hov { background-position: 0% 100% !important; transform: translateY(-6px) !important; box-shadow: inset 0 1px 0 rgba(255,255,255,0.22), 0 28px 60px -24px rgba(61,61,240,0.45) !important; }
+[data-veh="11"].ve-hov { background-position: 0% 100% !important; transform: translateY(-6px) !important; box-shadow: inset 0 1px 0 rgba(255,255,255,0.22), 0 28px 60px -24px rgba(15,143,101,0.45) !important; }
+[data-veh="12"].ve-hov { color: #0B0B0C !important; }
+[data-veh="13"].ve-hov { color: #0B0B0C !important; }
+[data-veh="14"].ve-hov { color: #0B0B0C !important; }
+[data-veh="15"].ve-hov { color: #0B0B0C !important; }
+[data-veh="16"].ve-hov { background: #DCDCD7 !important; }
+[data-veh="17"].ve-hov { filter: brightness(1.1) !important; }
+[data-veh="18"].ve-hov { background: #F4F4F1 !important; }
+[data-veh="19"].ve-hov { filter: brightness(1.1) !important; }
+[data-veh="20"].ve-hov { background: #F4F4F1 !important; }
+[data-veh="21"].ve-hov { background: #F4F4F1 !important; }
+[data-veh="22"].ve-hov { background: #F4F4F1 !important; }
+[data-veh="23"].ve-hov { transform: translateY(-4px) !important; }
+[data-veh="24"].ve-hov { transform: translateY(-4px) !important; }
+[data-veh="25"].ve-hov { transform: translateY(-4px) !important; }
+[data-veh="26"].ve-hov { color: #FFFFFF !important; }
 [data-vea="27"]:active { transform: scale(0.95) !important; }
 [data-vea="28"]:active { transform: scale(0.95) !important; }
 [data-vea="29"]:active { transform: scale(0.96) !important; }
@@ -60052,7 +60135,7 @@ window.__ypImgs = function (r) { r.querySelectorAll('img[data-yp-src]').forEach(
 </div>
 </section>
 
-<section id="wall" data-screen-label="04 The wall" style="margin: clamp(140px, 16vw, 240px) 12px 0; border-radius: 12px; background: #0B0B0C; color: #FFFFFF; padding: clamp(96px, 11vw, 168px) 0">
+<section id="wall" class="vw" data-screen-label="04 The wall" style="--acc: {{accent}}; margin: clamp(140px, 16vw, 240px) 12px 0; border-radius: 12px; background: #0B0B0C; color: #FFFFFF; padding: clamp(96px, 11vw, 168px) 0">
 <div style="max-width: 1120px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 56px); box-sizing: border-box">
 <div data-ve-reveal="" style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 28px">
 <span style="flex: 0 0 auto; white-space: nowrap; display: inline-flex; align-items: center; gap: 10px; height: 34px; padding: 0 16px; box-sizing: border-box; border-radius: 999px; border: 1px solid #2E2E30; font-size: 14px; line-height: 1; font-weight: 500; color: #CFCFD2"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; color: color-mix(in oklch, {{accent}} 62%, #FFFFFF)">04</span>Then we hit a wall</span>
@@ -60060,34 +60143,14 @@ window.__ypImgs = function (r) { r.querySelectorAll('img[data-yp-src]').forEach(
 <p style="margin: 0; max-width: 640px; font-size: clamp(17px, 1.4vw, 19px); line-height: 1.6; color: #A1A1A6; text-wrap: pretty">The Dynamic Notch proved the idea. But it ran into the same wall every AI tool hits. To get real work out of it, you still had to explain every situation from scratch, pick the right tool, coordinate between apps, and check every step yourself.</p>
 </div>
 
-<div data-stagger="100" style="margin-top: clamp(56px, 6vw, 80px); display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 12px">
-<p style="margin: 0; background: #141416; border: 1px solid #232326; border-radius: 12px; padding: clamp(24px, 2.6vw, 32px); min-height: 168px; box-sizing: border-box; font-size: clamp(21px, 1.9vw, 25px); line-height: 1.25; font-weight: 600; letter-spacing: -0.02em; text-wrap: pretty">Chat tools talk, but don’t act.</p>
-<p style="margin: 0; background: #141416; border: 1px solid #232326; border-radius: 12px; padding: clamp(24px, 2.6vw, 32px); min-height: 168px; box-sizing: border-box; font-size: clamp(21px, 1.9vw, 25px); line-height: 1.25; font-weight: 600; letter-spacing: -0.02em; text-wrap: pretty">Automation tools act, but don’t understand your work.</p>
-<p style="margin: 0; background: #141416; border: 1px solid #232326; border-radius: 12px; padding: clamp(24px, 2.6vw, 32px); min-height: 168px; box-sizing: border-box; font-size: clamp(21px, 1.9vw, 25px); line-height: 1.25; font-weight: 600; letter-spacing: -0.02em; text-wrap: pretty">Your work is spread across tabs, inboxes and code editors that don’t know about each other.</p>
-</div>
+<div class="vw-wall" role="list" aria-label="Why AI tools stall"><div class="vw-b vw-x vw-c1" data-brick="-1"></div><div role="listitem" class="vw-b vw-on vw-c2" data-brick="1"><span class="vw-bt"><b>01</b>Chat tools</span><p>Chat tools talk, but don’t act.</p></div><div class="vw-b vw-x vw-c3" data-brick="1"></div><div role="listitem" class="vw-b vw-on vw-c4" data-brick="-1"><span class="vw-bt"><b>02</b>Automation tools</span><p>Automation tools act, but don’t understand your work.</p></div><div class="vw-b vw-x vw-c5" data-brick="1"></div><div class="vw-b vw-x vw-c6" data-brick="-1"></div><div role="listitem" class="vw-b vw-on vw-c7" data-brick="1"><span class="vw-bt"><b>03</b>Your work</span><p>Your work is spread across tabs, inboxes and code editors that don’t know about each other.</p></div><div class="vw-b vw-x vw-c8" data-brick="-1"></div><div class="vw-b vw-x vw-c9" data-brick="1"></div><div class="vw-b vw-x vw-c10" data-brick="-1"></div></div>
 
-<p data-ve-reveal="" style="margin: clamp(88px, 9vw, 128px) 0 24px; text-align: center; font-size: 15px; line-height: 1.45; font-weight: 500; color: #A1A1A6">In the Dynamic Notch, it showed up in two ways</p>
-<div data-stagger="110" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 12px">
-<div style="background: #141416; border: 1px solid #232326; border-radius: 12px; padding: clamp(28px, 3vw, 40px); display: flex; flex-direction: column; gap: 12px"><span style="font-weight: 600; font-size: clamp(26px, 2.6vw, 34px); line-height: 1.1; letter-spacing: -0.03em">It was guessing.</span><span style="font-size: 17px; line-height: 1.6; color: #A1A1A6; text-wrap: pretty">The AI only saw fragments of your work, so you had to explain things, and its replies still felt generic.</span></div>
-<div style="background: #141416; border: 1px solid #232326; border-radius: 12px; padding: clamp(28px, 3vw, 40px); display: flex; flex-direction: column; gap: 12px"><span style="font-weight: 600; font-size: clamp(26px, 2.6vw, 34px); line-height: 1.1; letter-spacing: -0.03em">It was acting in the dark.</span><span style="font-size: 17px; line-height: 1.6; color: #A1A1A6; text-wrap: pretty">Once the AI acts on your behalf, you need to see every step it takes, and stay in control of it.</span></div>
-</div>
+<p data-ve-reveal="" class="vw-k"><span></span>In the Dynamic Notch, it showed up in two ways<span></span></p>
+<div class="vw-two" data-stagger="110"><div class="vw-sym"><div class="vw-viz vw-frag" aria-hidden="true"><i></i><i class="on"></i><i></i><i></i><i></i><i></i><i class="on"></i><i></i><i></i><i></i></div><span class="vw-sn">01</span><h3>It was guessing.</h3><p>The AI only saw fragments of your work, so you had to explain things, and its replies still felt generic.</p></div><div class="vw-sym"><div class="vw-viz vw-dark" aria-hidden="true"><span class="vw-path"></span><i></i><i></i><i></i><i class="on"></i></div><span class="vw-sn">02</span><h3>It was acting in the dark.</h3><p>Once the AI acts on your behalf, you need to see every step it takes, and stay in control of it.</p></div></div>
 
 <p data-scrub="s" style="margin: clamp(112px, 12vw, 176px) auto 0; max-width: 920px; text-align: center; font-size: clamp(30px, 4vw, 58px); line-height: 1.12; font-weight: 600; letter-spacing: -0.04em; text-wrap: balance"><span data-w="">So</span> <span data-w="">we</span> <span data-w="">moved</span> <span data-w="">to</span> <span data-w="">where</span> <span data-w="">the</span> <span data-w="">work</span> <span data-w="">already</span> <span data-w="">lives:</span> <span data-w="">the</span> <span data-w="">browser.</span> <span style="color: #8A8A8E"><span data-w="">There,</span> <span data-w="">the</span> <span data-w="">AI</span> <span data-w="">sees</span> <span data-w="">what</span> <span data-w="">you’re</span> <span data-w="">working</span> <span data-w="">on,</span> <span data-w="">and</span> <span data-w="">every</span> <span data-w="">action</span> <span data-w="">it</span> <span data-w="">takes</span> <span data-w="">is</span> <span data-w="">shown</span> <span data-w="">in</span> <span data-w="">one</span> <span data-w="">place.</span></span></p>
 
-<div data-stagger="140" style="margin-top: clamp(56px, 6vw, 80px); display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 12px">
-<div style="grid-row: span 4; display: grid; grid-template-rows: subgrid; row-gap: 0; background: #141416; border: 1px solid #232326; border-radius: 12px; padding: 8px clamp(24px, 3vw, 36px) 12px">
-<span style="padding: 22px 0 18px; font-size: 15px; line-height: 1.4; font-weight: 500; color: #A1A1A6">From: the Dynamic Notch</span>
-<div style="display: flex; gap: 14px; align-items: flex-start; padding: 16px 0; border-top: 1px solid #232326; font-size: 17px; line-height: 1.5; color: #A1A1A6"><span aria-hidden="true" style="flex: 0 0 auto; width: 22px; height: 22px; border-radius: 999px; background: #232326; color: #8A8A8E; display: flex; align-items: center; justify-content: center; transform: translateY(3px)"><svg width="10" height="10"><path d="M2 2l6 6M8 2l-6 6" style="fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round"></path></svg></span><span>Saw only what was on screen in the moment</span></div>
-<div style="display: flex; gap: 14px; align-items: flex-start; padding: 16px 0; border-top: 1px solid #232326; font-size: 17px; line-height: 1.5; color: #A1A1A6"><span aria-hidden="true" style="flex: 0 0 auto; width: 22px; height: 22px; border-radius: 999px; background: #232326; color: #8A8A8E; display: flex; align-items: center; justify-content: center; transform: translateY(3px)"><svg width="10" height="10"><path d="M2 2l6 6M8 2l-6 6" style="fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round"></path></svg></span><span>Actions happened out of sight</span></div>
-<div style="display: flex; gap: 14px; align-items: flex-start; padding: 16px 0; border-top: 1px solid #232326; font-size: 17px; line-height: 1.5; color: #A1A1A6"><span aria-hidden="true" style="flex: 0 0 auto; width: 22px; height: 22px; border-radius: 999px; background: #232326; color: #8A8A8E; display: flex; align-items: center; justify-content: center; transform: translateY(3px)"><svg width="10" height="10"><path d="M2 2l6 6M8 2l-6 6" style="fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round"></path></svg></span><span>Output felt generic</span></div>
-</div>
-<div style="grid-row: span 4; display: grid; grid-template-rows: subgrid; row-gap: 0; background: #FFFFFF; color: #0B0B0C; border-radius: 12px; padding: 8px clamp(24px, 3vw, 36px) 12px">
-<span style="padding: 22px 0 18px; font-size: 15px; line-height: 1.4; font-weight: 600; color: {{accent}}">To: the AI Browser</span>
-<div style="display: flex; gap: 14px; align-items: flex-start; padding: 16px 0; border-top: 1px solid #ECECE8; font-size: 17px; line-height: 1.5; color: #0B0B0C"><span aria-hidden="true" style="flex: 0 0 auto; width: 22px; height: 22px; border-radius: 999px; background: {{accent}}; color: #FFFFFF; display: flex; align-items: center; justify-content: center; transform: translateY(3px)"><svg width="12" height="12"><path d="M2.5 6.2l2.4 2.4 4.6-5" style="fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round"></path></svg></span><span>Sees what you’re working on, where you already work</span></div>
-<div style="display: flex; gap: 14px; align-items: flex-start; padding: 16px 0; border-top: 1px solid #ECECE8; font-size: 17px; line-height: 1.5; color: #0B0B0C"><span aria-hidden="true" style="flex: 0 0 auto; width: 22px; height: 22px; border-radius: 999px; background: {{accent}}; color: #FFFFFF; display: flex; align-items: center; justify-content: center; transform: translateY(3px)"><svg width="12" height="12"><path d="M2.5 6.2l2.4 2.4 4.6-5" style="fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round"></path></svg></span><span>Every action shown in Mission Control: running, done, coming next</span></div>
-<div style="display: flex; gap: 14px; align-items: flex-start; padding: 16px 0; border-top: 1px solid #ECECE8; font-size: 17px; line-height: 1.5; color: #0B0B0C"><span aria-hidden="true" style="flex: 0 0 auto; width: 22px; height: 22px; border-radius: 999px; background: {{accent}}; color: #FFFFFF; display: flex; align-items: center; justify-content: center; transform: translateY(3px)"><svg width="12" height="12"><path d="M2.5 6.2l2.4 2.4 4.6-5" style="fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round"></path></svg></span><span>Everything it prepares feels personal</span></div>
-</div>
-</div>
+<div class="vw-ft" data-stagger="120" style="--acc: {{accent}}"><div class="vw-h"><span>From: the Dynamic Notch</span><span class="vw-hole-h" aria-hidden="true"></span><span class="vw-acc">To: the AI Browser</span></div><div class="vw-r"><span class="vw-f">Saw only what was on screen in the moment</span><span class="vw-hole" aria-label="becomes"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="vw-t">Sees what you’re working on, where you already work</span></div><div class="vw-r"><span class="vw-f">Actions happened out of sight</span><span class="vw-hole" aria-label="becomes"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="vw-t">Every action shown in Mission Control: running, done, coming next</span></div><div class="vw-r"><span class="vw-f">Output felt generic</span><span class="vw-hole" aria-label="becomes"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="vw-t">Everything it prepares feels personal</span></div></div>
 </div>
 </section>
 
@@ -61147,9 +61210,32 @@ return Component;
       });
     };
     try { comp.componentDidMount && comp.componentDidMount(); } catch (e) { console.warn("[ve6] mount", e); }
+    // Hover follows the pointer, scrolling included: a browser only re-checks :hover when the mouse moves,
+    // so a card scrolling under a still cursor never lit up. Mouse only (touch has no hover).
+    const HOV = "[data-veh], .vf-c, .vca-q, .vfix, .vw-on, .vw-sym, .vw-r";
+    let mx = -1, my = -1, lit = [], hraf = 0;
+    const hit = () => {
+      hraf = 0;
+      const next = [];
+      if (mx >= 0) {
+        let e = document.elementFromPoint(mx, my);
+        e = e && e.closest(HOV);
+        while (e && host.contains(e)) { next.push(e); e = e.parentElement && e.parentElement.closest(HOV); }
+      }
+      lit.forEach(e => { if (next.indexOf(e) < 0) e.classList.remove("ve-hov"); });
+      next.forEach(e => e.classList.add("ve-hov"));
+      lit = next;
+    };
+    const queue = () => { if (!hraf) hraf = requestAnimationFrame(hit); };
+    const onMove = e => { if (e.pointerType && e.pointerType !== "mouse") return; mx = e.clientX; my = e.clientY; queue(); };
+    const onOut = e => { if (!e.relatedTarget) { mx = -1; queue(); } };
+    addEventListener("pointermove", onMove, { passive: true });
+    addEventListener("scroll", queue, { passive: true });
+    document.addEventListener("mouseout", onOut);
     return {
       unmount() {
         alive = false;
+        removeEventListener("pointermove", onMove); removeEventListener("scroll", queue); document.removeEventListener("mouseout", onOut); cancelAnimationFrame(hraf);
         try { comp.componentWillUnmount && comp.componentWillUnmount(); } catch (e) {}
         clearInterval(comp._caretT);
       }
