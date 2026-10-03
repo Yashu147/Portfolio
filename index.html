@@ -59595,7 +59595,7 @@ renderer.setAnimationLoop(now => {
   .ve6 [data-step-hint="d"] .vn-hint [data-s="d"], .ve6 [data-step-hint="e"] .vn-hint [data-s="e"] { opacity: 1; transform: none; }
 
   /* the 3D monitor: the scene's box (its edges fade into the stage), and the frame's masks */
-  .ve6 .vm-box { position: absolute; display: block; overflow: hidden; opacity: 0; transition: opacity 700ms ease; pointer-events: none;
+  .ve6 .vm-box { position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: block; overflow: hidden; opacity: 0; transition: opacity 700ms ease; pointer-events: none; transform-origin: 50% 50%; will-change: transform;
     -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%), linear-gradient(180deg, transparent 0, #000 6%, #000 94%, transparent 100%);
     -webkit-mask-composite: source-in; mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%), linear-gradient(180deg, transparent 0, #000 6%, #000 94%, transparent 100%); mask-composite: intersect; }
   .ve6 .vm-canvas { position: absolute; left: 0; top: 0; display: block; width: 100%; height: 100%; }
@@ -60848,7 +60848,7 @@ class Component extends DCLogic {
     });
 
     // the monitor run: the frame keeps one fixed size with the same room on the left, right and top of the Mac;
-    // pinned, the frame opens to the whole screen; once it is full, the Mac turns to face you (masks moved with
+    // pinned, the frame opens to the whole screen and the Mac grows with it, turning to face you (masks moved with
     // transform only, so the 3D layer is never re-clipped). Scrolling back reverses it.
     const mr = q('[data-mon-run]');
     if (mr && near(mr)) {
@@ -60859,6 +60859,7 @@ class Component extends DCLogic {
         mon.progress(p);
         const ex = motion ? easeIO(seg(p, 0.04, 0.5)) : 0;
         mon.paintFrame(mk, mon.frameFor(W, H), 1 - ex, W, H);
+        mon.paintScene(ex);
       }
     }
 
@@ -61292,8 +61293,8 @@ return Component;
   //   moved with transform (paintFrame).
   // The scene is drawn in a box of the proportions it was approved in, sized so the Mac fits the screen with
   // the same room on the left, right and top, and shifted so the Mac sits in the centre.
-  // The turn is the scene's own animation (its hover event): forward once the frame fills the screen,
-  // reverse as it starts to close.
+  // The turn is the scene's own animation (its hover event): forward as the frame opens, reverse as it closes.
+  // The real mouse never drives it (the scene's events are local and the canvas takes no pointer).
   if (!customElements.get("ve-monitor")) {
     const RUNTIMES = [
       "https://unpkg.com/@splinetool/runtime@2.0.66/build/runtime.js",
@@ -61305,10 +61306,12 @@ return Component;
       for (const u of RUNTIMES) { try { return await import(u); } catch (e) { err = e; } }
       throw err;
     })());
-    // the scene, measured on the live site: drawn in a 1.867 : 1 box, the Mac (facing you) spans 18.0%..85.4%
-    // of its width (centre 51.7%), its top edge at 10.45% and the bottom of its screen at 84.0% of its height.
-    // The box keeps that shape everywhere, so these hold on every screen.
-    const SCENE = { aspect: 1.867, l: 0.180, r: 0.854, t: 0.1045, body: 0.840 };
+    // The scene draws the Mac at a fixed size, whatever the canvas size: on the live site it is 1228px wide,
+    // its top edge 386px above the canvas centre, the bottom of its screen 332px below, and 31px right of centre
+    // (plus its stand below). So the scene is rendered once at the stage's size and scaled as a whole with a
+    // transform (compositor only): small enough in the closed frame that the entire Mac shows, growing with
+    // the frame as it opens.
+    const MAC = { w: 1228, top: 386, bottom: 332, cx: 31, stand: 0.14 };
     const MAX_DPR = 1.25, R = 14;
     class VeMonitor extends HTMLElement {
       connectedCallback() {
@@ -61334,28 +61337,40 @@ return Component;
           if (window.requestIdleCallback) requestIdleCallback(go, { timeout: 2000 }); else go();
         }, 1200);
       }
-      // the box the scene is drawn in, and the frame around the Mac, for the stage's size
+      // the closed frame (same room P on the left, right and top of the Mac) and the scene's scale and offset,
+      // closed (0) and open (1)
       geometry(W, H) {
-        const P = Math.max(20, Math.min(W, H) * 0.05), side = Math.max(16, W * 0.05), topMin = Math.max(88, H * 0.12);
-        const macW = SCENE.r - SCENE.l, cxs = (SCENE.l + SCENE.r) / 2;
-        let bw = Math.min((W - 2 * side - 2 * P) / macW, SCENE.aspect * (H / 2 - topMin - P) / (0.5 - SCENE.t), W * 1.2);
-        bw = Math.max(bw, 120);
-        const bh = bw / SCENE.aspect;
-        const box = { w: bw, h: bh, x: W / 2 - cxs * bw, y: H / 2 - bh / 2 };
-        const half = macW * bw / 2, top = box.y + SCENE.t * bh, bodyB = box.y + SCENE.body * bh;
-        const t = top - P, lr = W / 2 - half - P;
-        const bottom = Math.min(H - t, bodyB + (bodyB - top) * 0.14);
-        return { box, frame: { t: Math.max(0, t), l: Math.max(0, lr), r: Math.max(0, lr), b: Math.max(0, H - bottom) } };
+        const P = Math.max(20, Math.min(W, H) * 0.05), side = Math.max(16, W * 0.05), topMin = Math.max(84, H * 0.1);
+        const block = (MAC.top + MAC.bottom) * (1 + MAC.stand);
+        const s1 = Math.min(1, (W * 0.86) / MAC.w, (H * 0.8) / block);   // open: the Mac as large as the screen allows
+        // closed: the whole Mac in the frame, the same room P on the left, right and top; it grows a quarter as the frame opens
+        const s0 = Math.max(0.1, Math.min((W - 2 * side - 2 * P) / MAC.w, (H - 2 * topMin - P) / block, s1 * 0.8));
+        const fw = MAC.w * s0 + 2 * P, fh = P + block * s0;
+        const ft = Math.max(topMin, (H - fh) / 2), fl = (W - fw) / 2;
+        const frame = { t: ft, l: fl, r: fl, b: Math.max(0, H - ft - fh) };
+
+        const top1 = Math.max(76, (H - block * s1) / 2 + 24);
+        return { frame, s0, s1, ty0: ft + P - H / 2 + MAC.top * s0, ty1: top1 - H / 2 + MAC.top * s1 };
       }
       layout() {
         const W = this.clientWidth || innerWidth, H = this.clientHeight || innerHeight;
-        const g = this.geometry(W, H), c = this.boxEl.style;
-        c.left = g.box.x.toFixed(1) + "px"; c.top = g.box.y.toFixed(1) + "px"; c.width = g.box.w.toFixed(1) + "px"; c.height = g.box.h.toFixed(1) + "px";
-        this._g = { W, H, g };
+        this._g = { W, H, g: this.geometry(W, H) };
+        this._sk = "";
+        this.paintScene(this._ex || 0);
       }
       frameFor(W, H) {
         if (!this._g || this._g.W !== W || this._g.H !== H) { this.layout(); }
         return this._g.g.frame;
+      }
+      // the whole scene scaled and moved with the frame: ex 0 = closed, 1 = open
+      paintScene(ex) {
+        this._ex = ex;
+        if (!this._g) return;
+        const g = this._g.g, sc = g.s0 + (g.s1 - g.s0) * ex, ty = g.ty0 + (g.ty1 - g.ty0) * ex, tx = -MAC.cx * sc;
+        const key = sc.toFixed(4) + "," + ty.toFixed(1);
+        if (key === this._sk) return;
+        this._sk = key;
+        this.boxEl.style.transform = "translate3d(" + tx.toFixed(1) + "px," + ty.toFixed(1) + "px,0) scale(" + sc.toFixed(4) + ")";
       }
       // the frame: four masks in the page colour and four rounded corners, moved with transform only
       paintFrame(mk, f, k, W, H) {
@@ -61394,6 +61409,7 @@ return Component;
           await this.app.load(this.getAttribute("url"));
           if (!this.isConnected) return;
           this.clampDpr();
+          try { this.app.setGlobalEvents(false); } catch (e) {}
           this.uuids = [];
           try { this.uuids = this.app.getAllObjects().map(o => o.uuid); } catch (e) {}
           this.ready = true;
@@ -61409,10 +61425,10 @@ return Component;
         for (const u of this.uuids || []) { try { fwd ? this.app.emitEvent("mouseHover", u) : this.app.emitEventReverse("mouseHover", u); } catch (e) {} }
         this.renderFor(2800);
       }
-      // where the reader is in the run: the turn plays once the frame has filled the screen (it opens over
-      // 4%..50% of the run), and reverses when the frame starts to close again
+      // where the reader is in the run: the turn plays as the frame starts to open (and the Mac grows with it),
+      // and reverses as it closes back to its resting size
       progress(p) {
-        if (p >= 0.56) this.want = true; else if (p <= 0.46) this.want = false;
+        if (p >= 0.06) this.want = true; else if (p <= 0.02) this.want = false;
         if (this.ready && this.want !== this.turned) this.turn(this.want);
       }
       disconnectedCallback() {
