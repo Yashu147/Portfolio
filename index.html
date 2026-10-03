@@ -60659,7 +60659,8 @@ class Component extends DCLogic {
         if (!el && id) return;
         e.preventDefault();
         const off = el ? (parseFloat(getComputedStyle(el).scrollMarginTop) || 0) : 0;
-        window.scrollTo({ top: el ? el.getBoundingClientRect().top + window.scrollY - off : 0, behavior: 'smooth' });
+        const dest = el ? el.getBoundingClientRect().top + window.scrollY - off : 0;
+        if (window.__ypScroll && window.__ypScroll.enabled) window.__ypScroll.to(dest); else window.scrollTo({ top: dest, behavior: 'smooth' });
       };
       // While the 3D monitor does its one-off heavy setup, hand scrolling back to the browser so the
       // page keeps moving even if the main thread is busy.
@@ -61284,7 +61285,7 @@ return Component;
   // The design's 3D monitor: the case study's Spline scene.
   // Cheap by construction:
   // - it loads once, in idle time, a moment after the page opens;
-  // - it renders only while something moves (the first frames, the turn, a resize), then stops;
+  // - it renders live while it is on screen (its own motion included) and pauses off screen;
   // - its pixel ratio is held to 1.25 at most;
   // - it is never resized or re-clipped while scrolling: the frame around it is four page-coloured masks
   //   moved with transform (paintFrame).
@@ -61318,6 +61319,9 @@ return Component;
         this.layout();
         this._onResize = () => { clearTimeout(this._rz); this._rz = setTimeout(() => { this.layout(); this.clampDpr(); this.renderFor(700); dispatchEvent(new Event("ve-frame")); }, 150); };
         addEventListener("resize", this._onResize);
+        // live while on screen, paused off screen
+        this.viewIO = new IntersectionObserver(es => { this.onScreen = es[0].isIntersecting; this.renderFor(0); }, { rootMargin: "10% 0px 10% 0px" });
+        this.viewIO.observe(this.closest("[data-mon-run]") || this);
         this._lt = setTimeout(() => {
           const go = () => this.load();
           if (window.requestIdleCallback) requestIdleCallback(go, { timeout: 2000 }); else go();
@@ -61367,11 +61371,12 @@ return Component;
         const r = this.app && this.app._renderer;
         try { if (r && r.setPixelRatio) r.setPixelRatio(Math.min(window.devicePixelRatio || 1, MAX_DPR)); } catch (e) {}
       }
+      // plays while on screen; off screen it pauses (after ms, so a turn or resize still lands)
       renderFor(ms) {
         if (!this.app || !this.ready) return;
         clearTimeout(this._st);
         try { this.app.play(); } catch (e) {}
-        this._st = setTimeout(() => { try { this.app && this.app.stop(); } catch (e) {} }, ms);
+        if (!this.onScreen) this._st = setTimeout(() => { try { if (this.app && !this.onScreen) this.app.stop(); } catch (e) {} }, ms);
       }
       async load() {
         if (this.app || !this.isConnected) return;
@@ -61403,7 +61408,7 @@ return Component;
         if (this.ready && this.want !== this.turned) this.turn(this.want);
       }
       disconnectedCallback() {
-        clearTimeout(this._lt); clearTimeout(this._st); clearTimeout(this._rz);
+        clearTimeout(this._lt); clearTimeout(this._st); clearTimeout(this._rz); this.viewIO && this.viewIO.disconnect();
         removeEventListener("resize", this._onResize);
         try { this.app && this.app.dispose && this.app.dispose(); } catch (e) {}
         this.app = null; this._init = false; this.innerHTML = "";
@@ -63985,7 +63990,7 @@ class CasePage {
     this.host.querySelectorAll(".r").forEach(el => this._io.observe(el));
     const v6 = this.host.querySelector("[data-ve6]");
     if (v6) {   // case study 01: the Ve v6 design, rendered and run by its own runtime (ve6rt.js)
-      YPScroll.setMode("off"); window.__ypPause = true;   // the browser scrolls this page; the home page's scroll effects stand down
+      YPScroll.setMode("on"); window.__ypPause = true;   // the portfolio's smooth scroll, one engine for the whole page; the home page's scroll effects stand down
       this._v6 = window.__ve6Mount ? window.__ve6Mount(v6) : null;
       v6.querySelectorAll("[data-go-back]").forEach(a => a.addEventListener("click", ypGoBack));
       return;
@@ -64043,7 +64048,7 @@ class CasePage {
   }
   unmount() {
     this.unmounted = true;
-    if (this._v6) { this._v6.unmount(); this._v6 = null; YPScroll.setMode("on"); window.__ypPause = false; }
+    if (this._v6) { this._v6.unmount(); this._v6 = null; window.__ypPause = false; }
     if (this._tick) YPScroll.remove(this._tick);
     if (this._rs) removeEventListener("resize", this._rs);
     clearTimeout(this._t);
