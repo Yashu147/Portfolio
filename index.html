@@ -59594,6 +59594,18 @@ renderer.setAnimationLoop(now => {
   .ve6 [data-step-hint="a"] .vn-hint [data-s="a"], .ve6 [data-step-hint="b"] .vn-hint [data-s="b"], .ve6 [data-step-hint="c"] .vn-hint [data-s="c"],
   .ve6 [data-step-hint="d"] .vn-hint [data-s="d"], .ve6 [data-step-hint="e"] .vn-hint [data-s="e"] { opacity: 1; transform: none; }
 
+  /* the 3D monitor: the scene's box (its edges fade into the stage), and the frame's masks */
+  .ve6 .vm-canvas { position: absolute; display: block; opacity: 0; transition: opacity 700ms ease; pointer-events: none;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%), linear-gradient(180deg, transparent 0, #000 6%, #000 94%, transparent 100%);
+    -webkit-mask-composite: source-in; mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%), linear-gradient(180deg, transparent 0, #000 6%, #000 94%, transparent 100%); mask-composite: intersect; }
+  .ve6 .vmk { position: absolute; inset: 0; z-index: 2; overflow: hidden; pointer-events: none; }
+  .ve6 .vmk i { position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: #F4F4F1; will-change: transform; transform-origin: 0 0; }
+  .ve6 .vmk i.c { width: 14px; height: 14px; background: transparent; }
+  .ve6 .vmk i.tl { background: radial-gradient(circle at 100% 100%, transparent 13.5px, #F4F4F1 14px); }
+  .ve6 .vmk i.tr { background: radial-gradient(circle at 0 100%, transparent 13.5px, #F4F4F1 14px); }
+  .ve6 .vmk i.bl { background: radial-gradient(circle at 100% 0, transparent 13.5px, #F4F4F1 14px); }
+  .ve6 .vmk i.br { background: radial-gradient(circle at 0 0, transparent 13.5px, #F4F4F1 14px); }
+
 [data-veh="0"].ve-hov { background-position: 0% 100% !important; transform: translateY(-6px) !important; box-shadow: inset 0 1px 0 rgba(255,255,255,0.22), 0 28px 60px -24px rgba(17,112,207,0.45) !important; }
 [data-veh="1"].ve-hov { background-position: 0% 100% !important; transform: translateY(-6px) !important; box-shadow: inset 0 1px 0 rgba(255,255,255,0.22), 0 28px 60px -24px rgba(211,34,121,0.45) !important; }
 [data-veh="2"].ve-hov { background-position: 0% 100% !important; transform: translateY(-6px) !important; box-shadow: inset 0 1px 0 rgba(255,255,255,0.22), 0 28px 60px -24px rgba(217,126,22,0.45) !important; }
@@ -60171,8 +60183,8 @@ window.__ypImgs = function (r) { r.querySelectorAll('img[data-yp-src]').forEach(
 </div>
 <div data-mon-run="" style="position: relative; height: 320vh; margin: 8px calc(50% - 50vw) 0">
 <div style="position: sticky; top: 0; height: 100vh; overflow: hidden">
-<div data-mon-stage="" style="position: absolute; inset: 0; background: #161616; clip-path: inset(12% 14% 10% 14% round 14px); will-change: clip-path">
-<ve-monitor url="https://prod.spline.design/soVkGTuRGPHOAwOy/scene.splinecode" target="Monitor" pad="0.08" cap="1.2" style="position: absolute; inset: 0;"></ve-monitor>
+<div data-mon-stage="" style="position: absolute; inset: 0; background: #161616">
+<ve-monitor url="https://prod.spline.design/soVkGTuRGPHOAwOy/scene.splinecode" target="Monitor" pad="0.08" cap="1.2" style="position: absolute; inset: 0;"></ve-monitor><div data-mon-masks="" class="vmk" aria-hidden="true"><i class="t"></i><i class="b"></i><i class="l"></i><i class="r"></i><i class="c tl"></i><i class="c tr"></i><i class="c bl"></i><i class="c br"></i></div>
 </div>
 </div>
 </div>
@@ -60545,8 +60557,11 @@ class Component extends DCLogic {
       if (window.innerWidth !== this.state.vw) this.setState({ vw: window.innerWidth });
       this._update(); this._moveIndicator(true);
     };
-    document.addEventListener('scroll', this._onScroll, { passive: true, capture: true });
+    window.addEventListener('scroll', this._onScroll, { passive: true });
     window.addEventListener('resize', this._onResize);
+    this._near = new Set(); this._nearReady = false;
+    this._nearIO = new IntersectionObserver(es => { es.forEach(e => e.isIntersecting ? this._near.add(e.target) : this._near.delete(e.target)); this._nearReady = true; this._onScroll(); }, { rootMargin: '60% 0px 60% 0px' });
+    $R.querySelectorAll('[data-grow], [data-scrub="s"], [data-brick], [data-mon-run], [data-problem], [data-weeks]').forEach(el => this._nearIO.observe(el));
     this._update();
     this._moveIndicator(true);
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { this._moveIndicator(true); this._update(); });
@@ -60565,7 +60580,8 @@ class Component extends DCLogic {
 
   componentWillUnmount() {
     if (this._ro) this._ro.disconnect();
-    document.removeEventListener('scroll', this._onScroll, { capture: true });
+    if (this._nearIO) this._nearIO.disconnect();
+    window.removeEventListener('scroll', this._onScroll);
     window.removeEventListener('resize', this._onResize);
     if (this._raf) cancelAnimationFrame(this._raf);
     if (this._io) this._io.disconnect();
@@ -60643,10 +60659,8 @@ class Component extends DCLogic {
         if (!el && id) return;
         e.preventDefault();
         const off = el ? (parseFloat(getComputedStyle(el).scrollMarginTop) || 0) : 0;
-        go(el ? el.getBoundingClientRect().top + window.scrollY - off : 0);
+        window.scrollTo({ top: el ? el.getBoundingClientRect().top + window.scrollY - off : 0, behavior: 'smooth' });
       };
-      window.addEventListener('wheel', this._onWheel, { passive: false });
-      this._wheelOn = true;
       // While the 3D monitor does its one-off heavy setup, hand scrolling back to the browser so the
       // page keeps moving even if the main thread is busy.
       this._onBusy = () => {
@@ -60656,14 +60670,12 @@ class Component extends DCLogic {
       };
       this._onIdle = () => {
         clearTimeout(this._busyT);
-        if (!this._wheelOn) { window.addEventListener('wheel', this._onWheel, { passive: false }); this._wheelOn = true; }
         cur = target = window.scrollY;
       };
       window.addEventListener('ve-busy', this._onBusy);
       window.addEventListener('ve-idle', this._onIdle);
       window.addEventListener('ve-frame', this._onScroll);
       window.addEventListener('scroll', this._onWinScroll, { passive: true });
-      window.addEventListener('keydown', this._onKey);
       document.addEventListener('click', this._onAnchor, true);
     }
     function frame(now) {
@@ -60748,6 +60760,7 @@ class Component extends DCLogic {
     const q = (s) => $R.querySelector(s);
     const qa = (s) => Array.from($R.querySelectorAll(s));
     const patch = {};
+    const near = (el) => !this._nearReady || this._near.has(el);
 
     let cur = '';
     for (const id of VE_NAV) { const el = $id(id); if (el && el.getBoundingClientRect().top <= vh * 0.35) cur = id; }
@@ -60770,7 +60783,7 @@ class Component extends DCLogic {
       } else { hero.style.transform = 'none'; inner.style.transform = 'none'; inner.style.opacity = '1'; }
     }
 
-    qa('[data-grow]').forEach(el => {
+    qa('[data-grow]').filter(near).forEach(el => {
       if (!motion) { el.style.transform = 'none'; return; }
       const top = el.parentElement.getBoundingClientRect().top;
       const p = ease(clamp(1 - (top - vh * 0.1) / (vh * 0.75)));
@@ -60783,7 +60796,7 @@ class Component extends DCLogic {
     };
 
     const pr = q('[data-problem]');
-    if (pr) {
+    if (pr && near(pr)) {
       const r = pr.getBoundingClientRect();
       let p = 1;
       if (motion) {
@@ -60814,7 +60827,7 @@ class Component extends DCLogic {
       if (ph !== this.state.pPhase) patch.pPhase = ph;
     }
 
-    qa('[data-scrub="s"]').forEach(el => {
+    qa('[data-scrub="s"]').filter(near).forEach(el => {
       const r = el.getBoundingClientRect();
       const p = clamp((vh * 0.88 - r.top) / (vh * 0.5 + r.height * 0.6));
       scrub(Array.from(el.querySelectorAll('[data-w]')), p);
@@ -60832,24 +60845,22 @@ class Component extends DCLogic {
       if (shade) shade.style.opacity = (k * 0.28).toFixed(3);
     });
 
-    // the monitor run: the frame holds a fixed size with equal room around the Mac (measured from the scene);
-    // pinned, the Mac turns to face you and stops; then the frame opens to the whole screen. Scrolling back reverses it.
+    // the monitor run: the frame keeps one fixed size with the same room on the left, right and top of the Mac;
+    // pinned, the Mac turns to face you and stops; then the frame opens to the whole screen (masks moved with
+    // transform only, so the 3D layer is never re-clipped). Scrolling back reverses it.
     const mr = q('[data-mon-run]');
-    if (mr) {
-      const st = mr.firstElementChild && mr.firstElementChild.firstElementChild, mon = mr.querySelector('ve-monitor');
-      if (st && mon && mon.frameFor) {
-        const r = mr.getBoundingClientRect(), W = st.clientWidth || vw, H = st.clientHeight || vh;
+    if (mr && near(mr)) {
+      const mon = mr.querySelector('ve-monitor'), mk = mr.querySelector('[data-mon-masks]');
+      if (mon && mon.frameFor && mk) {
+        const r = mr.getBoundingClientRect(), W = mk.clientWidth || vw, H = mk.clientHeight || vh;
         const p = clamp(-r.top / Math.max(1, mr.offsetHeight - vh));
         mon.progress(p);
-        const f = mon.frameFor(W, H);
         const ex = motion ? easeIO(seg(p, 0.42, 0.94)) : 0;
-        const k = 1 - ex;
-        const cp = 'inset(' + (f.t * k).toFixed(1) + 'px ' + (f.r * k).toFixed(1) + 'px ' + (f.b * k).toFixed(1) + 'px ' + (f.l * k).toFixed(1) + 'px round ' + (14 * k).toFixed(1) + 'px)';
-        if (st.style.clipPath !== cp) st.style.clipPath = cp;
+        mon.paintFrame(mk, mon.frameFor(W, H), 1 - ex, W, H);
       }
     }
 
-    qa('[data-brick]').forEach(b => {
+    qa('[data-brick]').filter(near).forEach(b => {
       if (!motion) { b.style.transform = 'none'; b.style.opacity = '1'; return; }
       const dir = Number(b.getAttribute('data-brick')) || 1;
       const r = b.getBoundingClientRect();
@@ -60869,6 +60880,7 @@ class Component extends DCLogic {
 
     const wk = q('[data-weeks]');
     if (wk) {
+      if (!near(wk)) return void (Object.keys(patch).length && this.setState(patch));
       const r = wk.getBoundingClientRect();
       const n = motion ? Math.min(4, Math.floor(clamp((vh * 0.88 - r.top) / (vh * 0.4)) * 5)) : 4;
       if (n !== this.state.weeks) patch.weeks = n;
@@ -61269,17 +61281,16 @@ return Component;
     return { render, update };
   }
 
-  // The design's 3D monitor: the case study's Spline scene (the same scene as before).
-  // - Loads and calibrates early, in idle time, well before the reader gets there, so the heavy one-off
-  //   setup never lands mid-scroll. While it loads, and while the monitor is on screen, scrolling is the
-  //   browser's own (ve-busy / ve-idle), so the 3D can never hold the page.
-  // - Renders only while on screen (stop / play).
-  // - The scene is rendered once at the stage's size and never resized while scrolling.
-  // - The frame around it is measured from the scene itself: the Mac's left, right and top edges are found
-  //   in the rendered pixels (front and turned pose), the scene is zoomed so the Mac fits the screen, and the
-  //   frame keeps the same room on the left, right and top.
-  // - The turn is the scene's own animation (its hover event), played forward when the run pins and
-  //   reversed when you scroll back above it.
+  // The design's 3D monitor: the case study's Spline scene.
+  // Cheap by construction:
+  // - it loads once, in idle time, a moment after the page opens;
+  // - it renders only while something moves (the first frames, the turn, a resize), then stops;
+  // - its pixel ratio is held to 1.25 at most;
+  // - it is never resized or re-clipped while scrolling: the frame around it is four page-coloured masks
+  //   moved with transform (paintFrame).
+  // The scene is drawn in a box of the proportions it was approved in, sized so the Mac fits the screen with
+  // the same room on the left, right and top, and shifted so the Mac sits in the centre.
+  // The turn is the scene's own animation (its hover event): forward when the run pins, reverse above it.
   if (!customElements.get("ve-monitor")) {
     const RUNTIMES = [
       "https://unpkg.com/@splinetool/runtime@2.0.66/build/runtime.js",
@@ -61291,155 +61302,109 @@ return Component;
       for (const u of RUNTIMES) { try { return await import(u); } catch (e) { err = e; } }
       throw err;
     })());
-    const wait = ms => new Promise(r => setTimeout(r, ms));
-    const frames = n => new Promise(r => { const f = () => (n-- <= 0 ? r() : requestAnimationFrame(f)); f(); });
-    // the Mac's box in the rendered scene, as fractions of the canvas (from the screenshot the scene was approved on)
-    const FALLBACK = { l: 0.106, r: 0.894, t: 0.097, body: 0.887, band: 1 };
+    // the scene as approved: drawn in a 1.657 : 1 box, the Mac (facing you) spans 10.4%..91.8% of its width,
+    // its top edge at 9.7% and the bottom of its screen at 88.7% of its height
+    const SCENE = { aspect: 1.657, l: 0.104, r: 0.918, t: 0.097, body: 0.887 };
+    const MAX_DPR = 1.25, R = 14;
     class VeMonitor extends HTMLElement {
       connectedCallback() {
         if (this._init) return;
         this._init = true;
         this.style.display = "block";
-        this.box = null; this.zoom = 1; this.turned = false; this.want = false; this.ready = false;
-        this._busyLoad = false; this._busyView = false; this._busyOn = false; this.onScreen = false;
+        this.turned = false; this.want = false; this.ready = false;
         this.canvas = document.createElement("canvas");
-        Object.assign(this.canvas.style, { position: "absolute", left: "0", top: "0", width: "100%", height: "100%", display: "block", opacity: "0", transition: "opacity 700ms ease", pointerEvents: "none" });
-        // keep the last frame readable, so the Mac can be measured in the pixels
-        const gc = this.canvas.getContext.bind(this.canvas);
-        this.canvas.getContext = (type, attrs) => gc(type, Object.assign({}, attrs || {}, { preserveDrawingBuffer: true }));
+        this.canvas.className = "vm-canvas";
         this.appendChild(this.canvas);
-        const run = this.closest("[data-mon-run]") || this;
-        // load and calibrate as soon as the page has settled, in idle time, long before the reader gets there
+        this.layout();
+        this._onResize = () => { clearTimeout(this._rz); this._rz = setTimeout(() => { this.layout(); this.clampDpr(); this.renderFor(700); dispatchEvent(new Event("ve-frame")); }, 150); };
+        addEventListener("resize", this._onResize);
         this._lt = setTimeout(() => {
           const go = () => this.load();
           if (window.requestIdleCallback) requestIdleCallback(go, { timeout: 2000 }); else go();
         }, 1200);
-        // render only while on screen; while on screen, scrolling belongs to the browser
-        this.viewIO = new IntersectionObserver(es => {
-          this.onScreen = es[0].isIntersecting;
-          this._busyView = this.onScreen;
-          this.syncBusy();
-          if (this.app && this.ready) { if (this.onScreen) this.app.play(); else this.app.stop(); }
-        }, { rootMargin: "20% 0px 20% 0px" });
-        this.viewIO.observe(run);
       }
-      syncBusy() {
-        const on = this._busyLoad || this._busyView;
-        if (on === this._busyOn) return;
-        this._busyOn = on;
-        dispatchEvent(new Event(on ? "ve-busy" : "ve-idle"));
+      // the box the scene is drawn in, and the frame around the Mac, for the stage's size
+      geometry(W, H) {
+        const P = Math.max(20, Math.min(W, H) * 0.05), side = Math.max(16, W * 0.05), topMin = Math.max(88, H * 0.12);
+        const macW = SCENE.r - SCENE.l, cxs = (SCENE.l + SCENE.r) / 2;
+        let bw = Math.min((W - 2 * side - 2 * P) / macW, SCENE.aspect * (H / 2 - topMin - P) / (0.5 - SCENE.t), W * 1.2);
+        bw = Math.max(bw, 120);
+        const bh = bw / SCENE.aspect;
+        const box = { w: bw, h: bh, x: W / 2 - cxs * bw, y: H / 2 - bh / 2 };
+        const half = macW * bw / 2, top = box.y + SCENE.t * bh, bodyB = box.y + SCENE.body * bh;
+        const t = top - P, lr = W / 2 - half - P;
+        const bottom = Math.min(H - t, bodyB + (bodyB - top) * 0.14);
+        return { box, frame: { t: Math.max(0, t), l: Math.max(0, lr), r: Math.max(0, lr), b: Math.max(0, H - bottom) } };
+      }
+      layout() {
+        const W = this.clientWidth || innerWidth, H = this.clientHeight || innerHeight;
+        const g = this.geometry(W, H), c = this.canvas.style;
+        c.left = g.box.x.toFixed(1) + "px"; c.top = g.box.y.toFixed(1) + "px"; c.width = g.box.w.toFixed(1) + "px"; c.height = g.box.h.toFixed(1) + "px";
+        this._g = { W, H, g };
+      }
+      frameFor(W, H) {
+        if (!this._g || this._g.W !== W || this._g.H !== H) { this.layout(); }
+        return this._g.g.frame;
+      }
+      // the frame: four masks in the page colour and four rounded corners, moved with transform only
+      paintFrame(mk, f, k, W, H) {
+        const el = mk.children; if (el.length < 8) return;
+        const t = f.t * k, b = f.b * k, l = f.l * k, r = f.r * k, cr = R * k;
+        const key = t.toFixed(1) + "," + b.toFixed(1) + "," + l.toFixed(1) + "," + r.toFixed(1) + "," + W + "," + H;
+        if (key === this._fk) return;
+        this._fk = key;
+        el[0].style.transform = "translate3d(0," + (t - H).toFixed(1) + "px,0)";
+        el[1].style.transform = "translate3d(0," + (H - b).toFixed(1) + "px,0)";
+        el[2].style.transform = "translate3d(" + (l - W).toFixed(1) + "px,0,0)";
+        el[3].style.transform = "translate3d(" + (W - r).toFixed(1) + "px,0,0)";
+        const s = Math.max(0.0001, k).toFixed(4);
+        el[4].style.transform = "translate3d(" + l.toFixed(1) + "px," + t.toFixed(1) + "px,0) scale(" + s + ")";
+        el[5].style.transform = "translate3d(" + (W - r - cr).toFixed(1) + "px," + t.toFixed(1) + "px,0) scale(" + s + ")";
+        el[6].style.transform = "translate3d(" + l.toFixed(1) + "px," + (H - b - cr).toFixed(1) + "px,0) scale(" + s + ")";
+        el[7].style.transform = "translate3d(" + (W - r - cr).toFixed(1) + "px," + (H - b - cr).toFixed(1) + "px,0) scale(" + s + ")";
+      }
+      clampDpr() {
+        const r = this.app && this.app._renderer;
+        try { if (r && r.setPixelRatio) r.setPixelRatio(Math.min(window.devicePixelRatio || 1, MAX_DPR)); } catch (e) {}
+      }
+      renderFor(ms) {
+        if (!this.app || !this.ready) return;
+        clearTimeout(this._st);
+        try { this.app.play(); } catch (e) {}
+        this._st = setTimeout(() => { try { this.app && this.app.stop(); } catch (e) {} }, ms);
       }
       async load() {
         if (this.app || !this.isConnected) return;
-        this._busyLoad = true; this.syncBusy();
         try {
           const { Application } = await loadRuntime();
           if (!this.isConnected) return;
           this.app = new Application(this.canvas, { renderer: "webgl" });
           await this.app.load(this.getAttribute("url"));
           if (!this.isConnected) return;
+          this.clampDpr();
           this.uuids = [];
           try { this.uuids = this.app.getAllObjects().map(o => o.uuid); } catch (e) {}
-          await this.calibrate();
           this.ready = true;
           this.canvas.style.opacity = "1";
-          if (this.want) this.turn(true, true);
-          if (!this.onScreen) this.app.stop();
+          this.renderFor(1200);
+          if (this.want) this.turn(true);
         } catch (e) { console.warn("ve-monitor failed to load", e); }
-        finally { this._busyLoad = false; this.syncBusy(); dispatchEvent(new Event("ve-frame")); }
       }
-      emit(fwd) {
-        for (const u of this.uuids || []) { try { fwd ? this.app.emitEvent("mouseHover", u) : this.app.emitEventReverse("mouseHover", u); } catch (e) {} }
-      }
-      turn(fwd, force) {
-        if (!force && fwd === this.turned) return;
+      turn(fwd) {
+        if (fwd === this.turned) return;
         this.turned = fwd;
-        if (this.app && this.ready) this.emit(fwd);
+        if (!this.app || !this.ready) return;
+        for (const u of this.uuids || []) { try { fwd ? this.app.emitEvent("mouseHover", u) : this.app.emitEventReverse("mouseHover", u); } catch (e) {} }
+        this.renderFor(2800);
       }
       // where the reader is in the run: the turn plays once it pins, and reverses above it
       progress(p) {
         if (p >= 0.05) this.want = true; else if (p <= 0.015) this.want = false;
         if (this.ready && this.want !== this.turned) this.turn(this.want);
       }
-      // the Mac's edges in the pixels: rows/columns that differ from the scene's background
-      measure() {
-        const c = this.canvas, W = c.width, H = c.height;
-        if (!W || !H) return null;
-        const w = 240, h = Math.max(40, Math.round(240 * H / W));
-        const t = this._mc || (this._mc = document.createElement("canvas"));
-        t.width = w; t.height = h;
-        const x = t.getContext("2d", { willReadFrequently: true });
-        x.clearRect(0, 0, w, h);
-        try { x.drawImage(c, 0, 0, w, h); } catch (e) { return null; }
-        const d = x.getImageData(0, 0, w, h).data;
-        const px = (i, j) => { const k = (j * w + i) * 4; return [d[k], d[k + 1], d[k + 2], d[k + 3]]; };
-        const corners = [px(1, 1), px(w - 2, 1), px(1, h - 2), px(w - 2, h - 2)];
-        if (corners.every(q => q[3] === 0) && d.every((v, i) => (i % 4 !== 3) || v === 0)) return null;   // nothing drawn yet
-        const bg = [0, 1, 2].map(ch => (corners[0][ch] + corners[1][ch]) / 2);   // the top corners: the background
-        const hit = (i, j) => { const q = px(i, j); return Math.max(Math.abs(q[0] - bg[0]), Math.abs(q[1] - bg[1]), Math.abs(q[2] - bg[2])) > 22; };
-        const rows = [];
-        for (let j = 0; j < h; j++) { let n = 0, a = w, b = -1; for (let i = 0; i < w; i++) if (hit(i, j)) { n++; if (i < a) a = i; b = i; } rows.push({ n, a, b }); }
-        let top = rows.findIndex(r => r.n > w * 0.03);
-        if (top < 0) return null;
-        // the body: from the top edge down while rows stay wide; the stand is narrower; a floor band is a full-width row
-        let L = w, R = -1, body = top, band = h;
-        const span = Math.max(4, Math.round((h - top) * 0.45));
-        for (let j = top; j < Math.min(h, top + span); j++) if (rows[j].n > w * 0.03) { L = Math.min(L, rows[j].a); R = Math.max(R, rows[j].b); }
-        const bw = R - L;
-        for (let j = top; j < h; j++) { if (rows[j].b - rows[j].a >= bw * 0.6 && rows[j].n > bw * 0.3) body = j; else if (j > top + span) break; }
-        for (let j = body + 2; j < h; j++) if (rows[j].n > w * 0.8) { band = j; break; }
-        return { l: L / w, r: (R + 1) / w, t: top / h, body: (body + 1) / h, band: band / h };
-      }
-      async measureSoon() {
-        for (let i = 0; i < 30; i++) { await frames(2); const m = this.measure(); if (m) return m; }
-        return null;
-      }
-      union(a, b) { if (!a) return b; if (!b) return a; return { l: Math.min(a.l, b.l), r: Math.max(a.r, b.r), t: Math.min(a.t, b.t), body: Math.max(a.body, b.body), band: Math.min(a.band, b.band) }; }
-      // fit: zoom so the Mac (both poses) fits the screen with the same room on the left, right and top
-      fit(box, W, H) {
-        const P = Math.max(20, Math.min(W, H) * 0.05), side = Math.max(16, W * 0.05), top = Math.max(88, H * 0.12);
-        const cx = W / 2, cy = H / 2, L = box.l * W, R = box.r * W, T = box.t * H;
-        let k = 1.15;
-        if (cx - L > 1) k = Math.min(k, (cx - side - P) / (cx - L));
-        if (R - cx > 1) k = Math.min(k, (W - side - P - cx) / (R - cx));
-        if (cy - T > 1) k = Math.min(k, (cy - top - P) / (cy - T));
-        return Math.max(0.35, k);
-      }
-      async calibrate() {
-        const W = this.canvas.clientWidth || innerWidth, H = this.canvas.clientHeight || innerHeight;
-        await frames(4);
-        const a = await this.measureSoon();
-        this.emit(true); await wait(2400);
-        const b = await this.measureSoon();
-        const u = this.union(a, b);
-        if (u) {
-          const k = this.fit(u, W, H);
-          try { this.app.setZoom(k); } catch (e) {}
-          await frames(4);
-          const b2 = await this.measureSoon();
-          // the real scale the zoom gave, applied to both poses around the centre
-          let s = k;
-          if (b && b2 && b.r - b.l > 0.02) s = (b2.r - b2.l) / (b.r - b.l);
-          const sc = (v, c) => c + (v - c) * s;
-          this.box = { l: sc(u.l, 0.5), r: sc(u.r, 0.5), t: sc(u.t, 0.5), body: sc(u.body, 0.5), band: u.band >= 1 ? 1 : sc(u.band, 0.5) };
-        }
-        this.emit(false); await wait(2400);
-        this.turned = false;
-      }
-      // the frame's insets on a W x H stage: the same room P on the left, right and top; the bottom cuts the stand
-      frameFor(W, H) {
-        let b = this.box;
-        if (!b) { const k = this.fit(FALLBACK, W, H), sc = v => 0.5 + (v - 0.5) * k; b = { l: sc(FALLBACK.l), r: sc(FALLBACK.r), t: sc(FALLBACK.t), body: sc(FALLBACK.body), band: 1 }; }
-        const P = Math.max(20, Math.min(W, H) * 0.05);
-        const l = Math.max(8, b.l * W - P), r = Math.max(8, W - b.r * W - P), t = Math.max(8, b.t * H - P);
-        const bodyB = b.body * H, height = bodyB - b.t * H;
-        let bottom = Math.min(H - t, bodyB + height * 0.16, b.band * H - 2);
-        bottom = Math.max(bottom, bodyB + 4);
-        return { l, r, t, b: Math.max(8, H - bottom) };
-      }
       disconnectedCallback() {
-        clearTimeout(this._lt); this.viewIO && this.viewIO.disconnect();
-        this._busyLoad = false; this._busyView = false; this.syncBusy();
+        clearTimeout(this._lt); clearTimeout(this._st); clearTimeout(this._rz);
+        removeEventListener("resize", this._onResize);
         try { this.app && this.app.dispose && this.app.dispose(); } catch (e) {}
         this.app = null; this._init = false; this.innerHTML = "";
       }
@@ -62799,7 +62764,7 @@ const ypMakeScroll = function () {
 
   const maxY = () => Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
   const clamp = v => Math.max(0, Math.min(maxY(), v));
-  const pass = () => { for (let i = 0; i < subs.length; i++) { try { subs[i](); } catch (e) {} } };
+  const pass = () => { if (window.__ypPause) return; for (let i = 0; i < subs.length; i++) { try { subs[i](); } catch (e) {} } };   // a case study page pauses the home page's effects
 
   // Scroll-linked effects read layout, and a layout read straight after a scroll write is a
   // forced reflow. One flag lets the expensive CSS effects stand down for the duration.
@@ -64020,7 +63985,7 @@ class CasePage {
     this.host.querySelectorAll(".r").forEach(el => this._io.observe(el));
     const v6 = this.host.querySelector("[data-ve6]");
     if (v6) {   // case study 01: the Ve v6 design, rendered and run by its own runtime (ve6rt.js)
-      YPScroll.setMode("off");   // the design scrolls with its own wheel / key easing (and its hero text follow)
+      YPScroll.setMode("off"); window.__ypPause = true;   // the browser scrolls this page; the home page's scroll effects stand down
       this._v6 = window.__ve6Mount ? window.__ve6Mount(v6) : null;
       v6.querySelectorAll("[data-go-back]").forEach(a => a.addEventListener("click", ypGoBack));
       return;
@@ -64078,7 +64043,7 @@ class CasePage {
   }
   unmount() {
     this.unmounted = true;
-    if (this._v6) { this._v6.unmount(); this._v6 = null; YPScroll.setMode("on"); }
+    if (this._v6) { this._v6.unmount(); this._v6 = null; YPScroll.setMode("on"); window.__ypPause = false; }
     if (this._tick) YPScroll.remove(this._tick);
     if (this._rs) removeEventListener("resize", this._rs);
     clearTimeout(this._t);
@@ -64821,8 +64786,8 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
   let prev = scrollY;
   addEventListener("scroll", () => {
     const y = scrollY, was = prev; prev = y;
+    if (!live()) { if (html.style.touchAction) html.style.touchAction = ""; holdUntil = 0; return; }   // a case study page: nothing to do
     paint();
-    if (!live()) { if (html.style.touchAction) html.style.touchAction = ""; holdUntil = 0; return; }
     if (gliding()) return;
     if (performance.now() < holdUntil) { if (Math.abs(y - holdY) > 0.5) scrollTo(0, holdY); return; }
     const g = G(), first = rest(g, 0), last = rest(g, n - 1);
