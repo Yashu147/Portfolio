@@ -61306,13 +61306,13 @@ return Component;
       for (const u of RUNTIMES) { try { return await import(u); } catch (e) { err = e; } }
       throw err;
     })());
-    // The scene draws the Mac at a fixed size, whatever the canvas size: on the live site it is 1228px wide,
-    // its top edge 386px above the canvas centre, the bottom of its screen 332px below, and 31px right of centre
-    // (plus its stand below). So the scene is rendered once at the stage's size and scaled as a whole with a
+    // The scene draws the Mac at a fixed size, whatever the canvas size: measured on the live site (stage-sized
+    // canvas, scale 1) it is 979px wide, its top edge 299px above the canvas centre, the bottom of its screen
+    // 274px below, and 18px right of centre (plus its stand below). So the scene is rendered once at the stage's size and scaled as a whole with a
     // transform (compositor only): small enough in the closed frame that the entire Mac shows, growing with
     // the frame as it opens.
-    const MAC = { w: 1228, top: 386, bottom: 332, cx: 31, stand: 0.14 };
-    const MAX_DPR = 1.25, R = 14;
+    const MAC = { w: 979, top: 299, bottom: 274, cx: 18, stand: 0.14 };
+    const MAX_DPR = 1.5, R = 14;
     class VeMonitor extends HTMLElement {
       connectedCallback() {
         if (this._init) return;
@@ -61342,15 +61342,15 @@ return Component;
       geometry(W, H) {
         const P = Math.max(20, Math.min(W, H) * 0.05), side = Math.max(16, W * 0.05), topMin = Math.max(84, H * 0.1);
         const block = (MAC.top + MAC.bottom) * (1 + MAC.stand);
-        const s1 = Math.min(1, (W * 0.86) / MAC.w, (H * 0.8) / block);   // open: the Mac as large as the screen allows
+        // open: the Mac fills about 72% of the width (its screen at most 76% of the height), body centred, clear of the chapter bar
+        const s1 = Math.min(1.6, (W * 0.72) / MAC.w, (H * 0.76) / (MAC.top + MAC.bottom));
         // closed: the whole Mac in the frame, the same room P on the left, right and top; it grows a quarter as the frame opens
         const s0 = Math.max(0.1, Math.min((W - 2 * side - 2 * P) / MAC.w, (H - 2 * topMin - P) / block, s1 * 0.8));
         const fw = MAC.w * s0 + 2 * P, fh = P + block * s0;
         const ft = Math.max(topMin, (H - fh) / 2), fl = (W - fw) / 2;
         const frame = { t: ft, l: fl, r: fl, b: Math.max(0, H - ft - fh) };
 
-        const top1 = Math.max(76, (H - block * s1) / 2 + 24);
-        return { frame, s0, s1, ty0: ft + P - H / 2 + MAC.top * s0, ty1: top1 - H / 2 + MAC.top * s1 };
+        return { frame, s0, s1, ty0: ft + P - H / 2 + MAC.top * s0, ty1: 10 + (MAC.top - MAC.bottom) / 2 * s1 };
       }
       layout() {
         const W = this.clientWidth || innerWidth, H = this.clientHeight || innerHeight;
