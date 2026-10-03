@@ -59595,9 +59595,10 @@ renderer.setAnimationLoop(now => {
   .ve6 [data-step-hint="d"] .vn-hint [data-s="d"], .ve6 [data-step-hint="e"] .vn-hint [data-s="e"] { opacity: 1; transform: none; }
 
   /* the 3D monitor: the scene's box (its edges fade into the stage), and the frame's masks */
-  .ve6 .vm-canvas { position: absolute; display: block; opacity: 0; transition: opacity 700ms ease; pointer-events: none;
+  .ve6 .vm-box { position: absolute; display: block; overflow: hidden; opacity: 0; transition: opacity 700ms ease; pointer-events: none;
     -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%), linear-gradient(180deg, transparent 0, #000 6%, #000 94%, transparent 100%);
     -webkit-mask-composite: source-in; mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%), linear-gradient(180deg, transparent 0, #000 6%, #000 94%, transparent 100%); mask-composite: intersect; }
+  .ve6 .vm-canvas { position: absolute; left: 0; top: 0; display: block; width: 100%; height: 100%; }
   .ve6 .vmk { position: absolute; inset: 0; z-index: 2; overflow: hidden; pointer-events: none; }
   .ve6 .vmk i { position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: #F4F4F1; will-change: transform; transform-origin: 0 0; }
   .ve6 .vmk i.c { width: 14px; height: 14px; background: transparent; }
@@ -61303,9 +61304,10 @@ return Component;
       for (const u of RUNTIMES) { try { return await import(u); } catch (e) { err = e; } }
       throw err;
     })());
-    // the scene as approved: drawn in a 1.657 : 1 box, the Mac (facing you) spans 10.4%..91.8% of its width,
-    // its top edge at 9.7% and the bottom of its screen at 88.7% of its height
-    const SCENE = { aspect: 1.657, l: 0.104, r: 0.918, t: 0.097, body: 0.887 };
+    // the scene, measured on the live site: drawn in a 1.867 : 1 box, the Mac (facing you) spans 18.0%..85.4%
+    // of its width (centre 51.7%), its top edge at 10.45% and the bottom of its screen at 84.0% of its height.
+    // The box keeps that shape everywhere, so these hold on every screen.
+    const SCENE = { aspect: 1.867, l: 0.180, r: 0.854, t: 0.1045, body: 0.840 };
     const MAX_DPR = 1.25, R = 14;
     class VeMonitor extends HTMLElement {
       connectedCallback() {
@@ -61313,9 +61315,13 @@ return Component;
         this._init = true;
         this.style.display = "block";
         this.turned = false; this.want = false; this.ready = false;
+        // Spline sizes its canvas to the element around it: that element is the box, so the box decides the size
+        this.boxEl = document.createElement("div");
+        this.boxEl.className = "vm-box";
         this.canvas = document.createElement("canvas");
         this.canvas.className = "vm-canvas";
-        this.appendChild(this.canvas);
+        this.boxEl.appendChild(this.canvas);
+        this.appendChild(this.boxEl);
         this.layout();
         this._onResize = () => { clearTimeout(this._rz); this._rz = setTimeout(() => { this.layout(); this.clampDpr(); this.renderFor(700); dispatchEvent(new Event("ve-frame")); }, 150); };
         addEventListener("resize", this._onResize);
@@ -61342,7 +61348,7 @@ return Component;
       }
       layout() {
         const W = this.clientWidth || innerWidth, H = this.clientHeight || innerHeight;
-        const g = this.geometry(W, H), c = this.canvas.style;
+        const g = this.geometry(W, H), c = this.boxEl.style;
         c.left = g.box.x.toFixed(1) + "px"; c.top = g.box.y.toFixed(1) + "px"; c.width = g.box.w.toFixed(1) + "px"; c.height = g.box.h.toFixed(1) + "px";
         this._g = { W, H, g };
       }
@@ -61353,7 +61359,7 @@ return Component;
       // the frame: four masks in the page colour and four rounded corners, moved with transform only
       paintFrame(mk, f, k, W, H) {
         const el = mk.children; if (el.length < 8) return;
-        const t = f.t * k, b = f.b * k, l = f.l * k, r = f.r * k, cr = R * k;
+        const t = Math.round(f.t * k), b = Math.round(f.b * k), l = Math.round(f.l * k), r = Math.round(f.r * k), cr = R * k;   // whole pixels: no hairline at the edges
         const key = t.toFixed(1) + "," + b.toFixed(1) + "," + l.toFixed(1) + "," + r.toFixed(1) + "," + W + "," + H;
         if (key === this._fk) return;
         this._fk = key;
@@ -61390,7 +61396,7 @@ return Component;
           this.uuids = [];
           try { this.uuids = this.app.getAllObjects().map(o => o.uuid); } catch (e) {}
           this.ready = true;
-          this.canvas.style.opacity = "1";
+          this.boxEl.style.opacity = "1";
           this.renderFor(1200);
           if (this.want) this.turn(true);
         } catch (e) { console.warn("ve-monitor failed to load", e); }
