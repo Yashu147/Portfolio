@@ -59393,23 +59393,20 @@ renderer.setAnimationLoop(now => {
 
   /* 04 The wall (ve6_wall.py) */
   /* the three limits are the wall: bricks in courses, the blank ones are its texture */
-  .ve6 .vw-wall { margin-top: clamp(56px, 6vw, 88px); display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 8px; }
-  .ve6 .vw-b { position: relative; min-height: clamp(132px, 12vw, 168px); border-radius: 6px; box-sizing: border-box; will-change: transform, opacity; }
+  .ve6 .vw-wall { --bleed: clamp(40px, 5vw, 96px); margin-top: clamp(64px, 7vw, 104px); margin-left: calc(50% - 50vw + 12px - var(--bleed)); margin-right: calc(50% - 50vw + 12px - var(--bleed));
+    display: grid; grid-template-columns: repeat(16, minmax(0, 1fr)); gap: 8px;
+    -webkit-mask-image: linear-gradient(180deg, #000 80%, transparent 100%); mask-image: linear-gradient(180deg, #000 80%, transparent 100%); }
+  .ve6 .vw-b { position: relative; grid-column: var(--c); grid-row: var(--r); min-height: clamp(140px, 12vw, 176px); border-radius: 6px; box-sizing: border-box; will-change: transform, opacity; }
+  .ve6 .vw-low { min-height: 56px; }
   .ve6 .vw-x { background: linear-gradient(180deg, #121214 0%, #0F0F11 100%); box-shadow: inset 0 0 0 1px #1A1A1D, inset 0 1px 0 rgba(255,255,255,0.025); }
-  .ve6 .vw-on { padding: clamp(20px, 2.2vw, 30px); display: flex; flex-direction: column; justify-content: space-between; gap: 24px;
+  .ve6 .vw-on { padding: clamp(20px, 2.2vw, 32px); display: flex; flex-direction: column; justify-content: space-between; gap: 24px;
     background: linear-gradient(180deg, #1B1B1E 0%, #141416 100%); box-shadow: inset 0 0 0 1px #2A2A2E, inset 0 1px 0 rgba(255,255,255,0.06); }
   .ve6 .vw-on::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0;
     box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--acc) 70%, #FFFFFF), 0 18px 40px -22px color-mix(in oklch, var(--acc) 80%, transparent); transition: opacity 450ms; }
   .ve6 .vw-on.ve-hov::after { opacity: 1; }
   .ve6 .vw-bt { display: flex; align-items: center; gap: 10px; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: #8A8A8E; }
   .ve6 .vw-bt b { font-weight: 500; color: color-mix(in oklch, var(--acc) 62%, #FFFFFF); }
-  .ve6 .vw-on p { margin: 0; font-size: clamp(20px, 1.85vw, 26px); line-height: 1.2; font-weight: 600; letter-spacing: -0.025em; color: #FFFFFF; text-wrap: pretty; }
-  .ve6 .vw-c1 { grid-column: 1 / span 3; }  .ve6 .vw-c2 { grid-column: 4 / span 6; }  .ve6 .vw-c3 { grid-column: 10 / span 3; }
-  .ve6 .vw-c4 { grid-column: 1 / span 6; }  .ve6 .vw-c5 { grid-column: 7 / span 6; }
-  .ve6 .vw-c6 { grid-column: 1 / span 4; }  .ve6 .vw-c7 { grid-column: 5 / span 8; }
-  .ve6 .vw-c8 { grid-column: 1 / span 2; }  .ve6 .vw-c9 { grid-column: 3 / span 6; }  .ve6 .vw-c10 { grid-column: 9 / span 4; }
-  .ve6 .vw-c8, .ve6 .vw-c9, .ve6 .vw-c10 { min-height: 56px; }
-  .ve6 .vw-wall { -webkit-mask-image: linear-gradient(180deg, #000 78%, transparent 100%); mask-image: linear-gradient(180deg, #000 78%, transparent 100%); }
+  .ve6 .vw-on p { margin: 0; font-size: clamp(20px, 1.9vw, 28px); line-height: 1.2; font-weight: 600; letter-spacing: -0.025em; color: #FFFFFF; text-wrap: pretty; }
 
   /* how it showed up: two symptoms, each drawn */
   .ve6 .vw-k { margin: clamp(96px, 10vw, 140px) 0 clamp(28px, 3vw, 40px); display: flex; align-items: center; gap: 16px; font-size: 14px; line-height: 1.4; font-weight: 500; color: #A1A1A6; white-space: nowrap; }
@@ -59453,15 +59450,12 @@ renderer.setAnimationLoop(now => {
   .ve6 .vw-r.ve-hov .vw-hole { background: var(--acc); box-shadow: 0 0 0 6px #0B0B0C, 0 0 28px 2px color-mix(in oklch, var(--acc) 55%, transparent); transform: translateX(4px); }
 
   @media (max-width: 760px) {
-    /* phones: one brick per course, offset like a bond, with a sliver of blank brick beside each */
-    .ve6 .vw-wall { grid-template-columns: repeat(6, minmax(0, 1fr)); }
-    .ve6 .vw-b { min-height: 0; }
+    /* phones: one brick per course, offset like a bond, with slivers of blank brick */
+    .ve6 .vw-wall { --bleed: 0px; margin-left: 0; margin-right: 0; grid-template-columns: repeat(6, minmax(0, 1fr)); }
+    .ve6 .vw-b { grid-column: var(--mc); grid-row: var(--mr); min-height: 0; }
+    .ve6 .vw-dt { display: none; }
     .ve6 .vw-on { min-height: 150px; }
-    .ve6 .vw-c1, .ve6 .vw-c5, .ve6 .vw-c10 { display: none; }
-    .ve6 .vw-c2 { grid-column: 1 / span 5; } .ve6 .vw-c3 { grid-column: 6 / span 1; }
-    .ve6 .vw-c4 { grid-column: 2 / span 5; grid-row: 2; } .ve6 .vw-c6 { grid-column: 1 / span 1; grid-row: 2; }
-    .ve6 .vw-c7 { grid-column: 1 / span 5; } .ve6 .vw-c8 { grid-column: 6 / span 1; min-height: 0; }
-    .ve6 .vw-c9 { grid-column: 1 / -1; min-height: 40px; }
+    .ve6 .vw-low { min-height: 40px; }
     .ve6 .vw-two { grid-template-columns: 1fr; gap: 40px; }
     .ve6 .vw-sym, .ve6 .vw-sym + .vw-sym { padding: 0; border-left: 0; }
     .ve6 .vw-sym + .vw-sym { padding-top: 40px; border-top: 1px solid #232326; }
@@ -60135,15 +60129,15 @@ window.__ypImgs = function (r) { r.querySelectorAll('img[data-yp-src]').forEach(
 </div>
 </section>
 
-<section id="wall" class="vw" data-screen-label="04 The wall" style="--acc: {{accent}}; margin: clamp(140px, 16vw, 240px) 12px 0; border-radius: 12px; background: #0B0B0C; color: #FFFFFF; padding: clamp(96px, 11vw, 168px) 0">
-<div style="max-width: 1120px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 56px); box-sizing: border-box">
+<section id="wall" class="vw" data-screen-label="04 The wall" style="--acc: {{accent}}; overflow: clip; margin: clamp(140px, 16vw, 240px) 12px 0; border-radius: 12px; background: #0B0B0C; color: #FFFFFF; padding: clamp(96px, 11vw, 168px) 0">
+<div style="max-width: 1680px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 56px); box-sizing: border-box">
 <div data-ve-reveal="" style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 28px">
 <span style="flex: 0 0 auto; white-space: nowrap; display: inline-flex; align-items: center; gap: 10px; height: 34px; padding: 0 16px; box-sizing: border-box; border-radius: 999px; border: 1px solid #2E2E30; font-size: 14px; line-height: 1; font-weight: 500; color: #CFCFD2"><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; color: color-mix(in oklch, {{accent}} 62%, #FFFFFF)">04</span>Then we hit a wall</span>
-<h2 style="margin: 0; max-width: 920px; font-size: clamp(38px, 5.4vw, 76px); line-height: 1; font-weight: 600; letter-spacing: -0.045em; text-wrap: balance">AI tools can do a lot, but people still do all the managing.</h2>
-<p style="margin: 0; max-width: 640px; font-size: clamp(17px, 1.4vw, 19px); line-height: 1.6; color: #A1A1A6; text-wrap: pretty">The Dynamic Notch proved the idea. But it ran into the same wall every AI tool hits. To get real work out of it, you still had to explain every situation from scratch, pick the right tool, coordinate between apps, and check every step yourself.</p>
+<h2 style="margin: 0; max-width: none; font-size: clamp(40px, 6.2vw, 112px); line-height: 0.98; font-weight: 600; letter-spacing: -0.045em; text-wrap: balance">AI tools can do a lot, but people still do all the managing.</h2>
+<p style="margin: 0; max-width: 1000px; font-size: clamp(17px, 1.55vw, 22px); line-height: 1.6; color: #A1A1A6; text-wrap: pretty">The Dynamic Notch proved the idea. But it ran into the same wall every AI tool hits. To get real work out of it, you still had to explain every situation from scratch, pick the right tool, coordinate between apps, and check every step yourself.</p>
 </div>
 
-<div class="vw-wall" role="list" aria-label="Why AI tools stall"><div class="vw-b vw-x vw-c1" data-brick="-1"></div><div role="listitem" class="vw-b vw-on vw-c2" data-brick="1"><span class="vw-bt"><b>01</b>Chat tools</span><p>Chat tools talk, but don’t act.</p></div><div class="vw-b vw-x vw-c3" data-brick="1"></div><div role="listitem" class="vw-b vw-on vw-c4" data-brick="-1"><span class="vw-bt"><b>02</b>Automation tools</span><p>Automation tools act, but don’t understand your work.</p></div><div class="vw-b vw-x vw-c5" data-brick="1"></div><div class="vw-b vw-x vw-c6" data-brick="-1"></div><div role="listitem" class="vw-b vw-on vw-c7" data-brick="1"><span class="vw-bt"><b>03</b>Your work</span><p>Your work is spread across tabs, inboxes and code editors that don’t know about each other.</p></div><div class="vw-b vw-x vw-c8" data-brick="-1"></div><div class="vw-b vw-x vw-c9" data-brick="1"></div><div class="vw-b vw-x vw-c10" data-brick="-1"></div></div>
+<div class="vw-wall" role="list" aria-label="Why AI tools stall"><div aria-hidden="true" class="vw-b vw-x" data-brick="-1" style="--c: 1 / 4; --r: 1; --mc: 6 / 7; --mr: 1;"></div><div role="listitem" class="vw-b vw-on" data-brick="-1" style="--c: 4 / 10; --r: 1; --mc: 1 / 6; --mr: 1;"><span class="vw-bt"><b>01</b>Chat tools</span><p>Chat tools talk, but don’t act.</p></div><div aria-hidden="true" class="vw-b vw-x vw-dt" data-brick="1" style="--c: 10 / 14; --r: 1;"></div><div aria-hidden="true" class="vw-b vw-x vw-dt" data-brick="1" style="--c: 14 / 17; --r: 1;"></div><div aria-hidden="true" class="vw-b vw-x" data-brick="-1" style="--c: 1 / 3; --r: 2; --mc: 1 / 2; --mr: 2;"></div><div role="listitem" class="vw-b vw-on" data-brick="-1" style="--c: 3 / 9; --r: 2; --mc: 2 / 7; --mr: 2;"><span class="vw-bt"><b>02</b>Automation tools</span><p>Automation tools act, but don’t understand your work.</p></div><div aria-hidden="true" class="vw-b vw-x vw-dt" data-brick="1" style="--c: 9 / 12; --r: 2;"></div><div aria-hidden="true" class="vw-b vw-x vw-dt" data-brick="1" style="--c: 12 / 17; --r: 2;"></div><div aria-hidden="true" class="vw-b vw-x vw-dt" data-brick="-1" style="--c: 1 / 5; --r: 3;"></div><div aria-hidden="true" class="vw-b vw-x" data-brick="-1" style="--c: 5 / 8; --r: 3; --mc: 6 / 7; --mr: 3;"></div><div role="listitem" class="vw-b vw-on" data-brick="1" style="--c: 8 / 15; --r: 3; --mc: 1 / 6; --mr: 3;"><span class="vw-bt"><b>03</b>Your work</span><p>Your work is spread across tabs, inboxes and code editors that don’t know about each other.</p></div><div aria-hidden="true" class="vw-b vw-x vw-dt" data-brick="1" style="--c: 15 / 17; --r: 3;"></div><div aria-hidden="true" class="vw-b vw-x vw-low" data-brick="-1" style="--c: 1 / 3; --r: 4; --mc: 1 / 3; --mr: 4;"></div><div aria-hidden="true" class="vw-b vw-x vw-low" data-brick="-1" style="--c: 3 / 8; --r: 4; --mc: 3 / 7; --mr: 4;"></div><div aria-hidden="true" class="vw-b vw-x vw-dt vw-low" data-brick="1" style="--c: 8 / 12; --r: 4;"></div><div aria-hidden="true" class="vw-b vw-x vw-dt vw-low" data-brick="1" style="--c: 12 / 17; --r: 4;"></div></div>
 
 <p data-ve-reveal="" class="vw-k"><span></span>In the Dynamic Notch, it showed up in two ways<span></span></p>
 <div class="vw-two" data-stagger="110"><div class="vw-sym"><div class="vw-viz vw-frag" aria-hidden="true"><i></i><i class="on"></i><i></i><i></i><i></i><i></i><i class="on"></i><i></i><i></i><i></i></div><span class="vw-sn">01</span><h3>It was guessing.</h3><p>The AI only saw fragments of your work, so you had to explain things, and its replies still felt generic.</p></div><div class="vw-sym"><div class="vw-viz vw-dark" aria-hidden="true"><span class="vw-path"></span><i></i><i></i><i></i><i class="on"></i></div><span class="vw-sn">02</span><h3>It was acting in the dark.</h3><p>Once the AI acts on your behalf, you need to see every step it takes, and stay in control of it.</p></div></div>
@@ -60732,7 +60726,7 @@ class Component extends DCLogic {
       const dir = Number(b.getAttribute('data-brick')) || 1;
       const r = b.getBoundingClientRect();
       const p = ease(clamp((vh * 1.0 - r.top) / (vh * 0.55)));
-      b.style.transform = 'translateX(' + ((1 - p) * dir * 180).toFixed(1) + 'px)';
+      b.style.transform = 'translateX(' + ((1 - p) * dir * Math.max(180, vw * 0.6)).toFixed(1) + 'px)';
       b.style.opacity = (0.15 + 0.85 * p).toFixed(3);
     });
 
