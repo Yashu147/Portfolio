@@ -59335,22 +59335,19 @@ renderer.setAnimationLoop(now => {
   .ve6 .vfix img { transition: transform 1100ms cubic-bezier(0.16, 1, 0.3, 1); will-change: transform; }
   .ve6 .vfix:hover img { transform: scale(1.06); }
 
-  /* What founders told us: pull quotes on hairlines */
-  .ve6 .vf { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid rgba(11,11,12,0.14); border-bottom: 1px solid rgba(11,11,12,0.14); }
-  .ve6 .vf-q { position: relative; margin: 0; min-height: clamp(280px, 24vw, 340px); padding: clamp(24px, 2.4vw, 32px) clamp(20px, 2.4vw, 36px) clamp(28px, 3vw, 40px);
-    display: flex; flex-direction: column; gap: clamp(36px, 4vw, 64px); box-sizing: border-box; }
-  .ve6 .vf-q:first-child { padding-left: 0; }
-  .ve6 .vf-q:last-child { padding-right: 0; }
-  .ve6 .vf-q + .vf-q { border-left: 1px solid rgba(11,11,12,0.14); }
-  .ve6 .vf-q::before { content: ""; position: absolute; left: 0; right: 0; top: -1px; height: 2px; background: var(--acc); transform: scaleX(0); transform-origin: 0 50%; transition: transform 800ms cubic-bezier(0.16, 1, 0.3, 1); }
-  .ve6 .vf-q:hover::before { transform: scaleX(1); }
-  .ve6 .vf-n { display: flex; justify-content: space-between; align-items: baseline; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; line-height: 1; letter-spacing: 0.06em; text-transform: uppercase; color: #8A8A8E; }
-  .ve6 .vf-n b { font-weight: 500; color: var(--acc); }
-  .ve6 .vf blockquote { margin: 0; font-size: clamp(26px, 2.45vw, 38px); line-height: 1.08; font-weight: 500; letter-spacing: -0.04em; color: #0B0B0C; text-indent: -0.38em; text-wrap: balance; }
+  /* What founders told us: quote cards in the challenge / answer language */
+  .ve6 .vf { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .ve6 .vf-c { position: relative; margin: 0; min-height: clamp(300px, 26vw, 380px); box-sizing: border-box; border-radius: 12px; overflow: hidden;
+    padding: clamp(26px, 2.8vw, 40px); display: flex; flex-direction: column; gap: 18px; background: #FFFFFF; color: #0B0B0C;
+    box-shadow: inset 0 0 0 1px rgba(11,11,12,0.06); transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 600ms cubic-bezier(0.16, 1, 0.3, 1); }
+  .ve6 .vf-c::after { content: "\201C"; position: absolute; top: clamp(-6px, -0.4vw, 0px); right: clamp(20px, 2.4vw, 36px); font-size: clamp(150px, 13vw, 220px); line-height: 1; font-weight: 500;
+    color: color-mix(in oklch, var(--acc) 13%, #FFFFFF); pointer-events: none; transition: color 600ms, transform 900ms cubic-bezier(0.16, 1, 0.3, 1); }
+  .ve6 .vf-c:hover { transform: translateY(-4px); box-shadow: inset 0 0 0 1px rgba(11,11,12,0.06), 0 24px 48px -28px rgba(11,11,12,0.28); }
+  .ve6 .vf-c:hover::after { color: color-mix(in oklch, var(--acc) 24%, #FFFFFF); transform: translateY(6px) rotate(-6deg); }
+  .ve6 .vf-c .vca-l { position: relative; z-index: 1; color: var(--acc); }
+  .ve6 .vf-t { position: relative; z-index: 1; margin: auto 0 0; font-size: clamp(25px, 2.3vw, 34px); line-height: 1.12; font-weight: 500; letter-spacing: -0.035em; text-indent: -0.36em; text-wrap: balance; }
   .ve6 .vf-m { color: var(--acc); }
-  .ve6 .vf figcaption { margin-top: auto; display: flex; gap: 14px; max-width: 34ch; font-size: 16px; line-height: 1.55; color: #5E5E5E; text-wrap: pretty; }
-  .ve6 .vf figcaption::before { content: ""; flex: 0 0 20px; height: 1px; margin-top: 0.78em; background: var(--acc); transition: flex-basis 600ms cubic-bezier(0.16, 1, 0.3, 1); }
-  .ve6 .vf-q:hover figcaption::before { flex-basis: 32px; }
+  .ve6 .vf-c figcaption { position: relative; z-index: 1; padding-top: 18px; border-top: 1px solid rgba(11,11,12,0.1); font-size: 16px; line-height: 1.55; color: #6B6B70; text-wrap: pretty; }
 
   /* The challenge, handing over to our answer */
   .ve6 .vca { position: relative; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
@@ -59383,14 +59380,13 @@ renderer.setAnimationLoop(now => {
   .ve6 .vca-steps a:hover .vca-ar { background: #FFFFFF; color: var(--acc); transform: rotate(-45deg); }
 
   @media (max-width: 760px) {
-    .ve6 .vf { grid-template-columns: 1fr; border-bottom: 0; }
-    .ve6 .vf-q { min-height: 0; padding: 24px 0 32px; gap: 28px; border-bottom: 1px solid rgba(11,11,12,0.14); }
-    .ve6 .vf-q + .vf-q { border-left: 0; }
+    .ve6 .vf { grid-template-columns: 1fr; }
+    .ve6 .vf-c { min-height: 240px; }
     .ve6 .vca { grid-template-columns: 1fr; gap: 12px; }
     .ve6 .vca-q, .ve6 .vca-a { min-height: 0; }
     .ve6 .vca-q .vca-t { margin-top: 0; }
     .ve6 .vca-q::after { display: none; }
-    .ve6 .vf blockquote { text-indent: 0; }
+    .ve6 .vf-t { text-indent: 0; }
     .ve6 .vca-join { left: 50%; top: -34px; margin: 0 0 0 -28px; transform: rotate(90deg); }
     .ve6 .vca-steps { margin-top: 8px; }
   }
@@ -59863,7 +59859,7 @@ window.__ypImgs = function (r) { r.querySelectorAll('img[data-yp-src]').forEach(
 
 <div style="display: flex; flex-direction: column; gap: 24px">
 <p data-ve-reveal="" style="margin: 0; font-size: 15px; line-height: 1.45; font-weight: 600; color: {{accent}}">What founders told us</p>
-<div data-stagger="120" class="vf" style="--acc: {{accent}}"><figure class="vf-q"><span class="vf-n"><b>01</b><span>Founder</span></span><blockquote><span class="vf-m">“</span>We pay for too much.<span class="vf-m">”</span></blockquote><figcaption>Tool after tool, and none of them share what they know.</figcaption></figure><figure class="vf-q"><span class="vf-n"><b>02</b><span>Founder</span></span><blockquote><span class="vf-m">“</span>I don’t know who’s doing what.<span class="vf-m">”</span></blockquote><figcaption>Half my day goes on asking who’s on what, and whether it’s already done.</figcaption></figure><figure class="vf-q"><span class="vf-n"><b>03</b><span>Founder</span></span><blockquote><span class="vf-m">“</span>Just give me one place.<span class="vf-m">”</span></blockquote><figcaption>I’d open one app in the morning, and that’s it.</figcaption></figure></div>
+<div data-stagger="120" class="vf" style="--acc: {{accent}}"><figure class="vf-c"><p class="vca-l">Founder 01</p><blockquote class="vf-t"><span class="vf-m">“</span>We pay for too much.<span class="vf-m">”</span></blockquote><figcaption>Tool after tool, and none of them share what they know.</figcaption></figure><figure class="vf-c"><p class="vca-l">Founder 02</p><blockquote class="vf-t"><span class="vf-m">“</span>I don’t know who’s doing what.<span class="vf-m">”</span></blockquote><figcaption>Half my day goes on asking who’s on what, and whether it’s already done.</figcaption></figure><figure class="vf-c"><p class="vca-l">Founder 03</p><blockquote class="vf-t"><span class="vf-m">“</span>Just give me one place.<span class="vf-m">”</span></blockquote><figcaption>I’d open one app in the morning, and that’s it.</figcaption></figure></div>
 </div>
 
 <div style="display: flex; flex-wrap: wrap; background: #FFFFFF; border-radius: 12px; overflow: hidden">
@@ -61088,28 +61084,37 @@ return Component;
     return { render, update };
   }
 
-  // The design's 3D monitor: the case study's own Spline mock-up (the <ve-spline> component, unchanged),
-  // held to the frame the page opens up — it starts as a framed screen and grows to the whole stage
+  // The design's 3D monitor: the case study's own Spline mock-up (the <ve-spline> component, unchanged).
+  // The scene is rendered once at the stage's size and never resized while scrolling (a WebGL resize per
+  // frame is what stalled the page and smeared the laptop); the stage's clip opens around it. While the
+  // scene does its one-off heavy setup the design hands scrolling back to the browser (ve-busy / ve-idle).
   if (!customElements.get("ve-monitor")) {
     class VeMonitor extends HTMLElement {
       connectedCallback() {
         if (this._init) return;
         this._init = true;
         this.style.display = "block";
-        this.sp = document.createElement("ve-spline");
-        this.sp.setAttribute("url", this.getAttribute("url"));
-        Object.assign(this.sp.style, { position: "absolute", left: "0", top: "0", width: "100%", height: "100%" });
-        this.appendChild(this.sp);
+        this.io = new IntersectionObserver(es => { if (!es[0].isIntersecting) return; this.io.disconnect(); this.load(); }, { rootMargin: "0px 0px 120% 0px" });
+        this.io.observe(this);
       }
-      setFrame(w, h) {
-        if (!this.sp) return;
-        const W = this.clientWidth || 1, H = this.clientHeight || 1;
-        const l = Math.round((W - w) / 2), t = Math.round((H - h) / 2), ww = Math.round(w), hh = Math.round(h);
-        if (this._f === l + "," + t + "," + ww + "," + hh) return;
-        this._f = l + "," + t + "," + ww + "," + hh;
-        Object.assign(this.sp.style, { left: l + "px", top: t + "px", width: ww + "px", height: hh + "px" });
+      load() {
+        this._busy = true;
+        dispatchEvent(new Event("ve-busy"));
+        const sp = document.createElement("ve-spline");
+        sp.setAttribute("url", this.getAttribute("url"));
+        Object.assign(sp.style, { position: "absolute", inset: "0", display: "block" });
+        this.appendChild(sp);
+        const t0 = performance.now();
+        const poll = () => {
+          const c = sp.querySelector("canvas");
+          if (!this.isConnected || (c && c.style.opacity === "1") || performance.now() - t0 > 15000) return this.idle();
+          this._pt = setTimeout(poll, 200);
+        };
+        poll();
       }
-      disconnectedCallback() { this._init = false; this._f = ""; this.innerHTML = ""; this.sp = null; }
+      idle() { clearTimeout(this._pt); if (!this._busy) return; this._busy = false; setTimeout(() => dispatchEvent(new Event("ve-idle")), 300); }
+      setFrame() {}   // the scene keeps its size: the background opens up around it
+      disconnectedCallback() { this.io && this.io.disconnect(); this.idle(); this._init = false; this.innerHTML = ""; }
     }
     customElements.define("ve-monitor", VeMonitor);
   }
