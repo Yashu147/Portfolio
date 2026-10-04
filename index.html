@@ -61966,6 +61966,7 @@ return Component;
       }
       // a dropped graphics context (the browser keeps only so many) is rebuilt on a fresh canvas
       freshCanvas() {
+        this._gen = (this._gen || 0) + 1; this._loading = false;
         this.release();
         const c = document.createElement("canvas"); c.className = "vm-canvas";
         this.boxEl.replaceChild(c, this.canvas); this.canvas = c;
@@ -61979,31 +61980,40 @@ return Component;
       retry(why) {
         if (!this.isConnected) return;
         this._tries = (this._tries || 0) + 1;
-        if (this._tries > 5) return;   // the drawn monitor stays
+        if (this._tries > 5) return;
         clearTimeout(this._rt);
         this._rt = setTimeout(() => { this.freshCanvas(); this.load(); }, Math.min(16000, 1500 * Math.pow(2, this._tries - 1)));
       }
+      // every load has its own ticket: one that is overtaken (the element left the page, or a newer load
+      // started) only ever disposes its own scene, never the one now on screen
       async load() {
         if (this.app || this._loading || !this.isConnected) return;
+        const gen = this._gen = (this._gen || 0) + 1, canvas = this.canvas;
         this._loading = true;
+        let app = null;
+        const stale = () => gen !== this._gen || !this.isConnected || canvas !== this.canvas;
         try {
           const { Application } = await loadRuntime().catch(e => { window.__veSplineRt2 = null; throw e; });
-          if (!this.isConnected) return;
-          const canvas = this.canvas;
-          canvas.addEventListener("webglcontextlost", ev => { ev.preventDefault(); if (canvas === this.canvas) { this._tries = 0; this.retry("lost"); } }, { once: true });
-          this.app = new Application(canvas, { renderer: "webgl" });
-          await this.app.load(this.getAttribute("url"));
-          if (!this.isConnected || canvas !== this.canvas) return;
+          if (stale()) return;
+          canvas.addEventListener("webglcontextlost", ev => { ev.preventDefault(); if (gen === this._gen) { this._tries = 0; this.retry("lost"); } }, { once: true });
+          app = new Application(canvas, { renderer: "webgl" });
+          await app.load(this.getAttribute("url"));
+          if (stale()) { try { app.dispose && app.dispose(); } catch (e) {} return; }
+          this.app = app;
           this.clampDpr();
-          try { this.app.setGlobalEvents(false); } catch (e) {}
+          try { app.setGlobalEvents(false); } catch (e) {}
           this.uuids = [];
-          try { this.uuids = this.app.getAllObjects().map(o => o.uuid); } catch (e) {}
+          try { this.uuids = app.getAllObjects().map(o => o.uuid); } catch (e) {}
           this.ready = true; this._tries = 0; this._loading = false;
-          // shown once the scene has really drawn (two frames later), then the drawn monitor steps back
-          requestAnimationFrame(() => requestAnimationFrame(() => { if (this.ready) this.boxEl.style.opacity = "1"; }));
+          requestAnimationFrame(() => requestAnimationFrame(() => { if (this.ready && gen === this._gen) this.boxEl.style.opacity = "1"; }));
           this.renderFor(1200);
           if (this.turned || this.want) { this.turned = false; this.turn(this.want); }
-        } catch (e) { console.warn("ve-monitor failed to load", e); this._loading = false; try { this.app && this.app.dispose && this.app.dispose(); } catch (er) {} this.app = null; this.retry("error"); }
+        } catch (e) {
+          try { app && app.dispose && app.dispose(); } catch (er) {}
+          if (stale()) return;
+          console.warn("ve-monitor failed to load", e);
+          this._loading = false; this.retry("error");
+        }
       }
       turn(fwd) {
         if (fwd === this.turned) return;
@@ -62021,6 +62031,7 @@ return Component;
       disconnectedCallback() {
         clearTimeout(this._lt); clearTimeout(this._st); clearTimeout(this._rz); clearTimeout(this._rt); clearTimeout(this._wd); this.viewIO && this.viewIO.disconnect();
         removeEventListener("resize", this._onResize); removeEventListener("online", this._onOnline);
+        this._gen = (this._gen || 0) + 1;   // any load still in flight is now stale and cleans up after itself
         this.release();   // hands the graphics context back, so coming back to the page always has one free
         this._init = false; this._loading = false; this.innerHTML = "";
       }
