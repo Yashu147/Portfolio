@@ -59273,7 +59273,7 @@ renderer.setAnimationLoop(now => {
   /* the More projects card: its longer label gets a wider button (same tile, same hover sweep) */
   [data-screen-label="Coming soon"] .start-build.sb-inv { width: calc(var(--sb) * 262px); }
   [data-screen-label="Coming soon"] .start-build.sb-inv .label { left: calc(var(--sb) * 62px + (var(--sb) * 178px - var(--lw, 62px)) / 2) !important; }
-  [data-screen-label="Coming soon"] .start-build.sb-inv:hover .tile { width: calc(var(--sb) * 234px); }
+  [data-screen-label="Coming soon"] .start-build.sb-inv:hover .tile { width: calc(var(--sb) * 256px); }   /* the fill reaches the far end (262 - 3 - 3) */
   [data-screen-label="Coming soon"] .start-build.sb-inv:hover .icon { transform: translateX(calc(var(--sb) * 92.5px + var(--lw, 62px) / 2)); }
 
   /* Ve's original page: the two-line title in the home page's style, and the closing footer */
@@ -59284,10 +59284,12 @@ renderer.setAnimationLoop(now => {
   .c3-inline .c3-next { padding-top: clamp(96px, 14vh, 160px); }
 
   /* ── More projects: the home banner and its page ── */
-  .ym-banner { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-top: clamp(28px, 4vw, 48px);
-    padding: clamp(24px, 3vw, 40px) clamp(24px, 3.2vw, 44px); border-radius: 24px; z-index: 1; background: #11163B; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12);
-    color: #ffffff !important; text-decoration: none; transition: background 400ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 400ms; }
-  .ym-banner:hover { background: #171D4A; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.22); }
+  .ym-band { position: relative; z-index: 31; display: block; width: 100%; background: #11163B; box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), inset 0 -1px 0 rgba(255,255,255,0.06);
+    color: #ffffff !important; text-decoration: none; transition: background 450ms cubic-bezier(0.16, 1, 0.3, 1); }
+  .ym-band:hover { background: #161C49; }
+  .ym-in { display: flex; align-items: center; justify-content: space-between; gap: 24px; box-sizing: border-box; width: 100%; margin: 0 auto;
+    padding: clamp(44px, 8vh, 96px) var(--yp-case-inset, clamp(24px, 7vw, 132px));
+    max-width: calc(var(--yp-case-max, calc(58vh * 1.7)) + 2 * var(--yp-case-inset, clamp(24px, 7vw, 132px))); }
   .ym-b-text { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
   .ym-b-text small { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.55); }
   .ym-b-text small i { font-style: normal; margin: 0 8px; }
@@ -59295,9 +59297,8 @@ renderer.setAnimationLoop(now => {
   .ym-b-go { flex: none; display: grid; place-items: center; width: clamp(56px, 6vw, 84px); height: clamp(56px, 6vw, 84px); border-radius: 50%; background: #ffffff; color: #101014;
     transition: transform 500ms cubic-bezier(0.16, 1, 0.3, 1); }
   .ym-b-go svg { width: 42%; height: 42%; transform: rotate(-45deg); transition: transform 500ms cubic-bezier(0.16, 1, 0.3, 1); }
-  .ym-banner:hover .ym-b-go { transform: scale(1.06); } .ym-banner:hover .ym-b-go svg { transform: rotate(0deg); }
-  .ym-banner:active .ym-b-go { transform: scale(0.96); }
-  @media (max-width: 640px) { .ym-banner { border-radius: 18px; } }
+  .ym-band:hover .ym-b-go { transform: scale(1.06); } .ym-band:hover .ym-b-go svg { transform: rotate(0deg); }
+  .ym-band:active .ym-b-go { transform: scale(0.96); }
 
   /* the page */
   .ym-cover { padding-bottom: clamp(56px, 9vh, 110px); }
@@ -60264,11 +60265,12 @@ window.__ypImgs = function (r) { r.querySelectorAll('img[data-yp-src]').forEach(
       <span style="padding-left: 16px; color: #ffffff;">Open to the right team</span>
       <span style="padding-left: 16px; color: rgba(255,255,255,0.55);">Say hello</span>
     </div>
-  </div><a class="ym-banner" href="#/more" data-rise=""><span class="ym-b-text"><small>Earlier work<i>&middot;</i>3 projects</small><b>More projects</b></span><span class="ym-b-go" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+  </div>
   </div>
   <div data-ref="caseCursorRef" aria-hidden="true" style="position: fixed; left: 0; top: 0; z-index: 60; width: 96px; height: 96px; margin: -48px 0 0 -48px; border-radius: 50%; background: #ffffff; color: #0f0f10; display: grid; place-items: center; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; pointer-events: none; opacity: 0; transform: translate3d(-200px,-200px,0) scale(0.6); will-change: transform, opacity;">View</div>
   <div aria-hidden="true" data-blur-bar="" style="position: sticky; bottom: 0; z-index: 3; height: 180px; margin-top: -180px; pointer-events: none; -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); -webkit-mask-image: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 45%, rgba(0,0,0,0) 100%); mask-image: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 45%, rgba(0,0,0,0) 100%);"></div>
 </section>
+<a id="more-band" class="ym-band" href="#/more"><span class="ym-in"><span class="ym-b-text"><small>Earlier work<i>&middot;</i>3 projects</small><b>More projects</b></span><span class="ym-b-go" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></a>
 <section id="services" class="ysx" style="--n:4; --acc:#7433d9">
   <div class="ysx-headwrap">
 <div class="yph"><div class="yph-top"><div class="yph-label"><span><img data-yp-src="0" alt="" draggable="false">What I do</span><i aria-hidden="true"></i></div></div><h2 class="yph-title" aria-label="From the first idea to the final pixel."><span class="yph-line yph-grey" aria-hidden="true"><span class="yph-in">From the first idea</span></span></h2><div class="yph-rule" aria-hidden="true"></div><div class="yph-line yph-ink" aria-hidden="true"><span class="yph-in">to the final pixel.</span></div><div class="yph-rule" aria-hidden="true"></div></div>
