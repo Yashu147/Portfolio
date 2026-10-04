@@ -59606,8 +59606,6 @@ renderer.setAnimationLoop(now => {
   .ve6 .vm-box { position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: block; overflow: hidden; opacity: 0; transition: opacity 700ms ease; pointer-events: none; transform-origin: 50% 50%; will-change: transform;
     -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%), linear-gradient(180deg, transparent 0, #000 6%, #000 94%, transparent 100%);
     -webkit-mask-composite: source-in; mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%), linear-gradient(180deg, transparent 0, #000 6%, #000 94%, transparent 100%); mask-composite: intersect; }
-  .ve6 .vm-poster { position: absolute; left: 0; top: 0; width: 100%; height: 100%; pointer-events: none; transform-origin: 50% 50%; will-change: transform; transition: opacity 700ms ease; }
-  .ve6 .vm-poster svg { position: absolute; left: calc(50% + 18px - 489.5px); top: calc(50% - 299px); width: 979px; height: 640px; display: block; }
   .ve6 .vm-canvas { position: absolute; left: 0; top: 0; display: block; width: 100%; height: 100%; }
   .ve6 .vmk { position: absolute; inset: 0; z-index: 2; overflow: hidden; pointer-events: none; }
   .ve6 .vmk i { position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: #F4F4F1; will-change: transform; transform-origin: 0 0; }
@@ -61873,12 +61871,6 @@ return Component;
     // frame ends there (stand: how far past the screen's bottom the frame reaches, as a share of the Mac's height)
     const MAC = { w: 979, top: 299, bottom: 274, cx: 18, stand: 0.06 };
     const MAX_DPR = 1.5, R = 14;
-    // the stand-in monitor (979 x 573 display plus its stand), drawn where the scene draws its own
-    const POSTER = '<svg viewBox="0 0 979 640" aria-hidden="true"><defs><linearGradient id="vmpS" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1b2a4a"/><stop offset=".55" stop-color="#0d1426"/><stop offset="1" stop-color="#05070d"/></linearGradient>'
-      + '<linearGradient id="vmpB" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d9dadf"/><stop offset="1" stop-color="#a9abb2"/></linearGradient></defs>'
-      + '<path d="M430 573h119l14 52H416z" fill="url(#vmpB)"/><rect x="380" y="621" width="219" height="11" rx="5.5" fill="#b9bbc1"/>'
-      + '<rect x="0" y="0" width="979" height="573" rx="22" fill="#141416"/><rect x="1" y="1" width="977" height="571" rx="21" fill="none" stroke="#3b3b40" stroke-width="2"/>'
-      + '<rect x="20" y="20" width="939" height="533" rx="8" fill="url(#vmpS)"/></svg>';
     class VeMonitor extends HTMLElement {
       connectedCallback() {
         if (this._init) return;
@@ -61891,11 +61883,6 @@ return Component;
         this.canvas = document.createElement("canvas");
         this.canvas.className = "vm-canvas";
         this.boxEl.appendChild(this.canvas);
-        // never an empty frame: a drawn monitor sits exactly where the scene's will, until the scene has drawn
-        this.posterEl = document.createElement("div");
-        this.posterEl.className = "vm-poster";
-        this.posterEl.innerHTML = POSTER;
-        this.appendChild(this.posterEl);
         this.appendChild(this.boxEl);
         this.layout();
         this._onResize = () => { clearTimeout(this._rz); this._rz = setTimeout(() => { this.layout(); this.clampDpr(); this.renderFor(700); dispatchEvent(new Event("ve-frame")); }, 150); };
@@ -61943,7 +61930,7 @@ return Component;
         const key = sc.toFixed(4) + "," + ty.toFixed(1);
         if (key === this._sk) return;
         this._sk = key;
-        this.boxEl.style.transform = this.posterEl.style.transform = "translate3d(" + tx.toFixed(1) + "px," + ty.toFixed(1) + "px,0) scale(" + sc.toFixed(4) + ")";
+        this.boxEl.style.transform = "translate3d(" + tx.toFixed(1) + "px," + ty.toFixed(1) + "px,0) scale(" + sc.toFixed(4) + ")";
       }
       // the frame: four masks in the page colour and four rounded corners, moved with transform only
       paintFrame(mk, f, k, W, H) {
@@ -61987,7 +61974,7 @@ return Component;
         try { this.app && this.app.dispose && this.app.dispose(); } catch (e) {}
         try { const gl = this.canvas.getContext("webgl2") || this.canvas.getContext("webgl"); const x = gl && gl.getExtension("WEBGL_lose_context"); if (x) x.loseContext(); } catch (e) {}
         this.app = null; this.ready = false;
-        this.boxEl.style.opacity = ""; this.posterEl.style.opacity = "";
+        this.boxEl.style.opacity = "";
       }
       retry(why) {
         if (!this.isConnected) return;
@@ -61999,8 +61986,6 @@ return Component;
       async load() {
         if (this.app || this._loading || !this.isConnected) return;
         this._loading = true;
-        clearTimeout(this._wd);
-        this._wd = setTimeout(() => { if (!this.ready) { this._loading = false; this.retry("slow"); } }, 15000);   // stalled: try again
         try {
           const { Application } = await loadRuntime().catch(e => { window.__veSplineRt2 = null; throw e; });
           if (!this.isConnected) return;
@@ -62013,12 +61998,12 @@ return Component;
           try { this.app.setGlobalEvents(false); } catch (e) {}
           this.uuids = [];
           try { this.uuids = this.app.getAllObjects().map(o => o.uuid); } catch (e) {}
-          this.ready = true; this._tries = 0; this._loading = false; clearTimeout(this._wd);
+          this.ready = true; this._tries = 0; this._loading = false;
           // shown once the scene has really drawn (two frames later), then the drawn monitor steps back
-          requestAnimationFrame(() => requestAnimationFrame(() => { if (!this.ready) return; this.boxEl.style.opacity = "1"; this.posterEl.style.opacity = "0"; }));
+          requestAnimationFrame(() => requestAnimationFrame(() => { if (this.ready) this.boxEl.style.opacity = "1"; }));
           this.renderFor(1200);
           if (this.turned || this.want) { this.turned = false; this.turn(this.want); }
-        } catch (e) { console.warn("ve-monitor failed to load", e); this._loading = false; clearTimeout(this._wd); try { this.app && this.app.dispose && this.app.dispose(); } catch (er) {} this.app = null; this.retry("error"); }
+        } catch (e) { console.warn("ve-monitor failed to load", e); this._loading = false; try { this.app && this.app.dispose && this.app.dispose(); } catch (er) {} this.app = null; this.retry("error"); }
       }
       turn(fwd) {
         if (fwd === this.turned) return;
