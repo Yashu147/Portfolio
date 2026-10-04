@@ -59290,21 +59290,15 @@ renderer.setAnimationLoop(now => {
   .ym-glow { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 600ms cubic-bezier(0.16, 1, 0.3, 1);
     background: radial-gradient(520px 260px at var(--mx) var(--my), rgba(255,255,255,0.07), transparent 70%); }
   .ym-band:hover .ym-glow { opacity: 1; }
-  .ym-in { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 32px; box-sizing: border-box; width: 100%; margin: 0 auto;
-    padding: clamp(56px, 10vh, 120px) var(--yp-case-inset, clamp(24px, 7vw, 132px));
-    max-width: calc(var(--yp-case-max, calc(58vh * 1.7)) + 2 * var(--yp-case-inset, clamp(24px, 7vw, 132px))); }
-  .ym-b-text { position: relative; display: block; min-width: 0; }
-  .ym-b-text b { display: block; font-size: clamp(40px, 6.4vw, 108px); line-height: 0.92; font-weight: 800; letter-spacing: -0.05em; text-transform: uppercase; white-space: nowrap;
-    transition: transform 700ms cubic-bezier(0.16, 1, 0.3, 1); }
-  /* the four colours draw a line under the title on hover */
-  .ym-line { position: absolute; left: 0; right: 0; bottom: -18px; height: 3px; border-radius: 3px; transform: scaleX(0); transform-origin: 0 50%;
-    background: linear-gradient(90deg, #7433d9, #1170cf 35%, #d32279 68%, #d97e16); transition: transform 800ms cubic-bezier(0.65, 0, 0.35, 1); }
-  .ym-band:hover .ym-b-text b { transform: translateX(14px); } .ym-band:hover .ym-line { transform: scaleX(1); }
-  .ym-b-go { flex: none; display: grid; place-items: center; width: clamp(64px, 7vw, 104px); height: clamp(64px, 7vw, 104px); border-radius: 50%; background: #ffffff; color: #0B0B0C;
-    transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 600ms; }
-  .ym-b-go svg { width: 40%; height: 40%; transform: rotate(-45deg); transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1); }
-  .ym-band:hover .ym-b-go { transform: scale(1.08); box-shadow: 0 0 0 10px rgba(255,255,255,0.06); } .ym-band:hover .ym-b-go svg { transform: rotate(0deg); }
-  .ym-band:active .ym-b-go { transform: scale(0.96); }
+  .ym-in { position: relative; display: flex; align-items: center; justify-content: center; box-sizing: border-box; width: 100%; margin: 0 auto;
+    padding: clamp(64px, 11vh, 132px) var(--yp-case-inset, clamp(24px, 7vw, 132px)); }
+  .ym-word { display: flex; align-items: flex-end; font-size: clamp(44px, 8.4vw, 148px); line-height: 1; font-weight: 800; letter-spacing: -0.05em; text-transform: uppercase; white-space: nowrap; }
+  /* each letter is a little window over two copies: white on top, its colour below */
+  .ym-ch { display: inline-flex; flex-direction: column; height: 1.04em; overflow: hidden; }
+  .ym-ch > span { display: block; line-height: 1.04; transition: transform 700ms cubic-bezier(0.76, 0, 0.24, 1) var(--d); }
+  .ym-sp { display: inline-block; width: 0.26em; }
+  .ym-band:hover .ym-ch > span, .ym-band:focus-visible .ym-ch > span { transform: translateY(-100%); }
+  .ym-band:focus-visible { outline: none; }
 
   /* the page */
   .ym-cover { padding-bottom: clamp(56px, 9vh, 110px); }
@@ -60276,7 +60270,7 @@ window.__ypImgs = function (r) { r.querySelectorAll('img[data-yp-src]').forEach(
   <div data-ref="caseCursorRef" aria-hidden="true" style="position: fixed; left: 0; top: 0; z-index: 60; width: 96px; height: 96px; margin: -48px 0 0 -48px; border-radius: 50%; background: #ffffff; color: #0f0f10; display: grid; place-items: center; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; pointer-events: none; opacity: 0; transform: translate3d(-200px,-200px,0) scale(0.6); will-change: transform, opacity;">View</div>
   <div aria-hidden="true" data-blur-bar="" style="position: sticky; bottom: 0; z-index: 3; height: 180px; margin-top: -180px; pointer-events: none; -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); -webkit-mask-image: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 45%, rgba(0,0,0,0) 100%); mask-image: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 45%, rgba(0,0,0,0) 100%);"></div>
 </section>
-<a id="more-band" class="ym-band" href="#/more" aria-label="More projects"><span class="ym-glow" aria-hidden="true"></span><span class="ym-in"><span class="ym-b-text"><b>More projects</b><i class="ym-line" aria-hidden="true"></i></span><span class="ym-b-go" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></a>
+<a id="more-band" class="ym-band" href="#/more" aria-label="More projects"><span class="ym-glow" aria-hidden="true"></span><span class="ym-in"><b class="ym-word" aria-hidden="true"><span class="ym-ch" style="--d: 0ms"><span>M</span><span style="color: #7433d9">M</span></span><span class="ym-ch" style="--d: 28ms"><span>o</span><span style="color: #5944d6">o</span></span><span class="ym-ch" style="--d: 56ms"><span>r</span><span style="color: #3e54d4">r</span></span><span class="ym-ch" style="--d: 84ms"><span>e</span><span style="color: #2365d1">e</span></span><span class="ym-sp"></span><span class="ym-ch" style="--d: 112ms"><span>p</span><span style="color: #2369c7">p</span></span><span class="ym-ch" style="--d: 140ms"><span>r</span><span style="color: #5854b0">r</span></span><span class="ym-ch" style="--d: 168ms"><span>o</span><span style="color: #8c3e98">o</span></span><span class="ym-ch" style="--d: 196ms"><span>j</span><span style="color: #c12981">j</span></span><span class="ym-ch" style="--d: 224ms"><span>e</span><span style="color: #d43367">e</span></span><span class="ym-ch" style="--d: 252ms"><span>c</span><span style="color: #d64c4c">c</span></span><span class="ym-ch" style="--d: 280ms"><span>t</span><span style="color: #d76531">t</span></span><span class="ym-ch" style="--d: 308ms"><span>s</span><span style="color: #d97e16">s</span></span></b></span></a>
 <section id="services" class="ysx" style="--n:4; --acc:#7433d9">
   <div class="ysx-headwrap">
 <div class="yph"><div class="yph-top"><div class="yph-label"><span><img data-yp-src="0" alt="" draggable="false">What I do</span><i aria-hidden="true"></i></div></div><h2 class="yph-title" aria-label="From the first idea to the final pixel."><span class="yph-line yph-grey" aria-hidden="true"><span class="yph-in">From the first idea</span></span></h2><div class="yph-rule" aria-hidden="true"></div><div class="yph-line yph-ink" aria-hidden="true"><span class="yph-in">to the final pixel.</span></div><div class="yph-rule" aria-hidden="true"></div></div>
