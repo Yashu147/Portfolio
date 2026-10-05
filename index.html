@@ -62075,7 +62075,7 @@ return Component;
     // the chapter bar steps aside for the site's footer
     { const bar = host.querySelector("[data-notch]"), ft = document.getElementById("site-foot");
       if (bar && ft) { bar.style.transition = "opacity 400ms, transform 500ms cubic-bezier(0.22, 1, 0.36, 1)";
-        const fio = new IntersectionObserver(es => { const on = es[0].isIntersecting; bar.style.opacity = on ? "0" : ""; bar.style.transform = on ? "translateY(-12px)" : ""; bar.style.pointerEvents = on ? "none" : ""; }, { rootMargin: "0px 0px -85% 0px" });
+        const fio = new IntersectionObserver(es => { const on = es[0].isIntersecting; bar.style.opacity = on ? "0" : ""; bar.style.transform = on ? "translateY(-12px)" : ""; bar.style.pointerEvents = on ? "none" : "auto"; }, { rootMargin: "0px 0px -85% 0px" });
         fio.observe(ft); } }
     // the desktop app's page buttons: the chosen page opens on the laptop
     host.querySelectorAll("[data-dtabs]").forEach(root => {
