@@ -60575,7 +60575,7 @@ renderer.setAnimationLoop(now => {
   .ve6 .vox.vox-static .vox-wall, .ve6 .vox.vox-static .vox-floor, .ve6 .vox.vox-static .vox-cur, .ve6 .vox.vox-static .vox-fx, .ve6 .vox.vox-static .vox-prog { display: none; }
   .ve6 .vox.vox-static .vox-label { order: 1; position: static; transform: none; margin-bottom: 20px; }
   .ve6 .vox.vox-static .vox-txt { order: 2; position: static; }
-  .ve6 .vox.vox-static .vox-rise { order: 3; position: relative; left: auto; top: auto; z-index: auto; width: var(--sq); height: auto; aspect-ratio: 1 / 1; margin: 8px auto 0; transform: none !important; }
+  .ve6 .vox.vox-static .vox-rise { order: 3; position: relative; left: auto; top: auto; z-index: auto; width: var(--sq); height: auto; aspect-ratio: 1 / 1; margin: calc(var(--sq) * -0.15) auto 0; transform: none !important; }
   .ve6 .vox.vox-static .vox-mac { opacity: 1; }
   .ve6 .vox.vox-static .vox-t { position: static; padding: 0; margin: 0 0 18px; text-align: left; }
   .ve6 .vox.vox-static .vox-mid { margin: 0; max-width: none; font-size: clamp(26px, 6.4vw, 40px); }
@@ -66244,4 +66244,27 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
 })();
 </script>
 <script>setTimeout(function () { if (!document.querySelector(".hx-top")) document.documentElement.classList.add("hx-fallback"); }, 5000);</script>
+<style id="yp-mobile">
+  /* Phones: fixes from a full mobile pass over every page (loaded last, so it wins over the page's own rules) */
+  @media (max-width: 760px) {
+    /* case study hero: the content is taller than one phone screen, so the hero grows to fit it
+       (it was centred in a fixed-height box and pushed the title up under the chapter bar) */
+    .ve6 section[data-hero] { height: auto !important; min-height: 100svh; }
+    .ve6 section[data-hero] > div { position: relative !important; inset: auto !important; min-height: 100svh; box-sizing: border-box; padding-top: 112px; }
+    .ve6 section[data-hero] [data-hero-content] { padding-bottom: 44px !important; }
+    .ve6 section[data-hero] [data-hero-content] > div[data-hero-reveal] { margin-top: 36px !important; }
+    .ve6 section[data-hero] [data-hero-content] > dl { margin-top: 40px !important; grid-template-columns: 1fr 1fr !important; gap: 22px 16px !important; }
+
+    /* the wall: its fade starts lower, so the last brick's words stay readable */
+    .ve6 .vw-wall { -webkit-mask-image: linear-gradient(180deg, #000 92%, transparent 100%); mask-image: linear-gradient(180deg, #000 92%, transparent 100%); }
+  }
+  @media (max-width: 480px) {
+    /* dashboard and more pages: the case number drops under the title instead of running off the edge */
+    .c3-label { flex-wrap: wrap; row-gap: 8px; }
+    /* rocket bar: both lines stay clear of the rocket */
+    .btt { padding: 0 16px; }
+    .btt-say { font-size: 11px; letter-spacing: 0; }
+    .btt-l { left: 16px; } .btt-r { right: 16px; }
+  }
+</style>
 </body></html>
