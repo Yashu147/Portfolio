@@ -57347,7 +57347,7 @@ if (HERO) {
     // stands top right and travels into the pill on scroll, as the photo does from the left
     sr.parentNode.insertBefore(th, sr);
     const right = top.querySelector(".hx-right");
-    right.insertAdjacentHTML("beforeend", '<a class="hx-cta start-build" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=ponde.yashwant@gmail.com" target="_blank" rel="noopener"><span class="tile"></span><svg class="icon" viewBox="0 0 30 15" aria-hidden="true"></svg><span class="label">Let\u2019s Talk</span></a>');
+    right.insertAdjacentHTML("beforeend", '<a class="hx-cta start-build" href="#site-foot"><span class="tile"></span><svg class="icon" viewBox="0 0 30 15" aria-hidden="true"></svg><span class="label">Let\u2019s Talk</span></a>');
     const tb = right.querySelector(".hx-cta");
     if (window.__ypStartBuild) window.__ypStartBuild(tb);   // otherwise the page's Start Build script picks it up when it runs
     // The photo is not a link: a tap or click shows the name and status as a tag under the nav, and a
@@ -60794,7 +60794,7 @@ window.__ypImgs = function (r) { r.querySelectorAll('img[data-yp-src]').forEach(
       <span aria-hidden="true" style="position: absolute; left: 50%; top: 50%; width: min(760px, 78%); height: min(760px, 78%); transform: translate(-50%, -50%); border-radius: 50%; background: radial-gradient(closest-side, rgba(80,110,220,0.14) 0%, rgba(60,90,200,0.05) 52%, rgba(43,58,158,0) 82%); pointer-events: none;"></span>
       <span data-cs-title="" style="position: relative; display: block; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-style: normal; font-weight: 400; font-size: clamp(40px, 6.2vw, 112px); line-height: 0.98; white-space: nowrap; letter-spacing: -0.012em; color: #ffffff; text-align: center; text-shadow: 0 10px 60px rgba(120,150,255,0.35);">Coming soon</span>
       <p style="position: relative; margin: 0; max-width: 34ch; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: clamp(15px, 1.35vw, 24px); font-weight: 500; line-height: 1.45; color: rgba(255,255,255,0.72); text-align: center; text-wrap: pretty;">This one is not mine to write yet. It starts the day I join a team with a problem worth a year of work.</p>
-      <a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=ponde.yashwant@gmail.com" target="_blank" rel="noopener" class="start-build sb-inv"><span class="tile"></span><svg class="icon" viewBox="0 0 30 15" aria-hidden="true"></svg><span class="label">Could be yours</span></a>
+      <a href="#site-foot" class="start-build sb-inv"><span class="tile"></span><svg class="icon" viewBox="0 0 30 15" aria-hidden="true"></svg><span class="label">Could be yours</span></a>
     </div>
     <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; padding-top: 14px; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.55);">
       <span style="display: flex; gap: 8px; flex-wrap: wrap;"><span>Product design</span><span>Whatever it needs</span></span>
@@ -66451,6 +66451,7 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
     const run = document.querySelector("#spline [data-flow-runway]"), stage = run && run.firstElementChild, box = run && run.querySelector("[data-flow-box]");
     const n = box ? box.querySelectorAll("[data-step]").length : 0;
     if (!stage || !n) { if (++tries < 40) setTimeout(init, 250); return; }
+    document.addEventListener("click", e => { if (e.target.closest && e.target.closest('a[href="#site-foot"]')) { locked = false; coolUntil = performance.now() + 2500; } }, true);
     let k = 0, anim = 0, busyUntil = 0, locked = false, coolUntil = 0, prevY = scrollY, sx = 0, sy = 0, tracking = false;
     const rawFor = i => LEAD + ((i + 0.3) / n) * BEATS;
     const T = () => Math.round(stage.getBoundingClientRect().top + scrollY);
