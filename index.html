@@ -66418,6 +66418,60 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
   addEventListener("scroll", () => { if (!raf) raf = requestAnimationFrame(go); }, { passive: true });
   addEventListener("resize", go); addEventListener("hashchange", () => setTimeout(go, 60)); setTimeout(go, 0); setTimeout(go, 1500);
 })();</script>
+<style>
+  @media (max-width: 760px) and (hover: none) {
+    #spline [data-flow-runway] { height: auto !important; }
+    #spline [data-flow-runway] > div:first-child { position: relative !important; height: auto !important; max-height: none !important; padding-bottom: 28px !important; touch-action: pan-y; }
+    #spline [data-flow-box] { height: min(70svh, 620px) !important; flex: none !important; }
+    .hw-nav { display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 22px; }
+    .hw-nav button { width: 40px; height: 40px; border-radius: 50%; border: 0; display: grid; place-items: center; background: #0B0B0C; color: #fff; transition: opacity .3s, transform .2s; -webkit-tap-highlight-color: transparent; }
+    .hw-nav button:active { transform: scale(.92); }
+    .hw-nav button:disabled { opacity: .25; }
+    .hw-nav svg { width: 18px; height: 18px; }
+    .hw-dots { display: flex; gap: 6px; }
+    .hw-dots i { width: 6px; height: 6px; border-radius: 3px; background: rgba(11,11,12,.22); transition: width .45s cubic-bezier(.2,.8,.2,1), background-color .3s; }
+    .hw-dots i.on { width: 18px; background: #0B0B0C; }
+  }
+</style>
+<script>(function () {
+  if (!matchMedia("(max-width: 760px) and (hover: none)").matches) return;
+  const LEAD = 0.05, BEATS = 0.86;
+  let tries = 0;
+  const init = () => {
+    const run = document.querySelector("#spline [data-flow-runway]"), stage = run && run.firstElementChild, box = run && run.querySelector("[data-flow-box]");
+    const n = box ? box.querySelectorAll("[data-step]").length : 0;
+    if (!stage || !n) { if (++tries < 40) setTimeout(init, 250); return; }
+    let k = 0, from = null, anim = 0, busyUntil = 0;
+    const rawFor = i => LEAD + ((i + 0.3) / n) * BEATS;
+    const svg = d => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="' + d + '"/></svg>';
+    const nav = document.createElement("div"); nav.className = "hw-nav";
+    nav.innerHTML = '<button type="button" aria-label="Previous step">' + svg("M15 18l-6-6 6-6") + '</button><span class="hw-dots">' + '<i></i>'.repeat(n) + '</span><button type="button" aria-label="Next step">' + svg("M9 18l6-6-6-6") + '</button>';
+    stage.appendChild(nav);
+    const [prev, next] = nav.querySelectorAll("button"), dots = [...nav.querySelectorAll(".hw-dots i")];
+    // the row eases from where it is to the chosen card: one card per gesture, never a jump
+    const go = i => {
+      i = Math.max(0, Math.min(n - 1, i)); k = i;
+      dots.forEach((d, j) => d.classList.toggle("on", j === i)); prev.disabled = i === 0; next.disabled = i === n - 1;
+      const a = window.__flowRaw != null ? window.__flowRaw : rawFor(0), b = rawFor(i), t0 = performance.now(), dur = 700;
+      cancelAnimationFrame(anim); busyUntil = t0 + 380;
+      const step = now => { const t = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - t, 3);
+        window.__flowRaw = a + (b - a) * e; if (window.__flowApply) window.__flowApply();
+        if (t < 1) anim = requestAnimationFrame(step); };
+      anim = requestAnimationFrame(step);
+    };
+    prev.onclick = () => go(k - 1); next.onclick = () => go(k + 1);
+    stage.addEventListener("touchstart", e => { const t = e.touches[0]; from = { x: t.clientX, y: t.clientY, at: performance.now() }; }, { passive: true });
+    stage.addEventListener("touchend", e => {
+      if (!from) return; const t = e.changedTouches[0], dx = t.clientX - from.x, dy = t.clientY - from.y; from = null;
+      if (Math.abs(dx) < 36 || Math.abs(dx) < Math.abs(dy) * 1.2 || performance.now() < busyUntil) return;
+      go(k + (dx < 0 ? 1 : -1));                                    // exactly one card, however hard the swipe
+    }, { passive: true });
+    window.__flowRaw = rawFor(0);
+    const wake = () => { if (window.__flowApply) { window.__flowApply(); go(k); } else if (++tries < 60) setTimeout(wake, 250); };
+    wake();
+  };
+  init();
+})();</script>
 <style id="yp-mobile">
   /* Phones: fixes from a full mobile pass over every page (loaded last, so it wins over the page's own rules) */
   @media (max-width: 760px) {
