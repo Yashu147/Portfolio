@@ -66421,44 +66421,68 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
 <style>
   @media (max-width: 760px) and (hover: none) {
     #spline [data-flow-runway] { height: auto !important; }
-    #spline [data-flow-runway] > div:first-child { position: relative !important; height: auto !important; max-height: none !important; padding-bottom: 28px !important; touch-action: pan-y; }
-    #spline [data-flow-box] { height: min(70svh, 620px) !important; flex: none !important; }
-    .hw-nav { display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 22px; }
-    .hw-nav button { width: 40px; height: 40px; border-radius: 50%; border: 0; display: grid; place-items: center; background: #0B0B0C; color: #fff; transition: opacity .3s, transform .2s; -webkit-tap-highlight-color: transparent; }
-    .hw-nav button:active { transform: scale(.92); }
-    .hw-nav button:disabled { opacity: .25; }
-    .hw-nav svg { width: 18px; height: 18px; }
-    .hw-dots { display: flex; gap: 6px; }
-    .hw-dots i { width: 6px; height: 6px; border-radius: 3px; background: rgba(11,11,12,.22); transition: width .45s cubic-bezier(.2,.8,.2,1), background-color .3s; }
-    .hw-dots i.on { width: 18px; background: #0B0B0C; }
+    #spline [data-flow-runway] > div:first-child { position: relative !important; height: 100vh !important; height: 100svh !important; max-height: none !important; }
   }
 </style>
 <script>(function () {
   if (!matchMedia("(max-width: 760px) and (hover: none)").matches) return;
-  const LEAD = 0.05, BEATS = 0.86;
+  const LEAD = 0.05, BEATS = 0.86, html = document.documentElement;
   let tries = 0;
   const init = () => {
     const run = document.querySelector("#spline [data-flow-runway]"), stage = run && run.firstElementChild, box = run && run.querySelector("[data-flow-box]");
     const n = box ? box.querySelectorAll("[data-step]").length : 0;
     if (!stage || !n) { if (++tries < 40) setTimeout(init, 250); return; }
-    let k = 0, from = null, anim = 0, busyUntil = 0;
+    let k = 0, anim = 0, busyUntil = 0, locked = false, coolUntil = 0, prevY = scrollY, sx = 0, sy = 0, tracking = false;
     const rawFor = i => LEAD + ((i + 0.3) / n) * BEATS;
+    const T = () => Math.round(stage.getBoundingClientRect().top + scrollY);
+    const live = () => !html.getAttribute("data-yp-page") && stage.offsetHeight > 0;
     // the row eases from where it is to the chosen card: one card per gesture, never a jump
     const go = i => {
       i = Math.max(0, Math.min(n - 1, i)); k = i;
       const a = window.__flowRaw != null ? window.__flowRaw : rawFor(0), b = rawFor(i), t0 = performance.now(), dur = 700;
-      cancelAnimationFrame(anim); busyUntil = t0 + 380;
+      cancelAnimationFrame(anim); busyUntil = t0 + 520;
       const step = now => { const t = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - t, 3);
         window.__flowRaw = a + (b - a) * e; if (window.__flowApply) window.__flowApply();
         if (t < 1) anim = requestAnimationFrame(step); };
       anim = requestAnimationFrame(step);
     };
-    stage.addEventListener("touchstart", e => { const t = e.touches[0]; from = { x: t.clientX, y: t.clientY, at: performance.now() }; }, { passive: true });
-    stage.addEventListener("touchend", e => {
-      if (!from) return; const t = e.changedTouches[0], dx = t.clientX - from.x, dy = t.clientY - from.y; from = null;
-      if (Math.abs(dx) < 36 || Math.abs(dx) < Math.abs(dy) * 1.2 || performance.now() < busyUntil) return;
-      go(k + (dx < 0 ? 1 : -1));                                    // exactly one card, however hard the swipe
+    // a page glide of our own (the reader's swipe is held while pinned, so we carry the page on for them)
+    let glideRaf = 0;
+    const glideTo = (to, done) => { cancelAnimationFrame(glideRaf); const from = scrollY, t0 = performance.now(), dur = 650;
+      const st = now => { const t = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - t, 3); scrollTo(0, from + (to - from) * e);
+        if (t < 1) glideRaf = requestAnimationFrame(st); else if (done) done(); };
+      glideRaf = requestAnimationFrame(st); };
+    const stopMomentum = () => { html.style.overflow = "hidden"; requestAnimationFrame(() => requestAnimationFrame(() => { html.style.overflow = ""; })); };
+    const lock = card => { locked = true; stopMomentum(); scrollTo(0, T()); prevY = scrollY; if (card !== k) go(card); busyUntil = performance.now() + 450; };
+    const release = dir => { locked = false; coolUntil = performance.now() + 900;
+      glideTo(dir > 0 ? T() + Math.round(innerHeight * 0.75) : T() - Math.round(innerHeight * 0.75), () => { prevY = scrollY; }); };
+    // pinning: the stage locks to the top of the screen as the page reaches it, from either direction
+    addEventListener("scroll", () => {
+      const y = scrollY, was = prevY; prevY = y;
+      if (!live()) return;
+      if (locked) { const t = T(); if (Math.abs(y - t) > 2) { if (Math.abs(y - t) > innerHeight) locked = false; else scrollTo(0, t); } return; }
+      if (performance.now() < coolUntil) return;
+      const t = T();
+      if (was < t && y >= t) lock(0);                                                          // coming down: from the first card
+      else if (was > t && y <= t) lock(n - 1);                                                  // coming back up: from the last card
     }, { passive: true });
+    // while pinned every swipe belongs to the row: one card per swipe, up/left = next, down/right = previous
+    document.addEventListener("touchstart", e => { const t = e.touches[0]; sx = t.clientX; sy = t.clientY; tracking = true; }, { passive: true });
+    document.addEventListener("touchmove", e => { if (locked && e.cancelable) e.preventDefault(); }, { passive: false });
+    document.addEventListener("touchend", e => {
+      if (!tracking) return; tracking = false;
+      const t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
+      const horiz = Math.abs(dx) > Math.abs(dy) * 1.2 && Math.abs(dx) > 36, vert = Math.abs(dy) >= Math.abs(dx) && Math.abs(dy) > 30;
+      if (!horiz && !vert) return;
+      const r = stage.getBoundingClientRect(), onStage = sy >= r.top && sy <= r.bottom;
+      if (!locked && !(horiz && onStage)) return;
+      if (performance.now() < busyUntil) return;
+      const dir = horiz ? (dx < 0 ? 1 : -1) : (dy < 0 ? 1 : -1);
+      if (locked && dir > 0 && k === n - 1) return release(1);    // after the last card: on to the footer
+      if (locked && dir < 0 && k === 0) return release(-1);       // before the first: back up the page
+      go(k + dir);
+    }, { passive: true });
+    addEventListener("hashchange", () => { locked = false; });
     window.__flowRaw = rawFor(0);
     const wake = () => { if (window.__flowApply) { window.__flowApply(); go(k); } else if (++tries < 60) setTimeout(wake, 250); };
     wake();
@@ -66494,6 +66518,12 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
     #spline [data-wash] { mix-blend-mode: normal !important; will-change: auto !important;
       background: radial-gradient(90% 90% at 66% 82%, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 70%) !important; }
     #spline [data-sheen], #spline [data-veil], #spline [data-num] { will-change: auto !important; }
+  }
+  /* the lit tile is clipped to its own rounded shape: Safari lets composited layers (blur, sheen) escape a
+     rounded overflow clip, which showed as a white square at the corner. clip-path always holds. */
+  @media (hover: none) {
+    #spline [data-tile] { clip-path: inset(0 round 34%); -webkit-clip-path: inset(0 round 34%); }
+    #spline [data-sheen] { display: none !important; }
   }
 </style>
 </body></html>
