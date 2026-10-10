@@ -57517,6 +57517,19 @@ void main() {
   const queueDots = () => { if (!loop) loop = requestAnimationFrame(step); };
   window.__queueDots = queueDots;
   addEventListener("pointermove", e => { mx = e.clientX; my = e.clientY + window.scrollY; queueDots(); });
+  if (matchMedia("(hover: none)").matches) {
+    let last = { x: 0.5, y: 0.45 };
+    const wander = () => {
+      const W = innerWidth, H = innerHeight;
+      if (!document.hidden && scrollY < H * 0.9) {
+        let x, y, n = 0;   // somewhere new, not too close to where it is now, kept off the very edges
+        do { x = 0.12 + Math.random() * 0.76; y = 0.14 + Math.random() * 0.62; } while (++n < 8 && Math.hypot(x - last.x, (y - last.y) * H / W) < 0.28);
+        last = { x, y }; mx = x * W; my = y * H; queueDots();
+      }
+      setTimeout(wander, 1500 + Math.random() * 1300);
+    };
+    setTimeout(wander, 900);
+  }
   addEventListener("resize", queueDots);
   document.addEventListener("mouseleave", () => { mx = my = -1e4; queueDots(); }); queueDots();
   // robot bounds on screen (key points of the posed robot, projected every frame) — used for the grab cursor
