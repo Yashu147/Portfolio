@@ -57472,7 +57472,8 @@ void main() {
   tile *= 0.55 + 0.45 * smoothstep(0.0, 0.22, edge);
   // the gap light is off everywhere except a soft circle around the pointer
   // full-strength light in a circle centred exactly on the pointer, fading only near its rim
-  float reveal = K * (1.0 - smoothstep(0.16 * MN, 0.3 * MN, length(gl_FragCoord.xy - P)));
+  float RS = ${matchMedia('(hover: none)').matches ? '1.45' : '1.0'};
+  float reveal = K * (1.0 - smoothstep(0.16 * MN * RS, 0.3 * MN * RS, length(gl_FragCoord.xy - P)));
   float lit = min(1.0, g * reveal * 1.9);
   float soft = clamp(e * 3.0 / abs(sx * sy + 1e-4), 0.0, 1.0) * reveal * 0.17;
   // the design process colours, two to a side: orange into blue on the left half of the screen,
@@ -57516,7 +57517,7 @@ void main() {
   };
   const queueDots = () => { if (!loop) loop = requestAnimationFrame(step); };
   window.__queueDots = queueDots;
-  addEventListener("pointermove", e => { mx = e.clientX; my = e.clientY + window.scrollY; queueDots(); });
+  if (!matchMedia("(hover: none)").matches) addEventListener("pointermove", e => { mx = e.clientX; my = e.clientY + window.scrollY; queueDots(); });
   if (matchMedia("(hover: none)").matches) {
     // one slow, continuous path (two gentle loops layered, so it never quite repeats): the light drifts across the
     // hero like a hand gliding a mouse in easy curves, never a jump
