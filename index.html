@@ -66487,5 +66487,13 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
     .btt-say { font-size: 11px; letter-spacing: 0; }
     .btt-l { left: 16px; } .btt-r { right: 16px; }
   }
+  /* How I work, touch devices: the lit tile's light wash used a blend mode, which Safari draws as a square layer
+     past the tile's rounded corners; a plain soft highlight gives the same glow and stays inside the tile */
+  @media (hover: none) {
+    #spline [data-tile] { isolation: isolate; }
+    #spline [data-wash] { mix-blend-mode: normal !important; will-change: auto !important;
+      background: radial-gradient(90% 90% at 66% 82%, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 70%) !important; }
+    #spline [data-sheen], #spline [data-veil], #spline [data-num] { will-change: auto !important; }
+  }
 </style>
 </body></html>
