@@ -66189,7 +66189,9 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
   // off while How I work is pinned: its cards reach the bottom of the screen and nothing scrolls under them
   const run = document.querySelector("#spline [data-flow-runway]");
   const pinned = () => { if (window.__flowPlaced) return window.__flowPlaced(); if (!run) return false; const r = run.getBoundingClientRect(); return r.top <= 1 && r.bottom >= innerHeight - 1; };
+  const footUp = h => { if (foot.getBoundingClientRect().top < h - 1) return true; for (const b of document.querySelectorAll(".btt")) { const r = b.getBoundingClientRect(); if (r.height && r.top < h && r.bottom > 0) return true; } return false; };
   const update = () => { raf = 0; const h = innerHeight;
+    if (footUp(h)) { el.style.height = ""; el.classList.remove("is-on"); return; }
     // phones: with the footer pinned under How I work, the blur covers only the band of footer below the cards
     const fp = window.__fpBlur ? window.__fpBlur() : null;
     if (fp) { el.style.height = fp.h ? fp.h + "px" : ""; el.classList.toggle("is-on", fp.on); return; }
