@@ -58959,7 +58959,7 @@ renderer.setAnimationLoop(now => {
   /* How I work on phones: the row steps one card at a time on a compositor transition (smooth
      however busy the page is); no blur on the resting cards, so nothing is repainted mid-slide */
   @media (max-width: 760px) and (hover: none) {
-    #spline [data-flow-rail] { transition: transform 900ms cubic-bezier(0.3, 0, 0.12, 1); }
+    #spline [data-flow-rail] { transition: none; }
     #spline [data-step] { filter: none !important; transition: background-color .45s ease, opacity .45s ease !important; }
     #spline [data-step] * { transition: color .45s ease; }
   }
@@ -58969,6 +58969,8 @@ renderer.setAnimationLoop(now => {
   @media (hover: none) {
     #about-drum .track { clip-path: inset(0); }
     #about-drum .stage { position: fixed !important; top: 0; left: 0; }
+    #about-drum .stage.ydr-a { position: absolute !important; top: 0 !important; bottom: auto !important; }
+    #about-drum .stage.ydr-b { position: absolute !important; top: auto !important; bottom: 0 !important; }
   }
 
   @media (max-width: 760px) {
@@ -64803,7 +64805,7 @@ class YPSections {
     if (box) box.setAttribute("data-flow", cv ? "armed" : "no-stage");
     if (!cv) return;
     const LIGHT = 7;
-    const PHONE_STEP = matchMedia("(max-width: 760px) and (hover: none)").matches;
+    const PHONE_STEP = false;   // phones use the same eased glide as desktop
     // The six blocks sit on one straight world line: p(u) = BASE + STEP*u. The scene's camera is
     // orthographic, so screen-x is affine in u — which lets us solve at runtime for the u values
     // that land the line on SPAN% of the frame, at whatever viewport the visitor happens to have.
@@ -66257,7 +66259,7 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
    is a slide of the whole row (a compositor transition, see initFlow / phone.css). A fling from above
    (or from the footer) that reaches the cards is stopped on the first (or last) card. */
 (function () {
-  if (!matchMedia("(max-width: 760px) and (hover: none)").matches) return;
+  return;   // off: on phones the section scrolls like the rest of the page and the footer stays in its own place
   const html = document.documentElement;
   const LEAD = 0.05, BEATS = 0.86;                  // the row's own timeline (initFlow)
   let run, stage, foot, space, box, n = 0;
@@ -66406,6 +66408,16 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
 })();
 </script>
 <script>setTimeout(function () { if (!document.querySelector(".hx-top")) document.documentElement.classList.add("hx-fallback"); }, 5000);</script>
+<script>(function () {
+  if (!matchMedia("(hover: none)").matches) return;
+  let raf = 0, cur = "";
+  const go = () => { raf = 0;
+    const tr = document.querySelector("#about-drum .track"), st = tr && tr.querySelector(".stage"); if (!st) return;
+    const r = tr.getBoundingClientRect(), s = r.top > 0 ? "a" : r.bottom < innerHeight ? "b" : "";
+    if (s !== cur) { st.classList.toggle("ydr-a", s === "a"); st.classList.toggle("ydr-b", s === "b"); cur = s; } };
+  addEventListener("scroll", () => { if (!raf) raf = requestAnimationFrame(go); }, { passive: true });
+  addEventListener("resize", go); addEventListener("hashchange", () => setTimeout(go, 60)); setTimeout(go, 0); setTimeout(go, 1500);
+})();</script>
 <style id="yp-mobile">
   /* Phones: fixes from a full mobile pass over every page (loaded last, so it wins over the page's own rules) */
   @media (max-width: 760px) {
