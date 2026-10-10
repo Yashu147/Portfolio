@@ -66443,15 +66443,9 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
     if (!stage || !n) { if (++tries < 40) setTimeout(init, 250); return; }
     let k = 0, from = null, anim = 0, busyUntil = 0;
     const rawFor = i => LEAD + ((i + 0.3) / n) * BEATS;
-    const svg = d => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="' + d + '"/></svg>';
-    const nav = document.createElement("div"); nav.className = "hw-nav";
-    nav.innerHTML = '<button type="button" aria-label="Previous step">' + svg("M15 18l-6-6 6-6") + '</button><span class="hw-dots">' + '<i></i>'.repeat(n) + '</span><button type="button" aria-label="Next step">' + svg("M9 18l6-6-6-6") + '</button>';
-    stage.appendChild(nav);
-    const [prev, next] = nav.querySelectorAll("button"), dots = [...nav.querySelectorAll(".hw-dots i")];
     // the row eases from where it is to the chosen card: one card per gesture, never a jump
     const go = i => {
       i = Math.max(0, Math.min(n - 1, i)); k = i;
-      dots.forEach((d, j) => d.classList.toggle("on", j === i)); prev.disabled = i === 0; next.disabled = i === n - 1;
       const a = window.__flowRaw != null ? window.__flowRaw : rawFor(0), b = rawFor(i), t0 = performance.now(), dur = 700;
       cancelAnimationFrame(anim); busyUntil = t0 + 380;
       const step = now => { const t = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - t, 3);
@@ -66459,7 +66453,6 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
         if (t < 1) anim = requestAnimationFrame(step); };
       anim = requestAnimationFrame(step);
     };
-    prev.onclick = () => go(k - 1); next.onclick = () => go(k + 1);
     stage.addEventListener("touchstart", e => { const t = e.touches[0]; from = { x: t.clientX, y: t.clientY, at: performance.now() }; }, { passive: true });
     stage.addEventListener("touchend", e => {
       if (!from) return; const t = e.changedTouches[0], dx = t.clientX - from.x, dy = t.clientY - from.y; from = null;
