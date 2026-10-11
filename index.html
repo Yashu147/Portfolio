@@ -60681,88 +60681,65 @@ renderer.setAnimationLoop(now => {
   .ve6 .ve-mac-notch { position: absolute; left: 50%; top: 0; z-index: 150; width: 14.5%; height: 3.75%; transform: translateX(-50%); background: #000;
     border-radius: 0 0 clamp(5px, 1.1cqw, 13px) clamp(5px, 1.1cqw, 13px); pointer-events: none; }
   @media (max-width: 760px) { .ve6 .ve-mac { margin: 0 -8px; } }
-  /* The wall, side by side (rd_wall.js): each point shows the Dynamic Notch and the AI Browser together. The scene
-     holds still while the page scrolls through it, and the points glide in from the right, one at a time. */
-  .ve6 .vrz { position: relative; margin-top: clamp(96px, 10vw, 150px); height: calc(var(--n) * 80vh + 100vh); height: calc(var(--n) * 80svh + 100svh); }
-  .ve6 .vrz-stick { position: sticky; top: 0; height: 100vh; height: 100svh; display: flex; flex-direction: column; justify-content: center; gap: clamp(22px, 2.6vw, 36px); padding-top: 56px; box-sizing: border-box; }
-  .ve6 .vrz-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px 24px; padding-bottom: clamp(16px, 1.8vw, 22px); border-bottom: 1px solid #1D1D20; }
-  .ve6 .vrz-k { margin: 0; font-size: 15px; line-height: 1.45; font-weight: 500; color: #A1A1A6; }
-  .ve6 .vrz-prog { display: flex; align-items: center; gap: 16px; flex: none; }
-  .ve6 .vrz-count { font: 500 13px/1 'Geist Mono', ui-monospace, monospace; letter-spacing: 0.04em; color: #6E6E73; font-variant-numeric: tabular-nums; }
-  .ve6 .vrz-count b { font-weight: 500; color: #FFFFFF; }
-  .ve6 .vrz-bars { display: flex; gap: 6px; }
-  .ve6 .vrz-bars i { position: relative; width: 36px; height: 2px; background: #26262A; overflow: hidden; }
-  .ve6 .vrz-bars i::after { content: ""; position: absolute; inset: 0; background: #FFFFFF; transform-origin: 0 50%; transform: scaleX(var(--f, 0)); }
-  .ve6 .vrz-view { position: relative; }
-  .ve6 .vrz-track { display: flex; gap: var(--gap, 10vw); will-change: transform; }
-  .ve6 .vrz-s { flex: 0 0 100%; min-width: 0; will-change: opacity; }
-  .ve6 .vrz-topic { margin: 0 0 clamp(16px, 1.8vw, 22px); display: flex; align-items: baseline; gap: 12px; font-size: clamp(22px, 2vw, 28px); line-height: 1.1; font-weight: 600; letter-spacing: -0.03em; color: #FFFFFF; }
-  .ve6 .vrz-topic b { font: 500 13px/1 'Geist Mono', ui-monospace, monospace; letter-spacing: 0.04em; color: #6E6E73; }
-  .ve6 .vrz-pair { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: stretch; gap: 0 clamp(12px, 1.6vw, 20px); }
-  .ve6 .vrz-p { position: relative; display: flex; flex-direction: column; padding: clamp(22px, 2.6vw, 36px); background: #111113; box-shadow: inset 0 0 0 1px #1D1D20; }
-  .ve6 .vrz-p.vrz-b { background: #151517; box-shadow: inset 0 0 0 1px #2A2A2E; }
-  .ve6 .vrz-p.vrz-b::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px; background: linear-gradient(90deg, transparent, color-mix(in oklch, var(--acc) 70%, #FFFFFF), transparent); opacity: 0.7; }
-  .ve6 .vrz-lab { display: flex; align-items: center; gap: 9px; margin: 0; font: 500 12.5px/1 'Geist Mono', ui-monospace, monospace; letter-spacing: 0.05em; text-transform: uppercase; color: #6E6E73; }
-  .ve6 .vrz-b .vrz-lab { color: #FFFFFF; }
-  .ve6 .vrz-b .vrz-lab::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: color-mix(in oklch, var(--acc) 70%, #FFFFFF); }
-  .ve6 .vrz-line { display: grid; margin: clamp(16px, 1.8vw, 22px) 0 0; font-size: clamp(22px, 2.3vw, 34px); line-height: 1.12; font-weight: 600; letter-spacing: -0.03em; color: #6E6E73; }
-  .ve6 .vrz-b .vrz-line { color: #FFFFFF; }
-  .ve6 .vrz-g, .ve6 .vrz-live { grid-area: 1 / 1; }
-  .ve6 .vrz-g { visibility: hidden; }
-  .ve6 .vrz-w { display: inline-block; white-space: nowrap; }
-  .ve6 .vrz-c { display: inline-block; white-space: pre; }
-  .ve6 .vrz-c.in { animation: vrz-in 520ms cubic-bezier(0.16, 1, 0.3, 1) both; }
-  @keyframes vrz-in { from { opacity: 0; filter: blur(6px); transform: translateY(0.2em); } }
-  .ve6 .vrz-caret { display: inline-block; width: 2px; height: 0.9em; margin-left: 0.04em; vertical-align: -0.08em; background: #FFFFFF; animation: vrz-blink 1s steps(1) infinite; }
-  .ve6 .vrz-caret.typing { animation: none; }
-  .ve6 .vrz-caret.gone { opacity: 0; transition: opacity 300ms ease; animation: none; }
-  @keyframes vrz-blink { 50% { opacity: 0; } }
-  /* the examples: what each one actually did */
-  .ve6 .vrz-ex { margin-top: auto; padding-top: clamp(20px, 2.4vw, 32px); }
-  .ve6 .vrz-b .vrz-ex, .ve6 .vrz-b .vrz-via { opacity: 0.18; transform: translateY(10px); transition: opacity 500ms ease, transform 800ms cubic-bezier(0.16, 1, 0.3, 1); }
-  .ve6 .vrz-s.done .vrz-b .vrz-ex { opacity: 1; transform: none; }
-  .ve6 .vrz-s.done .vrz-b .vrz-via { opacity: 1; transform: none; transition-delay: 160ms; }
-  .ve6 .vrz-card { padding: 14px 16px 15px; background: #0B0B0C; box-shadow: inset 0 0 0 1px #1F1F23; }
-  .ve6 .vrz-b .vrz-card { background: #1C1C1F; box-shadow: inset 0 0 0 1px #2E2E33; }
-  .ve6 .vrz-card small { display: block; margin-bottom: 8px; font-size: 12.5px; line-height: 1.3; font-weight: 500; color: #6E6E73; }
-  .ve6 .vrz-card p { margin: 0; font-size: 15px; line-height: 1.5; color: #8E8E93; text-wrap: pretty; }
-  .ve6 .vrz-b .vrz-card p { color: #E5E5EA; }
-  .ve6 .vrz-card time { margin-right: 8px; font: 500 13px/1.5 'Geist Mono', ui-monospace, monospace; color: #6E6E73; }
-  .ve6 .vrz-b .vrz-card time { color: #FFFFFF; }
-  .ve6 .vrz-chips { display: flex; flex-wrap: wrap; gap: 6px; }
-  .ve6 .vrz-chips i { padding: 7px 11px; font-style: normal; font-size: 13px; line-height: 1; font-weight: 500; color: #4A4A4F; box-shadow: inset 0 0 0 1px #222226; }
-  .ve6 .vrz-chips i.on { color: #D1D1D6; background: #1C1C1F; box-shadow: inset 0 0 0 1px #34343A; }
-  .ve6 .vrz-b .vrz-chips i { color: #F2F2F7; background: #1C1C1F; box-shadow: inset 0 0 0 1px #34343A; }
-  .ve6 .vrz-via { margin: 16px 0 0; font: 500 12px/1.4 'Geist Mono', ui-monospace, monospace; letter-spacing: 0.05em; text-transform: uppercase; color: #8E8E93; }
-  .ve6 .vrz-p:not(.vrz-b) .vrz-via { visibility: hidden; }
-  .ve6 .vrz-arrow { align-self: center; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; color: #FFFFFF; background: #0B0B0C; box-shadow: inset 0 0 0 1px #2A2A2E; }
-  .ve6 .vrz-arrow svg { width: 16px; height: 16px; }
-  .ve6 .vrz-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  /* The wall, one point at a time (rd_wall.js): the scene holds while the page scrolls. Each point is two sentences,
+     the Dynamic Notch's and the AI Browser's. Scrolling on, its words stream out to the left one after another and the
+     next point's words stream in from the right. When a point settles, the old line is struck through and the new one lights up. */
+  .ve6 .vrk { position: relative; margin-top: clamp(96px, 10vw, 150px); height: calc(var(--n) * 90vh + 60vh); height: calc(var(--n) * 90svh + 60svh); }
+  .ve6 .vrk-stick { position: sticky; top: 0; height: 100vh; height: 100svh; display: flex; flex-direction: column; justify-content: center; padding-top: 48px; box-sizing: border-box; }
+  .ve6 .vrk-top { display: flex; align-items: center; justify-content: space-between; gap: 16px 24px; padding-bottom: clamp(20px, 2.2vw, 28px); border-bottom: 1px solid #1D1D20; }
+  .ve6 .vrk-k { margin: 0; font-size: 15px; line-height: 1.45; font-weight: 500; color: #A1A1A6; }
+  .ve6 .vrk-prog { display: flex; align-items: center; gap: 16px; flex: none; }
+  .ve6 .vrk-count { display: flex; font: 500 13px/1 'Geist Mono', ui-monospace, monospace; letter-spacing: 0.04em; color: #6E6E73; font-variant-numeric: tabular-nums; }
+  .ve6 .vrk-count span { display: block; height: 1em; overflow: hidden; color: #FFFFFF; }
+  .ve6 .vrk-count span b { display: block; font-weight: 500; transition: transform 700ms cubic-bezier(0.16, 1, 0.3, 1); transform: translateY(calc(var(--at, 0) * -1em)); }
+  .ve6 .vrk-count span b i { display: block; height: 1em; font-style: normal; }
+  .ve6 .vrk-bars { display: flex; gap: 6px; }
+  .ve6 .vrk-bars i { position: relative; width: 36px; height: 2px; background: #26262A; overflow: hidden; }
+  .ve6 .vrk-bars i::after { content: ""; position: absolute; inset: 0; background: #FFFFFF; transform-origin: 0 50%; transform: scaleX(var(--f, 0)); }
+  .ve6 .vrk-row { display: grid; grid-template-columns: clamp(110px, 15vw, 210px) minmax(0, 1fr); column-gap: clamp(16px, 3vw, 48px); padding: clamp(32px, 3.8vw, 52px) 0; border-bottom: 1px solid #1D1D20; }
+  /* the topic rolls like a counter as the points change */
+  .ve6 .vrk-n { display: flex; flex-direction: column; gap: 10px; padding-top: 2px; }
+  .ve6 .vrk-n b { font: 500 12.5px/1 'Geist Mono', ui-monospace, monospace; letter-spacing: 0.04em; color: #5E5E62; }
+  .ve6 .vrk-roll { display: block; height: 1.3em; overflow: hidden; font-size: 15px; line-height: 1.3; font-weight: 500; color: #FFFFFF; }
+  .ve6 .vrk-roll span { display: block; transition: transform 800ms cubic-bezier(0.16, 1, 0.3, 1); transform: translateY(calc(var(--at, 0) * -1.3em)); }
+  .ve6 .vrk-roll i { display: block; height: 1.3em; font-style: normal; }
+  .ve6 .vrk-n .vrk-num { display: block; height: 1em; overflow: hidden; }
+  .ve6 .vrk-n .vrk-num span { display: block; transition: transform 800ms cubic-bezier(0.16, 1, 0.3, 1); transform: translateY(calc(var(--at, 0) * -1em)); }
+  .ve6 .vrk-n .vrk-num i { display: block; height: 1em; font-style: normal; }
+  .ve6 .vrk-stage { display: grid; min-width: 0; }
+  .ve6 .vrk-s { grid-area: 1 / 1; min-width: 0; }
+  .ve6 .vrk-lab { display: flex; align-items: center; gap: 9px; margin: 0 0 14px; font: 500 12.5px/1 'Geist Mono', ui-monospace, monospace; letter-spacing: 0.05em; text-transform: uppercase; color: #6E6E73; }
+  .ve6 .vrk-lab.b { margin-top: clamp(28px, 3.2vw, 44px); color: #FFFFFF; }
+  .ve6 .vrk-lab.b::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: color-mix(in oklch, var(--acc) 70%, #FFFFFF); transition: box-shadow 900ms ease; }
+  .ve6 .vrk-s.on .vrk-lab.b::before { box-shadow: 0 0 0 5px color-mix(in oklch, var(--acc) 22%, transparent), 0 0 18px 2px color-mix(in oklch, var(--acc) 55%, transparent); }
+  .ve6 .vrk-a, .ve6 .vrk-b { margin: 0; font-weight: 600; text-wrap: pretty; }
+  .ve6 .vrk-a { font-size: clamp(22px, 2.4vw, 34px); line-height: 1.15; letter-spacing: -0.03em; color: #8E8E93; }
+  .ve6 .vrk-b { font-size: clamp(30px, 3.6vw, 52px); line-height: 1.06; letter-spacing: -0.04em; color: #4A4A4F; }
+  .ve6 .vrk-w { display: inline-block; will-change: transform, opacity; }
+  /* settled: the old line is struck through word by word, the new one lights up word by word */
+  .ve6 .vrk-a .vrk-w { background: linear-gradient(currentColor, currentColor) 0 56% / 0% 2px no-repeat; transition: background-size 380ms cubic-bezier(0.65, 0, 0.35, 1), color 600ms ease; }
+  .ve6 .vrk-s.on .vrk-a .vrk-w { background-size: 100% 2px; color: #5E5E62; transition-delay: calc(var(--j) * 45ms + 150ms); }
+  .ve6 .vrk-b .vrk-w { transition: color 500ms ease; }
+  .ve6 .vrk-s.on .vrk-b .vrk-w { color: #FFFFFF; transition-delay: calc(var(--j) * 55ms + 450ms); }
+  .ve6 .vrk-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   @media (max-width: 760px) {
-    .ve6 .vrz-stick { gap: 18px; padding-top: 64px; }
-    .ve6 .vrz-head { align-items: center; }
-    .ve6 .vrz-k { font-size: 13.5px; }
-    .ve6 .vrz-bars i { width: 20px; }
-    .ve6 .vrz-topic { margin-bottom: 12px; font-size: 20px; }
-    .ve6 .vrz-pair { grid-template-columns: 1fr; gap: 8px; }
-    .ve6 .vrz-p { padding: 16px 16px 16px; }
-    .ve6 .vrz-line { margin-top: 10px; font-size: 18px; }
-    .ve6 .vrz-ex { padding-top: 12px; }
-    .ve6 .vrz-card { padding: 10px 12px 11px; }
-    .ve6 .vrz-card small { margin-bottom: 5px; font-size: 11.5px; }
-    .ve6 .vrz-card p { font-size: 13px; line-height: 1.45; }
-    .ve6 .vrz-chips i { padding: 6px 9px; font-size: 12px; }
-    .ve6 .vrz-via { margin-top: 10px; font-size: 11px; }
-    .ve6 .vrz-p:not(.vrz-b) .vrz-via { display: none; }
-    .ve6 .vrz-arrow { justify-self: center; width: 30px; height: 30px; transform: rotate(90deg); }
+    .ve6 .vrk-top { flex-direction: column; align-items: flex-start; }
+    .ve6 .vrk-k { font-size: 13.5px; }
+    .ve6 .vrk-bars i { width: 22px; }
+    .ve6 .vrk-row { grid-template-columns: 1fr; row-gap: 22px; }
+    .ve6 .vrk-n { flex-direction: row; align-items: center; gap: 10px; padding-top: 0; }
+    .ve6 .vrk-a { font-size: 21px; }
+    .ve6 .vrk-b { font-size: 28px; }
   }
-  @media (max-width: 760px) and (max-height: 720px) { .ve6 .vrz-ex { display: none; } }
+  .ve6 .vrk-s:not(:first-child) { visibility: hidden; }
   @media (prefers-reduced-motion: reduce) {
-    .ve6 .vrz { height: auto; }
-    .ve6 .vrz-stick { position: static; height: auto; padding-top: 0; }
-    .ve6 .vrz-track { flex-direction: column; gap: 72px; transform: none !important; }
-    .ve6 .vrz-s { opacity: 1 !important; }
-    .ve6 .vrz-b .vrz-ex, .ve6 .vrz-b .vrz-via { opacity: 1; transform: none; }
+    .ve6 .vrk { height: auto; }
+    .ve6 .vrk-stick { position: static; height: auto; padding-top: 0; }
+    .ve6 .vrk-n { display: none; }
+    .ve6 .vrk-stage { display: block; }
+    .ve6 .vrk-s { visibility: visible !important; }
+    .ve6 .vrk-s + .vrk-s { margin-top: 64px; }
+    .ve6 .vrk-s .vrk-b .vrk-w { color: #FFFFFF; }
   }
 
   /* In the Dynamic Notch, it showed up in two ways: two rooms, two kinds of not seeing */
@@ -61369,7 +61346,7 @@ I don't want to be too compliant in my responses. I can acknowledge but not nece
 
 
 
-<div class="vrz" data-vrz="" style="--n: 3; --acc: {{accent}}"><div class="vrz-stick"><div class="vrz-head"><p class="vrz-k">From the Dynamic Notch to the AI Browser</p><div class="vrz-prog" aria-hidden="true"><span class="vrz-count"><b>01</b> / 03</span><span class="vrz-bars"><i></i><i></i><i></i></span></div></div><div class="vrz-view"><div class="vrz-track"><article class="vrz-s" aria-label="Voice"><p class="vrz-topic"><b>01</b>Voice</p><div class="vrz-pair"><div class="vrz-p"><p class="vrz-lab">Dynamic Notch</p><h3 class="vrz-line">Replies that read like anyone could have sent them</h3><div class="vrz-ex"><div class="vrz-card"><small>Reply to Emma</small><p>Hello Emma, thank you for reaching out. I will share the mocks by Thursday. Please let me know if you need anything else.</p></div></div><p class="vrz-via">.</p></div><span class="vrz-arrow" aria-hidden="true"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div class="vrz-p vrz-b"><p class="vrz-lab">AI Browser</p><h3 class="vrz-line" data-text="Replies in your own voice, only more polished"><span class="vrz-g" aria-hidden="true"></span><span class="vrz-live" aria-hidden="true"></span><span class="vrz-sr">Replies in your own voice, only more polished</span></h3><div class="vrz-ex"><div class="vrz-card"><small>Reply to Emma</small><p>Sharing both mocks now. The shorter form reads better, happy to walk through it on Thursday.</p></div></div><p class="vrz-via">Writing style</p></div></div></article><article class="vrz-s" aria-label="Context"><p class="vrz-topic"><b>02</b>Context</p><div class="vrz-pair"><div class="vrz-p"><p class="vrz-lab">Dynamic Notch</p><h3 class="vrz-line">Saw only the screen in front of you</h3><div class="vrz-ex"><div class="vrz-chips"><i class="on">Slack · #launch</i><i>Meeting notes</i><i>Gmail</i><i>Research</i><i>Code</i></div></div><p class="vrz-via">.</p></div><span class="vrz-arrow" aria-hidden="true"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div class="vrz-p vrz-b"><p class="vrz-lab">AI Browser</p><h3 class="vrz-line" data-text="Knows your meetings, notes, mail and code"><span class="vrz-g" aria-hidden="true"></span><span class="vrz-live" aria-hidden="true"></span><span class="vrz-sr">Knows your meetings, notes, mail and code</span></h3><div class="vrz-ex"><div class="vrz-chips"><i>Slack · #launch</i><i>Meeting notes</i><i>Gmail</i><i>Research</i><i>Code</i></div></div><p class="vrz-via">Memory</p></div></div></article><article class="vrz-s" aria-label="Timing"><p class="vrz-topic"><b>03</b>Timing</p><div class="vrz-pair"><div class="vrz-p"><p class="vrz-lab">Dynamic Notch</p><h3 class="vrz-line">Reacted when something arrived: a meeting, an email, a message</h3><div class="vrz-ex"><div class="vrz-card"><small>In the notch</small><p><time>10:28</time>Q4 launch sync starts in 2 minutes</p></div></div><p class="vrz-via">.</p></div><span class="vrz-arrow" aria-hidden="true"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div class="vrz-p vrz-b"><p class="vrz-lab">AI Browser</p><h3 class="vrz-line" data-text="Plans ahead, so your day is ready before you start"><span class="vrz-g" aria-hidden="true"></span><span class="vrz-live" aria-hidden="true"></span><span class="vrz-sr">Plans ahead, so your day is ready before you start</span></h3><div class="vrz-ex"><div class="vrz-card"><small>Mission Control</small><p><time>8:30</time>Your morning is ready: 4 replies to send, a clash moved, the next Meet link open</p></div></div><p class="vrz-via">Mission Control + Tab Prediction</p></div></div></article></div></div></div></div>
+<div class="vrk" data-vrk="" style="--n: 3; --acc: {{accent}}"><div class="vrk-stick"><div class="vrk-top"><p class="vrk-k">From the Dynamic Notch to the AI Browser</p><div class="vrk-prog" aria-hidden="true"><span class="vrk-count"><span><b><i>01</i><i>02</i><i>03</i></b></span>&nbsp;/ 03</span><span class="vrk-bars"><i></i><i></i><i></i></span></div></div><div class="vrk-row"><div class="vrk-n" aria-hidden="true"><b class="vrk-num"><span><i>01</i><i>02</i><i>03</i></span></b><span class="vrk-roll"><span><i>Voice</i><i>Context</i><i>Timing</i></span></span></div><div class="vrk-stage"><div class="vrk-s on" aria-hidden="true"><p class="vrk-lab">Dynamic Notch</p><p class="vrk-a"><span class="vrk-w" style="--j: 0">Replies</span> <span class="vrk-w" style="--j: 1">that</span> <span class="vrk-w" style="--j: 2">read</span> <span class="vrk-w" style="--j: 3">like</span> <span class="vrk-w" style="--j: 4">anyone</span> <span class="vrk-w" style="--j: 5">could</span> <span class="vrk-w" style="--j: 6">have</span> <span class="vrk-w" style="--j: 7">sent</span> <span class="vrk-w" style="--j: 8">them</span></p><p class="vrk-lab b">AI Browser</p><p class="vrk-b"><span class="vrk-w" style="--j: 0">Replies</span> <span class="vrk-w" style="--j: 1">in</span> <span class="vrk-w" style="--j: 2">your</span> <span class="vrk-w" style="--j: 3">own</span> <span class="vrk-w" style="--j: 4">voice,</span> <span class="vrk-w" style="--j: 5">only</span> <span class="vrk-w" style="--j: 6">more</span> <span class="vrk-w" style="--j: 7">polished</span></p></div><div class="vrk-s" aria-hidden="true"><p class="vrk-lab">Dynamic Notch</p><p class="vrk-a"><span class="vrk-w" style="--j: 0">Saw</span> <span class="vrk-w" style="--j: 1">only</span> <span class="vrk-w" style="--j: 2">the</span> <span class="vrk-w" style="--j: 3">screen</span> <span class="vrk-w" style="--j: 4">in</span> <span class="vrk-w" style="--j: 5">front</span> <span class="vrk-w" style="--j: 6">of</span> <span class="vrk-w" style="--j: 7">you</span></p><p class="vrk-lab b">AI Browser</p><p class="vrk-b"><span class="vrk-w" style="--j: 0">Knows</span> <span class="vrk-w" style="--j: 1">your</span> <span class="vrk-w" style="--j: 2">meetings,</span> <span class="vrk-w" style="--j: 3">notes,</span> <span class="vrk-w" style="--j: 4">mail</span> <span class="vrk-w" style="--j: 5">and</span> <span class="vrk-w" style="--j: 6">code</span></p></div><div class="vrk-s" aria-hidden="true"><p class="vrk-lab">Dynamic Notch</p><p class="vrk-a"><span class="vrk-w" style="--j: 0">Reacted</span> <span class="vrk-w" style="--j: 1">once</span> <span class="vrk-w" style="--j: 2">a</span> <span class="vrk-w" style="--j: 3">meeting,</span> <span class="vrk-w" style="--j: 4">an</span> <span class="vrk-w" style="--j: 5">email</span> <span class="vrk-w" style="--j: 6">or</span> <span class="vrk-w" style="--j: 7">a</span> <span class="vrk-w" style="--j: 8">message</span> <span class="vrk-w" style="--j: 9">arrived</span></p><p class="vrk-lab b">AI Browser</p><p class="vrk-b"><span class="vrk-w" style="--j: 0">Plans</span> <span class="vrk-w" style="--j: 1">ahead,</span> <span class="vrk-w" style="--j: 2">so</span> <span class="vrk-w" style="--j: 3">your</span> <span class="vrk-w" style="--j: 4">day</span> <span class="vrk-w" style="--j: 5">is</span> <span class="vrk-w" style="--j: 6">ready</span> <span class="vrk-w" style="--j: 7">before</span> <span class="vrk-w" style="--j: 8">you</span> <span class="vrk-w" style="--j: 9">start</span></p></div></div></div><ol class="vrk-sr"><li>Voice. Dynamic Notch: Replies that read like anyone could have sent them. AI Browser: Replies in your own voice, only more polished.</li><li>Context. Dynamic Notch: Saw only the screen in front of you. AI Browser: Knows your meetings, notes, mail and code.</li><li>Timing. Dynamic Notch: Reacted once a meeting, an email or a message arrived. AI Browser: Plans ahead, so your day is ready before you start.</li></ol></div></div>
 </div>
 </section>
 
@@ -62297,91 +62274,68 @@ window.__veNotch = function (host) {
   return () => { liveOff(); offs.splice(0).forEach(f => { try { f(); } catch (x) {} }); near.disconnect(); seen.disconnect(); if (fr) { fr.remove(); fr = null; } };
 };
 
-/* The wall, side by side (rd_wall.css): the scene holds still while the page scrolls through it. Each point rests in
-   the middle for a while, then glides out to the left as the next one comes in from the right. When a point lands,
-   the AI Browser's line types itself in next to the Dynamic Notch's, and its example comes up under it. */
+/* The wall, one point at a time (rd_wall.css). The scroll moves a position from point to point, resting on each one.
+   Every word follows that position with its own small delay, the leading words first, so a point streams out to the
+   left and the next streams in from the right. When a point settles, the CSS strikes the old line and lights the new one. */
 window.__veRW = function (host) {
-  const root = host.querySelector("[data-vrz]");
-  if (!root) return () => {};
+  const root = host.querySelector("[data-vrk]");
+  if (!root || matchMedia("(prefers-reduced-motion: reduce)").matches) return () => {};
   const offs = [], on = (t, ev, fn, o) => { t.addEventListener(ev, fn, o); offs.push(() => t.removeEventListener(ev, fn, o)); };
-  const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const track = root.querySelector(".vrz-track"), slides = Array.prototype.slice.call(root.querySelectorAll(".vrz-s")), n = slides.length;
-  const count = root.querySelector(".vrz-count b"), bars = Array.prototype.slice.call(root.querySelectorAll(".vrz-bars i"));
-  // a line as words (never broken inside) of single letters; the hidden copy holds the line's final size
-  const build = (box, text, chars) => {
-    box.textContent = "";
-    text.split(" ").forEach((w, i, all) => {
-      if (i) box.appendChild(document.createElement("wbr"));
-      const word = document.createElement("span"); word.className = "vrz-w";
-      if (chars !== false) for (const ch of w + (i < all.length - 1 ? " " : "")) { const c = document.createElement("span"); c.className = "vrz-c"; c.textContent = ch; word.appendChild(c); }
-      box.appendChild(word);
-    });
-  };
-  const lines = slides.map(s => {
-    const h = s.querySelector(".vrz-b .vrz-line"), text = h.dataset.text, g = h.querySelector(".vrz-g"), live = h.querySelector(".vrz-live");
-    build(g, text);
-    const caret = document.createElement("i"); caret.className = "vrz-caret"; caret.setAttribute("aria-hidden", "true");
-    return { s, text, live, caret, state: "", timers: [] };
+  const slides = Array.prototype.slice.call(root.querySelectorAll(".vrk-s")).map(s => {
+    const ws = Array.prototype.slice.call(s.querySelectorAll(".vrk-w"));
+    return { s, ws, labs: Array.prototype.slice.call(s.querySelectorAll(".vrk-lab")), on: false, rest: null };
   });
-  const halt = L => { L.timers.splice(0).forEach(clearTimeout); };
-  const blank = L => { halt(L); L.state = ""; L.live.textContent = ""; L.caret.className = "vrz-caret"; L.live.appendChild(L.caret); L.s.classList.remove("done"); };
-  const full = L => { halt(L); L.state = "done"; build(L.live, L.text); L.s.classList.add("done"); };
-  const type = L => {
-    if (L.state) return; L.state = "typing";
-    L.live.textContent = ""; L.caret.className = "vrz-caret typing"; L.live.appendChild(L.caret);
-    const ws = L.text.split(" "), per = Math.max(16, Math.min(28, 1000 / L.text.length)); let k = 0;
-    ws.forEach((w, i) => {
-      const word = document.createElement("span"); word.className = "vrz-w";
-      (w + (i < ws.length - 1 ? " " : "")).split("").forEach(ch => {
-        L.timers.push(setTimeout(() => {
-          if (!word.parentNode) { if (i) L.live.appendChild(document.createElement("wbr")); L.live.appendChild(word); }
-          const c = document.createElement("span"); c.className = "vrz-c in"; c.textContent = ch; word.appendChild(c); word.appendChild(L.caret);
-        }, 120 + k++ * per));
-      });
-    });
-    const end = 120 + k * per;
-    L.timers.push(setTimeout(() => { L.state = "done"; L.caret.className = "vrz-caret"; L.s.classList.add("done"); }, end + 200));
-    L.timers.push(setTimeout(() => { L.caret.className = "vrz-caret gone"; }, end + 1800));
-  };
-  if (calm) { lines.forEach(full); return () => {}; }
-  lines.forEach(blank);
-
-  let cur = 0, step = 0, raf = 0;
-  const ease = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-  const measure = () => { step = slides[0].offsetWidth + (parseFloat(getComputedStyle(track).columnGap) || 0); };
-  // where the scroll says we are: each point rests, then the move to the next one eases in and out
+  const n = slides.length, bars = Array.prototype.slice.call(root.querySelectorAll(".vrk-bars i"));
+  const LAG = 0.38;
+  const inOut = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  const outC = t => 1 - Math.pow(1 - t, 3), inC = t => t * t * t;
+  let cur = 0, raf = 0, at = -1;
   const target = () => {
     const run = root.offsetHeight - innerHeight; if (run <= 0 || n < 2) return 0;
     let p = Math.min(1, Math.max(0, -root.getBoundingClientRect().top / run));
-    p = Math.min(1, Math.max(0, (p - 0.07) / 0.86));
+    p = Math.min(1, Math.max(0, (p - 0.06) / 0.88));
     const x = p * (n - 1), i = Math.min(n - 2, Math.floor(x)), f = x - i;
-    return i + (f < 0.22 ? 0 : f > 0.78 ? 1 : ease((f - 0.22) / 0.56));
+    return i + (f < 0.2 ? 0 : f > 0.8 ? 1 : inOut((f - 0.2) / 0.6));
+  };
+  // one word: e runs -1 (waiting on the right) .. 0 (in place) .. 1 (gone to the left); lag staggers it
+  const place = (el, t, lag, travel) => {
+    let e;
+    if (t >= 0) e = Math.min(1, Math.max(0, (t - lag) / (1 - LAG)));
+    else e = -Math.min(1, Math.max(0, (-t - (LAG - lag)) / (1 - LAG)));
+    if (e === 0) { if (el._e !== 0) { el.style.transform = ""; el.style.opacity = ""; el.style.filter = ""; el._e = 0; } return; }
+    const k = e > 0 ? inC(e) : -outC(-e);   // leaving speeds up, arriving settles
+    el.style.transform = "translate3d(" + (-k * travel).toFixed(1) + "px, 0, 0)";
+    el.style.opacity = (1 - Math.abs(k)).toFixed(3);
+    el.style.filter = "blur(" + (Math.abs(k) * 8).toFixed(1) + "px)";
+    el._e = e;
   };
   const paint = () => {
-    track.style.transform = "translate3d(" + (-cur * step).toFixed(2) + "px, 0, 0)";
-    slides.forEach((s, k) => { const d = Math.min(1, Math.abs(k - cur)); s.style.opacity = (1 - d * 0.75).toFixed(3); });
-    const at = Math.min(n - 1, Math.max(0, Math.round(cur)));
-    count.textContent = String(at + 1).padStart(2, "0");
-    bars.forEach((b, k) => b.style.setProperty("--f", Math.min(1, Math.max(0, cur - k + 1)).toFixed(3)));
-    const r = root.getBoundingClientRect(), inView = r.top < innerHeight * 0.35 && r.bottom > innerHeight * 0.65;
-    lines.forEach((L, k) => {
-      const d = Math.abs(k - cur);
-      if (inView && d < 0.1) type(L);
-      else if (d > 0.9 || (!inView && r.top > innerHeight * 0.35)) { if (L.state) blank(L); }
+    const travel = Math.min(innerWidth * 0.55, 760);
+    slides.forEach((S, k) => {
+      const t = cur - k;
+      if (Math.abs(t) >= 1.02) { if (S.rest !== true) { S.s.style.visibility = "hidden"; S.rest = true; } return; }
+      if (S.rest !== false) { S.s.style.visibility = "visible"; S.rest = false; }
+      const all = S.labs.concat(S.ws), J = all.length;
+      all.forEach((el, j) => place(el, t, (j / Math.max(1, J - 1)) * LAG, travel));
+      const settle = Math.abs(t) < 0.04;
+      if (settle !== S.on) { S.on = settle; S.s.classList.toggle("on", settle); }
     });
+    const a = Math.min(n - 1, Math.max(0, Math.round(cur)));
+    if (a !== at) { at = a; root.style.setProperty("--at", a); }
+    bars.forEach((b, k) => b.style.setProperty("--f", Math.min(1, Math.max(0, cur - k + 1)).toFixed(3)));
   };
   const tick = () => {
     raf = 0;
-    const t = target(); cur += (t - cur) * 0.14;
-    if (Math.abs(t - cur) < 0.0008) cur = t;
+    const t = target(); cur += (t - cur) * 0.12;
+    if (Math.abs(t - cur) < 0.0006) cur = t;
     paint();
     if (cur !== t) raf = requestAnimationFrame(tick);
   };
   const wake = () => { if (!raf) raf = requestAnimationFrame(tick); };
   on(window, "scroll", wake, { passive: true });
-  on(window, "resize", () => { measure(); wake(); });
-  measure(); cur = target(); paint();
-  return () => { cancelAnimationFrame(raf); lines.forEach(halt); offs.splice(0).forEach(f => { try { f(); } catch (x) {} }); };
+  on(window, "resize", wake);
+  cur = target(); paint();
+  return () => { cancelAnimationFrame(raf); offs.splice(0).forEach(f => { try { f(); } catch (x) {} }); };
 };
 
 /* The AI Browser, live: the app runs in the Mac display (a sandboxed frame, built in a quiet moment once it's near).
