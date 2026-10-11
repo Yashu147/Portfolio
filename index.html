@@ -60681,42 +60681,45 @@ renderer.setAnimationLoop(now => {
   .ve6 .ve-mac-notch { position: absolute; left: 50%; top: 0; z-index: 150; width: 14.5%; height: 3.75%; transform: translateX(-50%); background: #000;
     border-radius: 0 0 clamp(5px, 1.1cqw, 13px) clamp(5px, 1.1cqw, 13px); pointer-events: none; }
   @media (max-width: 760px) { .ve6 .ve-mac { margin: 0 -8px; } }
-  /* The wall, From/To one pair at a time (rd_wall.js): the scene holds while the page scrolls; each pair rests, then
-     the whole row slides out to the left as the next pair slides in from the right. */
-  .ve6 .vrk { position: relative; margin-top: clamp(96px, 10vw, 150px); height: calc(var(--n) * 80vh + 60vh); height: calc(var(--n) * 80svh + 60svh); }
-  .ve6 .vrk-stick { position: sticky; top: 0; height: 100vh; height: 100svh; display: flex; flex-direction: column; justify-content: center; padding-top: 48px; box-sizing: border-box; }
-  .ve6 .vrk-h, .ve6 .vrk-r { display: grid; grid-template-columns: minmax(0, 1fr) 72px minmax(0, 1fr); align-items: center; column-gap: clamp(16px, 3vw, 48px); }
-  .ve6 .vrk-h { padding-bottom: clamp(18px, 2vw, 24px); border-bottom: 1px solid #1D1D20; font-size: 15px; line-height: 1.45; font-weight: 600; color: #8E8E93; }
-  .ve6 .vrk-h > span:first-child { text-align: right; }
-  .ve6 .vrk-h .vrk-acc { color: color-mix(in oklch, var(--acc) 62%, #FFFFFF); }
-  .ve6 .vrk-count { justify-self: center; font: 500 13px/1 'Geist Mono', ui-monospace, monospace; letter-spacing: 0.04em; color: #5E5E62; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  /* The wall: every part sits the same distance from the next, the same as the section's own top and bottom */
+  .ve6 #wall { --wg: clamp(96px, 11vw, 168px); }
+  .ve6 #wall .vw-wall { margin-top: var(--wg); }
+  .ve6 #wall .vwd-k { margin-top: var(--wg); }
+  .ve6 #wall h2 .vw-l, .ve6 #wall .vw-sub .vw-l { display: block; }
+  @media (min-width: 761px) { .ve6 #wall h2 .vw-l { white-space: nowrap; } }
+  /* From/To, one pair at a time (rd_wall.js): the Notch's sentence, an arrow down, the AI Browser's sentence.
+     The scene holds while the page scrolls; the whole pair slides out to the left as the next slides in from the right. */
+  .ve6 .vrk { position: relative; margin-top: var(--wg); }
+  .ve6 .vrk-stick { position: sticky; top: 120px; z-index: 1; }
+  .ve6 .vrk-run { height: calc((var(--n) - 1) * 85vh + 40vh); height: calc((var(--n) - 1) * 85svh + 40svh); }
+  .ve6 .vrk-h { display: flex; align-items: center; justify-content: space-between; gap: 16px 24px; padding-bottom: clamp(18px, 2vw, 24px); border-bottom: 1px solid #1D1D20; }
+  .ve6 .vrk-k { margin: 0; font-size: 15px; line-height: 1.45; font-weight: 500; color: #A1A1A6; }
+  .ve6 .vrk-prog { display: flex; align-items: center; gap: 16px; flex: none; }
+  .ve6 .vrk-count { font: 500 13px/1 'Geist Mono', ui-monospace, monospace; letter-spacing: 0.04em; color: #5E5E62; font-variant-numeric: tabular-nums; white-space: nowrap; }
   .ve6 .vrk-count b { font-weight: 500; color: #FFFFFF; }
-  .ve6 .vrk-view { position: relative; border-bottom: 1px solid #1D1D20; }
-  .ve6 .vrk-track { display: flex; gap: 14vw; will-change: transform; }
-  .ve6 .vrk-r { flex: 0 0 100%; min-width: 0; box-sizing: border-box; padding: clamp(40px, 5vw, 72px) 0; }
-  .ve6 .vrk-f, .ve6 .vrk-t { margin: 0; font-weight: 600; text-wrap: balance; }
-  .ve6 .vrk-f { text-align: right; font-size: clamp(22px, 2.3vw, 32px); line-height: 1.2; letter-spacing: -0.025em; color: #6E6E73; }
-  .ve6 .vrk-t { font-size: clamp(24px, 2.7vw, 38px); line-height: 1.15; letter-spacing: -0.03em; color: #8E8E93; transition: color 700ms ease 150ms; }
-  .ve6 .vrk-r.on .vrk-t { color: #FFFFFF; }
-  .ve6 .vrk-hole { justify-self: center; display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; color: #FFFFFF; background: #0B0B0C; box-shadow: inset 0 0 0 1px #2A2A2E;
-    transition: background-color 500ms ease, box-shadow 700ms ease, transform 700ms cubic-bezier(0.16, 1, 0.3, 1); }
-  .ve6 .vrk-hole svg { width: 16px; height: 16px; }
-  .ve6 .vrk-r.on .vrk-hole { background: var(--acc); box-shadow: 0 0 0 6px #0B0B0C, 0 0 28px 2px color-mix(in oklch, var(--acc) 55%, transparent); transform: translateX(4px); }
-  .ve6 .vrk-bars { display: flex; justify-content: center; gap: 6px; margin-top: clamp(20px, 2.2vw, 28px); }
+  .ve6 .vrk-bars { display: flex; gap: 6px; }
   .ve6 .vrk-bars i { position: relative; width: 36px; height: 2px; background: #26262A; overflow: hidden; }
   .ve6 .vrk-bars i::after { content: ""; position: absolute; inset: 0; background: #FFFFFF; transform-origin: 0 50%; transform: scaleX(var(--f, 0)); }
+  .ve6 .vrk-view { border-bottom: 1px solid #1D1D20; }
+  .ve6 .vrk-track { display: flex; gap: 14vw; will-change: transform; }
+  .ve6 .vrk-r { flex: 0 0 100%; min-width: 0; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: clamp(20px, 2.4vw, 32px); padding: clamp(40px, 4.6vw, 64px) 0; }
+  .ve6 .vrk-f, .ve6 .vrk-t { margin: 0; font-weight: 600; text-wrap: balance; }
+  .ve6 .vrk-f { font-size: clamp(28px, 3.4vw, 48px); line-height: 1.1; letter-spacing: -0.035em; color: #6E6E73; }
+  .ve6 .vrk-t { font-size: clamp(30px, 3.9vw, 56px); line-height: 1.06; letter-spacing: -0.04em; color: #8E8E93; transition: color 700ms ease 150ms; }
+  .ve6 .vrk-r.on .vrk-t { color: #FFFFFF; }
+  .ve6 .vrk-hole { display: grid; place-items: center; width: 48px; height: 48px; flex: none; border-radius: 50%; color: #FFFFFF; background: #0B0B0C; box-shadow: inset 0 0 0 1px #2A2A2E;
+    transition: background-color 500ms ease, box-shadow 700ms ease, transform 700ms cubic-bezier(0.16, 1, 0.3, 1); }
+  .ve6 .vrk-hole svg { width: 16px; height: 16px; transform: rotate(90deg); }
+  .ve6 .vrk-r.on .vrk-hole { background: var(--acc); box-shadow: 0 0 0 6px #0B0B0C, 0 0 28px 2px color-mix(in oklch, var(--acc) 55%, transparent); transform: translateY(4px); }
   .ve6 .vrk-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   @media (max-width: 760px) {
-    .ve6 .vrk-h { grid-template-columns: 1fr auto; row-gap: 6px; font-size: 14px; }
-    .ve6 .vrk-h > span:first-child { text-align: left; grid-column: 1; grid-row: 1; }
-    .ve6 .vrk-h .vrk-acc { grid-column: 1; grid-row: 2; }
-    .ve6 .vrk-count { grid-column: 2; grid-row: 1 / 3; }
-    .ve6 .vrk-r { grid-template-columns: 1fr; row-gap: 18px; padding: 36px 0; }
-    .ve6 .vrk-f { text-align: left; font-size: 21px; }
-    .ve6 .vrk-t { font-size: 26px; }
-    .ve6 .vrk-hole { justify-self: start; width: 36px; height: 36px; transform: rotate(90deg); }
-    .ve6 .vrk-r.on .vrk-hole { transform: rotate(90deg) translateX(3px); }
-    .ve6 .vrk-bars { justify-content: flex-start; }
+    .ve6 .vrk-h { flex-direction: column; align-items: flex-start; gap: 12px; }
+    .ve6 .vrk-k { font-size: 14px; }
+    .ve6 .vrk-bars i { width: 22px; }
+    .ve6 .vrk-r { gap: 18px; padding: 32px 0; }
+    .ve6 .vrk-f { font-size: 24px; }
+    .ve6 .vrk-t { font-size: 28px; }
+    .ve6 .vrk-hole { width: 38px; height: 38px; }
   }
   @media (prefers-reduced-motion: reduce) { .ve6 .vrk-t, .ve6 .vrk-hole { transition: none; } }
 
@@ -61315,7 +61318,7 @@ I don't want to be too compliant in my responses. I can acknowledge but not nece
 
 <section id="wall" class="vw" data-screen-label="04 The wall" style="--acc: {{accent}}; overflow: clip; margin: clamp(140px, 16vw, 240px) 0 0; border-radius: 0; background: #0B0B0C; color: #FFFFFF; padding: clamp(96px, 11vw, 168px) 0">
 <div style="max-width: 1240px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 56px); box-sizing: border-box">
-<div data-ve-reveal="" style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 24px"><p style="margin: 0; font-size: 15px; line-height: 1.45; font-weight: 600; color: color-mix(in oklch, {{accent}} 62%, #FFFFFF)">Then we hit a wall</p><h2 style="margin: 0; max-width: 1000px; font-size: clamp(48px, 8vw, 128px); line-height: 0.94; font-weight: 600; letter-spacing: -0.055em; text-wrap: balance">It did the work. It just didn’t sound like you.</h2><p style="margin: 8px 0 0; max-width: 640px; font-size: 19px; line-height: 1.6; color: #A1A1A6; text-wrap: pretty">The Dynamic Notch worked. It caught meetings before they began, kept email drafts ready and wrote replies to messages, so most of the busywork was already done. But the words it wrote were correct and plain, never quite yours. And it only moved once something arrived on screen, never a step before.</p></div>
+<div data-ve-reveal="" style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 24px"><p style="margin: 0; font-size: 15px; line-height: 1.45; font-weight: 600; color: color-mix(in oklch, {{accent}} 62%, #FFFFFF)">Then we hit a wall</p><h2 style="margin: 0; font-size: clamp(40px, 5.4vw, 84px); line-height: 1; font-weight: 600; letter-spacing: -0.05em"><span class="vw-l">It did the work.</span> <span class="vw-l">It just didn’t sound like you.</span></h2><p class="vw-sub" style="margin: 8px 0 0; font-size: 19px; line-height: 1.6; color: #A1A1A6"><span class="vw-l">The Dynamic Notch worked: it caught meetings early, kept drafts ready and wrote your replies.</span> <span class="vw-l">But its words never sounded like you, and it only moved once something had already arrived.</span></p></div>
 
 <div class="vw-wall" role="list" aria-label="Where the Dynamic Notch stopped"><div aria-hidden="true" class="vw-b vw-x" data-brick="-1" style="--c: 1 / 5; --r: 1; --mc: 1 / 2; --mr: 1;"></div><div aria-hidden="true" class="vw-b vw-x vw-dt" data-brick="-1" style="--c: 5 / 9; --r: 1;"></div><div role="listitem" class="vw-b vw-on" data-brick="1" style="--c: 9 / 15; --r: 1; --mc: 2 / 7; --mr: 1;"><span class="vw-bt"><b>01</b>Generic words</span><p>Its replies were right, but they didn’t sound like you.</p></div><div aria-hidden="true" class="vw-b vw-x vw-dt" data-brick="1" style="--c: 15 / 17; --r: 1;"></div><div aria-hidden="true" class="vw-b vw-x vw-dt" data-brick="-1" style="--c: 1 / 3; --r: 2;"></div><div role="listitem" class="vw-b vw-on" data-brick="-1" style="--c: 3 / 9; --r: 2; --mc: 1 / 6; --mr: 2;"><span class="vw-bt"><b>02</b>One screen</span><p>It saw the screen in front of you, not the week behind it.</p></div><div aria-hidden="true" class="vw-b vw-x" data-brick="1" style="--c: 9 / 12; --r: 2; --mc: 6 / 7; --mr: 2;"></div><div aria-hidden="true" class="vw-b vw-x vw-dt" data-brick="1" style="--c: 12 / 17; --r: 2;"></div><div aria-hidden="true" class="vw-b vw-x" data-brick="-1" style="--c: 1 / 4; --r: 3; --mc: 1 / 2; --mr: 3;"></div><div aria-hidden="true" class="vw-b vw-x vw-dt" data-brick="-1" style="--c: 4 / 8; --r: 3;"></div><div role="listitem" class="vw-b vw-on" data-brick="1" style="--c: 8 / 15; --r: 3; --mc: 2 / 7; --mr: 3;"><span class="vw-bt"><b>03</b>A step behind</span><p>It waited for something to arrive before it moved.</p></div><div aria-hidden="true" class="vw-b vw-x vw-dt" data-brick="1" style="--c: 15 / 17; --r: 3;"></div><div aria-hidden="true" class="vw-b vw-x vw-low" data-brick="-1" style="--c: 1 / 3; --r: 4; --mc: 1 / 3; --mr: 4;"></div><div aria-hidden="true" class="vw-b vw-x vw-low" data-brick="-1" style="--c: 3 / 8; --r: 4; --mc: 3 / 7; --mr: 4;"></div><div aria-hidden="true" class="vw-b vw-x vw-dt vw-low" data-brick="1" style="--c: 8 / 12; --r: 4;"></div><div aria-hidden="true" class="vw-b vw-x vw-dt vw-low" data-brick="1" style="--c: 12 / 17; --r: 4;"></div></div>
 
@@ -61324,7 +61327,7 @@ I don't want to be too compliant in my responses. I can acknowledge but not nece
 
 
 
-<div class="vrk" data-vrk="" style="--n: 3; --acc: {{accent}}"><div class="vrk-stick"><div class="vrk-h"><span>From: the Dynamic Notch</span><span class="vrk-count" aria-hidden="true"><b>01</b> / 03</span><span class="vrk-acc">To: the AI Browser</span></div><div class="vrk-view"><div class="vrk-track"><div class="vrk-r on" aria-hidden="true"><p class="vrk-f">Replies that read like anyone could have sent them</p><span class="vrk-hole"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><p class="vrk-t">Replies in your own voice, only more polished</p></div><div class="vrk-r" aria-hidden="true"><p class="vrk-f">Saw only the screen in front of you</p><span class="vrk-hole"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><p class="vrk-t">Knows your meetings, notes, mail and code</p></div><div class="vrk-r" aria-hidden="true"><p class="vrk-f">Reacted once a meeting, an email or a message arrived</p><span class="vrk-hole"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><p class="vrk-t">Plans ahead, so your day is ready before you start</p></div></div></div><div class="vrk-bars" aria-hidden="true"><i></i><i></i><i></i></div><ul class="vrk-sr"><li>Dynamic Notch: Replies that read like anyone could have sent them. AI Browser: Replies in your own voice, only more polished.</li><li>Dynamic Notch: Saw only the screen in front of you. AI Browser: Knows your meetings, notes, mail and code.</li><li>Dynamic Notch: Reacted once a meeting, an email or a message arrived. AI Browser: Plans ahead, so your day is ready before you start.</li></ul></div></div>
+<div class="vrk" data-vrk="" style="--n: 3; --acc: {{accent}}"><div class="vrk-stick"><div class="vrk-h"><p class="vrk-k">From the Dynamic Notch to the AI Browser</p><div class="vrk-prog" aria-hidden="true"><span class="vrk-count"><b>01</b> / 03</span><span class="vrk-bars"><i></i><i></i><i></i></span></div></div><div class="vrk-view"><div class="vrk-track"><div class="vrk-r on" aria-hidden="true"><p class="vrk-f">Replies that read like anyone could have sent them</p><span class="vrk-hole"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><p class="vrk-t">Replies in your own voice, only more polished</p></div><div class="vrk-r" aria-hidden="true"><p class="vrk-f">Saw only the screen in front of you</p><span class="vrk-hole"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><p class="vrk-t">Knows your meetings, notes, mail and code</p></div><div class="vrk-r" aria-hidden="true"><p class="vrk-f">Reacted once a meeting, an email or a message arrived</p><span class="vrk-hole"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><p class="vrk-t">Plans ahead, so your day is ready before you start</p></div></div></div><ul class="vrk-sr"><li>Dynamic Notch: Replies that read like anyone could have sent them. AI Browser: Replies in your own voice, only more polished.</li><li>Dynamic Notch: Saw only the screen in front of you. AI Browser: Knows your meetings, notes, mail and code.</li><li>Dynamic Notch: Reacted once a meeting, an email or a message arrived. AI Browser: Plans ahead, so your day is ready before you start.</li></ul></div><div class="vrk-run" aria-hidden="true"></div></div>
 </div>
 </section>
 
@@ -62252,20 +62255,26 @@ window.__veNotch = function (host) {
   return () => { liveOff(); offs.splice(0).forEach(f => { try { f(); } catch (x) {} }); near.disconnect(); seen.disconnect(); if (fr) { fr.remove(); fr = null; } };
 };
 
-/* The wall, From/To one pair at a time (rd_wall.css). The scroll moves a position from pair to pair and rests on each;
-   the row of pairs follows it sideways, so the pair on screen slides out to the left as the next slides in from the right. */
+/* The wall, From/To one pair at a time (rd_wall.css). The scene is as tall as its content and holds in the middle of the
+   screen while the page scrolls past; the scroll moves a position from pair to pair and rests on each, and the row of
+   pairs follows it sideways, so the pair on screen slides out to the left as the next slides in from the right. */
 window.__veRW = function (host) {
   const root = host.querySelector("[data-vrk]");
   if (!root) return () => {};
   const offs = [], on = (t, ev, fn, o) => { t.addEventListener(ev, fn, o); offs.push(() => t.removeEventListener(ev, fn, o)); };
-  const track = root.querySelector(".vrk-track"), rows = Array.prototype.slice.call(root.querySelectorAll(".vrk-r")), n = rows.length;
+  const stick = root.querySelector(".vrk-stick"), track = root.querySelector(".vrk-track"), rows = Array.prototype.slice.call(root.querySelectorAll(".vrk-r")), n = rows.length;
   const count = root.querySelector(".vrk-count b"), bars = Array.prototype.slice.call(root.querySelectorAll(".vrk-bars i"));
   const inOut = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
   let cur = 0, raf = 0, step = 0, at = -1;
-  const measure = () => { step = rows[0].offsetWidth + (parseFloat(getComputedStyle(track).columnGap) || 0); };
+  let top = 120;
+  // it holds centred on the screen (never under the menu at the top)
+  const measure = () => {
+    step = rows[0].offsetWidth + (parseFloat(getComputedStyle(track).columnGap) || 0);
+    top = Math.max(84, Math.round((innerHeight - stick.offsetHeight) / 2)); stick.style.top = top + "px";
+  };
   const target = () => {
-    const run = root.offsetHeight - innerHeight; if (run <= 0 || n < 2) return 0;
-    let p = Math.min(1, Math.max(0, -root.getBoundingClientRect().top / run));
+    const run = root.offsetHeight - stick.offsetHeight; if (run <= 0 || n < 2) return 0;
+    let p = Math.min(1, Math.max(0, (top - root.getBoundingClientRect().top) / run));
     p = Math.min(1, Math.max(0, (p - 0.06) / 0.88));
     const x = p * (n - 1), i = Math.min(n - 2, Math.floor(x)), f = x - i;
     return i + (f < 0.22 ? 0 : f > 0.78 ? 1 : inOut((f - 0.22) / 0.56));
