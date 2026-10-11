@@ -60681,50 +60681,89 @@ renderer.setAnimationLoop(now => {
   .ve6 .ve-mac-notch { position: absolute; left: 50%; top: 0; z-index: 150; width: 14.5%; height: 3.75%; transform: translateX(-50%); background: #000;
     border-radius: 0 0 clamp(5px, 1.1cqw, 13px) clamp(5px, 1.1cqw, 13px); pointer-events: none; }
   @media (max-width: 760px) { .ve6 .ve-mac { margin: 0 -8px; } }
-  /* The wall, rewritten: each line the Dynamic Notch left us with is selected and rewritten into the AI Browser's
-     answer, like a draft being edited (rd_wall.js). A switch at the top flips between the two. */
-  .ve6 .vrw { margin-top: clamp(112px, 12vw, 176px); }
-  .ve6 .vrw-top { display: flex; align-items: center; justify-content: space-between; gap: 16px 24px; flex-wrap: wrap; padding-bottom: clamp(20px, 2.2vw, 28px); border-bottom: 1px solid #1D1D20; }
-  .ve6 .vrw-k { margin: 0; font-size: 15px; line-height: 1.45; font-weight: 500; color: #A1A1A6; }
-  .ve6 .vrw-seg { position: relative; display: inline-grid; grid-template-columns: 1fr 1fr; padding: 4px; border-radius: 999px; background: #161618; box-shadow: inset 0 0 0 1px #26262A; }
-  .ve6 .vrw-seg button { position: relative; z-index: 1; height: 38px; padding: 0 18px; border: 0; border-radius: 999px; background: none; color: #8E8E93; cursor: pointer; white-space: nowrap;
-    font: 600 14px/1 'Geist', system-ui, sans-serif; letter-spacing: -0.01em; transition: color 450ms ease; -webkit-tap-highlight-color: transparent; }
-  .ve6 .vrw-seg button:hover { color: #D1D1D6; }
-  .ve6 .vrw-seg button[aria-pressed="true"] { color: #0B0B0C; }
-  .ve6 .vrw-seg button:focus-visible { outline: 2px solid #FFFFFF; outline-offset: 2px; }
-  .ve6 .vrw-thumb { position: absolute; top: 4px; bottom: 4px; left: 4px; width: calc(50% - 4px); border-radius: 999px; background: #FFFFFF; transition: transform 650ms cubic-bezier(0.16, 1, 0.3, 1); }
-  .ve6 .vrw[data-state="to"] .vrw-thumb { transform: translateX(100%); }
-  .ve6 .vrw-list { list-style: none; margin: 0; padding: 0; }
-  .ve6 .vrw-r { display: grid; grid-template-columns: clamp(110px, 15vw, 210px) minmax(0, 1fr); column-gap: clamp(16px, 3vw, 48px); padding: clamp(28px, 3.2vw, 44px) 0; border-bottom: 1px solid #1D1D20; }
-  .ve6 .vrw-n { display: flex; flex-direction: column; gap: 10px; padding-top: 0.5em; font-size: 15px; line-height: 1.3; font-weight: 500; color: #8E8E93; }
-  .ve6 .vrw-n b { font: 500 12.5px/1 'Geist Mono', ui-monospace, monospace; letter-spacing: 0.04em; color: #5E5E62; }
-  .ve6 .vrw-t { display: grid; margin: 0; font-size: clamp(26px, 3.3vw, 48px); line-height: 1.1; font-weight: 600; letter-spacing: -0.035em; }
-  .ve6 .vrw-g, .ve6 .vrw-live { grid-area: 1 / 1; }
-  .ve6 .vrw-g { visibility: hidden; }
-  .ve6 .vrw-live { color: #5E5E62; transition: color 700ms ease; }
-  .ve6 .vrw-r.is-to .vrw-live { color: #FFFFFF; }
-  .ve6 .vrw-w { display: inline-block; white-space: nowrap; }
-  .ve6 .vrw-c { display: inline-block; white-space: pre; padding-right: 0.6px; margin-right: -0.6px; transition: background-color 140ms ease, opacity 160ms ease; }
-  .ve6 .vrw-c.s { background: rgba(255,255,255,0.2); color: #FFFFFF; }
-  .ve6 .vrw-c.out { opacity: 0; }
-  .ve6 .vrw-c.in { animation: vrw-in 520ms cubic-bezier(0.16, 1, 0.3, 1) both; }
-  @keyframes vrw-in { from { opacity: 0; filter: blur(6px); transform: translateY(0.2em); } }
-  .ve6 .vrw-caret { display: inline-block; width: 0.06em; min-width: 2px; height: 0.92em; margin-left: 0.03em; vertical-align: -0.1em; background: #FFFFFF; opacity: 0; transition: opacity 200ms ease; }
-  .ve6 .vrw-caret.on { opacity: 1; }
-  .ve6 .vrw-caret.blink { animation: vrw-blink 1s steps(1) infinite; }
-  @keyframes vrw-blink { 50% { opacity: 0; } }
-  .ve6 .vrw-via { display: flex; align-items: center; gap: 10px; height: 20px; margin-top: 16px; font: 500 12.5px/1 'Geist Mono', ui-monospace, monospace; letter-spacing: 0.04em; text-transform: uppercase; color: #8E8E93;
-    opacity: 0; transform: translateY(6px); transition: opacity 400ms ease, transform 600ms cubic-bezier(0.16, 1, 0.3, 1); }
-  .ve6 .vrw-via::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: color-mix(in oklch, var(--acc) 70%, #FFFFFF); }
-  .ve6 .vrw-r.done .vrw-via { opacity: 1; transform: none; }
-  .ve6 .vrw-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  /* The wall, side by side (rd_wall.js): each point shows the Dynamic Notch and the AI Browser together. The scene
+     holds still while the page scrolls through it, and the points glide in from the right, one at a time. */
+  .ve6 .vrz { position: relative; margin-top: clamp(96px, 10vw, 150px); height: calc(var(--n) * 80vh + 100vh); height: calc(var(--n) * 80svh + 100svh); }
+  .ve6 .vrz-stick { position: sticky; top: 0; height: 100vh; height: 100svh; display: flex; flex-direction: column; justify-content: center; gap: clamp(22px, 2.6vw, 36px); padding-top: 56px; box-sizing: border-box; }
+  .ve6 .vrz-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px 24px; padding-bottom: clamp(16px, 1.8vw, 22px); border-bottom: 1px solid #1D1D20; }
+  .ve6 .vrz-k { margin: 0; font-size: 15px; line-height: 1.45; font-weight: 500; color: #A1A1A6; }
+  .ve6 .vrz-prog { display: flex; align-items: center; gap: 16px; flex: none; }
+  .ve6 .vrz-count { font: 500 13px/1 'Geist Mono', ui-monospace, monospace; letter-spacing: 0.04em; color: #6E6E73; font-variant-numeric: tabular-nums; }
+  .ve6 .vrz-count b { font-weight: 500; color: #FFFFFF; }
+  .ve6 .vrz-bars { display: flex; gap: 6px; }
+  .ve6 .vrz-bars i { position: relative; width: 36px; height: 2px; background: #26262A; overflow: hidden; }
+  .ve6 .vrz-bars i::after { content: ""; position: absolute; inset: 0; background: #FFFFFF; transform-origin: 0 50%; transform: scaleX(var(--f, 0)); }
+  .ve6 .vrz-view { position: relative; }
+  .ve6 .vrz-track { display: flex; gap: var(--gap, 10vw); will-change: transform; }
+  .ve6 .vrz-s { flex: 0 0 100%; min-width: 0; will-change: opacity; }
+  .ve6 .vrz-topic { margin: 0 0 clamp(16px, 1.8vw, 22px); display: flex; align-items: baseline; gap: 12px; font-size: clamp(22px, 2vw, 28px); line-height: 1.1; font-weight: 600; letter-spacing: -0.03em; color: #FFFFFF; }
+  .ve6 .vrz-topic b { font: 500 13px/1 'Geist Mono', ui-monospace, monospace; letter-spacing: 0.04em; color: #6E6E73; }
+  .ve6 .vrz-pair { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: stretch; gap: 0 clamp(12px, 1.6vw, 20px); }
+  .ve6 .vrz-p { position: relative; display: flex; flex-direction: column; padding: clamp(22px, 2.6vw, 36px); background: #111113; box-shadow: inset 0 0 0 1px #1D1D20; }
+  .ve6 .vrz-p.vrz-b { background: #151517; box-shadow: inset 0 0 0 1px #2A2A2E; }
+  .ve6 .vrz-p.vrz-b::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px; background: linear-gradient(90deg, transparent, color-mix(in oklch, var(--acc) 70%, #FFFFFF), transparent); opacity: 0.7; }
+  .ve6 .vrz-lab { display: flex; align-items: center; gap: 9px; margin: 0; font: 500 12.5px/1 'Geist Mono', ui-monospace, monospace; letter-spacing: 0.05em; text-transform: uppercase; color: #6E6E73; }
+  .ve6 .vrz-b .vrz-lab { color: #FFFFFF; }
+  .ve6 .vrz-b .vrz-lab::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: color-mix(in oklch, var(--acc) 70%, #FFFFFF); }
+  .ve6 .vrz-line { display: grid; margin: clamp(16px, 1.8vw, 22px) 0 0; font-size: clamp(22px, 2.3vw, 34px); line-height: 1.12; font-weight: 600; letter-spacing: -0.03em; color: #6E6E73; }
+  .ve6 .vrz-b .vrz-line { color: #FFFFFF; }
+  .ve6 .vrz-g, .ve6 .vrz-live { grid-area: 1 / 1; }
+  .ve6 .vrz-g { visibility: hidden; }
+  .ve6 .vrz-w { display: inline-block; white-space: nowrap; }
+  .ve6 .vrz-c { display: inline-block; white-space: pre; }
+  .ve6 .vrz-c.in { animation: vrz-in 520ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+  @keyframes vrz-in { from { opacity: 0; filter: blur(6px); transform: translateY(0.2em); } }
+  .ve6 .vrz-caret { display: inline-block; width: 2px; height: 0.9em; margin-left: 0.04em; vertical-align: -0.08em; background: #FFFFFF; animation: vrz-blink 1s steps(1) infinite; }
+  .ve6 .vrz-caret.typing { animation: none; }
+  .ve6 .vrz-caret.gone { opacity: 0; transition: opacity 300ms ease; animation: none; }
+  @keyframes vrz-blink { 50% { opacity: 0; } }
+  /* the examples: what each one actually did */
+  .ve6 .vrz-ex { margin-top: auto; padding-top: clamp(20px, 2.4vw, 32px); }
+  .ve6 .vrz-b .vrz-ex, .ve6 .vrz-b .vrz-via { opacity: 0.18; transform: translateY(10px); transition: opacity 500ms ease, transform 800ms cubic-bezier(0.16, 1, 0.3, 1); }
+  .ve6 .vrz-s.done .vrz-b .vrz-ex { opacity: 1; transform: none; }
+  .ve6 .vrz-s.done .vrz-b .vrz-via { opacity: 1; transform: none; transition-delay: 160ms; }
+  .ve6 .vrz-card { padding: 14px 16px 15px; background: #0B0B0C; box-shadow: inset 0 0 0 1px #1F1F23; }
+  .ve6 .vrz-b .vrz-card { background: #1C1C1F; box-shadow: inset 0 0 0 1px #2E2E33; }
+  .ve6 .vrz-card small { display: block; margin-bottom: 8px; font-size: 12.5px; line-height: 1.3; font-weight: 500; color: #6E6E73; }
+  .ve6 .vrz-card p { margin: 0; font-size: 15px; line-height: 1.5; color: #8E8E93; text-wrap: pretty; }
+  .ve6 .vrz-b .vrz-card p { color: #E5E5EA; }
+  .ve6 .vrz-card time { margin-right: 8px; font: 500 13px/1.5 'Geist Mono', ui-monospace, monospace; color: #6E6E73; }
+  .ve6 .vrz-b .vrz-card time { color: #FFFFFF; }
+  .ve6 .vrz-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .ve6 .vrz-chips i { padding: 7px 11px; font-style: normal; font-size: 13px; line-height: 1; font-weight: 500; color: #4A4A4F; box-shadow: inset 0 0 0 1px #222226; }
+  .ve6 .vrz-chips i.on { color: #D1D1D6; background: #1C1C1F; box-shadow: inset 0 0 0 1px #34343A; }
+  .ve6 .vrz-b .vrz-chips i { color: #F2F2F7; background: #1C1C1F; box-shadow: inset 0 0 0 1px #34343A; }
+  .ve6 .vrz-via { margin: 16px 0 0; font: 500 12px/1.4 'Geist Mono', ui-monospace, monospace; letter-spacing: 0.05em; text-transform: uppercase; color: #8E8E93; }
+  .ve6 .vrz-p:not(.vrz-b) .vrz-via { visibility: hidden; }
+  .ve6 .vrz-arrow { align-self: center; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; color: #FFFFFF; background: #0B0B0C; box-shadow: inset 0 0 0 1px #2A2A2E; }
+  .ve6 .vrz-arrow svg { width: 16px; height: 16px; }
+  .ve6 .vrz-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   @media (max-width: 760px) {
-    .ve6 .vrw-top { flex-direction: column; align-items: flex-start; }
-    .ve6 .vrw-r { grid-template-columns: 1fr; row-gap: 14px; }
-    .ve6 .vrw-n { flex-direction: row; align-items: center; gap: 10px; padding-top: 0; }
-    .ve6 .vrw-via { margin-top: 12px; }
+    .ve6 .vrz-stick { gap: 18px; padding-top: 64px; }
+    .ve6 .vrz-head { align-items: center; }
+    .ve6 .vrz-k { font-size: 13.5px; }
+    .ve6 .vrz-bars i { width: 20px; }
+    .ve6 .vrz-topic { margin-bottom: 12px; font-size: 20px; }
+    .ve6 .vrz-pair { grid-template-columns: 1fr; gap: 8px; }
+    .ve6 .vrz-p { padding: 16px 16px 16px; }
+    .ve6 .vrz-line { margin-top: 10px; font-size: 18px; }
+    .ve6 .vrz-ex { padding-top: 12px; }
+    .ve6 .vrz-card { padding: 10px 12px 11px; }
+    .ve6 .vrz-card small { margin-bottom: 5px; font-size: 11.5px; }
+    .ve6 .vrz-card p { font-size: 13px; line-height: 1.45; }
+    .ve6 .vrz-chips i { padding: 6px 9px; font-size: 12px; }
+    .ve6 .vrz-via { margin-top: 10px; font-size: 11px; }
+    .ve6 .vrz-p:not(.vrz-b) .vrz-via { display: none; }
+    .ve6 .vrz-arrow { justify-self: center; width: 30px; height: 30px; transform: rotate(90deg); }
   }
-  @media (prefers-reduced-motion: reduce) { .ve6 .vrw-c.in { animation: none; } .ve6 .vrw-thumb, .ve6 .vrw-via { transition: none; } }
+  @media (max-width: 760px) and (max-height: 720px) { .ve6 .vrz-ex { display: none; } }
+  @media (prefers-reduced-motion: reduce) {
+    .ve6 .vrz { height: auto; }
+    .ve6 .vrz-stick { position: static; height: auto; padding-top: 0; }
+    .ve6 .vrz-track { flex-direction: column; gap: 72px; transform: none !important; }
+    .ve6 .vrz-s { opacity: 1 !important; }
+    .ve6 .vrz-b .vrz-ex, .ve6 .vrz-b .vrz-via { opacity: 1; transform: none; }
+  }
 
   /* In the Dynamic Notch, it showed up in two ways: two rooms, two kinds of not seeing */
   .ve6 .vwd-k { margin: clamp(96px, 10vw, 140px) 0 clamp(24px, 2.6vw, 36px); font-size: 15px; line-height: 1.45; font-weight: 500; color: #A1A1A6; }
@@ -61330,7 +61369,7 @@ I don't want to be too compliant in my responses. I can acknowledge but not nece
 
 
 
-<div class="vrw" data-vrw="" data-state="from" data-ve-reveal="" style="--acc: {{accent}}"><div class="vrw-top"><p class="vrw-k">From the Dynamic Notch to the AI Browser</p><div class="vrw-seg" role="group" aria-label="Show the lines from"><i class="vrw-thumb" aria-hidden="true"></i><button type="button" data-v="from" aria-pressed="true">Dynamic Notch</button><button type="button" data-v="to" aria-pressed="false">AI Browser</button></div></div><ol class="vrw-list"><li class="vrw-r" data-from="Replies that read like anyone could have sent them" data-to="Replies in your own voice, only more polished"><span class="vrw-n"><b>01</b>Voice</span><div><p class="vrw-t"><span class="vrw-g" aria-hidden="true"></span><span class="vrw-g" aria-hidden="true"></span><span class="vrw-live" aria-hidden="true"></span><span class="vrw-sr">Dynamic Notch: Replies that read like anyone could have sent them. AI Browser: Replies in your own voice, only more polished.</span></p><p class="vrw-via">Writing style</p></div></li><li class="vrw-r" data-from="Saw only the screen in front of you" data-to="Knows your meetings, notes, mail and code"><span class="vrw-n"><b>02</b>Context</span><div><p class="vrw-t"><span class="vrw-g" aria-hidden="true"></span><span class="vrw-g" aria-hidden="true"></span><span class="vrw-live" aria-hidden="true"></span><span class="vrw-sr">Dynamic Notch: Saw only the screen in front of you. AI Browser: Knows your meetings, notes, mail and code.</span></p><p class="vrw-via">Memory</p></div></li><li class="vrw-r" data-from="Waited for something to happen" data-to="Has your day prepared before you start"><span class="vrw-n"><b>03</b>Timing</span><div><p class="vrw-t"><span class="vrw-g" aria-hidden="true"></span><span class="vrw-g" aria-hidden="true"></span><span class="vrw-live" aria-hidden="true"></span><span class="vrw-sr">Dynamic Notch: Waited for something to happen. AI Browser: Has your day prepared before you start.</span></p><p class="vrw-via">Mission Control + Routines</p></div></li></ol></div>
+<div class="vrz" data-vrz="" style="--n: 3; --acc: {{accent}}"><div class="vrz-stick"><div class="vrz-head"><p class="vrz-k">From the Dynamic Notch to the AI Browser</p><div class="vrz-prog" aria-hidden="true"><span class="vrz-count"><b>01</b> / 03</span><span class="vrz-bars"><i></i><i></i><i></i></span></div></div><div class="vrz-view"><div class="vrz-track"><article class="vrz-s" aria-label="Voice"><p class="vrz-topic"><b>01</b>Voice</p><div class="vrz-pair"><div class="vrz-p"><p class="vrz-lab">Dynamic Notch</p><h3 class="vrz-line">Replies that read like anyone could have sent them</h3><div class="vrz-ex"><div class="vrz-card"><small>Reply to Emma</small><p>Hello Emma, thank you for reaching out. I will share the mocks by Thursday. Please let me know if you need anything else.</p></div></div><p class="vrz-via">.</p></div><span class="vrz-arrow" aria-hidden="true"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div class="vrz-p vrz-b"><p class="vrz-lab">AI Browser</p><h3 class="vrz-line" data-text="Replies in your own voice, only more polished"><span class="vrz-g" aria-hidden="true"></span><span class="vrz-live" aria-hidden="true"></span><span class="vrz-sr">Replies in your own voice, only more polished</span></h3><div class="vrz-ex"><div class="vrz-card"><small>Reply to Emma</small><p>Sharing both mocks now. The shorter form reads better, happy to walk through it on Thursday.</p></div></div><p class="vrz-via">Writing style</p></div></div></article><article class="vrz-s" aria-label="Context"><p class="vrz-topic"><b>02</b>Context</p><div class="vrz-pair"><div class="vrz-p"><p class="vrz-lab">Dynamic Notch</p><h3 class="vrz-line">Saw only the screen in front of you</h3><div class="vrz-ex"><div class="vrz-chips"><i class="on">Slack · #launch</i><i>Meeting notes</i><i>Gmail</i><i>Research</i><i>Code</i></div></div><p class="vrz-via">.</p></div><span class="vrz-arrow" aria-hidden="true"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div class="vrz-p vrz-b"><p class="vrz-lab">AI Browser</p><h3 class="vrz-line" data-text="Knows your meetings, notes, mail and code"><span class="vrz-g" aria-hidden="true"></span><span class="vrz-live" aria-hidden="true"></span><span class="vrz-sr">Knows your meetings, notes, mail and code</span></h3><div class="vrz-ex"><div class="vrz-chips"><i>Slack · #launch</i><i>Meeting notes</i><i>Gmail</i><i>Research</i><i>Code</i></div></div><p class="vrz-via">Memory</p></div></div></article><article class="vrz-s" aria-label="Timing"><p class="vrz-topic"><b>03</b>Timing</p><div class="vrz-pair"><div class="vrz-p"><p class="vrz-lab">Dynamic Notch</p><h3 class="vrz-line">Reacted when something arrived: a meeting, an email, a message</h3><div class="vrz-ex"><div class="vrz-card"><small>In the notch</small><p><time>10:28</time>Q4 launch sync starts in 2 minutes</p></div></div><p class="vrz-via">.</p></div><span class="vrz-arrow" aria-hidden="true"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div class="vrz-p vrz-b"><p class="vrz-lab">AI Browser</p><h3 class="vrz-line" data-text="Plans ahead, so your day is ready before you start"><span class="vrz-g" aria-hidden="true"></span><span class="vrz-live" aria-hidden="true"></span><span class="vrz-sr">Plans ahead, so your day is ready before you start</span></h3><div class="vrz-ex"><div class="vrz-card"><small>Mission Control</small><p><time>8:30</time>Your morning is ready: 4 replies to send, a clash moved, the next Meet link open</p></div></div><p class="vrz-via">Mission Control + Tab Prediction</p></div></div></article></div></div></div></div>
 </div>
 </section>
 
@@ -62258,94 +62297,91 @@ window.__veNotch = function (host) {
   return () => { liveOff(); offs.splice(0).forEach(f => { try { f(); } catch (x) {} }); near.disconnect(); seen.disconnect(); if (fr) { fr.remove(); fr = null; } };
 };
 
-/* The wall, rewritten (rd_wall.css): every row holds a line from the Dynamic Notch and its AI Browser answer.
-   Going to the Browser, a caret selects the old line and the new one types itself in; going back reverses it.
-   It plays once the rows come into view, and again whenever the reader comes back down to them. */
+/* The wall, side by side (rd_wall.css): the scene holds still while the page scrolls through it. Each point rests in
+   the middle for a while, then glides out to the left as the next one comes in from the right. When a point lands,
+   the AI Browser's line types itself in next to the Dynamic Notch's, and its example comes up under it. */
 window.__veRW = function (host) {
-  const root = host.querySelector("[data-vrw]");
+  const root = host.querySelector("[data-vrz]");
   if (!root) return () => {};
   const offs = [], on = (t, ev, fn, o) => { t.addEventListener(ev, fn, o); offs.push(() => t.removeEventListener(ev, fn, o)); };
   const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const btns = Array.prototype.slice.call(root.querySelectorAll(".vrw-seg button"));
-  // a line as words (they never break inside) of single letters, so each letter can be selected and typed
-  const build = (box, text, cls) => {
+  const track = root.querySelector(".vrz-track"), slides = Array.prototype.slice.call(root.querySelectorAll(".vrz-s")), n = slides.length;
+  const count = root.querySelector(".vrz-count b"), bars = Array.prototype.slice.call(root.querySelectorAll(".vrz-bars i"));
+  // a line as words (never broken inside) of single letters; the hidden copy holds the line's final size
+  const build = (box, text, chars) => {
     box.textContent = "";
     text.split(" ").forEach((w, i, all) => {
-      const word = document.createElement("span"); word.className = "vrw-w";
-      for (const ch of w + (i < all.length - 1 ? " " : "")) { const c = document.createElement("span"); c.className = "vrw-c" + (cls ? " " + cls : ""); c.textContent = ch; word.appendChild(c); }
+      if (i) box.appendChild(document.createElement("wbr"));
+      const word = document.createElement("span"); word.className = "vrz-w";
+      if (chars !== false) for (const ch of w + (i < all.length - 1 ? " " : "")) { const c = document.createElement("span"); c.className = "vrz-c"; c.textContent = ch; word.appendChild(c); }
       box.appendChild(word);
-      if (i < all.length - 1) box.appendChild(document.createElement("wbr"));
     });
   };
-  const rows = Array.prototype.slice.call(root.querySelectorAll(".vrw-r")).map(r => {
-    const t = r.querySelector(".vrw-t"), g = t.querySelectorAll(".vrw-g"), live = t.querySelector(".vrw-live");
-    const row = { r, live, from: r.dataset.from, to: r.dataset.to, run: 0, timers: [] };
-    build(g[0], row.from); build(g[1], row.to); build(live, row.from);
-    row.caret = document.createElement("i"); row.caret.className = "vrw-caret"; row.caret.setAttribute("aria-hidden", "true");
-    return row;
+  const lines = slides.map(s => {
+    const h = s.querySelector(".vrz-b .vrz-line"), text = h.dataset.text, g = h.querySelector(".vrz-g"), live = h.querySelector(".vrz-live");
+    build(g, text);
+    const caret = document.createElement("i"); caret.className = "vrz-caret"; caret.setAttribute("aria-hidden", "true");
+    return { s, text, live, caret, state: "", timers: [] };
   });
-  const later = (row, f, ms) => row.timers.push(setTimeout(f, ms));
-  const halt = row => { row.run++; row.timers.splice(0).forEach(clearTimeout); };
-  const words = row => Array.prototype.slice.call(row.live.querySelectorAll(".vrw-w"));
-  const chars = row => Array.prototype.slice.call(row.live.querySelectorAll(".vrw-c"));
-  const settle = (row, to) => {   // the end state, with no motion
-    halt(row); build(row.live, to ? row.to : row.from);
-    row.r.classList.toggle("is-to", to); row.r.classList.toggle("done", to); row.caret.className = "vrw-caret";
+  const halt = L => { L.timers.splice(0).forEach(clearTimeout); };
+  const blank = L => { halt(L); L.state = ""; L.live.textContent = ""; L.caret.className = "vrz-caret"; L.live.appendChild(L.caret); L.s.classList.remove("done"); };
+  const full = L => { halt(L); L.state = "done"; build(L.live, L.text); L.s.classList.add("done"); };
+  const type = L => {
+    if (L.state) return; L.state = "typing";
+    L.live.textContent = ""; L.caret.className = "vrz-caret typing"; L.live.appendChild(L.caret);
+    const ws = L.text.split(" "), per = Math.max(16, Math.min(28, 1000 / L.text.length)); let k = 0;
+    ws.forEach((w, i) => {
+      const word = document.createElement("span"); word.className = "vrz-w";
+      (w + (i < ws.length - 1 ? " " : "")).split("").forEach(ch => {
+        L.timers.push(setTimeout(() => {
+          if (!word.parentNode) { if (i) L.live.appendChild(document.createElement("wbr")); L.live.appendChild(word); }
+          const c = document.createElement("span"); c.className = "vrz-c in"; c.textContent = ch; word.appendChild(c); word.appendChild(L.caret);
+        }, 120 + k++ * per));
+      });
+    });
+    const end = 120 + k * per;
+    L.timers.push(setTimeout(() => { L.state = "done"; L.caret.className = "vrz-caret"; L.s.classList.add("done"); }, end + 200));
+    L.timers.push(setTimeout(() => { L.caret.className = "vrz-caret gone"; }, end + 1800));
   };
-  // select the old line from its end, clear it, then type the new one in, letter by letter, behind a caret
-  const rewrite = (row, to, delay) => {
-    halt(row); const id = row.run, text = to ? row.to : row.from;
-    if (calm) { settle(row, to); return; }
-    row.r.classList.remove("done");
-    later(row, () => {
-      if (id !== row.run) return;
-      const last = words(row).pop(); (last || row.live).appendChild(row.caret); row.caret.className = "vrw-caret on";
-      const old = chars(row), step = Math.max(8, Math.min(16, 560 / Math.max(1, old.length)));
-      old.slice().reverse().forEach((c, i) => later(row, () => { if (id === row.run) c.classList.add("s"); }, 260 + i * step));
-      const cleared = 260 + old.length * step + 240;
-      later(row, () => { if (id === row.run) old.forEach(c => c.classList.add("out")); }, cleared);
-      later(row, () => {
-        if (id !== row.run) return;
-        row.live.textContent = ""; row.r.classList.toggle("is-to", to);
-        row.live.appendChild(row.caret);
-        // type: words go in whole (so lines break as they will at the end), letters appear one by one
-        const ws = text.split(" "), per = Math.max(14, Math.min(26, 1100 / text.length)); let k = 0;
-        ws.forEach((w, i) => {
-          const word = document.createElement("span"); word.className = "vrw-w";
-          const letters = (w + (i < ws.length - 1 ? " " : "")).split("");
-          letters.forEach(ch => {
-            const at = 80 + k++ * per;
-            later(row, () => {
-              if (id !== row.run) return;
-              if (!word.parentNode) { if (i > 0) row.live.appendChild(document.createElement("wbr")); row.live.appendChild(word); }
-              const c = document.createElement("span"); c.className = "vrw-c in"; c.textContent = ch; word.appendChild(c);
-              word.appendChild(row.caret);
-            }, at);
-          });
-        });
-        const end = 80 + k * per + 260;
-        later(row, () => { if (id !== row.run) return; row.caret.className = "vrw-caret on blink"; if (to) row.r.classList.add("done"); }, end);
-        later(row, () => { if (id === row.run) row.caret.className = "vrw-caret"; }, end + 1600);
-      }, cleared + 180);
-    }, delay);
+  if (calm) { lines.forEach(full); return () => {}; }
+  lines.forEach(blank);
+
+  let cur = 0, step = 0, raf = 0;
+  const ease = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  const measure = () => { step = slides[0].offsetWidth + (parseFloat(getComputedStyle(track).columnGap) || 0); };
+  // where the scroll says we are: each point rests, then the move to the next one eases in and out
+  const target = () => {
+    const run = root.offsetHeight - innerHeight; if (run <= 0 || n < 2) return 0;
+    let p = Math.min(1, Math.max(0, -root.getBoundingClientRect().top / run));
+    p = Math.min(1, Math.max(0, (p - 0.07) / 0.86));
+    const x = p * (n - 1), i = Math.min(n - 2, Math.floor(x)), f = x - i;
+    return i + (f < 0.22 ? 0 : f > 0.78 ? 1 : ease((f - 0.22) / 0.56));
   };
-  let state = "from";
-  const set = (next, how) => {
-    if (next === state && how !== "reset") return;
-    state = next; root.dataset.state = next;
-    btns.forEach(b => b.setAttribute("aria-pressed", String(b.dataset.v === next)));
-    rows.forEach((row, i) => how === "reset" ? settle(row, next === "to") : rewrite(row, next === "to", i * 520));
+  const paint = () => {
+    track.style.transform = "translate3d(" + (-cur * step).toFixed(2) + "px, 0, 0)";
+    slides.forEach((s, k) => { const d = Math.min(1, Math.abs(k - cur)); s.style.opacity = (1 - d * 0.75).toFixed(3); });
+    const at = Math.min(n - 1, Math.max(0, Math.round(cur)));
+    count.textContent = String(at + 1).padStart(2, "0");
+    bars.forEach((b, k) => b.style.setProperty("--f", Math.min(1, Math.max(0, cur - k + 1)).toFixed(3)));
+    const r = root.getBoundingClientRect(), inView = r.top < innerHeight * 0.35 && r.bottom > innerHeight * 0.65;
+    lines.forEach((L, k) => {
+      const d = Math.abs(k - cur);
+      if (inView && d < 0.1) type(L);
+      else if (d > 0.9 || (!inView && r.top > innerHeight * 0.35)) { if (L.state) blank(L); }
+    });
   };
-  btns.forEach(b => on(b, "click", () => set(b.dataset.v)));
-  // plays when the rows are on screen; once the reader has scrolled back above them, it is ready to play again
-  let wait = 0;
-  const io = new IntersectionObserver(es => {
-    const e = es[es.length - 1];
-    if (e.intersectionRatio >= 0.45) { if (state === "from" && !wait) wait = setTimeout(() => { wait = 0; set("to"); }, 450); }
-    else { clearTimeout(wait); wait = 0; if (!e.isIntersecting && e.boundingClientRect.top > 0 && state === "to") set("from", "reset"); }
-  }, { threshold: [0, 0.45, 0.8] });
-  io.observe(root.querySelector(".vrw-list"));
-  return () => { io.disconnect(); clearTimeout(wait); rows.forEach(halt); offs.splice(0).forEach(f => { try { f(); } catch (x) {} }); };
+  const tick = () => {
+    raf = 0;
+    const t = target(); cur += (t - cur) * 0.14;
+    if (Math.abs(t - cur) < 0.0008) cur = t;
+    paint();
+    if (cur !== t) raf = requestAnimationFrame(tick);
+  };
+  const wake = () => { if (!raf) raf = requestAnimationFrame(tick); };
+  on(window, "scroll", wake, { passive: true });
+  on(window, "resize", () => { measure(); wake(); });
+  measure(); cur = target(); paint();
+  return () => { cancelAnimationFrame(raf); lines.forEach(halt); offs.splice(0).forEach(f => { try { f(); } catch (x) {} }); };
 };
 
 /* The AI Browser, live: the app runs in the Mac display (a sandboxed frame, built in a quiet moment once it's near).
