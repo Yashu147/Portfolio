@@ -62690,13 +62690,14 @@ window.__veTR = function (host) {
       });
     }
   });
-  // into the closing line: the dark section holds still while a blue disc, centred just below the bottom edge, opens
-  // from a bead into a rising sun and on until it has the whole frame (it needs the diagonal, not the height, to take
-  // the corners). The closing sentence waits until the blue owns the frame, then rises in and lights up word by word.
+  // into the closing line: a blue disc, centred just below the bottom edge, opens from a bead into a rising sun and on
+  // until it has the whole frame (it needs the diagonal, not the height, to take the corners). The dark section rides
+  // its rim: the lessons move up as fast as the disc's top edge rises. Once the blue holds the text's whole width,
+  // the closing sentence plays in by itself, word by word (and again on the way back in).
   const arch = host.querySelector("[data-vo-arch]");
   if (arch) {
-    const stage = arch.firstElementChild, dark = arch.previousElementSibling, line = stage.querySelector(".vo-close p");
-    const words = line ? Array.prototype.slice.call(line.querySelectorAll("[data-w]")) : [];
+    const stage = arch.firstElementChild, dark = arch.previousElementSibling, close = stage.querySelector(".vo-close");
+    Array.prototype.forEach.call(stage.querySelectorAll(".vo-close [data-w]"), (w, i) => w.style.setProperty("--i", i));
     // the lessons above light up word by word as they scroll; pinned, they would stop half lit, so they are lit here
     // as if the page were still carrying them up
     const lessons = dark ? Array.prototype.slice.call(dark.querySelectorAll('[data-scrub="d"]')).map(el => ({ el, ws: Array.prototype.slice.call(el.querySelectorAll("[data-w]")), k: -1 })) : [];
@@ -62709,29 +62710,27 @@ window.__veTR = function (host) {
     if (ro) { ro.observe(stage); if (dark) ro.observe(dark); }
     addEventListener("resize", fit);
     offs.push(() => { if (ro) ro.disconnect(); removeEventListener("resize", fit); });
-    let lastR = -1, lastQ = -1;
+    let lastP = -1, lift = 0, shown = false;
     items.push(() => {
       const vh = stage.offsetHeight || innerHeight, vw = stage.offsetWidth || innerWidth;
       const off = -arch.getBoundingClientRect().top, DISC = vh * 1.64, H = innerHeight;
       lessons.forEach(l => {
         const r = l.el.getBoundingClientRect(); if (r.bottom < -H || r.top > H * 2) return;
-        const k = still ? 1 : cl((H * 0.88 - (r.top - Math.max(0, off))) / (H * 0.5 + r.height * 0.6));
+        const k = still ? 1 : cl((H * 0.88 - (r.top + lift - Math.max(0, off))) / (H * 0.5 + r.height * 0.6));
         if (k !== l.k) { l.k = k; lit(l.ws, k); }
       });
       const p = cl(off / DISC);   // the disc runs with the scroll, as the other chapter transitions do
-      const R = Math.hypot(vw * 0.5, vh) * 1.03, rad = p >= 1 ? -1 : Math.pow(p, 1.55) * R;
-      if (rad !== lastR) {
-        lastR = rad;
-        const cp = rad < 0 ? "none" : "circle(" + rad.toFixed(1) + "px at 50% 100%)";
-        stage.style.webkitClipPath = cp; stage.style.clipPath = cp;
+      if (p === lastP) return;
+      lastP = p;
+      const R = Math.hypot(vw * 0.5, vh) * 1.03, rad = Math.pow(p, 1.55) * R;
+      const cp = p >= 1 ? "none" : "circle(" + rad.toFixed(1) + "px at 50% 100%)";
+      stage.style.webkitClipPath = cp; stage.style.clipPath = cp;
+      lift = rad * 0.95;
+      if (dark) dark.style.transform = lift > 0.5 ? "translate3d(0," + (-lift).toFixed(1) + "px,0)" : "";
+      if (close) {
+        if (p >= 0.9 && !shown) { shown = true; close.classList.add("is-in"); }
+        else if (p < 0.75 && shown) { shown = false; close.classList.remove("is-in"); }
       }
-      const q = cl((off - DISC) / (vh * 0.85));
-      if (q === lastQ || !line) return;
-      lastQ = q;
-      const e = still ? (q > 0 ? 1 : 0) : out(cl(q / 0.3));
-      line.style.opacity = e.toFixed(3);
-      line.style.transform = e >= 1 ? "" : "translate3d(0," + ((1 - e) * 36).toFixed(1) + "px,0)";
-      lit(words, still ? 1 : cl((q - 0.08) / 0.92));
     });
   }
 
@@ -67200,11 +67199,18 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
   /* the dark section is pinned by its bottom edge (rd_trans.js sets its top) so its last screen stays under the disc */
   .ve6 #outcome.vo { background: #0B0B0C; }
   .ve6 .vo-dark { position: sticky; z-index: 0; }
-  /* the run: one screen over the end of the dark section, then 1.64 screens for the disc and a little over one for the line */
-  .ve6 .vo-arch { position: relative; z-index: 1; height: 364vh; height: 364svh; margin-top: -100vh; margin-top: -100svh; pointer-events: none; }
+  /* the run: one screen over the end of the dark section, 1.64 screens for the disc, then a hold while the line plays in */
+  .ve6 .vo-arch { position: relative; z-index: 1; height: 330vh; height: 330svh; margin-top: -100vh; margin-top: -100svh; pointer-events: none; }
   .ve6 .vo-arch-st { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; pointer-events: auto;
     -webkit-clip-path: circle(0px at 50% 100%); clip-path: circle(0px at 50% 100%); will-change: clip-path; }
   .ve6 .vo-arch .vo-close { height: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; padding-top: 0 !important; padding-bottom: 0 !important; border-radius: 0 !important; }
-  .ve6 .vo-arch .vo-close p { opacity: 0; will-change: transform, opacity; }
+  /* the closing sentence, sized to the frame it fills: as wide as the screen allows, as tall as the height allows */
+  .ve6 .vo-arch .vo-close p { max-width: 1480px; font-size: clamp(40px, min(6.2vw, 11.5vh), 124px); line-height: 1.05; }
+  /* it plays in by itself once the blue has it: each word rises out of a blur, one after another */
+  .ve6 .vo-arch .vo-close [data-w] { display: inline-block; opacity: 0; transform: translate3d(0, 0.45em, 0); filter: blur(12px); }
+  .ve6 .vo-arch .vo-close.is-in [data-w] { opacity: 1; transform: none; filter: blur(0);
+    transition: opacity 900ms cubic-bezier(0.22, 1, 0.36, 1), transform 1200ms cubic-bezier(0.22, 1, 0.36, 1), filter 900ms ease;
+    transition-delay: calc(var(--i, 0) * 60ms + 120ms); }
+  @media (prefers-reduced-motion: reduce) { .ve6 .vo-arch .vo-close [data-w] { transform: none; filter: none; } }
 </style>
 </body></html>
