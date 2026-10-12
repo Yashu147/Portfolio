@@ -62718,20 +62718,20 @@ window.__veTR = function (host) {
         const k = still ? 1 : cl((H * 0.88 - (r.top - Math.max(0, off))) / (H * 0.5 + r.height * 0.6));
         if (k !== l.k) { l.k = k; lit(l.ws, k); }
       });
-      const p = still ? 1 : cl(off / DISC);
+      const p = cl(off / DISC);   // the disc runs with the scroll, as the other chapter transitions do
       const R = Math.hypot(vw * 0.5, vh) * 1.03, rad = p >= 1 ? -1 : Math.pow(p, 1.55) * R;
       if (rad !== lastR) {
         lastR = rad;
         const cp = rad < 0 ? "none" : "circle(" + rad.toFixed(1) + "px at 50% 100%)";
         stage.style.webkitClipPath = cp; stage.style.clipPath = cp;
       }
-      const q = still ? 1 : cl((off - DISC) / (vh * 0.85));
+      const q = cl((off - DISC) / (vh * 0.85));
       if (q === lastQ || !line) return;
       lastQ = q;
-      const e = out(cl(q / 0.3));
+      const e = still ? (q > 0 ? 1 : 0) : out(cl(q / 0.3));
       line.style.opacity = e.toFixed(3);
       line.style.transform = e >= 1 ? "" : "translate3d(0," + ((1 - e) * 36).toFixed(1) + "px,0)";
-      lit(words, cl((q - 0.08) / 0.92));
+      lit(words, still ? 1 : cl((q - 0.08) / 0.92));
     });
   }
 
@@ -67206,6 +67206,5 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
     -webkit-clip-path: circle(0px at 50% 100%); clip-path: circle(0px at 50% 100%); will-change: clip-path; }
   .ve6 .vo-arch .vo-close { height: 100%; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; padding-top: 0 !important; padding-bottom: 0 !important; border-radius: 0 !important; }
   .ve6 .vo-arch .vo-close p { opacity: 0; will-change: transform, opacity; }
-  @media (prefers-reduced-motion: reduce) { .ve6 .vo-arch-st { -webkit-clip-path: none; clip-path: none; } .ve6 .vo-arch .vo-close p { opacity: 1; } }
 </style>
 </body></html>
