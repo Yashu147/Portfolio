@@ -62654,15 +62654,9 @@ window.__veTR = function (host) {
     const kind = el.getAttribute("data-vt"), st = el.querySelector(".vt-st");
     if (kind === "notch") {
       const n = el.querySelector(".vt-n"), g = el.querySelector(".vt-g");
-      // the page's floating nav sits where the notch lands: it steps up out of the way while the notch forms
-      let nav = host.querySelector(".ve6-back"), navOut = false;
-      while (nav && getComputedStyle(nav).position !== "fixed") nav = nav.parentElement;
-      const navTo = o => { if (!nav || o === navOut) return; navOut = o;
-        nav.style.transition = "transform 600ms cubic-bezier(0.22, 1, 0.36, 1), opacity 400ms ease";
-        nav.style.transform = o ? "translateY(-140%)" : ""; nav.style.opacity = o ? "0" : ""; };
-      offs.push(() => navTo(false));
+      // the page's nav stays where it is; the Dynamic Notch section rises underneath while the screen folds away
       items.push(H => {
-        const p = pinned(el, H); navTo(p > 0.3 && p < 0.97); if (p < 0) return;
+        const p = pinned(el, H); if (p < 0) return;
         const W = st.clientWidth, e = io(seg(p, 0.04, 0.72));
         const w = W + (Math.min(230, W * 0.42) - W) * e, h = H + (36 - H) * e, rad = 20 * seg(p, 0.35, 0.72);
         n.style.clipPath = "inset(0 " + ((W - w) / 2).toFixed(1) + "px " + (H - h).toFixed(1) + "px " + ((W - w) / 2).toFixed(1) + "px round 0 0 " + rad.toFixed(1) + "px " + rad.toFixed(1) + "px)";
@@ -62688,7 +62682,9 @@ window.__veTR = function (host) {
         const p = pinned(el, H); if (p < 0) return;
         const o = io(seg(p, 0.06, 0.72));
         L.style.transform = "translateX(" + (-(1 - o) * 100).toFixed(2) + "%)"; R.style.transform = "translateX(" + ((1 - o) * 100).toFixed(2) + "%)";
-        C.style.opacity = (seg(p, 0.68, 0.74) * (1 - seg(p, 0.8, 0.96))).toFixed(3);
+        C.style.opacity = (seg(p, 0.64, 0.72) * (1 - seg(p, 0.82, 0.98))).toFixed(3);
+        // the closing edges light up electric blue as they meet, and the seam flares once they have
+        st.style.setProperty("--gl", (seg(p, 0.28, 0.66) * (1 - seg(p, 0.8, 0.98))).toFixed(3));
       });
     } else if (kind === "break") {
       const L = el.querySelector(".vt-l"), R = el.querySelector(".vt-r"), C = el.querySelector(".vt-c");
@@ -62697,6 +62693,8 @@ window.__veTR = function (host) {
         const c = out(seg(p, 0.04, 0.26)), o = io(seg(p, 0.24, 0.86));
         C.style.transform = "translateX(-50%) scaleY(" + c.toFixed(3) + ")"; C.style.opacity = (1 - seg(p, 0.32, 0.52)).toFixed(3);
         L.style.transform = "translateX(" + (-o * 100).toFixed(2) + "%)"; R.style.transform = "translateX(" + (o * 100).toFixed(2) + "%)";
+        // the crack glows, and the parting edges carry the light out with them
+        st.style.setProperty("--gl", (seg(p, 0.12, 0.28) * (1 - seg(p, 0.58, 0.86))).toFixed(3));
       });
     }
   });
@@ -67248,5 +67246,32 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
   /* the next case's picture: a little taller than its frame, drifting against the scroll */
   .ve6 .vnx-pic { inset: -9% 0 !important; background-size: cover !important; will-change: transform;
     transform: translate3d(0, calc((0.5 - var(--p, 0.5)) * 15%), 0); }
+</style>
+<style id="yp-r11">
+  /* the notch fold and the opening doors play over the start of the section after them, which comes up underneath */
+  .ve6 .vt-notch, .ve6 .vt-break { z-index: 5; margin-bottom: -100vh; margin-bottom: -100svh; }
+  /* the doors' inner edges: a band of electric blue light with a white-hot line, as bright as --gl */
+  .ve6 .vt-shut .vt-l::after, .ve6 .vt-shut .vt-r::after, .ve6 .vt-break .vt-l::after, .ve6 .vt-break .vt-r::after {
+    content: ""; position: absolute; top: 0; bottom: 0; width: clamp(120px, 14vw, 220px); opacity: var(--gl, 0); pointer-events: none; }
+  .ve6 .vt-shut .vt-l::after, .ve6 .vt-break .vt-l::after { right: 0;
+    background: linear-gradient(270deg, rgba(170,210,255,0.6) 0, rgba(58,142,240,0.32) 12%, rgba(58,142,240,0.1) 45%, rgba(58,142,240,0) 100%);
+    box-shadow: inset -2px 0 0 rgba(235,244,255,0.95), inset -10px 0 18px -6px rgba(120,180,255,0.9); }
+  .ve6 .vt-shut .vt-r::after, .ve6 .vt-break .vt-r::after { left: 0;
+    background: linear-gradient(90deg, rgba(170,210,255,0.6) 0, rgba(58,142,240,0.32) 12%, rgba(58,142,240,0.1) 45%, rgba(58,142,240,0) 100%);
+    box-shadow: inset 2px 0 0 rgba(235,244,255,0.95), inset 10px 0 18px -6px rgba(120,180,255,0.9); }
+  /* the seam: white at the core, an electric blue halo around it */
+  .ve6 .vt-shut .vt-c, .ve6 .vt-break .vt-c { width: 2px; background: #FFFFFF;
+    box-shadow: 0 0 8px 2px rgba(255,255,255,0.95), 0 0 30px 8px rgba(80,160,255,0.9), 0 0 90px 26px rgba(58,142,240,0.55), 0 0 200px 60px rgba(58,142,240,0.25); }
+  @media (max-width: 760px) {
+    .ve6 .vt-shut .vt-l::after, .ve6 .vt-shut .vt-r::after, .ve6 .vt-break .vt-l::after, .ve6 .vt-break .vt-r::after { width: 56px; }
+    .ve6 .vt-shut .vt-c, .ve6 .vt-break .vt-c { box-shadow: 0 0 6px 1px rgba(255,255,255,0.95), 0 0 18px 4px rgba(80,160,255,0.9), 0 0 50px 12px rgba(58,142,240,0.5); } }
+  /* From/To: once both lines of a pair are in, the arrow between them glows and breathes */
+  .ve6 .vrk-hole { position: relative; }
+  .ve6 .vrk-hole::after { content: ""; position: absolute; inset: 0; border-radius: 50%; opacity: 0; pointer-events: none; transition: opacity 600ms ease; }
+  .ve6 .vrk-r.on .vrk-hole::after { opacity: 1; animation: vrkGlow 2.4s ease-in-out infinite; }
+  .ve6 .vrk-r.on .vrk-hole { background: #3A8EF0; }
+  @keyframes vrkGlow {
+    0%, 100% { box-shadow: 0 0 0 2px rgba(150,200,255,0.35), 0 0 22px 6px rgba(58,142,240,0.6), 0 0 60px 14px rgba(58,142,240,0.28); }
+    50% { box-shadow: 0 0 0 3px rgba(190,222,255,0.55), 0 0 34px 10px rgba(90,165,255,0.85), 0 0 96px 26px rgba(58,142,240,0.42); } }
 </style>
 </body></html>
