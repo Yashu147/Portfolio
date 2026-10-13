@@ -67317,6 +67317,11 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
     .ve6 .vwd-room + .vwd-room::before { left: 8%; right: 8%; top: 0; bottom: auto; width: auto; height: 1px;
       background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.22) 30%, rgba(255,255,255,0.22) 70%, rgba(255,255,255,0) 100%); }
     .ve6 .vwd-room + .vwd-room::after { display: none; } }
+  /* full width: the panel runs edge to edge with no outline; the words stay on the page's column */
+  .ve6 .vwd { width: 100vw; margin-left: calc(50% - 50vw); border-radius: 0; box-shadow: none; }
+  @media (min-width: 861px) {
+    .ve6 .vwd-room:first-child { padding-left: max(clamp(28px, 3.4vw, 48px), calc(50vw - 564px)); }
+    .ve6 .vwd-room:last-child { padding-right: max(clamp(28px, 3.4vw, 48px), calc(50vw - 564px)); } }
   /* Wherever you work: air between the two lines */
   .ve6 .vx-big { gap: 0.16em; }
 </style>
