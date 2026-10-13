@@ -62765,6 +62765,22 @@ window.__veTR = function (host) {
     ends();
   });
 
+  // My role: as each row of features scrolls into view, its cards slide up into place one after another
+  if (Element.prototype.animate && "IntersectionObserver" in window && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const rails = Array.prototype.slice.call(host.querySelectorAll("[data-rail]"));
+    rails.forEach(r => Array.prototype.forEach.call(r.children, c => { c.style.opacity = "0"; }));
+    const railIO = new IntersectionObserver(es => es.forEach(x => {
+      if (!x.isIntersecting) return; railIO.unobserve(x.target);
+      Array.prototype.forEach.call(x.target.children, (c, i) => {
+        c.style.opacity = "";
+        c.animate([{ transform: "translate3d(0, 70px, 0)", opacity: 0 }, { transform: "none", opacity: 1 }],
+          { duration: 1100, delay: i * 90, easing: "cubic-bezier(0.22, 1, 0.36, 1)", fill: "backwards" });
+      });
+    }), { threshold: 0.18 });
+    rails.forEach(r => railIO.observe(r));
+    offs.push(() => { railIO.disconnect(); rails.forEach(r => Array.prototype.forEach.call(r.children, c => { c.style.opacity = ""; })); });
+  }
+
   // the two jobs draw their pictures once they are in view
   const rooms = host.querySelectorAll(".vwd-room");
   const seenRooms = "IntersectionObserver" in window ? new IntersectionObserver(es => es.forEach(x => { if (x.isIntersecting) { x.target.classList.add("vis-on"); seenRooms.unobserve(x.target); } }), { threshold: 0.45 }) : null;
@@ -65223,7 +65239,7 @@ class YPSections {
       if (bgs[i] && !bgs[i].hasAttribute("data-case-bg-static")) bgs[i].style.backgroundImage = 'url("' + u + '")';
     });
     const clamp = v => Math.max(0, Math.min(1, v));
-    const st = cards.concat(soonCard ? [soonCard] : []).map(c => ({ el: c, img: c.hasAttribute("data-case") ? c.querySelector("[data-case-img]") : null, txt: Array.from(c.querySelectorAll("[data-case-text]")), y: 0, ty: 0, sc: 1.1, tsc: 1.1, hover: false, shown: false }));
+    const st = cards.concat(soonCard ? [soonCard] : []).map(c => ({ el: c, img: c.hasAttribute("data-case") ? c.querySelector("[data-case-img]") : null, txt: Array.from(c.querySelectorAll("[data-case-text]")), y: 0, ty: 0, sc: 1.22, tsc: 1.22, hover: false, shown: false }));
     let active = -1, raf = 0, live = false;
     const cur = { x: -200, y: -200, tx: -200, ty: -200, on: false, o: 0 };
     const measure = () => {
@@ -65234,8 +65250,8 @@ class YPSections {
         const d = Math.abs((r.top + r.bottom) * 0.5 - mid);
         if (d < bestD) { bestD = d; best = i; }
         const enter = clamp((vh - r.top) / (vh + r.height));
-        c.ty = -150 + enter * 300;
-        c.tsc = 1.1;
+        c.ty = -55 + enter * 110;
+        c.tsc = 1.22;
         if (!c.shown && r.top < vh * 0.88) {
           c.shown = true;
           c.txt.forEach(t => { t.style.opacity = "1"; t.style.transform = "translate3d(0,0,0)"; });
@@ -67058,7 +67074,7 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
   /* home page: each cover is a finished 16:9 composition, so it shows whole, edge to edge, and holds still */
   #showcase [data-case] > div:nth-child(2) { aspect-ratio: 16 / 9 !important; }
   #showcase [data-case] [data-case-img] { top: 0 !important; bottom: 0 !important; height: 100% !important;
-    background-size: 100% 100% !important; transform: none !important; }
+    background-size: 100% 100% !important; }
 </style>
 <style id="yp-r3">
   /* the skill pictures share one backdrop: a soft green tint, in both themes */
@@ -67252,12 +67268,12 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
   .ve6 .vfp-n b { font-size: clamp(56px, 5.2vw, 78px) !important; line-height: 0.9 !important; letter-spacing: -0.045em !important; }
   @media (max-width: 760px) { .ve6 .vfp-n b { font-size: 36px !important; } }
   /* the next case's picture: a little taller than its frame, drifting against the scroll */
-  .ve6 .vnx-pic { inset: -9% 0 !important; background-size: cover !important; will-change: transform;
-    transform: translate3d(0, calc((0.5 - var(--p, 0.5)) * 15%), 0); }
+  .ve6 .vnx-pic { will-change: transform; transform: scale(1.22) translate3d(0, calc((0.5 - var(--p, 0.5)) * 17%), 0); }
 </style>
 <style id="yp-r11">
   /* the notch fold and the opening doors play over the start of the section after them, which comes up underneath */
   .ve6 .vt-notch, .ve6 .vt-break { z-index: 5; margin-bottom: -100vh; margin-bottom: -100svh; }
+  .ve6 .vt-notch { margin-bottom: -70vh; margin-bottom: -70svh; }
   /* the doors' inner edges: a soft, blurred band of electric blue light that spills into the opening, as bright as --gl */
   .ve6 .vt-shut .vt-l::after, .ve6 .vt-shut .vt-r::after, .ve6 .vt-break .vt-l::after, .ve6 .vt-break .vt-r::after {
     content: ""; position: absolute; top: -10%; bottom: -10%; width: clamp(140px, 16vw, 260px); opacity: var(--gl, 0); pointer-events: none; filter: blur(22px); }
@@ -67288,5 +67304,20 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
   @keyframes vrkGlow {
     0%, 100% { box-shadow: 0 0 0 2px color-mix(in srgb, var(--hc) 40%, transparent), 0 0 22px 6px color-mix(in srgb, var(--hc) 60%, transparent), 0 0 60px 14px color-mix(in srgb, var(--hc) 28%, transparent); }
     50% { box-shadow: 0 0 0 3px color-mix(in srgb, var(--hc) 60%, transparent), 0 0 34px 10px color-mix(in srgb, var(--hc) 85%, transparent), 0 0 96px 26px color-mix(in srgb, var(--hc) 42%, transparent); } }
+</style>
+<style id="yp-r12">
+  /* the two jobs: one panel, split down the middle by a soft line of light */
+  .ve6 .vwd { gap: 0; border-radius: 28px; overflow: hidden; isolation: isolate; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08), 0 40px 80px -50px rgba(0,0,0,0.8); }
+  .ve6 .vwd-room { box-shadow: none !important; border-radius: 0 !important; }
+  .ve6 .vwd-room + .vwd-room::before { content: ""; position: absolute; z-index: 3; left: 0; top: 8%; bottom: 8%; width: 1px; pointer-events: none;
+    background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.22) 30%, rgba(255,255,255,0.22) 70%, rgba(255,255,255,0) 100%); }
+  .ve6 .vwd-room + .vwd-room::after { content: ""; position: absolute; z-index: 2; left: -60px; top: 30%; bottom: 30%; width: 120px; pointer-events: none;
+    background: radial-gradient(closest-side, rgba(255,255,255,0.06), rgba(255,255,255,0)); }
+  @media (max-width: 860px) {
+    .ve6 .vwd-room + .vwd-room::before { left: 8%; right: 8%; top: 0; bottom: auto; width: auto; height: 1px;
+      background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.22) 30%, rgba(255,255,255,0.22) 70%, rgba(255,255,255,0) 100%); }
+    .ve6 .vwd-room + .vwd-room::after { display: none; } }
+  /* Wherever you work: air between the two lines */
+  .ve6 .vx-big { gap: 0.16em; }
 </style>
 </body></html>
