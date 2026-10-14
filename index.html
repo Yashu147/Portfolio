@@ -61206,12 +61206,12 @@ window.__ypImgs = function (r) { r.querySelectorAll('img[data-yp-src]').forEach(
 <section class="tt-s tt-hero tt-hero3" data-tt-ch="Overview" data-theme="dark">
   <div class="tt-hx" data-tt-hx="">
     <div class="tt-hx-bg" aria-hidden="true"><img data-tt-hximg="" src="https://images.unsplash.com/photo-1784889825903-49e3e04f0b4f?auto=format&amp;fit=crop&amp;q=72&amp;w=2000" srcset="https://images.unsplash.com/photo-1784889825903-49e3e04f0b4f?auto=format&amp;fit=crop&amp;q=72&amp;w=1000 1000w, https://images.unsplash.com/photo-1784889825903-49e3e04f0b4f?auto=format&amp;fit=crop&amp;q=72&amp;w=1600 1600w, https://images.unsplash.com/photo-1784889825903-49e3e04f0b4f?auto=format&amp;fit=crop&amp;q=72&amp;w=2200 2200w, https://images.unsplash.com/photo-1784889825903-49e3e04f0b4f?auto=format&amp;fit=crop&amp;q=72&amp;w=3000 3000w" sizes="(max-width: 700px) 200vw, 130vw" width="1800" height="1440" alt="" decoding="async" fetchpriority="high"><i class="tt-hx-scrim"></i></div>
-    <div class="tt-order" data-tt-order="" aria-hidden="true"><div class="tt-order-h"><i></i><span>Order #1001</span><em>Top-10 Powai</em></div><div class="tt-order-s"><b data-tt-os="">Out for delivery</b></div><div class="tt-order-bar"><i></i><i></i><i></i><i></i><i></i></div></div>
-    <p class="tt-hx-tag r"><span>Case study 02</span>Top-10 Mobiles</p>
+    <div class="tt-order" data-tt-order="" aria-hidden="true"><div class="tt-order-h"><i></i><span>Order #1001</span><em>Top-10 Powai</em></div><div class="tt-order-s"><b class="cur" data-tt-os="">Out for delivery</b><b data-tt-os2=""></b></div><div class="tt-order-bar"><i></i><i></i><i></i><i></i><i></i></div></div>
+    <p class="tt-hx-tag r">Case study 02<i></i>Top-10 Mobiles</p>
     <h1 class="tt-h1 tt-hx-title" data-split="">How a Top-10 store gets<br>your phone to your door.</h1>
     <div class="tt-hx-aside r">
-      <p>Top-10 Mobiles delivers online orders from its own stores. I designed the two dashboards that run it: one for the store team, one for head office.</p>
-      <ul><li><span>Role</span>UI/UX Designer</li><li><span>Timeline</span>About a month, with a team</li><li><span>Status</span><i aria-hidden="true"></i>Live in Top-10 stores</li></ul>
+      <p class="tt-hx-lead">Top-10 Mobiles delivers online orders from its own stores. I designed the two dashboards that run it: <a class="tt-peek" href="#tt-part-store" data-jump-to="tt-part-store"><span class="tt-peek-i"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 9 5 4h14l1.5 5M3.5 9h17M4.5 9v11h15V9M9.5 20v-5.5h5V20"/></svg></span>Store Admin<span class="tt-peek-c" aria-hidden="true"><span class="tt-peek-bar"><i></i><i></i><i></i><b>Store Admin</b></span><img src="assets/top10/store-dashboard.webp" alt="" loading="lazy" decoding="async"></span></a> for the store team, and <a class="tt-peek" href="#tt-part-hq" data-jump-to="tt-part-hq"><span class="tt-peek-i"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21V6l8-3v18M12 9h8v12M7.5 8v.01M7.5 12v.01M7.5 16v.01M16 13v.01M16 17v.01M2.5 21h19"/></svg></span>Super Admin<span class="tt-peek-c" aria-hidden="true"><span class="tt-peek-bar"><i></i><i></i><i></i><b>Super Admin</b></span><img src="assets/top10/hq-dashboard.webp" alt="" loading="lazy" decoding="async"></span></a> for head office.</p>
+      <p class="tt-hx-cred"><span>UI/UX Designer</span><span>About a month, with a team</span><span><i aria-hidden="true"></i>Live in Top-10 stores</span></p>
     </div>
   </div>
   <div class="tt-stage r" data-tt-stage="">
@@ -70059,42 +70059,61 @@ window.FIGIMG = {"pm":"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAA
   background:
     linear-gradient(90deg, rgba(0,0,0,.6) 0%, rgba(0,0,0,.3) 34%, rgba(0,0,0,0) 52%),
     linear-gradient(180deg, rgba(0,0,0,.65) 0%, rgba(0,0,0,.25) 40%, rgba(0,0,0,0) 58%, rgba(0,0,0,.5) 88%, #000 100%); }
-.tt-hx-tag { position: absolute; z-index: 2; left: var(--gx); top: 104px; display: inline-flex; align-items: center; gap: 10px; padding: 5px 14px 5px 5px; border-radius: 999px;
-  font-size: 13.5px; color: rgba(255,255,255,.82); background: rgba(255,255,255,.08); box-shadow: inset 0 0 0 1px rgba(255,255,255,.14); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
-.tt-hx-tag span { padding: 5px 11px; border-radius: 999px; background: #FFFFFF; color: #0A0A0A; font-size: 12.5px; font-weight: 600; }
+/* the label above the title: plain words, no pill (the nav is the pill) */
+.tt-hx-tag { position: absolute; z-index: 2; left: var(--gx); top: 112px; display: flex; align-items: center; gap: 12px; margin: 0;
+  font-size: 13px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.62); }
+.tt-hx-tag i { width: 26px; height: 1px; background: rgba(255,255,255,.35); }
 /* the title: one plain sentence in two big lines across the top */
 .tt-hero3 .tt-hx-title { position: absolute; z-index: 2; left: var(--gx); right: var(--gx); top: 176px; margin: 0; max-width: none; text-align: left;
   font-size: min(6.9vw, 12.4vh, 112px); line-height: .96; letter-spacing: -0.052em; color: #FFFFFF; white-space: nowrap; text-wrap: nowrap; }
-/* the story and the details: down at the bottom-left, away from the title */
-.tt-hx-aside { position: absolute; z-index: 2; left: var(--gx); bottom: clamp(34px, 6vh, 64px); width: min(400px, 31vw); }
-.tt-hx-aside p { font-size: clamp(15.5px, 1.15vw, 17.5px); line-height: 1.55; color: rgba(255,255,255,.8); }
-.tt-hx-aside ul { margin-top: 20px; display: grid; }
-.tt-hx-aside li { display: flex; align-items: center; gap: 8px; padding: 10px 0; border-top: 1px solid rgba(255,255,255,.16); font-size: 14.5px; font-weight: 500; color: #FFFFFF; }
-.tt-hx-aside li span { width: 84px; font-weight: 400; color: rgba(255,255,255,.5); }
-.tt-hx-aside li i { width: 7px; height: 7px; border-radius: 50%; background: #34D17E; box-shadow: 0 0 0 4px rgba(52,209,126,.18); animation: ttLive 2.2s ease-in-out infinite; }
+/* the story, down at the bottom-left: one paragraph where the two dashboards are live words, then one line of credits */
+.tt-hx-aside { position: absolute; z-index: 3; left: var(--gx); bottom: clamp(36px, 6.5vh, 68px); width: min(540px, 40vw); }
+.tt-hx-lead { font-size: clamp(17px, 1.32vw, 20px); line-height: 1.6; color: rgba(255,255,255,.72); text-wrap: pretty; }
+.tt-peek { position: relative; display: inline-flex; align-items: baseline; gap: 6px; color: #FFFFFF; font-weight: 600; text-decoration: none; white-space: nowrap;
+  background: linear-gradient(currentColor, currentColor) 0 100% / 100% 1px no-repeat; padding-bottom: 1px; transition: background-size .5s var(--ease); }
+.tt-peek-i { position: relative; top: 3px; display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 7px; background: rgba(255,255,255,.12); }
+.tt-peek-i svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+/* hover a dashboard's name: a small window of it rises out of the word */
+.tt-peek-c { position: absolute; left: -4px; bottom: calc(100% + 14px); width: 300px; border-radius: 12px; overflow: hidden; background: #FFFFFF; pointer-events: none;
+  box-shadow: 0 0 0 1px rgba(255,255,255,.18), 0 30px 60px -20px rgba(0,0,0,.8); opacity: 0; transform: translateY(12px) scale(.94); transform-origin: 0 100%;
+  filter: blur(4px); transition: opacity .35s ease, transform .55s var(--ease), filter .45s ease; }
+.tt-peek-c img { display: block; width: 100%; height: auto; }
+.tt-peek-bar { display: flex; align-items: center; gap: 4px; height: 22px; padding: 0 9px; background: #F4F4F6; border-bottom: 1px solid rgba(0,0,0,.06); }
+.tt-peek-bar i { width: 6px; height: 6px; border-radius: 50%; background: #D5D6DB; }
+.tt-peek-bar b { margin-left: 6px; font: 600 10.5px/1 'Geist', system-ui, sans-serif; letter-spacing: 0; color: #55575F; }
+.tt-peek:hover .tt-peek-c, .tt-peek:focus-visible .tt-peek-c { opacity: 1; transform: none; filter: none; }
+.tt-peek:hover .tt-peek-i { background: #FFFFFF; color: #0A0A0A; }
+.tt-hx-cred { display: flex; flex-wrap: nowrap; white-space: nowrap; align-items: center; gap: 8px 0; margin-top: 22px; font-size: 13.5px; color: rgba(255,255,255,.9); }
+.tt-hx-cred span { display: inline-flex; align-items: center; gap: 8px; }
+.tt-hx-cred span + span::before { content: ""; width: 1px; height: 14px; margin: 0 14px; background: rgba(255,255,255,.28); }
+.tt-hx-cred i { width: 7px; height: 7px; border-radius: 50%; background: #34D17E; box-shadow: 0 0 0 4px rgba(52,209,126,.18); animation: ttLive 2.2s ease-in-out infinite; }
 @keyframes ttLive { 50% { box-shadow: 0 0 0 8px rgba(52,209,126,.04); } }
 
-/* order #1001 rides along: a small live card beside the rider, stepping through its statuses */
-.tt-order { position: absolute; z-index: 2; left: 0; top: 0; width: 232px; padding: 14px 16px 15px; border-radius: 18px; color: #FFFFFF;
-  background: rgba(20,20,22,.5); -webkit-backdrop-filter: blur(18px) saturate(1.4); backdrop-filter: blur(18px) saturate(1.4);
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,.16), 0 30px 60px -24px rgba(0,0,0,.7);
-  transform: translate3d(var(--ox, -999px), var(--oy, 0px), 0); opacity: 0; transition: opacity 900ms ease 1200ms; }
-.tt-order.on { opacity: 1; }
-.tt-order { animation: ttFloat2 6s ease-in-out infinite; }
-@keyframes ttFloat2 { 50% { margin-top: -8px; } }
-.tt-order-h { display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: rgba(255,255,255,.7); }
-.tt-order-h i { width: 7px; height: 7px; border-radius: 50%; background: var(--sc, #34D17E); box-shadow: 0 0 0 4px color-mix(in srgb, var(--sc, #34D17E) 25%, transparent); transition: background 500ms, box-shadow 500ms; }
+/* order #1001 rides along: a small live card beside the rider. The status rolls softly from one to the next,
+   and the bar fills over the time each step takes, like a story */
+.tt-order { position: absolute; z-index: 2; left: 0; top: 0; width: 250px; padding: 15px 17px 16px; border-radius: 20px; color: #FFFFFF;
+  background: linear-gradient(160deg, rgba(40,40,44,.62), rgba(14,14,16,.5)); -webkit-backdrop-filter: blur(20px) saturate(1.5); backdrop-filter: blur(20px) saturate(1.5);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.14), inset 0 0 0 1px rgba(255,255,255,.1), 0 30px 60px -24px rgba(0,0,0,.75);
+  transform: translate3d(var(--ox, -999px), var(--oy, 0px), 0); opacity: 0; filter: blur(8px);
+  transition: opacity 1000ms ease 900ms, filter 1000ms ease 900ms; animation: ttFloat2 7s ease-in-out infinite; }
+.tt-order.on { opacity: 1; filter: none; }
+@keyframes ttFloat2 { 50% { margin-top: -10px; } }
+.tt-order-h { display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: rgba(255,255,255,.62); }
+.tt-order-h i { position: relative; width: 8px; height: 8px; border-radius: 50%; background: var(--sc, #34D17E); transition: background 700ms ease; }
+.tt-order-h i::after { content: ""; position: absolute; inset: -4px; border-radius: 50%; border: 1.5px solid var(--sc, #34D17E); opacity: 0; transition: border-color 700ms ease; animation: ttPing 2.4s ease-out infinite; }
+@keyframes ttPing { 0% { transform: scale(.6); opacity: .9; } 80%, 100% { transform: scale(1.9); opacity: 0; } }
 .tt-order-h span { font-weight: 600; color: #FFFFFF; } .tt-order-h em { margin-left: auto; font-style: normal; }
-.tt-order-s { position: relative; height: 26px; margin-top: 8px; overflow: hidden; }
-.tt-order-s b { display: block; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: 19px; font-weight: 700; letter-spacing: -0.02em; line-height: 26px; white-space: nowrap; }
-.tt-order-s b.out { animation: ttOsOut 380ms cubic-bezier(.6, 0, .8, .2) both; }
-.tt-order-s b.in { animation: ttOsIn 520ms cubic-bezier(.16, 1, .3, 1) both; }
-@keyframes ttOsOut { to { transform: translateY(-100%); opacity: 0; } }
-@keyframes ttOsIn { from { transform: translateY(100%); opacity: 0; } }
-.tt-order-bar { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; margin-top: 12px; }
-.tt-order-bar i { height: 3px; border-radius: 3px; background: rgba(255,255,255,.18); overflow: hidden; position: relative; }
-.tt-order-bar i::after { content: ""; position: absolute; inset: 0; background: #FFFFFF; transform: scaleX(0); transform-origin: 0 50%; transition: transform 600ms cubic-bezier(.16, 1, .3, 1); }
-.tt-order-bar i.on::after { transform: none; }
+.tt-order-s { position: relative; height: 30px; margin-top: 9px; overflow: hidden; }
+.tt-order-s b { position: absolute; left: 0; top: 0; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: 20px; font-weight: 700; letter-spacing: -0.02em; line-height: 30px; white-space: nowrap;
+  opacity: 0; transform: translateY(80%); filter: blur(6px);
+  transition: transform 900ms cubic-bezier(.16, 1, .3, 1), opacity 700ms ease, filter 700ms ease; }
+.tt-order-s b.cur { opacity: 1; transform: none; filter: none; }
+.tt-order-s b.up { opacity: 0; transform: translateY(-80%); filter: blur(6px); }
+.tt-order-s b.set { transition: none; }
+.tt-order-bar { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; margin-top: 13px; }
+.tt-order-bar i { position: relative; height: 3px; border-radius: 3px; background: rgba(255,255,255,.16); overflow: hidden; }
+.tt-order-bar i::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: #FFFFFF; transform: scaleX(var(--f, 0)); transform-origin: 0 50%;
+  transition: transform var(--fd, 500ms) var(--fe, cubic-bezier(.16, 1, .3, 1)); }
 
 /* the live product, right after the photo */
 .tt-hero3 .tt-stage { margin-top: clamp(40px, 8vh, 90px); }
@@ -70219,11 +70238,13 @@ window.FIGIMG = {"pm":"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAA
   .tt-hx-tag { align-self: flex-start; }
   .tt-hero3 .tt-hx-title { margin-top: 22px; font-size: min(11.5vw, 80px); max-width: none; white-space: normal; text-wrap: balance; }
   .tt-hero3 .tt-hx-title br { display: none; }
-  .tt-hx-aside { width: auto; max-width: 420px; margin-top: auto; padding-top: 46vh; }
+  .tt-hx-aside { width: auto; max-width: 440px; margin-top: auto; padding-top: 46vh; }
+  .tt-peek-c { display: none; }
+  .tt-hx-cred { flex-wrap: wrap; white-space: normal; } .tt-hx-cred span + span::before { margin: 0 10px; }
   .tt-hx-scrim { background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 58%, rgba(0,0,0,.6) 80%, #000 100%); }
 }
 @media (max-width: 640px) {
-  .tt-order { width: 200px; padding: 12px 14px; }
+  .tt-order { width: 214px; padding: 12px 14px; }
   .tt-lbl b { font-size: 15.5px; } .tt-lbl p { font-size: 12.5px; }
   .tt-stamp { width: 88px; height: 88px; } .tt-stamp b { font-size: 21px; }
 }
@@ -70266,9 +70287,11 @@ window.FIGIMG = {"pm":"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAA
     img.style.width = iw + 'px'; img.style.height = ih + 'px';
     box.classList.toggle('is-narrow', narrow);
     box.__img = { x0: x0, y0: y0, s: s }; box.__p = -1;
-    if (card) { var cx = x0 + CARD.x * iw * s, cy = y0 + CARD.y * ih * s;
+    if (card) { var cx = x0 + CARD.x * iw * s, cy = y0 + CARD.y * ih * s, tt = root.querySelector('.tt-hx-title');
+      if (!narrow && tt) cy = Math.max(cy, tt.getBoundingClientRect().bottom - box.getBoundingClientRect().top + 72);
+      if (!narrow) cx = Math.min(cx, W - card.offsetWidth - Math.max(24, (W - 1240) / 2 - 40));
       if (narrow) { var sub = root.querySelector('.tt-hx-title'), bt = box.getBoundingClientRect().top;
-        cx = W - card.offsetWidth - 16; cy = Math.max(cy - 40, sub ? sub.getBoundingClientRect().bottom - bt + 28 : 0); }
+        cx = W - card.offsetWidth - 16; cy = Math.max(cy - 40, sub ? sub.getBoundingClientRect().bottom - bt + 36 : 0); }
       card.style.setProperty('--ox', Math.round(cx) + 'px'); card.style.setProperty('--oy', Math.round(cy) + 'px'); card.classList.add('on'); }
   }
 
@@ -70297,16 +70320,28 @@ window.FIGIMG = {"pm":"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAA
     var go = function () { place(root); moveInd(root, true); };
     if (img && !img.complete) img.addEventListener('load', go, { once: true });
     go(); addEventListener('resize', go);
-    root.__os = { i: 3, t: performance.now() };
-    var card = root.querySelector('[data-tt-order]'); if (card) setStep(card, 3, true);
+    root.__os = { i: 0, t: performance.now() + 1200 };
+    var card = root.querySelector('[data-tt-order]'); if (card) setTimeout(function () { root.__os.t = performance.now(); setStep(card, 0, true); }, 1200);
   }
 
-  function setStep(card, i, now) {
-    var b = card.querySelector('[data-tt-os]'), st = STEPS[i];
-    var paint = function () { card.style.setProperty('--sc', st[1]); all(card, '.tt-order-bar i').forEach(function (x, k) { x.classList.toggle('on', k <= i); }); b.textContent = st[0]; };
-    if (now) { paint(); return; }
-    b.classList.remove('in'); b.classList.add('out');
-    setTimeout(function () { paint(); b.classList.remove('out'); void b.offsetWidth; b.classList.add('in'); }, 360);
+  // one step of order #1001: the status rolls up and out as the next rolls in, the dot changes colour,
+  // and the step's bar fills over exactly the time the step is shown
+  function stepTime(i) { return i === STEPS.length - 1 ? 3600 : 2800; }
+  function setStep(card, i, instant) {
+    var st = STEPS[i], d = stepTime(i), bs = all(card, '.tt-order-s b'), cur = card.querySelector('.tt-order-s b.cur') || bs[0], nxt = bs[0] === cur ? bs[1] : bs[0];
+    card.style.setProperty('--sc', st[1]);
+    if (instant) { cur.textContent = st[0]; }
+    else {
+      nxt.className = 'set'; nxt.textContent = st[0]; void nxt.offsetWidth;
+      nxt.className = 'cur'; cur.className = 'up';
+      setTimeout(function () { if (cur.className === 'up') { cur.className = 'set'; void cur.offsetWidth; cur.className = ''; } }, 950);
+    }
+    all(card, '.tt-order-bar i').forEach(function (x, k) {
+      if (k < i) { x.style.setProperty('--fd', '500ms'); x.style.setProperty('--fe', 'cubic-bezier(.16, 1, .3, 1)'); x.style.setProperty('--f', '1'); }
+      else if (k > i) { x.style.setProperty('--fd', '700ms'); x.style.setProperty('--fe', 'cubic-bezier(.65, 0, .35, 1)'); x.style.setProperty('--f', '0'); }
+      else { x.style.setProperty('--fd', '0ms'); x.style.setProperty('--f', '0'); void x.offsetWidth;
+        x.style.setProperty('--fd', d + 'ms'); x.style.setProperty('--fe', 'linear'); x.style.setProperty('--f', '1'); }
+    });
   }
 
   function tick(now) {
@@ -70325,7 +70360,7 @@ window.FIGIMG = {"pm":"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAA
     // order #1001 steps through its statuses while you can see it
     var card = root.querySelector('[data-tt-order]');
     if (card && root.__os && box) { var br = box.getBoundingClientRect();
-      if (br.bottom > 0 && now - root.__os.t > 2000) { root.__os.t = now; root.__os.i = (root.__os.i + 1) % STEPS.length; setStep(card, root.__os.i); } }
+      if (br.bottom > 0 && now - root.__os.t > stepTime(root.__os.i)) { root.__os.t = now; root.__os.i = (root.__os.i + 1) % STEPS.length; setStep(card, root.__os.i); } }
 
     // the problem: as the questions fold into one row, the big question steps up out of the way
     var q3 = root.querySelector('.tt-q3');
