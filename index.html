@@ -61205,7 +61205,7 @@ window.__ypImgs = function (r) { r.querySelectorAll('img[data-yp-src]').forEach(
 <!-- 01 · how a Top-10 store gets your phone to your door. A rider in motion behind it -->
 <section class="tt-s tt-hero tt-hero3" data-tt-ch="Overview" data-theme="dark">
   <div class="tt-hx" data-tt-hx="">
-    <div class="tt-hx-bg" aria-hidden="true"><div class="tt-hx-bgi"><img data-tt-hximg="" src="https://images.unsplash.com/photo-1784889825903-49e3e04f0b4f?auto=format&amp;fit=crop&amp;q=72&amp;w=2000" srcset="https://images.unsplash.com/photo-1784889825903-49e3e04f0b4f?auto=format&amp;fit=crop&amp;q=72&amp;w=1000 1000w, https://images.unsplash.com/photo-1784889825903-49e3e04f0b4f?auto=format&amp;fit=crop&amp;q=72&amp;w=1600 1600w, https://images.unsplash.com/photo-1784889825903-49e3e04f0b4f?auto=format&amp;fit=crop&amp;q=72&amp;w=2200 2200w, https://images.unsplash.com/photo-1784889825903-49e3e04f0b4f?auto=format&amp;fit=crop&amp;q=72&amp;w=3000 3000w" sizes="(max-width: 700px) 200vw, 130vw" width="1800" height="1440" alt="" decoding="async" fetchpriority="high"><i class="tt-hx-scrim"></i></div></div>
+    <div class="tt-hx-bg" aria-hidden="true"><div class="tt-hx-bgi"><img data-tt-hximg="" src="https://images.unsplash.com/photo-1784889825903-49e3e04f0b4f?auto=format&amp;fit=crop&amp;q=72&amp;w=2000" srcset="https://images.unsplash.com/photo-1784889825903-49e3e04f0b4f?auto=format&amp;fit=crop&amp;q=72&amp;w=1000 1000w, https://images.unsplash.com/photo-1784889825903-49e3e04f0b4f?auto=format&amp;fit=crop&amp;q=72&amp;w=1600 1600w, https://images.unsplash.com/photo-1784889825903-49e3e04f0b4f?auto=format&amp;fit=crop&amp;q=72&amp;w=2200 2200w, https://images.unsplash.com/photo-1784889825903-49e3e04f0b4f?auto=format&amp;fit=crop&amp;q=72&amp;w=3000 3000w" sizes="(max-width: 700px) 200vw, 130vw" width="1800" height="1440" alt="" decoding="async" fetchpriority="high"><i class="tt-hx-scrim"></i></div><i class="tt-hx-sweep"></i></div><svg class="tt-hx-svg" width="0" height="0" aria-hidden="true" focusable="false"><filter id="ttHxMb" x="-20%" y="0" width="140%" height="100%"><feGaussianBlur data-tt-mb="" stdDeviation="0 0"/></filter></svg>
     <div class="tt-order" data-tt-order="" aria-hidden="true"><div class="tt-order-h"><i></i><span>Order #1001</span><em>Top-10 Powai</em></div><div class="tt-order-s"><b class="cur" data-tt-os="">Out for delivery</b><b data-tt-os2=""></b></div><div class="tt-order-bar"><i></i><i></i><i></i><i></i><i></i></div></div>
     <div class="tt-hx-col">
       <p class="tt-hx-tag">Case study 02<i aria-hidden="true">·</i>Top-10 Mobiles</p>
@@ -70060,8 +70060,8 @@ window.FIGIMG = {"pm":"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAA
     linear-gradient(90deg, rgba(0,0,0,.6) 0%, rgba(0,0,0,.3) 34%, rgba(0,0,0,0) 52%),
     linear-gradient(180deg, rgba(0,0,0,.65) 0%, rgba(0,0,0,.25) 40%, rgba(0,0,0,0) 58%, rgba(0,0,0,.5) 88%, #000 100%); }
 /* the left column: label, title, story, credits, with the same space between each */
-.tt-hx-col { position: absolute; z-index: 3; left: var(--gx); right: var(--gx); top: 0; bottom: 0; display: flex; flex-direction: column; justify-content: center;
-  gap: clamp(26px, 4.4vh, 46px); padding-top: 70px; pointer-events: none; }
+.tt-hx-col { position: absolute; z-index: 3; left: var(--gx); right: var(--gx); top: 0; bottom: 0; display: flex; flex-direction: column; justify-content: space-between;
+  gap: 28px; padding: 118px 0 clamp(40px, 7vh, 76px); pointer-events: none; }
 .tt-hx-col > * { pointer-events: auto; }
 .tt-hx-tag { display: flex; align-items: center; gap: 10px; margin: 0; font-size: 13px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.62); }
 .tt-hx-tag i { font-style: normal; color: rgba(255,255,255,.4); }
@@ -70254,22 +70254,30 @@ window.FIGIMG = {"pm":"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAA
 }
 .tt-nw { white-space: nowrap; }
 
-/* ── arriving on the page: the photo wipes in from the right and settles, the title rises word by word,
-   then the label, the story, the credits and, last, order #1001 ── */
-.tt-hx-bg { animation: none; clip-path: inset(0 0 0 100%); }
-.tt-hx-bgi { position: absolute; inset: 0; transform: scale(1.14); filter: blur(10px); }
-.tt-hx.go .tt-hx-bg { clip-path: inset(0 0 0 0); transition: clip-path 1500ms cubic-bezier(.77, 0, .18, 1) 100ms; }
-.tt-hx.go .tt-hx-bgi { transform: none; filter: none; transition: transform 2600ms cubic-bezier(.16, 1, .3, 1) 100ms, filter 1600ms ease 200ms; }
+/* ── arriving on the page: the photo sweeps in from left to right, the way the rider is going, smeared by a horizontal
+   motion blur that clears as it lands, with a light running along its edge. Only then do the words come in ── */
+.tt-hx-svg { position: absolute; width: 0; height: 0; }
+.tt-hx-bg { animation: none; clip-path: inset(0 100% 0 0); }
+.tt-hx-bgi { position: absolute; inset: 0; transform: translateX(-9%) scale(1.06); }
+.tt-hx.go .tt-hx-bg { clip-path: inset(0 0 0 0); transition: clip-path 1400ms cubic-bezier(.7, 0, .25, 1) 80ms; }
+.tt-hx.go .tt-hx-bgi { transform: none; transition: transform 2200ms cubic-bezier(.16, 1, .3, 1) 80ms; }
+.tt-hx-sweep { position: absolute; z-index: 1; top: 0; bottom: 0; left: 0; width: 26vw; pointer-events: none; opacity: 0; mix-blend-mode: screen;
+  background: linear-gradient(90deg, rgba(255,214,170,0) 0%, rgba(255,214,170,.10) 55%, rgba(255,236,214,.38) 94%, rgba(255,255,255,0) 100%); filter: blur(8px);
+  transform: translateX(-26vw); }
+.tt-hx.go .tt-hx-sweep { animation: ttSweep 1400ms cubic-bezier(.7, 0, .25, 1) 80ms both; }
+@keyframes ttSweep { 0% { opacity: 1; transform: translateX(-26vw); } 85% { opacity: 1; } 100% { opacity: 0; transform: translateX(100vw); } }
+/* the words: after the photo has landed */
 .tt-hx-tag, .tt-hx-lead, .tt-hx-cred { opacity: 0; transform: translateY(18px); filter: blur(6px); transition: opacity 900ms ease, transform 1100ms var(--ease), filter 900ms ease; }
-.tt-hx.go .tt-hx-tag { opacity: 1; transform: none; filter: none; transition-delay: 350ms; }
-.tt-hx.go .tt-hx-lead { opacity: 1; transform: none; filter: none; transition-delay: 1150ms; }
-.tt-hx.go .tt-hx-cred { opacity: 1; transform: none; filter: none; transition-delay: 1300ms; }
-.tt-hx:not(.go) .tt-hx-title .w > span { transform: translateY(105%) !important; transition: none !important; }
-.tt-hx.go .tt-hx-title .w > span { transition: transform 1150ms cubic-bezier(.16, 1, .3, 1) !important; transition-delay: calc(450ms + var(--i, 0) * 60ms) !important; }
+.tt-hx.go .tt-hx-tag { opacity: 1; transform: none; filter: none; transition-delay: 1350ms; }
+.tt-hx.go .tt-hx-lead { opacity: 1; transform: none; filter: none; transition-delay: 2050ms; }
+.tt-hx.go .tt-hx-cred { opacity: 1; transform: none; filter: none; transition-delay: 2200ms; }
+.tt-hx:not(.go) .tt-hx-title .w > span { transform: translateY(135%) !important; opacity: 0; transition: none !important; }
+.tt-hx.go .tt-hx-title .w > span { opacity: 1; transition: transform 1100ms cubic-bezier(.16, 1, .3, 1), opacity 500ms ease !important; transition-delay: calc(1400ms + var(--i, 0) * 55ms) !important; }
 .tt-hx:not(.go) .tt-order { opacity: 0 !important; }
-.tt-hx.go .tt-order.on { transition-delay: 1700ms; }
+.tt-hx.go .tt-order.on { transition-delay: 2550ms; }
 @media (prefers-reduced-motion: reduce) {
   .tt-hx-bg, .tt-hx-bgi, .tt-hx-tag, .tt-hx-lead, .tt-hx-cred { clip-path: none !important; transform: none !important; filter: none !important; opacity: 1 !important; transition: none !important; }
+  .tt-hx-sweep { display: none; }
 }
 
 /* ── 02 the brief: the title centred, the parcel in the middle, and a note on each side pointing at it ── */
@@ -70413,7 +70421,7 @@ window.FIGIMG = {"pm":"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAA
     var go = function () { place(root); moveInd(root, true); };
     // arriving: start the reveal once the photo is ready (or after a short wait, whichever comes first)
     var hx = root.querySelector('[data-tt-hx]'), started = false;
-    var start = function () { if (started || !hx) return; started = true; requestAnimationFrame(function () { requestAnimationFrame(function () { hx.classList.add('go'); }); }); };
+    var start = function () { if (started || !hx) return; started = true; requestAnimationFrame(function () { requestAnimationFrame(function () { hx.classList.add('go'); motionBlur(hx); }); }); };
     if (img && img.complete) start(); else if (img) img.addEventListener('load', start, { once: true });
     setTimeout(start, 1400);
     if (img && !img.complete) img.addEventListener('load', go, { once: true });
@@ -70440,6 +70448,16 @@ window.FIGIMG = {"pm":"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAA
       else { x.style.setProperty('--fd', '0ms'); x.style.setProperty('--f', '0'); void x.offsetWidth;
         x.style.setProperty('--fd', d + 'ms'); x.style.setProperty('--fe', 'linear'); x.style.setProperty('--f', '1'); }
     });
+  }
+
+  // the photo's horizontal motion blur, strongest as it starts to sweep in, gone as it lands
+  function motionBlur(hx) {
+    var img = hx.querySelector('[data-tt-hximg]'), g = hx.querySelector('[data-tt-mb]');
+    if (!img || !g || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    img.style.filter = 'url(#ttHxMb)'; var t0 = performance.now(), D = 1700;
+    (function step(now) { var t = Math.min(1, (now - t0) / D), k = 1 - Math.pow(1 - t, 3), sd = (1 - k) * 70;
+      g.setAttribute('stdDeviation', sd.toFixed(1) + ' 0');
+      if (t < 1) requestAnimationFrame(step); else img.style.filter = ''; })(t0);
   }
 
   function rxOpen(rx, i) {
