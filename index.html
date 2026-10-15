@@ -72359,6 +72359,10 @@ button.tt-dz-b:active, .tt-dz-b.is-press, .tt-dz-b.pressed { background: #2563EB
 @media (max-width: 900px) { .tt-end { padding-top: 112px !important; } .tt-end .tt-quote p { font-size: min(9vw, 46px) !important; } .tt-end .tt-quote p br { display: none; } }
 .tt-end .tt-quote { max-width: none !important; } .tt-end .tt-quote p { max-width: none !important; white-space: nowrap; }
 @media (max-width: 900px) { .tt-end .tt-quote p { white-space: normal; } }
+/* the laptops open as they come up the screen */
+.tt-mon { transform-origin: 50% 100%; transform: perspective(2200px) rotateX(calc(var(--lt, 0) * -16deg)) scale(calc(1 - var(--lt, 0) * .07)); will-change: transform; }
+.tt-hub-bg::after { background: linear-gradient(90deg, rgba(0,0,0,.86), rgba(0,0,0,.6) 45%, rgba(0,0,0,.15) 80%), linear-gradient(180deg, rgba(0,0,0,.3), rgba(0,0,0,0) 30%, rgba(0,0,0,0) 58%, rgba(0,0,0,.78) 86%, #000000 100%) !important; }
+@media (max-width: 900px) { .tt-hub-bg::after { background: linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,.8) 70%, #000000 100%) !important; } }
 
 </style>
 <script>
@@ -72694,7 +72698,7 @@ button.tt-dz-b:active, .tt-dz-b.is-press, .tt-dz-b.pressed { background: #2563EB
     // the page underneath steps back a touch; the page's colours change only once the sheet has covered the screen
     all(root, '[data-tt-sheet]').forEach(function (sh) { var r = sh.getBoundingClientRect(), q = cl(1 - r.top / vh), qe = 1 - Math.pow(1 - q, 2);
       if (r.top > vh || r.bottom < 0) { if (sh.__q === 0) return; q = r.top > vh ? 0 : 1; qe = q; }
-      sh.__q = q; var inset = Math.min(40, vh * .045) * (1 - qe), rad = 46 * (1 - qe);
+      sh.__q = q; var inset = Math.min(40, vh * .045, innerWidth * .04) * (1 - qe), rad = 46 * (1 - qe);
       sh.style.setProperty('--si', inset.toFixed(1) + 'px'); sh.style.setProperty('--sr', rad.toFixed(1) + 'px');
       var pv = sh.previousElementSibling; while (pv && pv.tagName !== 'SECTION') pv = pv.previousElementSibling;
       if (pv) { pv.classList.add('tt-recede'); pv.style.setProperty('--rs', (1 - .035 * qe).toFixed(4)); pv.style.setProperty('--ro', (1 - .55 * qe).toFixed(3)); }
@@ -72733,6 +72737,12 @@ button.tt-dz-b:active, .tt-dz-b.is-press, .tt-dz-b.pressed { background: #2563EB
         oi.forEach(function (x, k) { x.addEventListener('input', function () { x.value = x.value.replace(/\D/g, '').slice(-1); if (x.value && oi[k + 1]) oi[k + 1].focus(); oc(); });
           x.addEventListener('keydown', function (e) { if (e.key === 'Backspace' && !x.value && oi[k - 1]) { oi[k - 1].focus(); oi[k - 1].value = ''; oc(); } }); }); } }
     if (dzi && !dzi.classList.contains('drawn')) { var dir = dzi.getBoundingClientRect(); if (dir.top < vh * .8 && dir.bottom > 0) dzi.classList.add('drawn'); }
+
+
+    // the laptops open as they come up the screen: the lid starts tipped towards you and a little small, and settles
+    // flat and full size by the time it is in the upper part of the screen
+    all(root, '.tt-mon').forEach(function (mon) { var r = mon.getBoundingClientRect(); if (r.top > vh * 1.2 || r.bottom < -vh * .2) return;
+      var t = cl((r.top - vh * .22) / (vh * .62)), e = t * t * (3 - 2 * t); if (mon.__lt === e) return; mon.__lt = e; mon.style.setProperty('--lt', e.toFixed(4)); });
 
     // ── Super Admin ──
     // products: the form fills itself in while it is on screen (and from any step you click); the steps follow it
