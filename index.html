@@ -61541,28 +61541,214 @@ window.__ypImgs = function (r) { r.querySelectorAll('img[data-yp-src]').forEach(
   </div>
 </section>
 
-<!-- 12 · every store in one place, live -->
-<section class="tt-s tt-every" data-tt-ch="Every store" data-theme="light">
+<!-- 12 · Super Admin, orders: every store's orders in one list, on the laptop, and it works -->
+<section class="tt-s tt-sa tt-sa-o" data-tt-ch="Every store" data-theme="dark">
   <div class="tt-wrap">
-    <header class="tt-head"><p class="tt-k r">Super Admin · Orders</p><h2 class="tt-h2" data-split="">Every store, <em>one</em> list.</h2><p class="tt-p r">#1001 starts here. Head office sees it arrive, routes it to Powai, and watches it until it lands.</p></header>
-    <div class="tt-win r"><div class="tt-win-bar" aria-hidden="true"><i></i><i></i><i></i><b class="tt-role tt-role--hq">Super Admin</b><span>admin.top10mobiles.com</span></div><div class="tt-shot" data-tq="hqOrders" data-app="hq" role="img" aria-label="Super Admin, live: click the menu to open each module"></div></div>
-    <p class="tt-hint tt-hint--l"><i data-ic="mouse-pointer-2"></i>Live too. Every module in the menu opens; try Store Management or Customers.</p>
+    <header class="tt-sh tt-sh--l tt-sa-h">
+      <p class="tt-k r">Super Admin &middot; Orders</p>
+      <h2 class="tt-h2 tt-sh-t tt-sa-t" data-split="">Every store&rsquo;s orders, <br>in one list.</h2>
+      <div class="tt-pd r"><p><span>The problem</span>Orders come in for every store at once. Head office needs to see all of them, and where each one is, without calling each store.</p><p><span>What we designed</span>One list of every order, with its store and its status colour. Filter by store or status, and open any order to see what the store sees.</p></div>
+    </header>
+    <div class="tt-sa-lap r">
+      <div class="tt-mon">
+        <div class="tt-mon-glass">
+          <i class="tt-mon-notch" aria-hidden="true"><i></i></i>
+          <div class="tt-mon-scr">
+            <div class="tt-mon-bar" aria-hidden="true"><span class="tl"><i></i><i></i><i></i></span><span class="url"><svg viewBox="0 0 16 16"><path d="M5 7V5.5a3 3 0 0 1 6 0V7M4.5 7h7v6h-7z"/></svg>admin.top10mobiles.com/orders</span><span class="who">Super Admin</span></div>
+            <div class="tt-sa-scr"><div class="tt-shot" data-tq="hqOrders" data-app="hq" data-tw="1600" role="img" aria-label="The Super Admin order list, live: open any item in the menu, or order #1001"></div></div>
+            <i class="tt-mon-glare" aria-hidden="true"></i>
+          </div>
+        </div>
+      </div>
+      <p class="tt-sa-try"><i data-ic="mouse-pointer-2"></i>This screen works. Open any item in the menu, or order #1001.</p>
+    </div>
   </div>
 </section>
 
-<!-- 13 · head office sets the rules -->
-<section class="tt-s tt-hq" data-tt-ch="Head office" data-theme="light">
+<!-- 13 · Super Admin, products: one form adds a product for every store; the form fills itself in as the steps play -->
+<section class="tt-s tt-sa tt-sa-p" data-tt-ch="Products" data-theme="dark" data-tt-adp="">
   <div class="tt-wrap">
-    <header class="tt-head"><p class="tt-k r">Super Admin · Run the business</p><h2 class="tt-h2" data-split="">Head office runs <em>the business.</em></h2><p class="tt-p r">Stores, riders, customers, products and offers, managed in one place. Rules set here, every store follows.</p></header>
-    <div class="tt-bento">
-      <figure class="tt-tile r tt-b-rule"><figcaption><i data-ic="shield-check"></i><b>Product rules</b><span>IMEI checks and open-box delivery, switched on per product.</span></figcaption><div class="tt-tile-m tt-tile-m--w"><div class="tq tt-tile-p" data-tq-inline="bRules"></div></div></figure>
-      <figure class="tt-tile r tt-b-stores"><figcaption><i data-ic="store"></i><b>Store performance</b><span>Fulfilment rate, average time and replacements, store by store.</span></figcaption><div class="tt-tile-m tt-tile-m--w"><div class="tq tt-tile-p" data-tq-inline="bStores"></div></div></figure>
-      <figure class="tt-tile r tt-b-kyc"><figcaption><i data-ic="badge-check"></i><b>Rider onboarding</b><span>Every document checked before a rider’s first delivery. Try approving.</span></figcaption><div class="tt-tile-m tt-tile-m--w"><div class="tq tt-tile-p" data-tq-inline="bKyc"></div></div></figure>
-      <figure class="tt-tile r tt-b-cust"><figcaption><i data-ic="users"></i><b>Customers</b><span>Spend, orders, coins and referrals for every customer.</span></figcaption><div class="tt-tile-m tt-tile-m--w"><div class="tq tt-tile-p" data-tq-inline="bCust"></div></div></figure>
-      <figure class="tt-tile r tt-b-home"><figcaption><i data-ic="layout-template"></i><b>App homepage</b><span>Drag a section and the customer app follows.</span></figcaption><div class="tt-tile-m tt-tile-m--w"><div class="tq tt-tile-p" data-tq-inline="bHome"></div></div></figure>
-      <figure class="tt-tile r tt-b-rev"><figcaption><i data-ic="star"></i><b>Ratings &amp; reviews</b><span>Product and delivery feedback, one tab apart.</span></figcaption><div class="tt-tile-m tt-tile-m--w"><div class="tq tt-tile-p" data-tq-inline="bReviews"></div></div></figure>
-      <figure class="tt-tile r tt-b-off"><figcaption><i data-ic="badge-percent"></i><b>Offers</b><span>Order, product and buy-one-get-one coupons, each on a schedule.</span></figcaption><div class="tt-tile-m tt-tile-m--w"><div class="tq tt-tile-p" data-tq-inline="bOffers"></div></div></figure>
+    <header class="tt-sa-h tt-sa-h--c">
+      <p class="tt-k r">Super Admin &middot; Products</p>
+      <h2 class="tt-h2 tt-sa-t" data-split="">Add a product once, <br>for every store.</h2>
+      <div class="tt-pd tt-pd--c r"><p><span>The problem</span>Top-10 sells hundreds of phones and accessories. Each one needs its details, price, colours and the rules for how it&rsquo;s delivered.</p><p><span>What we designed</span>One Add Product form. Pick a category and the right fields follow. Price, EMI, colours and delivery rules sit in the same place.</p></div>
+    </header>
+    <div class="tt-adp r">
+      <div class="tt-adp-card" aria-label="Adding iPhone 15 Pro Max: category, price and colours, delivery rules, then Active">
+        <div class="tt-adp-top"><span class="bk" aria-hidden="true"><i data-ic="arrow-left"></i></span><b>Add Product</b><em class="tt-adp-st"><span class="d">Draft</span><span class="a">Active</span></em></div>
+        <div class="tt-adp-body">
+          <div class="tt-adp-f" data-k="0">
+            <label>Product name</label>
+            <div class="tt-adp-in"><span class="ph">Enter product name</span><span class="tx" data-ap-type="iPhone 15 Pro Max"></span><i class="caret"></i></div>
+          </div>
+          <div class="tt-adp-f" data-k="0">
+            <label>Category</label>
+            <div class="tt-adp-in tt-adp-sel"><span class="ph">Select category</span><span class="v"><i data-ic="smartphone"></i>Smartphone</span><i class="cv" data-ic="chevrons-up-down"></i></div>
+            <div class="tt-adp-menu" aria-hidden="true"><span>Smartphone</span><span>Wearables</span><span>Tablets</span><span>Laptops</span></div>
+          </div>
+          <div class="tt-adp-2" data-k="1">
+            <div class="tt-adp-f"><label>Regular price (&#8377;)</label><div class="tt-adp-in"><span class="ph">10000</span><span class="v">1,59,900</span></div></div>
+            <div class="tt-adp-f"><label>Sale price (&#8377;)</label><div class="tt-adp-in"><span class="ph">9999</span><span class="v">1,21,490</span></div></div>
+          </div>
+          <div class="tt-adp-row" data-k="1">
+            <span class="tt-adp-ck"><i><svg viewBox="0 0 16 16"><path d="M3.5 8.5 6.5 11.5 12.5 4.5"/></svg></i>EMI applicable</span>
+            <span class="tt-adp-cols" aria-label="Colours"><i style="--c:#1C1C1E"></i><i style="--c:#FFFFFF"></i><i style="--c:#005BD3"></i><i style="--c:#AF52DE"></i><i style="--c:#90919B"></i></span>
+          </div>
+          <div class="tt-adp-rules" data-k="2">
+            <p class="tt-adp-sw"><span><b>Open box delivery</b><small>The box is opened and filmed at the door</small></span><i></i></p>
+            <p class="tt-adp-sw"><span><b>IMEI Number Verification</b><small>The phone&rsquo;s number is noted before packing</small></span><i></i></p>
+          </div>
+        </div>
+        <div class="tt-adp-foot"><span class="tt-adp-status">Status <b class="d">Draft</b><b class="a">Active</b></span><span class="tt-adp-save">Save</span></div>
+        <div class="tt-adp-toast" aria-hidden="true"><i><svg viewBox="0 0 16 16"><path d="M3.5 8.5 6.5 11.5 12.5 4.5"/></svg></i>Live on the app and website</div>
+      </div>
+      <div class="tt-flw" data-tt-flw="">
+        <i class="tt-flw-rail" aria-hidden="true"><i></i></i>
+        <i class="tt-flw-hl" aria-hidden="true"></i>
+        <ol class="tt-flw-steps">
+          <li><span class="nd"><i data-ic="tag"></i><svg class="ok" viewBox="0 0 16 16"><path d="M3.5 8.5 6.5 11.5 12.5 4.5"/></svg></span><span class="tx"><b>Name it, pick a category</b><small>The category decides which details the form asks for.</small></span></li>
+          <li><span class="nd"><i data-ic="palette"></i><svg class="ok" viewBox="0 0 16 16"><path d="M3.5 8.5 6.5 11.5 12.5 4.5"/></svg></span><span class="tx"><b>Add the price and colours</b><small>Regular and sale price, EMI, and the colours it comes in.</small></span></li>
+          <li><span class="nd"><i data-ic="shield-check"></i><svg class="ok" viewBox="0 0 16 16"><path d="M3.5 8.5 6.5 11.5 12.5 4.5"/></svg></span><span class="tx"><b>Switch on the delivery rules</b><small>Open-box delivery and IMEI checks, for this product.</small></span></li>
+          <li><span class="nd"><i data-ic="circle-check-big"></i><svg class="ok" viewBox="0 0 16 16"><path d="M3.5 8.5 6.5 11.5 12.5 4.5"/></svg></span><span class="tx"><b>Set it Active</b><small>It goes live on the app and website.</small></span></li>
+        </ol>
+      </div>
     </div>
+  </div>
+</section>
+
+<!-- 14 · Super Admin, analytics: two stores side by side, and where shoppers leave before they pay -->
+<section class="tt-s tt-sa tt-sa-a" data-tt-ch="Analytics" data-theme="dark" data-tt-an="">
+  <div class="tt-wrap">
+    <header class="tt-sh tt-sh--l tt-sa-h">
+      <p class="tt-k r">Super Admin &middot; Analytics</p>
+      <h2 class="tt-h2 tt-sh-t tt-sa-t" data-split="">See how each store is doing, <br>side by side.</h2>
+      <div class="tt-pd r"><p><span>The problem</span>Head office needs to know which stores are doing well and which need help, and where shoppers give up before they pay.</p><p><span>What we designed</span>A view that puts any two stores side by side, and a funnel that shows each step from the homepage to a placed order.</p></div>
+    </header>
+    <div class="tt-an r">
+      <article class="tt-an-c tt-an-cmp">
+        <header><b>Store-level analytics</b><span class="tt-an-k"><i style="--c:#3B82F6"></i>Top 10 Andheri (W)</span><span class="tt-an-k"><i style="--c:#22C55E"></i>Top 10 Borivali</span></header>
+        <div class="tt-an-m"><p>Active Orders</p><div class="tt-an-b" style="--v:1;--c:#3B82F6"><i></i><b data-n="1040" data-f="n">1,040</b></div><div class="tt-an-b" style="--v:.577;--c:#22C55E"><i></i><b data-n="600" data-f="n">600</b></div></div>
+        <div class="tt-an-m"><p>Average Delivery Time</p><div class="tt-an-b" style="--v:1;--c:#3B82F6"><i></i><b data-n="40" data-f="min">40 min</b></div><div class="tt-an-b" style="--v:.825;--c:#22C55E"><i></i><b data-n="33" data-f="min">33 min</b></div></div>
+        <div class="tt-an-m"><p>Total Revenue</p><div class="tt-an-b" style="--v:1;--c:#3B82F6"><i></i><b data-n="85" data-f="k">&#8377;85K</b></div><div class="tt-an-b" style="--v:.536;--c:#22C55E"><i></i><b data-n="45.6" data-f="k">&#8377;45.6K</b></div></div>
+      </article>
+      <article class="tt-an-c tt-an-fun">
+        <header><b>Conversion drop-offs by step</b><span class="tt-an-k"><i style="--c:#3B82F6"></i>Mobile app</span><span class="tt-an-k"><i style="--c:#A5B4FC"></i>Web</span></header>
+        <ol>
+          <li style="--a:1;--w:.78;--k:0"><span>Homepage</span><i><b></b><b></b></i></li>
+          <li style="--a:.74;--w:.55;--k:1"><span>Product View</span><i><b></b><b></b></i></li>
+          <li style="--a:.47;--w:.33;--k:2"><span>Add to Cart</span><i><b></b><b></b></i></li>
+          <li style="--a:.3;--w:.2;--k:3"><span>Checkout Initiated</span><i><b></b><b></b></i></li>
+          <li style="--a:.24;--w:.15;--k:4"><span>Payment Done</span><i><b></b><b></b></i></li>
+          <li style="--a:.22;--w:.14;--k:5"><span>Order Placed</span><i><b></b><b></b></i></li>
+        </ol>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- 15 · Super Admin, the customer app: homepage, coupons and notifications, each answered by one screen -->
+<section class="tt-s tt-sa tt-sa-m" data-tt-ch="The app" data-theme="dark" data-tt-mk="">
+  <div class="tt-wrap">
+    <header class="tt-sa-h tt-sa-h--c">
+      <p class="tt-k r">Super Admin &middot; The customer app</p>
+      <h2 class="tt-h2 tt-sa-t" data-split="">The app, offers and messages, <br>run from one place.</h2>
+      <div class="tt-pd tt-pd--c r"><p><span>The problem</span>Sales and new phones change every week. The app&rsquo;s homepage, its coupons and its messages have to keep up.</p><p><span>What we designed</span>Head office reorders the homepage by dragging, makes a coupon in one of three types, and messages customers or store owners, now or later.</p></div>
+    </header>
+    <div class="tt-sa-g">
+      <article class="tt-sc r">
+        <h3>What&rsquo;s on the homepage?</h3>
+        <div class="tt-sc-ui tt-hp" data-tt-hp="">
+          <ul class="tt-hp-l">
+            <li data-id="hero"><i data-ic="grip-vertical"></i>Homepage hero banner</li>
+            <li data-id="cat"><i data-ic="grip-vertical"></i>Shop by category</li>
+            <li data-id="deal"><i data-ic="grip-vertical"></i>Blockbuster deals</li>
+            <li data-id="brand"><i data-ic="grip-vertical"></i>Shop by brand</li>
+            <li data-id="phone"><i data-ic="grip-vertical"></i>Deals on Smartphones</li>
+          </ul>
+          <div class="tt-hp-ph" aria-hidden="true"><span class="tt-hp-bar"><b>Top-10</b><i></i></span>
+            <div class="tt-hp-pv"><span data-id="hero" class="b-hero"></span><span data-id="cat" class="b-cat"><i></i><i></i><i></i><i></i></span><span data-id="deal" class="b-deal"><i></i><i></i></span><span data-id="brand" class="b-brand"><i></i><i></i><i></i></span><span data-id="phone" class="b-phone"><i></i><i></i><i></i></span></div>
+          </div>
+        </div>
+        <p class="tt-rc-c"><i data-ic="layout-template"></i>Content Management: drag a section and the app follows</p>
+      </article>
+      <article class="tt-sc r">
+        <h3>What&rsquo;s on offer?</h3>
+        <div class="tt-sc-ui tt-cp" data-tt-cp="">
+          <div class="tt-cp-seg" role="tablist" aria-label="Coupon type"><i class="tt-cp-ind" aria-hidden="true"></i><button type="button" role="tab" aria-selected="true">Order discount</button><button type="button" role="tab" aria-selected="false">Product discount</button><button type="button" role="tab" aria-selected="false">Buy X Get Y</button></div>
+          <div class="tt-cp-card">
+            <div class="tt-cp-code"><span>Coupon code</span><b>TOPSAVE20</b></div>
+            <div class="tt-cp-v"><p class="on"><b>20% off the order</b><small>No minimum purchase amount</small></p><p><b>20% off a product</b><small>Applies to Smartphone</small></p><p><b>Buy 2, get 1 free</b><small>Specific category: Mobile &amp; Accessories</small></p></div>
+            <div class="tt-cp-meta"><span><i data-ic="smartphone"></i>App &middot; Website</span><span><i data-ic="calendar"></i>Starts 14 Feb, 10:00 AM</span></div>
+          </div>
+        </div>
+        <p class="tt-rc-c"><i data-ic="badge-percent"></i>Coupons: three types, each with a start date <span class="tt-rc-try">Pick a type</span></p>
+      </article>
+      <article class="tt-sc r">
+        <h3>Who needs to know?</h3>
+        <div class="tt-sc-ui tt-nt" data-tt-nt="">
+          <div class="tt-nt-f"><label>Target audience</label><div class="tt-nt-ch"><span class="u">Users</span><span class="o">Store Owners</span></div></div>
+          <div class="tt-nt-f"><label>Schedule notification</label><div class="tt-nt-ch"><span class="n">Send now</span><span class="s">Schedule</span></div></div>
+          <span class="tt-nt-go"><i data-ic="send"></i>Send</span>
+          <div class="tt-nt-push"><span class="ap">T</span><span><b>Top-10<small>now</small></b><em>Weekend deals are live</em><small>20% off with TOPSAVE20, on the app.</small></span></div>
+        </div>
+        <p class="tt-rc-c"><i data-ic="megaphone"></i>Notifications: to customers or store owners, now or later</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- 16 · Super Admin, settings: new stores, staff and their permissions, the policies; then the design file -->
+<section class="tt-s tt-sa tt-sa-c" data-tt-ch="Settings" data-theme="dark" data-tt-st="">
+  <div class="tt-wrap">
+    <header class="tt-sh tt-sh--l tt-sa-h">
+      <p class="tt-k r">Super Admin &middot; Stores and settings</p>
+      <h2 class="tt-h2 tt-sh-t tt-sa-t" data-split="">New stores, staff and rules, <br>set up from head office.</h2>
+      <div class="tt-pd r"><p><span>The problem</span>As Top-10 grows, head office adds stores and staff, decides who can do what, and keeps the rules the same everywhere.</p><p><span>What we designed</span>Add a store with its address, hours and contact. Add staff and set their store permissions. Write each policy once.</p></div>
+    </header>
+    <div class="tt-st r">
+      <div class="tt-st-tabs" role="tablist" aria-label="Settings">
+        <i class="tt-st-ind" aria-hidden="true"><i></i></i>
+        <button type="button" role="tab" aria-selected="true"><i data-ic="store"></i>Add a store</button>
+        <button type="button" role="tab" aria-selected="false"><i data-ic="user-plus"></i>Add staff</button>
+        <button type="button" role="tab" aria-selected="false"><i data-ic="file-text"></i>Policies</button>
+      </div>
+      <div class="tt-st-panes">
+        <div class="tt-st-p on" role="tabpanel">
+          <div class="tt-st-h"><b>Add Store</b><em class="tt-st-pill">Active</em></div>
+          <div class="tt-st-g">
+            <div class="tt-st-f w"><label>Store address</label><span><i data-ic="map-pin"></i>Shop No. 4, XYZ Mall, Andheri East, Mumbai, 400059</span></div>
+            <div class="tt-st-f"><label>Store phone number</label><span><i data-ic="phone"></i>022 2563 9856</span></div>
+            <div class="tt-st-f"><label>Store timings</label><span><i data-ic="clock"></i>10:00 AM <em>to</em> 9:00 PM</span></div>
+            <div class="tt-st-f"><label>State</label><span>Maharashtra</span></div>
+            <div class="tt-st-f"><label>City</label><span>Mumbai</span></div>
+          </div>
+        </div>
+        <div class="tt-st-p" role="tabpanel">
+          <div class="tt-st-h"><b>Add Staff</b></div>
+          <div class="tt-st-g">
+            <div class="tt-st-f"><label>First name</label><span>Priya</span></div>
+            <div class="tt-st-f"><label>Last name</label><span>Nair</span></div>
+            <div class="tt-st-f w"><label>Email</label><span><i data-ic="mail"></i>priya.nair@top10mobiles.com</span></div>
+            <div class="tt-st-f w"><label>Store permissions</label><span class="tt-st-perm"><b>Top-10 Andheri East</b><em class="on">Orders</em><em class="on">Delivery Partner</em><em>Analytics</em><em>Settings</em></span></div>
+          </div>
+        </div>
+        <div class="tt-st-p" role="tabpanel">
+          <div class="tt-st-h"><b>Policies</b></div>
+          <ul class="tt-st-pol">
+            <li><i data-ic="file-text"></i>Replacement Policy<span>Edit</span></li>
+            <li><i data-ic="file-text"></i>Privacy Policy<span>Edit</span></li>
+            <li><i data-ic="file-text"></i>Terms &amp; Conditions<span>Edit</span></li>
+            <li><i data-ic="file-text"></i>Disclaimer<span>Edit</span></li>
+            <li class="hot"><i data-ic="file-text"></i>Open Box Delivery<span>Edit</span><em>Saved</em></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <a class="tt-fg tt-fg--l r" href="https://www.figma.com/design/9nXvo6FRuPBdNq8Ml1IJKn/Top-10-Dashboard?node-id=2975-11263" target="_blank" rel="noopener noreferrer">
+      <span class="tt-fg-lg" aria-hidden="true"><svg viewBox="0 0 38 57"><path fill="#1ABCFE" d="M19 28.5a9.5 9.5 0 1 1 19 0 9.5 9.5 0 0 1-19 0z"/><path fill="#0ACF83" d="M0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5a9.5 9.5 0 1 1-19 0z"/><path fill="#FF7262" d="M19 0v19h9.5a9.5 9.5 0 1 0 0-19H19z"/><path fill="#F24E1E" d="M0 9.5A9.5 9.5 0 0 0 9.5 19H19V0H9.5A9.5 9.5 0 0 0 0 9.5z"/><path fill="#A259FF" d="M0 28.5A9.5 9.5 0 0 0 9.5 38H19V19H9.5A9.5 9.5 0 0 0 0 28.5z"/></svg></span>
+      <span class="tt-fg-t"><b>See every Super Admin screen in Figma</b><small>The full design file: orders, products, analytics, the app, coupons and settings.</small></span>
+      <span class="tt-fg-go">Open in Figma<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5.5 10.5l5-5M6.5 5.5h4v4"/></svg></span>
+    </a>
   </div>
 </section>
 
@@ -61597,7 +61783,7 @@ window.__ypImgs = function (r) { r.querySelectorAll('img[data-yp-src]').forEach(
       <article class="r"><div class="tt-hv tq"><div class="tt-hv-n"><span class="tt-hv-app">T</span><span><b>Out for delivery</b><small>#1001 · in 14 min</small></span><span class="tq-act a-track tt-hv-btn">Track</span></div></div><h3><i data-ic="user-round"></i>The customer</h3><ul><li>Gets the exact phone they paid for, checked at the door.</li><li>Chooses delivery or pickup, and can follow it live.</li></ul></article>
       <article class="r"><div class="tt-hv tq"><div class="tt-hv-row"><span class="tq-chip s-new">New Order</span><i class="tt-arrow"></i><span class="tq-act a-accept">Accept</span><span class="tt-hv-tap"></span></div></div><h3><i data-ic="store"></i>The store team</h3><ul><li>One tap moves an order on; there’s nothing to read.</li><li>Has proof ready when a claim comes in.</li></ul></article>
       <article class="r"><div class="tt-hv tq"><div class="tt-hv-otp"><div class="tq-otp-in ok"><span>4</span><span>8</span><span>2</span><span>7</span></div><small><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Verified · Harsh, RD-1041</small></div></div><h3><i data-ic="bike"></i>The rider</h3><ul><li>Gets a clean hand-over with a code.</li><li>Has the unboxing video if anything is disputed.</li></ul></article>
-      <article class="r"><div class="tt-hv tq"><div class="tt-hv-bars"><p><span>Powai</span><i style="--v:.71"></i><b>97.1%</b></p><p><span>Borivali</span><i style="--v:.67"></i><b>96.7%</b></p><p><span>Andheri E</span><i style="--v:.54"></i><b>95.4%</b></p></div></div><h3><i data-ic="building-2"></i>Head office</h3><ul><li>Sees every store, rider and order in one place.</li><li>Changes a rule once, and every store follows.</li></ul></article>
+      <article class="r"><div class="tt-hv tq"><div class="tt-hv-bars tt-hv-hq"><p><span>#1001</span><span>Powai</span><span class="tq-chip s-new">New Order</span></p><p><span>#997</span><span>Borivali</span><span class="tq-chip s-ofd">Out for delivery</span></p><p><span>#995</span><span>Thane</span><span class="tq-chip s-done">Completed</span></p></div></div><h3><i data-ic="building-2"></i>Head office</h3><ul><li>Sees every store, rider and order in one place.</li><li>Changes a rule once, and every store follows.</li></ul></article>
     </div>
   </div>
 </section>
@@ -71641,6 +71827,277 @@ window.FIGIMG = {"pm":"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAA
 .tt-sw-hq { z-index: 3; box-shadow: 0 0 0 8px rgba(255,255,255,.7), 0 0 0 9px rgba(14,15,20,.06), 0 20px 40px -18px rgba(14,15,20,.6) !important; }
 @media (max-width: 900px) { .tt-sw { --sx: .78; } }
 
+/* ══ Super Admin, rebuilt like Store Admin: each section is head office's problem, what we designed, then the screen.
+   The whole part stays dark, as it opened; the dashboards themselves stay light, as they are. Same title size,
+   spacing and problem/design cards as Store Admin ══ */
+.tt-sa { padding-top: 168px !important; padding-bottom: 0 !important; }
+.tt-sa-c { padding-bottom: 168px !important; }
+.tt-sa-h { margin-bottom: 72px !important; }
+.tt-sa-h--c { display: flex; flex-direction: column; align-items: center; text-align: center; }
+.tt-sa-h--c .tt-pd { margin-left: auto !important; margin-right: auto !important; text-align: left; }
+.tt-sa-t { margin: 18px 0 0 !important; font-size: min(5.6vw, 88px) !important; line-height: .95 !important; letter-spacing: -0.055em !important; white-space: nowrap; }
+.tt-sa-h .tt-pd { margin-top: 36px !important; max-width: 880px !important; }
+/* the problem and what we designed, on dark: the problem quiet, what we designed lifted */
+.tt-sa .tt-pd p { color: rgba(244,244,247,.68); background: rgba(255,255,255,.045); box-shadow: inset 0 0 0 1px rgba(255,255,255,.06) !important; }
+.tt-sa .tt-pd p + p { color: #F4F4F7; background: #17181C; box-shadow: inset 0 0 0 1px rgba(255,255,255,.1), 0 24px 44px -30px rgba(0,0,0,.9) !important; }
+.tt-sa .tt-pd p span { color: rgba(244,244,247,.5); }
+.tt-sa .tt-pd p span::before { color: #FCD34D; background: rgba(245,158,11,.16) !important; }
+.tt-sa .tt-pd p + p span::before { color: #86EFAC; background: rgba(34,197,94,.16) !important; }
+.tt-sa .tt-pd::after { background-color: #17181C; box-shadow: 0 0 0 1px rgba(255,255,255,.16), 0 6px 14px -6px rgba(0,0,0,.6);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23F4F4F7' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E"); }
+.tt-sa .tt-rc-c { color: rgba(244,244,247,.55); }
+.tt-sa .tt-rc-try { color: #F4F4F7; box-shadow: inset 0 0 0 1px rgba(255,255,255,.2); }
+@media (max-width: 900px) {
+  .tt-sa { padding-top: 112px !important; } .tt-sa-c { padding-bottom: 112px !important; }
+  .tt-sa-h { margin-bottom: 44px !important; }
+  .tt-sa-t { font-size: min(9vw, 46px) !important; white-space: normal; } .tt-sa-t br { display: none; }
+  .tt-sa-h--c { align-items: flex-start; text-align: left; }
+}
+
+/* orders: the same laptop as the trip, a soft light on the floor under it, the head-office list on its screen */
+.tt-sa-lap { --MW: min(1180px, 92vw); position: relative; width: var(--MW); margin: 0 auto; }
+.tt-sa-lap::before { content: ""; position: absolute; left: 6%; right: 6%; top: 8%; bottom: -8%; z-index: -1; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(closest-side, rgba(120,140,190,.2), rgba(120,140,190,0)); filter: blur(30px); }
+.tt-sa-scr { position: relative; flex: 1; min-height: 0; overflow: hidden; background: #F6F6F7; }
+.tt-sa-scr .tt-shot { width: 100%; cursor: pointer; }
+.tt-sa-o .tq-app { width: 1600px !important; min-height: 1040px; }
+.tt-sa-try { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 26px; font-size: 14.5px; color: rgba(244,244,247,.6); }
+.tt-sa-try svg { width: 15px; height: 15px; }
+
+/* products: the Add Product form from the designs fills itself in, step by step; the steps on the right follow it */
+.tt-adp { display: grid; grid-template-columns: minmax(0, 500px) minmax(0, 440px); justify-content: center; align-items: center; gap: clamp(36px, 6vw, 96px);
+  padding: clamp(32px, 4.5vw, 64px); border-radius: 36px; background: radial-gradient(90% 80% at 25% 0%, rgba(255,255,255,.07), rgba(255,255,255,.015) 70%); box-shadow: inset 0 0 0 1px rgba(255,255,255,.07); }
+.tt-adp-card { position: relative; width: 100%; overflow: hidden; border-radius: 22px; background: #FFFFFF; color: #0E0F14; font-size: 13px;
+  box-shadow: 0 0 0 1px rgba(255,255,255,.08), 0 50px 90px -46px rgba(0,0,0,.95); }
+.tt-adp-top { display: flex; align-items: center; gap: 10px; padding: 15px 20px; border-bottom: 1px solid #EEEEF1; }
+.tt-adp-top .bk { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 8px; color: #5A5E69; background: #F3F3F5; } .tt-adp-top .bk svg { width: 14px; height: 14px; }
+.tt-adp-top > b { font-size: 15px; font-weight: 600; }
+.tt-adp-st { display: grid; margin-left: auto; font-style: normal; font-size: 12px; font-weight: 500; }
+.tt-adp-st span, .tt-adp-status b { grid-area: 1 / 1; padding: 3px 10px; border-radius: 99px; transition: opacity .4s ease, translate .5s var(--ease); }
+.tt-adp-st .d, .tt-adp-status .d { color: #5A5E69; background: #F0F0F3; }
+.tt-adp-st .a, .tt-adp-status .a { color: #15803D; background: #DCFCE7; opacity: 0; translate: 0 5px; }
+.tt-adp-card.live .tt-adp-st .d, .tt-adp-card.live .tt-adp-status .d { opacity: 0; translate: 0 -5px; }
+.tt-adp-card.live .tt-adp-st .a, .tt-adp-card.live .tt-adp-status .a { opacity: 1; translate: none; }
+.tt-adp-body { display: grid; gap: 14px; padding: 18px 20px 20px; }
+.tt-adp-f { position: relative; display: grid; gap: 6px; }
+.tt-adp-f label { font-size: 12px; font-weight: 500; color: #5A5E69; }
+.tt-adp-in { position: relative; display: flex; align-items: center; gap: 8px; height: 38px; padding: 0 12px; border-radius: 10px; background: #F6F6F8;
+  box-shadow: inset 0 0 0 1px #ECECF0; transition: box-shadow .3s ease, background .3s ease; }
+.tt-adp-in .ph { color: #A3A6AF; transition: opacity .2s ease; }
+.tt-adp-in .v, .tt-adp-in .tx { position: absolute; left: 12px; display: inline-flex; align-items: center; gap: 7px; font-weight: 500; opacity: 0; transition: opacity .3s ease; }
+.tt-adp-in .v svg { width: 14px; height: 14px; color: #3B82F6; }
+.tt-adp-in .cv { margin-left: auto; color: #A3A6AF; display: grid; } .tt-adp-in .cv svg { width: 14px; height: 14px; }
+.tt-adp-in.has .ph, .tt-adp-in.typing .ph { opacity: 0; }
+.tt-adp-in.has .v, .tt-adp-in .tx:not(:empty) { opacity: 1; }
+.tt-adp-in.focus { background: #FFFFFF; box-shadow: inset 0 0 0 1.5px #3B82F6, 0 0 0 4px rgba(59,130,246,.12); }
+.tt-adp-in .caret { position: absolute; left: calc(12px + var(--cx, 0px)); top: 11px; width: 1.5px; height: 16px; background: #3B82F6; opacity: 0; }
+.tt-adp-in.typing .caret { opacity: 1; animation: ttApCaret 1s steps(1) infinite; }
+@keyframes ttApCaret { 50% { opacity: 0; } }
+.tt-adp-menu { position: absolute; left: 0; right: 0; top: calc(100% + 6px); z-index: 4; display: grid; gap: 2px; padding: 5px; border-radius: 12px; background: #FFFFFF;
+  box-shadow: 0 0 0 1px #E6E6EB, 0 18px 36px -16px rgba(14,15,20,.35); opacity: 0; translate: 0 -6px; pointer-events: none; transition: opacity .25s ease, translate .35s var(--ease); }
+.tt-adp-menu span { padding: 8px 10px; border-radius: 8px; transition: background .2s ease; }
+.tt-adp-menu span.hi { background: #EFF5FF; color: #1D4ED8; font-weight: 500; }
+.tt-adp-f.open .tt-adp-menu { opacity: 1; translate: none; }
+.tt-adp-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.tt-adp-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.tt-adp-ck { display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; color: #3A3F4B; }
+.tt-adp-ck > i { display: grid; place-items: center; width: 17px; height: 17px; border-radius: 5px; box-shadow: inset 0 0 0 1.5px #C9CCD3; transition: background .25s ease, box-shadow .25s ease; }
+.tt-adp-ck svg { width: 11px; height: 11px; fill: none; stroke: #FFFFFF; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; opacity: 0; transition: opacity .2s ease; }
+.tt-adp-ck.on > i { background: #3B82F6; box-shadow: none; } .tt-adp-ck.on svg { opacity: 1; }
+.tt-adp-cols { display: inline-flex; gap: 7px; }
+.tt-adp-cols i { width: 18px; height: 18px; border-radius: 50%; background: var(--c); box-shadow: inset 0 0 0 1px rgba(14,15,20,.14); transition: box-shadow .3s ease, scale .35s var(--ease); }
+.tt-adp-cols i.on { box-shadow: inset 0 0 0 1px rgba(14,15,20,.14), 0 0 0 2px #FFFFFF, 0 0 0 3.5px #3B82F6; scale: 1.06; }
+.tt-adp-rules { display: grid; gap: 8px; padding: 12px; border-radius: 14px; background: #F6F6F8; }
+.tt-adp-sw { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0; }
+.tt-adp-sw b { display: block; font-size: 13px; font-weight: 500; } .tt-adp-sw small { display: block; margin-top: 1px; font-size: 11.5px; color: #6B7080; }
+.tt-adp-sw > i { position: relative; flex: none; width: 38px; height: 22px; border-radius: 99px; background: #D4D6DC; transition: background .3s ease; }
+.tt-adp-sw > i::after { content: ""; position: absolute; top: 2.5px; left: 2.5px; width: 17px; height: 17px; border-radius: 50%; background: #FFFFFF; box-shadow: 0 2px 4px rgba(0,0,0,.2); transition: left .35s cubic-bezier(.34, 1.56, .64, 1); }
+.tt-adp-sw.on > i { background: #16A34A; } .tt-adp-sw.on > i::after { left: 18.5px; }
+.tt-adp-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 20px; border-top: 1px solid #EEEEF1; }
+.tt-adp-status { display: inline-flex; align-items: center; gap: 10px; font-size: 12.5px; color: #5A5E69; } .tt-adp-status > b { font-size: 12px; font-weight: 500; }
+.tt-adp-status { display: inline-grid; grid-template-columns: auto auto; } .tt-adp-status .d, .tt-adp-status .a { grid-area: 1 / 2; }
+.tt-adp-save { padding: 9px 18px; border-radius: 10px; font-weight: 600; color: #FFFFFF; background: #0E0F14; transition: scale .2s ease, background .3s ease; }
+.tt-adp-card.press .tt-adp-save { scale: .94; background: #2A2C33; }
+.tt-adp-toast { position: absolute; left: 50%; bottom: 17px; z-index: 5; display: inline-flex; align-items: center; gap: 8px; padding: 9px 14px 9px 10px; border-radius: 99px; white-space: nowrap;
+  font-size: 12.5px; font-weight: 500; color: #FFFFFF; background: #0E0F14; box-shadow: 0 16px 30px -14px rgba(14,15,20,.6); translate: -50% 10px; opacity: 0; transition: opacity .35s ease, translate .5s var(--ease); }
+.tt-adp-toast > i { display: grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; background: #16A34A; }
+.tt-adp-toast svg { width: 11px; height: 11px; fill: none; stroke: #FFFFFF; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.tt-adp-card.done .tt-adp-toast { opacity: 1; translate: -50% 0; }
+
+/* the steps beside a screen, on dark: a white card glides to the step in play, the rail fills green behind it */
+.tt-flw { position: relative; }
+.tt-flw-steps { position: relative; z-index: 1; display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.tt-flw-steps li { display: grid; grid-template-columns: 44px minmax(0, 1fr); align-items: center; gap: 16px; padding: 16px 18px; border-radius: 20px; cursor: pointer; }
+.tt-flw .nd { position: relative; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; color: rgba(244,244,247,.55); background: #141519;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.1); transition: background .5s ease, color .5s ease, box-shadow .5s ease; }
+.tt-flw .nd > i { display: grid; transition: opacity .3s ease; } .tt-flw .nd > i svg { width: 18px; height: 18px; }
+.tt-flw .nd .ok { position: absolute; width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; opacity: 0; transition: opacity .3s ease; }
+.tt-flw li.on .nd { color: #0E0F14; background: #F4F4F7; box-shadow: none; }
+.tt-flw li.dn .nd { color: #FFFFFF; background: #16A34A; box-shadow: none; } .tt-flw li.dn .nd > i { opacity: 0; } .tt-flw li.dn .nd .ok { opacity: 1; }
+.tt-flw .tx b { display: block; font: 700 16.5px/1.3 'Plus Jakarta Sans', system-ui, sans-serif; letter-spacing: -0.01em; color: rgba(244,244,247,.62); transition: color .5s ease; }
+.tt-flw .tx small { display: block; margin-top: 3px; font-size: 14px; line-height: 1.45; color: rgba(244,244,247,.45); transition: color .5s ease; }
+.tt-flw li.on .tx b { color: #FFFFFF; } .tt-flw li.on .tx small { color: rgba(244,244,247,.7); }
+.tt-flw-hl { position: absolute; left: 0; right: 0; top: 0; height: var(--hh, 0); border-radius: 20px; background: rgba(255,255,255,.06); box-shadow: inset 0 0 0 1px rgba(255,255,255,.09);
+  transform: translateY(var(--hy, 0)); transition: transform .8s cubic-bezier(.65,0,.25,1), height .8s cubic-bezier(.65,0,.25,1); }
+.tt-flw-rail { position: absolute; left: 39px; top: var(--rt, 38px); width: 2px; height: var(--rl, 0); border-radius: 2px; background: rgba(255,255,255,.1); }
+.tt-flw-rail > i { display: block; width: 100%; height: var(--rh, 0); border-radius: inherit; background: #16A34A; transition: height .8s cubic-bezier(.65,0,.25,1); }
+
+/* analytics: two stores side by side, and the funnel from the homepage to a placed order; the bars grow in once */
+.tt-an { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.tt-an-c { padding: 24px 26px 26px; border-radius: 26px; background: #FFFFFF; color: #0E0F14; box-shadow: 0 50px 90px -60px rgba(0,0,0,.95); }
+.tt-an-c > header { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin-bottom: 14px; }
+.tt-an-c > header > b { margin-right: auto; font-size: 16px; font-weight: 600; }
+.tt-an-k { display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; color: #5A5E69; } .tt-an-k i { width: 8px; height: 8px; border-radius: 50%; background: var(--c); }
+.tt-an-m { display: grid; gap: 8px; padding: 14px 0; border-top: 1px solid #F0F0F3; } .tt-an-m:last-child { padding-bottom: 0; }
+.tt-an-m > p { margin: 0 0 2px; font-size: 13px; color: #5A5E69; }
+.tt-an-b { display: grid; grid-template-columns: minmax(0, 1fr) 72px; align-items: center; gap: 12px; }
+.tt-an-b > i { position: relative; height: 10px; overflow: hidden; border-radius: 99px; background: #F1F1F4; }
+.tt-an-b > i::after { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: calc(var(--v) * 100%); border-radius: inherit; background: var(--c); transform-origin: left; transform: scaleX(0); transition: transform 1.2s cubic-bezier(.22,1,.36,1); }
+.tt-an-m:nth-child(3) .tt-an-b > i::after { transition-delay: .12s; } .tt-an-m:nth-child(4) .tt-an-b > i::after { transition-delay: .24s; }
+.tt-an.go .tt-an-b > i::after { transform: scaleX(1); }
+.tt-an-b > b { text-align: right; font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.tt-an-fun ol { display: grid; gap: 13px; margin: 6px 0 0; padding: 0; list-style: none; }
+.tt-an-fun li { display: grid; grid-template-columns: 128px minmax(0, 1fr); align-items: center; gap: 14px; font-size: 13px; color: #3A3F4B; transition: opacity .3s ease; }
+.tt-an-fun li > i { display: grid; gap: 4px; }
+.tt-an-fun li b { display: block; height: 9px; border-radius: 99px; transform-origin: left; transform: scaleX(0); transition: transform 1.1s cubic-bezier(.22,1,.36,1) calc(var(--k) * .09s + .25s); }
+.tt-an-fun li b:first-child { width: calc(var(--a) * 100%); background: #3B82F6; } .tt-an-fun li b:last-child { width: calc(var(--w) * 100%); background: #93C5FD; }
+.tt-an.go .tt-an-fun li b { transform: scaleX(1); }
+.tt-an-fun ol:hover li { opacity: .45; } .tt-an-fun ol li:hover { opacity: 1; }
+
+/* the customer app: three questions, each answered by one screen, as the rest of the store's day was */
+.tt-sa-g { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.tt-sc { display: flex; flex-direction: column; gap: 18px; padding: 26px 26px 22px; border-radius: 26px; background: #111215; box-shadow: inset 0 0 0 1px rgba(255,255,255,.08);
+  transition: translate .5s var(--ease), box-shadow .5s ease; }
+.tt-sc:hover { translate: 0 -3px; box-shadow: inset 0 0 0 1px rgba(255,255,255,.15); }
+.tt-sc h3 { margin: 0; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: clamp(20px, 1.6vw, 24px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; color: #F4F4F7; }
+.tt-sc-ui { position: relative; flex: 1; min-height: 262px; padding: 18px; overflow: hidden; border-radius: 18px; background: #F5F5F7; color: #0E0F14; font-size: 13px; }
+/* homepage: a section is dragged up, and the app on the right follows */
+.tt-hp { display: grid; grid-template-columns: minmax(0, 1fr) 92px; align-items: center; gap: 14px; }
+.tt-hp-l { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.tt-hp-l li { position: relative; display: flex; align-items: center; gap: 7px; height: 36px; padding: 0 10px; overflow: hidden; border-radius: 10px; background: #FFFFFF; box-shadow: 0 0 0 1px #ECECF0;
+  font-size: 12.5px; white-space: nowrap; transition: box-shadow .3s ease, background .3s ease; }
+.tt-hp-l li > i { display: grid; flex: none; color: #A3A6AF; } .tt-hp-l li svg { width: 14px; height: 14px; }
+.tt-hp-l li.lift { z-index: 2; box-shadow: 0 0 0 1.5px #3B82F6, 0 14px 26px -12px rgba(14,15,20,.4); } .tt-hp-l li.lift > i { color: #3B82F6; }
+.tt-hp-ph { padding: 5px; border-radius: 18px; background: #0E0F14; box-shadow: 0 16px 30px -18px rgba(14,15,20,.6); }
+.tt-hp-bar { display: flex; align-items: center; justify-content: space-between; height: 18px; padding: 0 7px; border-radius: 13px 13px 0 0; background: #FFFFFF; }
+.tt-hp-bar b { font: 800 8px/1 'Plus Jakarta Sans', system-ui, sans-serif; color: #1E3A8A; } .tt-hp-bar i { width: 6px; height: 6px; border-radius: 50%; box-shadow: inset 0 0 0 1.2px #9CA3AF; }
+.tt-hp-pv { display: grid; gap: 4px; height: 176px; padding: 4px 5px 6px; overflow: hidden; border-radius: 0 0 13px 13px; background: #FFFFFF; align-content: start; }
+.tt-hp-pv > span { display: grid; gap: 3px; border-radius: 6px; }
+.tt-hp-pv .b-hero { height: 40px; background: linear-gradient(135deg, #DBEAFE, #93C5FD); }
+.tt-hp-pv .b-cat { grid-template-columns: repeat(4, 1fr); } .tt-hp-pv .b-cat i { aspect-ratio: 1; border-radius: 50%; background: #E5E7EB; }
+.tt-hp-pv .b-deal { grid-template-columns: 1fr 1fr; } .tt-hp-pv .b-deal i { height: 26px; border-radius: 5px; background: #FFEDD5; }
+.tt-hp-pv .b-brand { grid-template-columns: repeat(3, 1fr); } .tt-hp-pv .b-brand i { height: 12px; border-radius: 99px; background: #F3F4F6; }
+.tt-hp-pv .b-phone { grid-template-columns: repeat(3, 1fr); padding: 3px; background: #EFF6FF; } .tt-hp-pv .b-phone i { height: 22px; border-radius: 4px; background: #BFDBFE; }
+.tt-hp-pv .b-phone.lift { box-shadow: 0 0 0 1.5px #3B82F6; }
+/* coupons: the three types from the designs; the white pill glides to the type in play */
+.tt-cp { display: grid; align-content: start; gap: 12px; }
+.tt-cp-seg { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); padding: 3px; border-radius: 11px; background: #E7E7EC; }
+.tt-cp-seg button { position: relative; z-index: 1; height: 30px; padding: 0 4px; border: 0; background: none; font: 500 11.5px/1 'Geist', system-ui, sans-serif; color: #5A5E69; white-space: nowrap; cursor: pointer; transition: color .4s ease; }
+.tt-cp-seg button[aria-selected="true"] { color: #0E0F14; }
+.tt-cp-ind { position: absolute; top: 3px; bottom: 3px; left: 3px; width: calc((100% - 6px) / 3); border-radius: 8px; background: #FFFFFF; box-shadow: 0 1px 3px rgba(14,15,20,.14);
+  transform: translateX(calc(var(--ci, 0) * 100%)); transition: transform .6s cubic-bezier(.65,0,.25,1); }
+.tt-cp-card { display: grid; gap: 13px; padding: 14px; border-radius: 14px; background: #FFFFFF; box-shadow: 0 0 0 1px #ECECF0; }
+.tt-cp-code { display: flex; align-items: center; justify-content: space-between; padding-bottom: 13px; border-bottom: 1.5px dashed #E3E3E8; }
+.tt-cp-code span { font-size: 12px; color: #5A5E69; }
+.tt-cp-code b { padding: 6px 9px; border-radius: 7px; font: 600 12.5px/1 ui-monospace, 'SF Mono', Menlo, monospace; letter-spacing: .06em; background: #F3F3F5; }
+.tt-cp-v { display: grid; }
+.tt-cp-v p { grid-area: 1 / 1; margin: 0; opacity: 0; translate: 0 6px; transition: opacity .35s ease, translate .5s var(--ease); }
+.tt-cp-v p.on { opacity: 1; translate: none; transition-delay: .12s; }
+.tt-cp-v b { display: block; font: 800 19px/1.2 'Plus Jakarta Sans', system-ui, sans-serif; letter-spacing: -0.02em; } .tt-cp-v small { display: block; margin-top: 3px; font-size: 12px; color: #5A5E69; }
+.tt-cp-meta { display: flex; flex-wrap: wrap; gap: 6px; }
+.tt-cp-meta span { display: inline-flex; align-items: center; gap: 6px; padding: 5px 9px; border-radius: 99px; font-size: 11.5px; color: #3A3F4B; background: #F3F3F5; }
+.tt-cp-meta svg { width: 12px; height: 12px; }
+/* notifications: pick who gets it and when, send, and it lands on the phone */
+.tt-nt { display: grid; align-content: start; gap: 12px; }
+.tt-nt-f { display: grid; gap: 6px; } .tt-nt-f label { font-size: 12px; font-weight: 500; color: #5A5E69; }
+.tt-nt-ch { display: flex; gap: 6px; }
+.tt-nt-ch span { padding: 7px 12px; border-radius: 99px; font-size: 12px; background: #FFFFFF; box-shadow: inset 0 0 0 1px #E3E3E8; transition: background .3s ease, color .3s ease, box-shadow .3s ease; }
+.tt-nt-ch span.on { color: #FFFFFF; background: #0E0F14; box-shadow: none; }
+.tt-nt-go { justify-self: start; display: inline-flex; align-items: center; gap: 7px; padding: 8px 14px; border-radius: 10px; font-weight: 600; font-size: 12.5px; color: #FFFFFF; background: #3B82F6; transition: scale .2s ease, background .3s ease; }
+.tt-nt-go svg { width: 13px; height: 13px; } .tt-nt.press .tt-nt-go { scale: .94; background: #2563EB; }
+.tt-nt-push { display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 10px; padding: 10px 12px; border-radius: 14px; background: #FFFFFF; box-shadow: 0 0 0 1px #ECECF0, 0 14px 28px -16px rgba(14,15,20,.45);
+  opacity: 0; translate: 0 10px; scale: .98; transition: opacity .4s ease, translate .6s var(--ease), scale .6s var(--ease); }
+.tt-nt.sent .tt-nt-push { opacity: 1; translate: none; scale: 1; }
+.tt-nt-push .ap { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 8px; font: 800 13px/1 'Plus Jakarta Sans', system-ui, sans-serif; color: #FFFFFF; background: #1E3A8A; }
+.tt-nt-push b { display: flex; justify-content: space-between; font-size: 11.5px; font-weight: 600; } .tt-nt-push b small { font-weight: 400; color: #8A8E98; }
+.tt-nt-push em { display: block; margin-top: 2px; font-style: normal; font-size: 12.5px; font-weight: 600; } .tt-nt-push span > small { display: block; font-size: 11.5px; color: #5A5E69; }
+
+/* stores and settings: three tabs, playing one after another (or the one you pick), over one panel of a fixed size */
+.tt-st { display: grid; justify-items: center; gap: 18px; max-width: 940px; margin: 0 auto; }
+.tt-st-tabs { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); width: 100%; max-width: 600px; padding: 5px; border-radius: 18px;
+  background: rgba(255,255,255,.06); box-shadow: inset 0 0 0 1px rgba(255,255,255,.08); }
+.tt-st-tabs button { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; gap: 8px; height: 46px; padding: 0 8px; border: 0; background: none; cursor: pointer;
+  font: 600 14.5px/1 'Geist', system-ui, sans-serif; color: rgba(244,244,247,.62); white-space: nowrap; transition: color .45s ease; }
+.tt-st-tabs button > i { display: grid; } .tt-st-tabs button svg { width: 16px; height: 16px; }
+.tt-st-tabs button[aria-selected="true"] { color: #0E0F14; }
+.tt-st-ind { position: absolute; top: 5px; bottom: 5px; left: 5px; width: calc((100% - 10px) / 3); overflow: hidden; border-radius: 13px; background: #F4F4F7;
+  transform: translateX(calc(var(--ti, 0) * 100%)); transition: transform .7s cubic-bezier(.65,0,.25,1); }
+.tt-st-ind > i { position: absolute; left: 0; bottom: 0; height: 2px; width: calc(var(--tp, 0) * 100%); background: rgba(14,15,20,.18); }
+.tt-st-panes { display: grid; width: 100%; }
+.tt-st-p { grid-area: 1 / 1; padding: 24px 26px 26px; border-radius: 26px; background: #FFFFFF; color: #0E0F14; box-shadow: 0 50px 90px -60px rgba(0,0,0,.95);
+  opacity: 0; translate: 0 12px; pointer-events: none; transition: opacity .45s ease, translate .6s var(--ease); }
+.tt-st-p.on { opacity: 1; translate: none; pointer-events: auto; transition-delay: .1s; }
+.tt-st-h { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; } .tt-st-h b { font-size: 16px; font-weight: 600; }
+.tt-st-pill { padding: 3px 10px; border-radius: 99px; font-style: normal; font-size: 12px; font-weight: 500; color: #15803D; background: #DCFCE7; }
+.tt-st-g { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 16px; }
+.tt-st-f { display: grid; gap: 6px; } .tt-st-f.w { grid-column: 1 / -1; }
+.tt-st-f label { font-size: 12px; font-weight: 500; color: #5A5E69; }
+.tt-st-f > span { display: flex; align-items: center; gap: 8px; min-height: 42px; padding: 6px 12px; border-radius: 10px; font-size: 13.5px; background: #F6F6F8; box-shadow: inset 0 0 0 1px #ECECF0; }
+.tt-st-f > span > i { display: grid; color: #8A8E98; } .tt-st-f > span svg { width: 15px; height: 15px; } .tt-st-f em { font-style: normal; color: #8A8E98; }
+.tt-st-p.on .tt-st-f > span { animation: ttStIn .6s var(--ease) both; }
+.tt-st-p.on .tt-st-f:nth-child(2) > span { animation-delay: .1s; } .tt-st-p.on .tt-st-f:nth-child(3) > span { animation-delay: .2s; }
+.tt-st-p.on .tt-st-f:nth-child(4) > span { animation-delay: .3s; } .tt-st-p.on .tt-st-f:nth-child(5) > span { animation-delay: .4s; }
+@keyframes ttStIn { from { opacity: 0; translate: 0 6px; } to { opacity: 1; translate: none; } }
+.tt-st-perm { flex-wrap: wrap; } .tt-st-perm b { margin-right: 4px; font-weight: 500; }
+.tt-st-perm em { padding: 4px 10px; border-radius: 99px; font-size: 12px; color: #5A5E69 !important; background: #FFFFFF; box-shadow: inset 0 0 0 1px #E3E3E8; }
+.tt-st-perm em.on { color: #166534 !important; background: #DCFCE7; box-shadow: none; } .tt-st-perm em.on::before { content: "\2713"; margin-right: 5px; }
+.tt-st-pol { display: grid; margin: 0; padding: 0; list-style: none; }
+.tt-st-pol li { position: relative; display: flex; align-items: center; gap: 10px; padding: 13px 4px; font-size: 14px; border-top: 1px solid #F0F0F3; }
+.tt-st-pol li:first-child { border-top: 0; padding-top: 4px; }
+.tt-st-pol li > i { display: grid; color: #8A8E98; } .tt-st-pol li svg { width: 16px; height: 16px; }
+.tt-st-pol li > span { margin-left: auto; font-size: 12.5px; font-weight: 500; color: #3B82F6; }
+.tt-st-pol li > em { position: absolute; right: 4px; padding: 3px 10px; border-radius: 99px; font-style: normal; font-size: 12px; font-weight: 500; color: #15803D; background: #DCFCE7; opacity: 0; }
+.tt-st-p.on .tt-st-pol li.hot { animation: ttStHot 4.6s ease both .3s; }
+.tt-st-p.on .tt-st-pol li.hot > span { animation: ttStOut 4.6s ease both .3s; } .tt-st-p.on .tt-st-pol li.hot > em { animation: ttStSaved 4.6s ease both .3s; }
+@keyframes ttStHot { 0%, 12% { background: transparent; } 22%, 100% { background: #F6F6F8; } }
+@keyframes ttStOut { 0%, 30% { opacity: 1; } 36%, 100% { opacity: 0; } }
+@keyframes ttStSaved { 0%, 34% { opacity: 0; translate: 0 4px; } 42%, 100% { opacity: 1; translate: none; } }
+.tt-st-pol li.hot { border-radius: 10px; padding-left: 10px; padding-right: 10px; }
+.tt-sa-c .tt-fg { max-width: 940px; margin: 26px auto 0; }
+/* the design file link on dark: a light card */
+.tt-fg--l { color: #0E0F14; background: #F4F4F7; box-shadow: 0 30px 60px -36px rgba(0,0,0,.9); }
+.tt-fg--l:hover { box-shadow: 0 40px 70px -36px rgba(0,0,0,1); }
+.tt-fg--l .tt-fg-lg { background: #FFFFFF; box-shadow: inset 0 0 0 1px rgba(14,15,20,.08); }
+.tt-fg--l .tt-fg-t small { color: #5A5E69; }
+.tt-fg--l .tt-fg-go { color: #FFFFFF; background: #0E0F14; }
+.tt-fg--l:focus-visible { outline-color: #F4F4F7; }
+
+@media (max-width: 1100px) { .tt-sa-g { grid-template-columns: 1fr !important; } }
+@media (max-width: 900px) {
+  .tt-adp { grid-template-columns: 1fr; padding: 18px; border-radius: 28px; gap: 22px; }
+  .tt-adp-card { order: 2; } .tt-flw { order: 1; }
+  .tt-flw-steps li { grid-template-columns: 40px minmax(0, 1fr); gap: 14px; padding: 12px 14px; } .tt-flw .nd { width: 40px; height: 40px; } .tt-flw-rail { left: 33px; }
+  .tt-flw .tx small { display: none; } .tt-flw li.on .tx small { display: block; }
+  .tt-an { grid-template-columns: 1fr; } .tt-an-c { padding: 20px 18px; }
+  .tt-an-fun li { grid-template-columns: 104px minmax(0, 1fr); font-size: 12px; }
+  .tt-sc { padding: 20px 18px 18px; }
+  .tt-st-tabs button { font-size: 13px; gap: 6px; } .tt-st-tabs button > i { display: none; }
+  .tt-st-p { padding: 18px; } .tt-st-g { grid-template-columns: 1fr; } .tt-st-f.w { grid-column: auto; }
+}
+/* who it helps: head office sees every store's orders in one list */
+.tt-hv-hq { gap: 8px !important; padding: 12px !important; }
+.tt-hv-hq p { grid-template-columns: 38px minmax(0, 1fr) auto !important; gap: 8px !important; margin: 0; font-size: 11.5px !important; }
+.tt-hv-hq p > span:first-child { font-weight: 600; color: #0E0F14; } .tt-hv-hq p > span:nth-child(2) { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.tt-hv-hq .tq-chip { font-size: 10.5px; padding: 2px 7px; }
+.tt-an-c { display: flex; flex-direction: column; }
+.tt-an-fun ol { flex: 1; align-content: space-between; }
+.tt-fg--l .tt-fg-t b { color: #0E0F14; }
+.tt-nt-push { margin-top: 2px; }
+/* the Super Admin opener fades into the black of the sections after it: no hard edge where the photo ends */
+.tt-sw-dark { background: #000000 !important; }
+.tt-sw-bg::after { background: linear-gradient(90deg, rgba(8,8,10,.86), rgba(8,8,10,.6) 45%, rgba(8,8,10,.15) 80%), linear-gradient(180deg, rgba(8,8,10,.3), rgba(8,8,10,0) 30%, rgba(0,0,0,0) 58%, rgba(0,0,0,.75) 86%, #000000 100%) !important; }
+@media (max-width: 900px) { .tt-sw-bg::after { background: linear-gradient(180deg, rgba(8,8,10,.55), rgba(8,8,10,.8) 70%, #000000 100%) !important; } }
+
 </style>
 <script>
 /* case 02, round 3:
@@ -71650,6 +72107,9 @@ window.FIGIMG = {"pm":"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAA
 (function () {
   // one more icon for the stock list (audio)
   if (window.LUCIDE && !window.LUCIDE['headphones']) window.LUCIDE['headphones'] = '<path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3"/>';
+  // a few more icons for Super Admin
+  if (window.LUCIDE) { var SAI = {"palette": "<path d=\"M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z\"/><circle cx=\"13.5\" cy=\"6.5\" r=\".5\" fill=\"currentColor\"/><circle cx=\"17.5\" cy=\"10.5\" r=\".5\" fill=\"currentColor\"/><circle cx=\"6.5\" cy=\"12.5\" r=\".5\" fill=\"currentColor\"/><circle cx=\"8.5\" cy=\"7.5\" r=\".5\" fill=\"currentColor\"/>", "user-plus": "<path d=\"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2\"/><circle cx=\"9\" cy=\"7\" r=\"4\"/><line x1=\"19\" x2=\"19\" y1=\"8\" y2=\"14\"/><line x1=\"22\" x2=\"16\" y1=\"11\" y2=\"11\"/>", "file-text": "<path d=\"M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z\"/><path d=\"M14 2v5a1 1 0 0 0 1 1h5\"/><path d=\"M10 9H8\"/><path d=\"M16 13H8\"/><path d=\"M16 17H8\"/>", "funnel": "<path d=\"M10 20a1 1 0 0 0 .553.895l2 1A1 1 0 0 0 14 21v-7a2 2 0 0 1 .517-1.341L21.74 4.67A1 1 0 0 0 21 3H3a1 1 0 0 0-.742 1.67l7.225 7.989A2 2 0 0 1 10 14z\"/>", "send": "<path d=\"M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z\"/><path d=\"m21.854 2.147-10.94 10.939\"/>", "mail": "<path d=\"m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7\"/><rect x=\"2\" y=\"4\" width=\"20\" height=\"16\" rx=\"2\"/>", "circle-check-big": "<path d=\"M21.801 10A10 10 0 1 1 17 3.335\"/><path d=\"m9 11 3 3L22 4\"/>"};
+    for (var sai in SAI) if (!window.LUCIDE[sai]) window.LUCIDE[sai] = SAI[sai]; }
   var raf = 0;
   var all = function (r, s) { return Array.prototype.slice.call(r.querySelectorAll(s)); };
   var cl = function (x) { return x < 0 ? 0 : x > 1 ? 1 : x; };
@@ -71921,6 +72381,97 @@ window.FIGIMG = {"pm":"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAA
           '--rv': ss(.64, .9), '--ti': ss(.8, .9), '--ti2': ss(.84, .94), '--ti3': ss(.88, .97) };
         for (var vk in vars) sw.style.setProperty(vk, vars[vk].toFixed(4));
         var swt = sp2 > .74 ? 'dark' : 'light'; if (sw.getAttribute('data-theme') !== swt) sw.setAttribute('data-theme', swt); } }
+
+
+    // ── Super Admin ──
+    // products: the form fills itself in while it is on screen (and from any step you click); the steps follow it
+    var ap = root.querySelector('[data-tt-adp]');
+    if (ap) { var apc = ap.querySelector('.tt-adp-card'), apf = ap.querySelector('[data-tt-flw]'), AT = [0, 3.4, 6.0, 7.8], AL = 12.6;
+      if (!ap.__init) { ap.__init = true; ap.__t = null; ap.__pn = now;
+        all(apf, '.tt-flw-steps li').forEach(function (li, k) { li.setAttribute('tabindex', '0'); li.setAttribute('role', 'button');
+          var go = function () { ap.__t = performance.now() - AT[k] * 1000 - (k ? 200 : 0); };
+          li.addEventListener('click', go); li.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } }); }); }
+      var apr = apc.getBoundingClientRect(), apin = apr.top < vh * .85 && apr.bottom > vh * .1;
+      if (ap.__t == null) ap.__t = now;
+      if (!apin) ap.__t += now - ap.__pn;
+      ap.__pn = now;
+      var at = ((now - ap.__t) / 1000) % AL; if (at < 0) at += AL;
+      var q = function (s) { return apc.querySelector(s); }, ins = apc.querySelectorAll('.tt-adp-in');
+      // name, typed; category from its menu
+      var nm = ins[0], txt = nm.querySelector('[data-ap-type]'), full = txt.getAttribute('data-ap-type'), nch = Math.max(0, Math.min(full.length, Math.floor((at - .5) / .075)));
+      if (txt.textContent !== full.slice(0, nch)) { txt.textContent = full.slice(0, nch); nm.style.setProperty('--cx', txt.offsetWidth + 1 + 'px'); }
+      nm.classList.toggle('typing', at > .4 && at < 2.0); nm.classList.toggle('has', nch > 0); nm.classList.toggle('focus', at > .4 && at < 2.0);
+      var cat = ins[1], catf = cat.parentNode, menu = catf.querySelector('.tt-adp-menu span');
+      cat.classList.toggle('focus', at > 2.1 && at < 3.0); catf.classList.toggle('open', at > 2.2 && at < 2.95); if (menu) menu.classList.toggle('hi', at > 2.55);
+      cat.classList.toggle('has', at > 2.95);
+      // price, EMI, colours
+      ins[2].classList.toggle('focus', at > 3.6 && at < 4.0); ins[2].classList.toggle('has', at > 3.75);
+      ins[3].classList.toggle('focus', at > 4.0 && at < 4.4); ins[3].classList.toggle('has', at > 4.15);
+      q('.tt-adp-ck').classList.toggle('on', at > 4.6);
+      all(apc, '.tt-adp-cols i').forEach(function (c, k) { c.classList.toggle('on', (k === 0 && at > 5.0) || (k === 2 && at > 5.3)); });
+      // the delivery rules, then Active
+      all(apc, '.tt-adp-sw').forEach(function (w, k) { w.classList.toggle('on', at > 6.4 + k * .6); });
+      apc.classList.toggle('press', at > 8.3 && at < 8.55); apc.classList.toggle('live', at > 8.5); apc.classList.toggle('done', at > 8.6 && at < 11.8);
+      var as = at < AT[1] ? 0 : at < AT[2] ? 1 : at < AT[3] ? 2 : 3;
+      if (apf.__s !== as || apf.__w !== apf.clientWidth) { apf.__s = as; apf.__w = apf.clientWidth; var fl = apf.querySelectorAll('.tt-flw-steps li');
+        fl.forEach(function (li, k) { li.classList.toggle('on', k === as); li.classList.toggle('dn', k < as); });
+        var c0 = fl[0].offsetTop + fl[0].offsetHeight / 2, cN = fl[fl.length - 1].offsetTop + fl[fl.length - 1].offsetHeight / 2, cc = fl[as].offsetTop + fl[as].offsetHeight / 2;
+        apf.style.setProperty('--hy', fl[as].offsetTop + 'px'); apf.style.setProperty('--hh', fl[as].offsetHeight + 'px');
+        apf.style.setProperty('--rt', c0 + 'px'); apf.style.setProperty('--rl', (cN - c0) + 'px'); apf.style.setProperty('--rh', (cc - c0) + 'px'); } }
+
+    // analytics: the bars grow in and the numbers count up, once
+    var an = root.querySelector('[data-tt-an] .tt-an');
+    if (an && !an.__go) { var anr = an.getBoundingClientRect();
+      if (anr.top < vh * .8 && anr.bottom > 0) { an.__go = now; an.classList.add('go'); } }
+    if (an && an.__go && !an.__nd) { var ant = Math.min(1, (now - an.__go) / 1300), ane = 1 - Math.pow(1 - ant, 3);
+      all(an, '[data-n]').forEach(function (b) { var n = +b.getAttribute('data-n') * ane, f = b.getAttribute('data-f');
+        var v0 = +b.getAttribute('data-n'); b.textContent = f === 'n' ? Math.round(n).toLocaleString('en-IN') : f === 'min' ? Math.round(n) + ' min' : '₹' + (v0 % 1 ? n.toFixed(1) : Math.round(n)) + 'K'; });
+      if (ant >= 1) an.__nd = true; }
+
+    // the customer app: the homepage reorders itself; the coupon types take turns; a notification goes out
+    var hp = root.querySelector('[data-tt-hp]');
+    if (hp) { var hpr = hp.getBoundingClientRect();
+      if (hpr.top < vh && hpr.bottom > 0) { var hph = Math.floor(now / 2800) % 2;
+        if (hp.__ph !== hph) { hp.__ph = hph;
+          var flip = function (list, mover, before) { var kids = all(list, ':scope > *'), r0 = kids.map(function (el) { return el.getBoundingClientRect().top; });
+            list.insertBefore(mover, before);
+            kids.forEach(function (el, k) { var d = r0[k] - el.getBoundingClientRect().top; if (!d) return; el.style.transition = 'none'; el.style.transform = 'translateY(' + d + 'px)'; });
+            void list.offsetWidth;
+            kids.forEach(function (el) { el.style.transition = 'transform .9s cubic-bezier(.65,0,.25,1), box-shadow .3s ease'; el.style.transform = ''; }); };
+          [hp.querySelector('.tt-hp-l'), hp.querySelector('.tt-hp-pv')].forEach(function (list) {
+            var mv = list.querySelector('[data-id="phone"]'), to = hph ? list.querySelector('[data-id="cat"]') : null;
+            if (hp.__ph0 === undefined && !hph) return;
+            mv.classList.add('lift'); clearTimeout(mv.__lt); mv.__lt = setTimeout(function () { mv.classList.remove('lift'); }, 1100);
+            flip(list, mv, to); });
+          hp.__ph0 = 1; } } }
+    var cp = root.querySelector('[data-tt-cp]');
+    if (cp) { if (!cp.__init) { cp.__init = true; cp.__i = 0; cp.__t = now; cp.__hold = 0;
+        all(cp, '.tt-cp-seg button').forEach(function (b, k) { b.addEventListener('click', function () { cp.__i = k; cp.__t = performance.now(); cp.__hold = performance.now() + 9000; cp.__drawn = -1; }); }); }
+      var cpr = cp.getBoundingClientRect(), cpin = cpr.top < vh && cpr.bottom > 0;
+      if (cpin && now > cp.__hold && now - cp.__t > 3000) { cp.__i = (cp.__i + 1) % 3; cp.__t = now; }
+      if (cp.__drawn !== cp.__i) { cp.__drawn = cp.__i; cp.querySelector('.tt-cp-seg').style.setProperty('--ci', cp.__i);
+        all(cp, '.tt-cp-seg button').forEach(function (b, k) { b.setAttribute('aria-selected', k === cp.__i ? 'true' : 'false'); });
+        all(cp, '.tt-cp-v p').forEach(function (p, k) { p.classList.toggle('on', k === cp.__i); }); } }
+    var nt = root.querySelector('[data-tt-nt]');
+    if (nt) { var ntr = nt.getBoundingClientRect();
+      if (ntr.top < vh && ntr.bottom > 0) { if (!nt.__t0) nt.__t0 = now; var ntt = ((now - nt.__t0) / 1000) % 7.4;
+        nt.querySelector('.tt-nt-ch .u').classList.toggle('on', ntt > .7); nt.querySelector('.tt-nt-ch .n').classList.toggle('on', ntt > 1.5);
+        nt.classList.toggle('press', ntt > 2.3 && ntt < 2.55); nt.classList.toggle('sent', ntt > 2.6 && ntt < 6.6); } }
+
+    // stores and settings: the tabs take turns while on screen; a tab you pick plays from the start
+    var st = root.querySelector('[data-tt-st]');
+    if (st) { var sbox = st.querySelector('.tt-st'), STD = 5600;
+      if (!sbox.__init) { sbox.__init = true; sbox.__i = 0; sbox.__t = null; sbox.__pn = now;
+        all(sbox, '.tt-st-tabs button').forEach(function (b, k) { b.addEventListener('click', function () { sbox.__i = k; sbox.__t = performance.now(); sbox.__drawn = -1; }); }); }
+      var sr = sbox.getBoundingClientRect(), sin = sr.top < vh * .85 && sr.bottom > vh * .1;
+      if (sbox.__t == null) sbox.__t = now;
+      if (!sin) sbox.__t += now - sbox.__pn;
+      sbox.__pn = now;
+      if (now - sbox.__t > STD) { sbox.__i = (sbox.__i + 1) % 3; sbox.__t = now; }
+      sbox.querySelector('.tt-st-ind').style.setProperty('--tp', cl((now - sbox.__t) / STD).toFixed(4));
+      if (sbox.__drawn !== sbox.__i) { sbox.__drawn = sbox.__i; sbox.querySelector('.tt-st-tabs').style.setProperty('--ti', sbox.__i);
+        all(sbox, '.tt-st-tabs button').forEach(function (b, k) { b.setAttribute('aria-selected', k === sbox.__i ? 'true' : 'false'); });
+        all(sbox, '.tt-st-p').forEach(function (p, k) { p.classList.toggle('on', k === sbox.__i); }); } }
 
     // the nav: the last chapter that has reached the upper part of the screen
     var btns = all(root, '.tt-nav nav button'), act = -1;
