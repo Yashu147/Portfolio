@@ -61528,7 +61528,7 @@ window.__ypImgs = function (r) { r.querySelectorAll('img[data-yp-src]').forEach(
       <span class="tt-hub-pin" style="--x:30%;--y:32%;--mx:27%;--my:28%"><i></i><em>Top-10 </em>Borivali</span>
       <span class="tt-hub-pin" style="--x:73%;--y:30%;--mx:74%;--my:24%"><i></i><em>Top-10 </em>Thane</span>
       <span class="tt-hub-pin" style="--x:41%;--y:46%;--mx:36%;--my:39%"><i></i><em>Top-10 </em>Andheri East</span>
-      <span class="tt-hub-pin tt-hub-pin--me" style="--x:67%;--y:45%;--mx:72%;--my:46%"><i></i><em>Top-10 </em>Powai</span>
+      <span class="tt-hub-pin tt-hub-pin--me" style="--x:67%;--y:45%;--mx:72%;--my:46%"><i></i><em>Top-10 </em>Powai<span class="tt-hub-o" aria-hidden="true"><b>#1001</b><span>Completed</span></span></span>
       <span class="tt-hub-pin" style="--x:25%;--y:57%;--mx:22%;--my:50%"><i></i><em>Top-10 </em>Andheri West</span>
       <span class="tt-hub-pin" style="--x:80%;--y:64%;--mx:74%;--my:68%"><i></i><em>Top-10 </em>Ghatkopar</span>
       <span class="tt-hub-pin" style="--x:33%;--y:72%;--mx:28%;--my:68%"><i></i><em>Top-10 </em>Vile Parle East</span>
@@ -72363,6 +72363,12 @@ button.tt-dz-b:active, .tt-dz-b.is-press, .tt-dz-b.pressed { background: #2563EB
 .tt-mon { transform-origin: 50% 100%; transform: perspective(2200px) rotateX(calc(var(--lt, 0) * -16deg)) scale(calc(1 - var(--lt, 0) * .07)); will-change: transform; }
 .tt-hub-bg::after { background: linear-gradient(90deg, rgba(0,0,0,.86), rgba(0,0,0,.6) 45%, rgba(0,0,0,.15) 80%), linear-gradient(180deg, rgba(0,0,0,.3), rgba(0,0,0,0) 30%, rgba(0,0,0,0) 58%, rgba(0,0,0,.78) 86%, #000000 100%) !important; }
 @media (max-width: 900px) { .tt-hub-bg::after { background: linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,.8) 70%, #000000 100%) !important; } }
+/* the story so far, under Top-10 Powai while the camera is close: order #1001, done */
+.tt-hub-o { position: absolute; left: 50%; top: calc(100% + 10px); display: inline-flex; align-items: center; gap: 8px; padding: 5px 6px 5px 10px; border-radius: 99px; translate: -50% 0;
+  font: 500 11px/1 'Inter', system-ui, sans-serif; color: #3A3F4B; background: #FFFFFF; box-shadow: 0 0 0 1px rgba(14,15,20,.06), 0 8px 18px -12px rgba(14,15,20,.35);
+  opacity: var(--c1, 1); filter: blur(calc((1 - var(--c1, 1)) * 4px)); }
+.tt-hub-o b { font-weight: 600; color: #0E0F14; } .tt-hub-o > span { padding: 4px 7px; border-radius: 5px; color: #166534; background: #DCFCE7; }
+@media (max-width: 900px) { .tt-hub-o { font-size: 10px; } }
 
 </style>
 <script>
