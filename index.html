@@ -61868,23 +61868,27 @@ window.__ypImgs = function (r) { r.querySelectorAll('img[data-yp-src]').forEach(
 <template id="yp-page-more"><div class="mp" data-mp="">
   <div class="mp-top">
     <a href="#/" data-go-back="" class="mp-back"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3.5 5.5 8l4.5 4.5"/></svg>All work</a>
-    <span class="mp-crumb"><i></i>More projects</span>
   </div>
   <section class="lx" data-lx="" aria-roledescription="carousel" aria-label="More projects">
     <h1 class="lx-sr">More projects</h1>
     <canvas class="lx-gl" aria-hidden="true"></canvas>
-    <div class="lx-still" aria-hidden="true"><img alt=""><img alt=""></div>
+    <div class="lx-fb" aria-hidden="true"><img class="b" alt=""><span class="w"></span><img class="d" alt=""></div>
     <a class="lx-hit" data-case="" href="#" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true"></a>
-    <div class="lx-info" aria-live="polite">
-      <p class="lx-k"><b data-lx-n>01</b><span>/</span><span data-lx-of>06</span><i></i><span data-lx-type>Mobile apps</span></p>
-      <h2 class="lx-t" data-lx-t></h2>
-      <p class="lx-d" data-lx-d></p>
-      <div class="lx-act"><span class="lx-tg" data-lx-tag></span><a class="lx-go" data-lx-go href="#" target="_blank" rel="noopener noreferrer"><span data-lx-gol>Visit site</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg></a></div>
+    <div class="lx-bar">
+      <i class="lx-line" aria-hidden="true"><b></b></i>
+      <div class="lx-l">
+        <p class="lx-idx" aria-hidden="true"><span class="lx-num" data-lx-num></span><span class="lx-of" data-lx-of>/06</span></p>
+        <div class="lx-name" aria-live="polite"><h2 class="lx-t" data-lx-t></h2><p class="lx-d" data-lx-d></p></div>
+      </div>
+      <nav class="lx-nav" aria-label="Projects" data-lx-nav><i class="lx-frame" aria-hidden="true"></i></nav>
+      <div class="lx-r">
+        <p class="lx-meta" data-lx-meta></p>
+        <a class="lx-go" data-lx-go href="#" target="_blank" rel="noopener noreferrer"><span data-lx-gol>Visit site</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg></a>
+      </div>
     </div>
-    <nav class="lx-nav" aria-label="Projects" data-lx-nav></nav>
     <div class="lx-load" aria-hidden="true"><i></i></div>
   </section>
-  <span class="mp-cur" aria-hidden="true"><span>Visit site<svg viewBox="0 0 16 16"><path d="M5 11 11 5M6 5h5v5"/></svg></span></span>
+  <div class="lx-cur" aria-hidden="true"><b>View</b><small data-lx-curl>Live site</small></div>
 </div></template>
 <template id="ve6-src"><div data-cs-root="" style="background: #F4F4F1; color: #0B0B0C; font-family: 'Geist', system-ui, sans-serif; font-size: 18px; line-height: 1.65; min-height: 100vh; overflow-x: clip">
 
@@ -72975,10 +72979,10 @@ button.tt-dz-b:active, .tt-dz-b.is-press, .tt-dz-b.pressed { background: #2563EB
 
 </script>
 <style id="mp-css">
-/* ══ More projects: a full screen slider. Each project is shown in its own coloured scene; picking another one
-   from the row of thumbnails, or waiting, melts to it through a glass lens that grows from the middle (a WebGL
-   shader, after the Lumina interactive list on 21st.dev). The project's name and details sit low on the left, away
-   from the devices, and a cursor over the scene says where a click leads: the live site or the Figma file ══ */
+/* ══ More projects: a full screen slider. Each project stands in its own coloured scene, its name set huge behind
+   the devices. The scene is three layers drawn in WebGL (background, name, devices) that shift apart a little with
+   the pointer, and moving to another project melts the whole scene through a glass lens that grows from the middle
+   (the transition of the Lumina interactive list on 21st.dev). Everything else is one slim row along the bottom ══ */
 .mp { --bg: #FBFBF9; --ink: #0E0F14; --mut: #6B6E76; --mut2: #A0A2A8; --line: rgba(14,15,20,.09); --ease: cubic-bezier(.22,1,.36,1); --out: cubic-bezier(.16,1,.3,1);
   position: relative; min-height: 100vh; background: var(--bg); color: var(--ink); font-family: 'Geist', system-ui, sans-serif; -webkit-font-smoothing: antialiased; overflow-x: clip; }
 .mp *, .mp *::before, .mp *::after { box-sizing: border-box; }
@@ -72991,173 +72995,172 @@ button.tt-dz-b:active, .tt-dz-b.is-press, .tt-dz-b.pressed { background: #2563EB
 .mp-back { display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 16px 0 12px; border-radius: 99px; font-size: 14px; font-weight: 500; text-decoration: none; background: rgba(14,15,20,.88);
   -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); box-shadow: 0 10px 24px -14px rgba(14,15,20,.6); transition: background .3s ease, translate .4s var(--ease); }
 .mp-back:hover { background: #0E0F14; translate: -2px 0; } .mp-back svg { width: 16px; height: 16px; stroke-width: 2; }
-.mp-crumb { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px; border-radius: 99px; font-size: 13.5px; font-weight: 500; color: var(--ink);
-  background: rgba(255,255,255,.72); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); box-shadow: 0 0 0 1px rgba(14,15,20,.06); }
-.mp-crumb i { width: 7px; height: 7px; border-radius: 50%; background: #16A34A; box-shadow: 0 0 0 3px rgba(22,163,74,.15); }
 
-
-/* the cursor that follows the pointer over the scene */
-.mp-cur { position: fixed; left: 0; top: 0; z-index: 60; pointer-events: none; translate: var(--cx, -200px) var(--cy, -200px); }
-.mp-cur > span { display: inline-flex; align-items: center; gap: 6px; height: 44px; padding: 0 18px 0 20px; border-radius: 99px; translate: -50% -50%; scale: .3; opacity: 0;
-  font: 500 14px/1 'Geist', system-ui, sans-serif; color: #FFFFFF; white-space: nowrap; background: rgba(14,15,20,.92); box-shadow: 0 12px 30px -12px rgba(14,15,20,.55);
-  transition: scale .5s var(--ease), opacity .3s ease; }
-.mp-cur svg { width: 15px; height: 15px; stroke-width: 2; }
-.mp-cur.on > span { scale: 1; opacity: 1; }
-
-/* the slider */
 .mp { background: #050507; }
+.mp-back { background: rgba(20,20,26,.42); box-shadow: inset 0 0 0 1px rgba(255,255,255,.1); }
+.mp-back:hover { background: rgba(20,20,26,.7); }
+
 .lx { --side: clamp(20px, 4vw, 56px); --ease: cubic-bezier(.22,1,.36,1); --out: cubic-bezier(.16,1,.3,1);
-  position: relative; height: 100vh; height: 100svh; min-height: 540px; overflow: hidden; isolation: isolate; background: #050507; color: #FFFFFF; }
+  position: relative; height: 100vh; height: 100svh; min-height: 560px; overflow: hidden; isolation: isolate; background: #050507; color: #FFFFFF; }
 .lx-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-.lx-gl, .lx-still { position: absolute; inset: 0; width: 100%; height: 100%; }
-.lx-gl { display: block; opacity: 0; transition: opacity 1.1s ease; }
-.lx.ready .lx-gl { opacity: 1; }
-.lx-still { display: none; }
-.lx.nogl .lx-still { display: block; } .lx.nogl .lx-gl { display: none; }
-.lx-still img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1.2s ease; }
-.lx-still img.on { opacity: 1; }
-/* a soft shade low on the left keeps the words easy to read on every scene */
-.lx::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
-  background: linear-gradient(0deg, rgba(5,5,7,.72), rgba(5,5,7,.28) 26%, rgba(5,5,7,0) 44%), radial-gradient(60% 50% at 0% 100%, rgba(5,5,7,.55), rgba(5,5,7,0) 70%); }
+.lx-gl { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 /* the site lifts every canvas on its pages above their content; this one stays at the back */
 #yp-page .lx-gl { z-index: 0; }
 .lx-hit { position: absolute; inset: 0; z-index: 1; -webkit-tap-highlight-color: transparent; }
 @media (hover: hover) and (pointer: fine) { .lx-hit { cursor: none; } }
+.lx::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(0deg, rgba(5,5,7,.6), rgba(5,5,7,0) 30%); }
+
+/* without WebGL: the same three layers as plain pictures and type, fading from one project to the next */
+.lx-fb { display: none; position: absolute; inset: 0; transition: opacity .6s ease; }
+.lx.nogl .lx-fb { display: block; } .lx.nogl .lx-gl { display: none; }
+.lx-fb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.lx-fb .w { position: absolute; left: 0; right: 0; top: 12vh; text-align: center; font: 800 min(19vw, 30vh)/.8 'Plus Jakarta Sans', system-ui, sans-serif; letter-spacing: -0.05em;
+  white-space: nowrap; background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.3)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.lx-fb.out { opacity: 0; }
 
 /* the loading line, until the first scene is ready */
-.lx-load { position: absolute; left: 50%; top: 50%; z-index: 3; width: 120px; height: 2px; overflow: hidden; border-radius: 2px; translate: -50% -50%; background: rgba(255,255,255,.12); transition: opacity .6s ease; }
-.lx-load i { position: absolute; inset: 0; width: 40%; border-radius: inherit; background: rgba(255,255,255,.8); animation: lx-load 1.1s cubic-bezier(.45,0,.55,1) infinite; }
+.lx-load { position: absolute; left: 50%; top: 50%; z-index: 3; width: 120px; height: 1px; overflow: hidden; translate: -50% -50%; background: rgba(255,255,255,.12); transition: opacity .6s ease; }
+.lx-load i { position: absolute; inset: 0; width: 40%; background: rgba(255,255,255,.8); animation: lx-load 1.1s cubic-bezier(.45,0,.55,1) infinite; }
 @keyframes lx-load { from { translate: -100% 0; } to { translate: 250% 0; } }
 .lx.ready .lx-load { opacity: 0; pointer-events: none; }
 
-/* the words: low on the left, clear of the devices */
-.lx-info { position: absolute; z-index: 2; left: var(--side); bottom: clamp(28px, 5.4vh, 52px); width: min(560px, calc(100% - 2 * var(--side) - 640px)); min-width: 380px; }
-.lx-k { display: flex; align-items: center; gap: 8px; margin: 0 0 14px; font: 500 13px/1 'Geist', system-ui, sans-serif; letter-spacing: .02em; color: rgba(255,255,255,.6); font-variant-numeric: tabular-nums; }
-.lx-k b { font-weight: 600; color: #FFFFFF; }
-.lx-k i { width: 3px; height: 3px; margin: 0 4px; border-radius: 50%; background: rgba(255,255,255,.45); }
-.lx-t { margin: 0; font: 700 clamp(34px, 3.9vw, 58px)/1.02 'Plus Jakarta Sans', system-ui, sans-serif; letter-spacing: -0.04em; text-wrap: balance; }
-.lx-t .w { display: inline-block; overflow: hidden; vertical-align: top; padding: 0 .02em .1em 0; margin-bottom: -.1em; }
-.lx-t .c { display: inline-block; will-change: transform; }
-.lx-d { max-width: 44ch; margin: 14px 0 0; font: 400 clamp(15px, 1.15vw, 17px)/1.5 'Geist', system-ui, sans-serif; color: rgba(255,255,255,.72); }
-.lx-act { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 22px; }
-.lx-tg { display: inline-flex; align-items: center; height: 36px; padding: 0 14px; border-radius: 99px; font: 500 13px/1 'Geist', system-ui, sans-serif; color: rgba(255,255,255,.78);
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,.18); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); background: rgba(255,255,255,.04); }
-.lx-go { display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 14px 0 16px; border-radius: 99px; font: 500 13.5px/1 'Geist', system-ui, sans-serif; text-decoration: none;
-  background: #FFFFFF; transition: transform .5s var(--ease), box-shadow .5s var(--ease); box-shadow: 0 10px 30px -14px rgba(0,0,0,.7); }
-.lx-go svg { width: 15px; height: 15px; stroke-width: 2; transition: translate .5s var(--ease); }
-.lx-go:hover { transform: translateY(-1px); } .lx-go:hover svg { translate: 2px -2px; }
-.lx-go:focus-visible, .lx-th:focus-visible, .mp-back:focus-visible { outline: 2px solid #FFFFFF; outline-offset: 3px; }
-
-/* the row of thumbnails, low on the right */
-.lx-nav { position: absolute; z-index: 2; right: var(--side); bottom: clamp(28px, 5.4vh, 52px); display: flex; align-items: flex-end; gap: 12px; }
-.lx-th { position: relative; display: block; width: clamp(72px, 6.6vw, 104px); aspect-ratio: 16 / 10; padding: 0; border: 0; border-radius: 9px; background: #15151A; cursor: pointer;
-  transition: translate .6s var(--ease); -webkit-tap-highlight-color: transparent; }
-.lx-th img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: inherit; opacity: .5; filter: saturate(.75) brightness(.9);
-  transition: opacity .5s ease, filter .5s ease; }
-.lx-th::after { content: ""; position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 0 0 1px rgba(255,255,255,.14); transition: box-shadow .45s var(--ease); pointer-events: none; }
-.lx-th:hover { translate: 0 -3px; } .lx-th:hover img { opacity: .9; filter: none; }
-.lx-th[aria-current="true"] img { opacity: 1; filter: none; }
-.lx-th[aria-current="true"]::after { box-shadow: inset 0 0 0 2px #FFFFFF, 0 10px 28px -12px rgba(0,0,0,.8); }
-.lx-th.wait img { animation: lx-wait .9s ease-in-out infinite alternate; }
-@keyframes lx-wait { to { opacity: .35; } }
-/* how long until the next project, under the one showing */
-.lx-th .pr { position: absolute; left: 0; right: 0; bottom: -10px; height: 2px; overflow: hidden; border-radius: 2px; background: rgba(255,255,255,0); transition: background .4s ease; }
-.lx-th .pr b { position: absolute; inset: 0; border-radius: inherit; background: #FFFFFF; transform-origin: left; scale: 0 1; }
-.lx-th[aria-current="true"] .pr { background: rgba(255,255,255,.2); }
-.lx.run .lx-th[aria-current="true"] .pr b { animation: lx-pr var(--dwell, 6s) linear forwards; }
-.lx.hold .lx-th[aria-current="true"] .pr b { animation-play-state: paused; }
+/* the row along the bottom: a hairline that fills until the next project, the number and name on the left,
+   the thumbnails in the middle, what it is and where it lives on the right */
+.lx-bar { position: absolute; z-index: 2; left: var(--side); right: var(--side); bottom: clamp(24px, 4.4vh, 44px); display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: end; gap: 32px; padding-top: 24px; }
+.lx-line { position: absolute; left: 0; right: 0; top: 0; height: 1px; overflow: hidden; background: rgba(255,255,255,.14); }
+.lx-line b { position: absolute; inset: 0; background: rgba(255,255,255,.8); transform-origin: left; scale: 0 1; }
+.lx.run .lx-line b { animation: lx-pr var(--dwell, 6s) linear forwards; }
+.lx.hold .lx-line b { animation-play-state: paused; }
 @keyframes lx-pr { to { scale: 1 1; } }
-/* the project's name above a thumbnail while pointing at it */
-.lx-th .tip { position: absolute; left: 50%; bottom: calc(100% + 12px); padding: 7px 11px; border-radius: 8px; translate: -50% 4px; white-space: nowrap; pointer-events: none;
-  font: 500 12.5px/1 'Geist', system-ui, sans-serif; color: #FFFFFF; background: rgba(20,20,26,.78); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,.1); opacity: 0; transition: opacity .3s ease, translate .45s var(--ease); }
-@media (hover: hover) and (pointer: fine) { .lx-th:hover .tip { opacity: 1; translate: -50% 0; } }
 
-/* on the dark slider the crumb is dark glass too */
-.mp-crumb { color: #FFFFFF; background: rgba(20,20,26,.46); box-shadow: inset 0 0 0 1px rgba(255,255,255,.1); }
+.lx-l { display: flex; align-items: flex-end; gap: 22px; min-width: 0; }
+.lx-idx { display: flex; align-items: flex-start; margin: 0; font: 600 clamp(40px, 3.5vw, 54px)/.86 'Plus Jakarta Sans', system-ui, sans-serif; letter-spacing: -0.045em; font-variant-numeric: tabular-nums; }
+.lx-num { display: inline-flex; }
+.lx-num > span { position: relative; display: inline-block; overflow: hidden; height: .86em; }
+.lx-num > span > i { display: block; font-style: normal; }
+.lx-of { margin: .12em 0 0 6px; font: 500 12.5px/1 'Geist', system-ui, sans-serif; letter-spacing: .04em; color: rgba(255,255,255,.5); }
+.lx-name { min-width: 0; padding-bottom: 1px; }
+.lx-t { margin: 0; font: 600 17px/1.2 'Plus Jakarta Sans', system-ui, sans-serif; letter-spacing: -0.012em; }
+.lx-t .w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .12em; margin-bottom: -.12em; }
+.lx-t .w > span { display: inline-block; }
+.lx-d { max-width: 38ch; margin: 6px 0 0; font: 400 13.5px/1.45 'Geist', system-ui, sans-serif; color: rgba(255,255,255,.58); }
+
+.lx-nav { position: relative; display: flex; gap: 10px; }
+.lx-th { position: relative; display: block; width: clamp(58px, 4.9vw, 78px); aspect-ratio: 16 / 10; padding: 0; border: 0; border-radius: 7px; background: #15151A; cursor: pointer;
+  transition: translate .6s var(--ease); -webkit-tap-highlight-color: transparent; }
+.lx-th img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: inherit; opacity: .42; filter: saturate(.7); transition: opacity .5s ease, filter .5s ease; }
+.lx-th:hover { translate: 0 -2px; } .lx-th:hover img { opacity: .85; filter: none; }
+.lx-th[aria-current="true"] img { opacity: 1; filter: none; }
+.lx-th.wait img { animation: lx-wait .9s ease-in-out infinite alternate; }
+@keyframes lx-wait { to { opacity: .3; } }
+/* one white frame that slides to the project showing */
+.lx-frame { position: absolute; left: 0; top: -4px; bottom: -4px; width: var(--fw, 0); border-radius: 10px; box-shadow: inset 0 0 0 1.5px #FFFFFF; pointer-events: none;
+  transform: translateX(var(--fx, 0)); transition: transform .75s var(--ease), width .75s var(--ease); }
+.lx-nav.snap .lx-frame { transition: none; }
+
+.lx-r { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; min-width: 0; text-align: right; }
+.lx-meta { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px 14px; margin: 0; font: 500 11px/1 'Geist', system-ui, sans-serif; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.5); }
+.lx-go { display: inline-flex; align-items: center; gap: 6px; padding-bottom: 5px; font: 500 15px/1 'Geist', system-ui, sans-serif; text-decoration: none; white-space: nowrap;
+  background: linear-gradient(currentColor, currentColor) 0 100% / 100% 1px no-repeat; transition: background-size .55s var(--ease); }
+.lx-go svg { width: 15px; height: 15px; stroke-width: 1.9; transition: translate .5s var(--ease); }
+.lx-go:hover { background-position: 100% 100%; background-size: 0 1px; } .lx-go:hover svg { translate: 2px -2px; }
+.lx-go:focus-visible, .lx-th:focus-visible, .mp-back:focus-visible { outline: 2px solid #FFFFFF; outline-offset: 4px; }
+
+/* over the scene: the same white disc the home page shows over a case study */
+.lx-cur { position: fixed; left: 0; top: 0; z-index: 60; display: grid; place-content: center; justify-items: center; gap: 4px; width: 96px; height: 96px; margin: -48px 0 0 -48px;
+  border-radius: 50%; background: #FFFFFF; color: #0F0F10; pointer-events: none; translate: var(--cx, -200px) var(--cy, -200px); scale: 0; transition: scale .45s var(--ease); }
+.lx-cur.on { scale: 1; }
+.lx-cur b { font: 700 13px/1 'Plus Jakarta Sans', system-ui, sans-serif; letter-spacing: .08em; text-transform: uppercase; }
+.lx-cur small { font: 600 8.5px/1 'Geist', system-ui, sans-serif; letter-spacing: .14em; text-transform: uppercase; opacity: .5; }
 
 /* the site colours every link on a page light grey (white on hover); this page sets its own */
-#yp-page .mp a.lx-go, #yp-page .mp a.lx-go:hover { color: #0E0F14; }
-#yp-page .mp a.mp-back, #yp-page .mp a.mp-back:hover { color: #FFFFFF; }
+#yp-page .mp a.lx-go, #yp-page .mp a.lx-go:hover, #yp-page .mp a.mp-back, #yp-page .mp a.mp-back:hover { color: #FFFFFF; }
 
-/* narrower screens: the words above, the thumbnails in a row along the bottom */
 @media (max-width: 1100px) {
-  .lx-info { width: auto; min-width: 0; right: var(--side); bottom: calc(clamp(28px, 5.4vh, 52px) + 64px + 26px); }
-  .lx-nav { left: var(--side); right: var(--side); justify-content: space-between; gap: 10px; }
-  .lx-th { flex: 1 1 0; width: auto; max-width: 120px; }
+  .lx-bar { grid-template-columns: minmax(0, 1fr) auto; row-gap: 22px; }
+  .lx-nav { grid-column: 1 / -1; grid-row: 2; justify-self: center; }
 }
 @media (max-width: 760px) {
-  .lx { min-height: 560px; }
-  .lx::after { background: linear-gradient(0deg, rgba(5,5,7,.86), rgba(5,5,7,.5) 30%, rgba(5,5,7,0) 48%); }
-  .lx-info { bottom: calc(22px + 14vw + 30px); }
-  .lx-nav { bottom: 22px; gap: 8px; }
-  .lx-th { aspect-ratio: 4 / 3; border-radius: 8px; max-width: none; }
-  .lx-th .pr { bottom: -8px; }
-  .lx-t { font-size: clamp(30px, 8.6vw, 40px); }
-  .lx-d { font-size: 15px; margin-top: 10px; }
-  .lx-k { margin-bottom: 10px; }
-  .lx-act { margin-top: 16px; }
+  .lx-bar { grid-template-columns: minmax(0, 1fr); bottom: 18px; row-gap: 16px; padding-top: 18px; }
+  .lx-l { gap: 14px; }
+  .lx-idx { font-size: 34px; }
+  .lx-t { font-size: 16px; } .lx-d { font-size: 13px; margin-top: 4px; }
+  .lx-r { flex-direction: row; justify-content: space-between; align-items: center; text-align: left; }
+  .lx-meta { justify-content: flex-start; font-size: 10px; }
+  .lx-go { font-size: 14px; }
+  .lx-nav { grid-row: auto; justify-self: stretch; gap: 8px; }
+  .lx-th { flex: 1 1 0; width: auto; aspect-ratio: 4 / 3; }
 }
-@media (prefers-reduced-motion: reduce) { .lx-gl, .lx-still img, .lx-load { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .lx-frame, .lx-fb { transition: none; } }
 </style>
 <script id="mp-js">
-/* More projects: a full screen slider of the six projects. Each scene is a picture drawn on a WebGL canvas; moving to
-   another project melts the old picture into the new one through a glass lens that grows from the middle (the
-   shader from the Lumina interactive list on 21st.dev, run here without React, three.js or GSAP). The thumbnails
-   along the bottom pick a project and show how long until the next one; arrow keys and swipes move too. Over the
-   scene a cursor says where a click leads. The page is cloned in by the router, so this watches for it and wires it
-   up each time it appears, and lets go of everything (the GPU context too) when it leaves */
+/* More projects: a full screen slider of the six projects. Each scene is drawn on a WebGL canvas from three layers:
+   the coloured background, the project's name set huge, and the devices in front of it. With the pointer the layers
+   shift apart a little, nearest the most. Moving to another project melts the whole scene into the next through a
+   glass lens that grows from the middle (the shader of the Lumina interactive list on 21st.dev, run here without
+   React, three.js or GSAP); the page opens the same way, out of the dark. The bottom row holds the number, the name,
+   the thumbnails and the link, and a hairline above it fills until the next project. The page is cloned in by the
+   router, so this watches for it and wires it up each time it appears, and lets go of everything (the GPU context
+   too) when it leaves */
 (function () {
   var FIG = 'https://www.figma.com/design/LYQ9xzdyJTAqzwye4h8xSq/Websites?node-id=2505-19708&t=9fKNzBUXhX7BBhkL-1';
   var P = [
-    { slug: 'top10-apps', title: 'Top-10 Mobiles apps', type: 'Mobile apps', tag: 'Customer and delivery apps', href: FIG, go: 'View in Figma',
+    { slug: 'top10-apps', top: { l: 0.255, p: 0.3029 }, tint: '157,120,255', word: 'Top-10 Apps', title: 'Top-10 Mobiles apps', meta: ['Mobile apps', 'Customer and delivery'], href: FIG, go: 'View in Figma', cur: 'In Figma',
       d: 'A shopping app for customers, and an app for the riders who deliver their orders.' },
-    { slug: 'top10-web', title: 'Top-10 Mobiles website', type: 'Responsive website', tag: 'Laptop, tablet and phone', href: FIG, go: 'View in Figma',
+    { slug: 'top10-web', top: { l: 0.2933, p: 0.3961 }, tint: '255,92,170', word: 'Top-10 Store', title: 'Top-10 Mobiles website', meta: ['Responsive website', 'Laptop, tablet, phone'], href: FIG, go: 'View in Figma', cur: 'In Figma',
       d: 'The same store on the web, designed for laptop, tablet and phone.' },
-    { slug: 'vijayeesam', title: 'Vijayeesam', type: 'Website', tag: 'Designed in Figma', href: 'https://vijayeesam.com/', go: 'Visit site',
+    { slug: 'vijayeesam', top: { l: 0.2617, p: 0.3092 }, tint: '255,128,74', word: 'Vijayeesam', title: 'Vijayeesam', meta: ['Website', 'Designed in Figma'], href: 'https://vijayeesam.com/', go: 'Visit site', cur: 'Live site',
       d: 'A website for a performance marketing agency.' },
-    { slug: 'aetherion', title: 'Aetherion Pharma', type: 'Website', tag: 'Designed in Figma', href: 'https://aetherionpharma.com/', go: 'Visit site',
+    { slug: 'aetherion', top: { l: 0.2617, p: 0.3092 }, tint: '64,214,206', word: 'Aetherion', title: 'Aetherion Pharma', meta: ['Website', 'Designed in Figma'], href: 'https://aetherionpharma.com/', go: 'Visit site', cur: 'Live site',
       d: 'A website for a company making medicines, nutraceuticals and cosmetics.' },
-    { slug: 'ayuniva', title: 'Ayuniva Remedies', type: 'Website', tag: 'Built in Framer', href: 'https://ayunivaremedies.com/', go: 'Visit site',
+    { slug: 'ayuniva', top: { l: 0.2617, p: 0.3092 }, tint: '132,206,96', word: 'Ayuniva', title: 'Ayuniva Remedies', meta: ['Website', 'Built in Framer'], href: 'https://ayunivaremedies.com/', go: 'Visit site', cur: 'Live site',
       d: 'A website for a maker of herbal extracts, probiotics and vitamins.' },
-    { slug: 'vrudhi', title: 'Vrudhi Lifesciences', type: 'Website', tag: 'Built in Framer', href: 'https://vrudhilifesciences.com/', go: 'Visit site',
+    { slug: 'vrudhi', top: { l: 0.2617, p: 0.3092 }, tint: '96,150,255', word: 'Vrudhi', title: 'Vrudhi Lifesciences', meta: ['Website', 'Built in Framer'], href: 'https://vrudhilifesciences.com/', go: 'Visit site', cur: 'Live site',
       d: 'A website for a pharma company that supplies medicines, APIs and surgical products.' }
   ];
-  var BASE = 'assets/more/lx/', SWAP = 2500, DWELL = 6000;
+  var BASE = 'assets/more/lx/', SWAP = 2500, DWELL = 6500, ZOOM = 1.045;
   var fine = matchMedia('(hover: hover) and (pointer: fine)'), still = matchMedia('(prefers-reduced-motion: reduce)'), live = null;
   var pad = function (n) { return (n < 10 ? '0' : '') + n; };
   var ease = function (t) { return t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; };
+  var IO = 'cubic-bezier(.65,0,.35,1)', OUT = 'cubic-bezier(.16,1,.3,1)';
 
   var VS = 'attribute vec2 a; varying vec2 vUv; void main () { vUv = a * .5 + .5; gl_Position = vec4(a, 0., 1.); }';
-  // the glass transition, as in the original: a lens grows from the middle, bending and splitting the light of the
-  // new picture at its rim. Added: a slight zoom and drift with the pointer, and a little noise so dark gradients never band
+  // a scene is the background, then the name, then the devices (both stored with their light already multiplied by
+  // their opacity). The glass transition is the original's: a lens grows from the middle, bending the new scene and
+  // splitting its light at the rim. A little noise keeps the dark gradients from banding
+  var scene = function (n) {
+    return 'vec3 scene' + n + ' (vec2 uv) {' +
+      ' vec3 c = texture2D(uB' + n + ', cover(lens(uv, .003), uS' + n + ')).rgb;' +
+      ' vec4 w = texture2D(uW' + n + ', lens(uv, .009)); c = c * (1. - w.a) + w.rgb;' +
+      ' vec4 d = texture2D(uD' + n + ', cover(lens(uv, .016), uS' + n + ')); c = c * (1. - d.a) + d.rgb;' +
+      (n === 1 ? ' return mix(c, vec3(.02, .02, .027), uDark);' : ' return c;') + ' }';
+  };
   var FS = [
     'precision highp float;',
-    'uniform sampler2D uT1, uT2; uniform float uProgress, uZoom; uniform vec2 uRes, uS1, uS2, uShift; varying vec2 vUv;',
+    'uniform sampler2D uB1, uW1, uD1, uB2, uW2, uD2; uniform float uProgress, uZoom, uDark; uniform vec2 uRes, uS1, uS2, uPar; varying vec2 vUv;',
     'vec2 cover (vec2 uv, vec2 ts) { vec2 s = uRes / ts; float k = max(s.x, s.y); vec2 sz = ts * k; return (uv * uRes - (uRes - sz) * .5) / sz; }',
-    'vec2 lens (vec2 uv) { return (uv - .5) / uZoom + .5 + uShift; }',
+    'vec2 lens (vec2 uv, float k) { return (uv - .5) / uZoom + .5 + uPar * k; }',
     'float hash (vec2 p) { return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453); }',
+    scene(1), scene(2),
     'void main () {',
-    '  float progress = uProgress, time = progress * 5.;',
-    '  vec2 uv = vUv, uv1 = cover(lens(uv), uS1), uv2 = cover(lens(uv), uS2);',
+    '  float progress = uProgress, time = progress * 5.; vec2 uv = vUv;',
     '  float br = progress * length(uRes) * .85;',
     '  vec2 p = uv * uRes, c = uRes * .5; float d = length(p - c), nd = d / max(br, .001);',
     '  float param = smoothstep(br + 3., br - 3., d);',
-    '  vec4 img;',
+    '  vec3 img;',
     '  if (param > 0.) {',
     '    float ro = .08 * pow(smoothstep(.3, 1., nd), 1.5);',
     '    vec2 dir = d > 0. ? (p - c) / d : vec2(0.);',
-    '    vec2 dUV = uv2 - dir * ro;',
-    '    dUV += vec2(sin(time + nd * 10.), cos(time * .8 + nd * 8.)) * .015 * nd * param;',
+    '    vec2 dUV = uv - dir * ro + vec2(sin(time + nd * 10.), cos(time * .8 + nd * 8.)) * .015 * nd * param;',
     '    float ca = .02 * pow(smoothstep(.3, 1., nd), 1.2);',
-    '    img = vec4(texture2D(uT2, dUV + dir * ca * 1.2).r, texture2D(uT2, dUV + dir * ca * .2).g, texture2D(uT2, dUV - dir * ca * .8).b, 1.);',
-    '    img.rgb += smoothstep(.95, 1., nd) * (1. - smoothstep(1., 1.01, nd)) * .08;',
-    '  } else img = texture2D(uT2, uv2);',
-    '  vec4 old = texture2D(uT1, uv1);',
-    '  if (progress > .95) img = mix(img, texture2D(uT2, uv2), (progress - .95) / .05);',
-    '  vec4 col = mix(old, img, param);',
-    '  col.rgb += (hash(gl_FragCoord.xy) - .5) / 255.;',
-    '  gl_FragColor = col;',
+    '    img = vec3(scene2(dUV + dir * ca * 1.2).r, scene2(dUV + dir * ca * .2).g, scene2(dUV - dir * ca * .8).b);',
+    '    img += smoothstep(.95, 1., nd) * (1. - smoothstep(1., 1.01, nd)) * .08;',
+    '    if (progress > .95) img = mix(img, scene2(uv), (progress - .95) / .05);',
+    '  } else img = scene2(uv);',
+    '  vec3 col = param >= 1. ? img : mix(scene1(uv), img, param);',
+    '  col += (hash(gl_FragCoord.xy) - .5) / 255.;',
+    '  gl_FragColor = vec4(col, 1.);',
     '}'].join('\n');
 
   function makeGL(canvas) {
@@ -73170,173 +73173,226 @@ button.tt-dz-b:active, .tt-dz-b.is-press, .tt-dz-b.pressed { background: #2563EB
     gl.useProgram(pr);
     var buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
     var loc = gl.getAttribLocation(pr, 'a'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
-    var U = {}; ['uT1', 'uT2', 'uProgress', 'uZoom', 'uRes', 'uS1', 'uS2', 'uShift'].forEach(function (n) { U[n] = gl.getUniformLocation(pr, n); });
-    gl.uniform1i(U.uT1, 0); gl.uniform1i(U.uT2, 1);
+    var U = {}; ['uB1', 'uW1', 'uD1', 'uB2', 'uW2', 'uD2', 'uProgress', 'uZoom', 'uDark', 'uRes', 'uS1', 'uS2', 'uPar'].forEach(function (n) { U[n] = gl.getUniformLocation(pr, n); });
+    ['uB1', 'uW1', 'uD1', 'uB2', 'uW2', 'uD2'].forEach(function (n, k) { gl.uniform1i(U[n], k); });
+    var tex = function (src) {
+      var t = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, t);
+      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true); gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, src);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+      return t;
+    };
     return {
-      gl: gl,
-      tex: function (img) {
-        var t = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, t); gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, img);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-        return { t: t, w: img.naturalWidth, h: img.naturalHeight };
-      },
-      drop: function (x) { gl.deleteTexture(x.t); },
-      draw: function (a, b, prog, w, h, sx, sy, zoom) {
+      tex: tex,
+      drop: function (t) { gl.deleteTexture(t); },
+      draw: function (a, b, prog, dark, w, h, px, py) {
         gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
-        gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, a.t); gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D, b.t);
-        gl.uniform1f(U.uProgress, prog); gl.uniform1f(U.uZoom, zoom); gl.uniform2f(U.uRes, w, h);
-        gl.uniform2f(U.uS1, a.w, a.h); gl.uniform2f(U.uS2, b.w, b.h); gl.uniform2f(U.uShift, sx, sy);
+        [a.b, a.w, a.d, b.b, b.w, b.d].forEach(function (t, k) { gl.activeTexture(gl.TEXTURE0 + k); gl.bindTexture(gl.TEXTURE_2D, t); });
+        gl.uniform1f(U.uProgress, prog); gl.uniform1f(U.uZoom, ZOOM); gl.uniform1f(U.uDark, dark); gl.uniform2f(U.uRes, w, h);
+        gl.uniform2f(U.uS1, a.sw, a.sh); gl.uniform2f(U.uS2, b.sw, b.sh); gl.uniform2f(U.uPar, px, py);
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
       },
       lose: function () { var x = gl.getExtension('WEBGL_lose_context'); if (x) x.loseContext(); }
     };
   }
 
+  // the name, huge, set so the devices stand in front of its lower edge wherever they land on this screen; it fades
+  // into the project's colour as it nears them. On a tall screen a two word name takes two lines, so it can be larger
+  function drawWord(word, tint, W, H, dpr, devTop) {
+    var c = document.createElement('canvas'); c.width = Math.max(1, Math.round(W * dpr)); c.height = Math.max(1, Math.round(H * dpr));
+    var x = c.getContext('2d'); x.scale(dpr, dpr);
+    var tall = W / H < .85, ls = 'letterSpacing' in x, k = tall ? .42 : .38, minTop = tall ? 96 : 84;
+    var set = function (fs) { x.font = '800 ' + fs + 'px "Plus Jakarta Sans", system-ui, sans-serif'; if (ls) x.letterSpacing = (-0.05 * fs).toFixed(2) + 'px'; };
+    var lines = tall ? word.split(' ') : [word], n = lines.length;
+    set(100); var wid = Math.max.apply(null, lines.map(function (l) { return x.measureText(l).width; }));
+    var fs = Math.min(100 * W * (tall ? .9 : .88) / wid, H * (tall ? .13 : .245) / .72, Math.max(20, (devTop - minTop) / (.72 + (n - 1) * .86 - k * .72))); set(fs);
+    var lh = fs * .86, cap = fs * .72, last = devTop + k * cap, base0 = last - (n - 1) * lh;
+    var g = x.createLinearGradient(0, base0 - cap, 0, last + fs * .1);
+    g.addColorStop(0, 'rgba(255,255,255,.97)'); g.addColorStop(.5, 'rgba(255,255,255,.78)'); g.addColorStop(1, 'rgba(' + tint + ',.22)');
+    x.fillStyle = g; x.textAlign = 'center'; x.textBaseline = 'alphabetic';
+    lines.forEach(function (l, m) { x.fillText(l, W / 2 + (ls ? fs * .025 : 0), base0 + m * lh); });
+    return c;
+  }
+
   function mount(root) {
     root.setAttribute('data-mp-on', '');
     var sec = root.querySelector('[data-lx]'), canvas = sec.querySelector('.lx-gl'), hit = sec.querySelector('.lx-hit'), nav = sec.querySelector('[data-lx-nav]');
-    var info = sec.querySelector('.lx-info'), T = sec.querySelector('[data-lx-t]'), D = sec.querySelector('[data-lx-d]'), act = sec.querySelector('.lx-act');
-    var cur = root.querySelector('.mp-cur'), lab = cur.firstElementChild.firstChild, stills = sec.querySelectorAll('.lx-still img');
+    var bar = sec.querySelector('.lx-bar'), name = sec.querySelector('.lx-name'), T = sec.querySelector('[data-lx-t]'), D = sec.querySelector('[data-lx-d]');
+    var num = sec.querySelector('[data-lx-num]'), meta = sec.querySelector('[data-lx-meta]'), go = sec.querySelector('[data-lx-go]'), frameEl = nav.querySelector('.lx-frame');
+    var cur = root.querySelector('.lx-cur'), curl = cur.querySelector('[data-lx-curl]'), fb = sec.querySelector('.lx-fb');
     var G = makeGL(canvas), timers = [], offs = [], dead = false;
     var on = function (el, ev, fn, o) { el.addEventListener(ev, fn, o); offs.push(function () { el.removeEventListener(ev, fn, o); }); };
     var later = function (fn, ms) { var t = setTimeout(fn, ms); timers.push(t); return t; };
     if (!G) sec.classList.add('nogl');
+    sec.querySelector('[data-lx-of]').textContent = '/' + pad(P.length);
 
-    // pictures: the wide set on wide screens, the tall set on phones; decoded once, uploaded to the GPU only when needed
+    // pictures: wide ones on wide screens, tall ones on phones; decoded once, sent to the GPU only when needed
     var orient = function () { var r = sec.getBoundingClientRect(); return r.width / Math.max(1, r.height) < .85 ? 'p' : 'l'; };
-    var o = orient(), imgs = {}, texs = {};
+    var o = orient(), imgs = {}, texs = {}, fontReady = (document.fonts && document.fonts.load) ? document.fonts.load('800 100px "Plus Jakarta Sans"').catch(function () {}) : Promise.resolve();
+    var pic = function (url) { return new Promise(function (res) { var im = new Image(); im.decoding = 'async';
+      im.onload = function () { (im.decode ? im.decode() : Promise.resolve()).then(function () { res(im); }, function () { res(im); }); }; im.onerror = function () { res(null); }; im.src = url; }); };
     var load = function (i) {
       var k = o + i; if (imgs[k]) return imgs[k];
-      return (imgs[k] = new Promise(function (res) { var im = new Image(); im.decoding = 'async'; im.onload = function () { (im.decode ? im.decode() : Promise.resolve()).then(function () { res(im); }, function () { res(im); }); };
-        im.onerror = function () { res(null); }; im.src = BASE + P[i].slug + '-' + o + '.webp'; }));
+      return (imgs[k] = Promise.all([pic(BASE + P[i].slug + '-bg-' + o + '.webp'), pic(BASE + P[i].slug + '-dv-' + o + '.webp'), fontReady])
+        .then(function (r) { return r[0] && r[1] ? { b: r[0], d: r[1] } : null; }));
     };
-    var tex = function (i, im) { var k = o + i; if (!texs[k]) texs[k] = G.tex(im); return texs[k]; };
-    var trim = function (keep) { Object.keys(texs).forEach(function (k) { if (keep.indexOf(k) < 0) { G.drop(texs[k]); delete texs[k]; } }); };
+    var st = { q: -1, i: 0, to: -1, prog: 0, px: 0, py: 0, tx: 0, ty: 0, raf: 0, t0: 0, busy: false, intro: false, w: 1, h: 1, dpr: 1 };
+    var devTop = function (i, im) {
+      var iw = im.d.naturalWidth, ih = im.d.naturalHeight, s = Math.max(st.w / iw, st.h / ih), y = (st.h - ih * s) / 2 + P[i].top[o] * ih * s;
+      return (y - st.h / 2) * ZOOM + st.h / 2; };
+    var word = function (i, im) { return G.tex(drawWord(P[i].word, P[i].tint, st.w, st.h, st.dpr, devTop(i, im))); };
+    var texFor = function (i, im) {
+      var k = o + i; if (texs[k]) return texs[k];
+      return (texs[k] = { b: G.tex(im.b), d: G.tex(im.d), w: word(i, im), im: im, sw: im.d.naturalWidth, sh: im.d.naturalHeight });
+    };
+    var trim = function (keep) { Object.keys(texs).forEach(function (k) { if (keep.indexOf(k) < 0) { var t = texs[k]; G.drop(t.b); G.drop(t.d); G.drop(t.w); delete texs[k]; } }); };
+    var rewords = function () { Object.keys(texs).forEach(function (k) { var t = texs[k]; G.drop(t.w); t.w = word(+k.slice(1), t.im); }); };
 
-    // the thumbnails
-    nav.innerHTML = P.map(function (p, i) {
-      return '<button type="button" class="lx-th" data-i="' + i + '" aria-label="' + p.title + '"><img src="' + BASE + p.slug + '-t.webp" alt="" width="320" height="200" decoding="async">' +
-        '<span class="tip" aria-hidden="true">' + p.title + '</span><span class="pr" aria-hidden="true"><b></b></span></button>'; }).join('');
-    var ths = [].slice.call(nav.children);
-    sec.querySelector('[data-lx-of]').textContent = pad(P.length);
+    // the thumbnails, and the frame that slides to the one showing
+    P.forEach(function (p, i) {
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'lx-th'; b.setAttribute('data-i', i); b.setAttribute('aria-label', p.title);
+      b.innerHTML = '<img src="' + BASE + p.slug + '-t.webp" alt="" width="320" height="200" decoding="async">'; nav.appendChild(b); });
+    var ths = [].slice.call(nav.querySelectorAll('.lx-th'));
+    var placeFrame = function (i, snap) {
+      var t = ths[i]; if (snap) nav.classList.add('snap');
+      nav.style.setProperty('--fx', (t.offsetLeft - 4) + 'px'); nav.style.setProperty('--fw', (t.offsetWidth + 8) + 'px');
+      if (snap) { void nav.offsetWidth; nav.classList.remove('snap'); } };
 
-    // the words: each letter rises into place inside its word, and leaves upwards
-    var letters = function (s) { return s.split(' ').map(function (w) { return '<span class="w">' + w.split('').map(function (c) { return '<span class="c">' + c + '</span>'; }).join('') + '</span>'; }).join(' '); };
+    // the number rolls, digit by digit
+    var setNum = function (n, dir) {
+      var s = pad(n);
+      if (!num.children.length || still.matches) { num.innerHTML = s.split('').map(function (ch) { return '<span><i>' + ch + '</i></span>'; }).join(''); return; }
+      [].forEach.call(num.children, function (box, k) {
+        var old = box.lastElementChild; if (old.textContent === s[k]) return;
+        var ni = document.createElement('i'); ni.textContent = s[k]; ni.style.cssText = 'position:absolute;left:0;top:0'; box.appendChild(ni);
+        old.animate([{ transform: 'none' }, { transform: 'translateY(' + (-105 * dir) + '%)' }], { duration: 760, delay: k * 60, easing: IO, fill: 'forwards' }).finished
+          .then(function () { old.remove(); ni.style.cssText = ''; }, function () {});
+        ni.animate([{ transform: 'translateY(' + (105 * dir) + '%)' }, { transform: 'none' }], { duration: 760, delay: k * 60, easing: IO, fill: 'backwards' });
+      });
+    };
+    // the words: each word rises into place inside its own line, and leaves upwards
+    var words = function (s) { return s.split(' ').map(function (w) { return '<span class="w"><span>' + w + '</span></span>'; }).join(' '); };
     var fill = function (i) {
       var p = P[i];
-      sec.querySelector('[data-lx-n]').textContent = pad(i + 1); sec.querySelector('[data-lx-type]').textContent = p.type;
-      sec.querySelector('[data-lx-tag]').textContent = p.tag; sec.querySelector('[data-lx-gol]').textContent = p.go;
-      var go = sec.querySelector('[data-lx-go]'); go.href = p.href; go.setAttribute('aria-label', p.go + ': ' + p.title + ', opens in a new tab');
-      hit.href = p.href; hit.setAttribute('data-cur', p.go); lab.nodeValue = p.go;
-      T.innerHTML = letters(p.title); D.textContent = p.d;
+      T.innerHTML = words(p.title); D.textContent = p.d;
+      meta.innerHTML = p.meta.map(function (m) { return '<span>' + m + '</span>'; }).join('');
+      go.href = p.href; go.querySelector('[data-lx-gol]').textContent = p.go; go.setAttribute('aria-label', p.go + ': ' + p.title + ', opens in a new tab');
+      hit.href = p.href; curl.textContent = p.cur;
       ths.forEach(function (b, k) { b.setAttribute('aria-current', k === i ? 'true' : 'false'); });
     };
     var outs = [];
-    var wordsIn = function (delay) {
-      outs.forEach(function (a) { a.cancel(); }); outs = [];  // the fade out held its end; let it go before fading in
+    var textIn = function (delay) {
+      outs.forEach(function (a) { a.cancel(); }); outs = [];
       if (still.matches) return;
-      [].forEach.call(T.querySelectorAll('.c'), function (c, k) {
-        c.animate([{ transform: 'translateY(108%)' }, { transform: 'none' }], { duration: 1000, delay: delay + k * 18, easing: 'cubic-bezier(.16,1,.3,1)', fill: 'backwards' }); });
-      [sec.querySelector('.lx-k'), D, act].forEach(function (el, k) {
-        el.animate([{ opacity: 0, transform: 'translateY(14px)' }, { opacity: 1, transform: 'none' }], { duration: 900, delay: delay + 120 + k * 90, easing: 'cubic-bezier(.16,1,.3,1)', fill: 'backwards' }); });
+      [].forEach.call(T.querySelectorAll('.w > span'), function (w, k) {
+        w.animate([{ transform: 'translateY(112%)' }, { transform: 'none' }], { duration: 1000, delay: delay + k * 60, easing: OUT, fill: 'backwards' }); });
+      [D, meta, go].forEach(function (el, k) {
+        el.animate([{ opacity: 0, transform: 'translateY(10px)' }, { opacity: 1, transform: 'none' }], { duration: 900, delay: delay + 140 + k * 80, easing: OUT, fill: 'backwards' }); });
     };
-    var wordsOut = function () {
+    var textOut = function () {
       if (still.matches) return Promise.resolve();
       var all = [];
-      [].forEach.call(T.querySelectorAll('.c'), function (c, k) {
-        all.push(c.animate([{ transform: 'none' }, { transform: 'translateY(-108%)' }], { duration: 420, delay: k * 9, easing: 'cubic-bezier(.5,0,.75,0)', fill: 'forwards' }).finished); });
-      [sec.querySelector('.lx-k'), D, act].forEach(function (el) {
-        var a = el.animate([{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'translateY(-8px)' }], { duration: 360, easing: 'ease-in', fill: 'forwards' }); outs.push(a); all.push(a.finished); });
+      [].forEach.call(T.querySelectorAll('.w > span'), function (w, k) {
+        all.push(w.animate([{ transform: 'none' }, { transform: 'translateY(-112%)' }], { duration: 420, delay: k * 30, easing: 'cubic-bezier(.5,0,.75,0)', fill: 'forwards' }).finished); });
+      [D, meta, go].forEach(function (el) {
+        var a = el.animate([{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'translateY(-6px)' }], { duration: 340, easing: 'ease-in', fill: 'forwards' }); outs.push(a); all.push(a.finished); });
       return Promise.all(all).catch(function () {});
     };
 
-    // drawing: only while something moves
-    var st = { i: 0, to: -1, prog: 0, sx: 0, sy: 0, tx: 0, ty: 0, raf: 0, t0: 0, busy: false };
+    // drawing happens only while something moves
     var size = function () {
-      if (!G) return; var r = sec.getBoundingClientRect(), dpr = Math.min(devicePixelRatio || 1, 2);
-      canvas.width = Math.round(r.width * dpr); canvas.height = Math.round(r.height * dpr); st.w = r.width; st.h = r.height; };
+      var r = sec.getBoundingClientRect(); st.w = r.width; st.h = r.height; st.dpr = Math.min(devicePixelRatio || 1, 2);
+      if (G) { canvas.width = Math.round(r.width * st.dpr); canvas.height = Math.round(r.height * st.dpr); } };
     var frame = function (now) {
       st.raf = 0; if (dead || !G) return;
       var a = texs[o + st.i], b = st.to > -1 ? texs[o + st.to] : a; if (!a || !b) return;
-      if (st.to > -1) { var k = Math.min(1, (now - st.t0) / (still.matches ? 700 : SWAP)); st.prog = ease(k); }
-      st.sx += (st.tx - st.sx) * .07; st.sy += (st.ty - st.sy) * .07;
-      G.draw(a, b, st.to > -1 ? st.prog : 0, st.w, st.h, st.sx, st.sy, 1.035);
-      if (st.to > -1 && st.prog >= 1) { st.i = st.to; st.to = -1; st.prog = 0; st.busy = false; trim([o + st.i]); preload(); play(); G.draw(texs[o + st.i], texs[o + st.i], 0, st.w, st.h, st.sx, st.sy, 1.035); }
-      if (st.to > -1 || Math.abs(st.tx - st.sx) + Math.abs(st.ty - st.sy) > .00005) kick();
+      if (st.to > -1) st.prog = ease(Math.min(1, (now - st.t0) / (still.matches ? 700 : SWAP)));
+      st.px += (st.tx - st.px) * .06; st.py += (st.ty - st.py) * .06;
+      G.draw(a, b, st.to > -1 ? st.prog : 0, st.intro ? 1 : 0, st.w, st.h, st.px, st.py);
+      if (st.to > -1 && st.prog >= 1) {
+        st.i = st.to; st.to = -1; st.prog = 0; st.busy = false; st.intro = false; trim([o + st.i]); preload(); play();
+        G.draw(texs[o + st.i], texs[o + st.i], 0, 0, st.w, st.h, st.px, st.py);
+        if (st.q > -1) { var q = st.q; st.q = -1; show(q); } }
+      if (st.to > -1 || Math.abs(st.tx - st.px) + Math.abs(st.ty - st.py) > .002) kick();
     };
     var kick = function () { if (!st.raf && !dead) st.raf = requestAnimationFrame(frame); };
-    // the next and previous pictures wait ready; on a wide screen all of them do (on a phone, memory is short)
+    // the next and previous scenes wait ready; on a wide screen all of them do (on a phone, memory is short)
     var preload = function () { var n = P.length; (o === 'l' ? P.map(function (p, k) { return (st.i + 1 + k) % n; }) : [(st.i + 1) % n, (st.i + n - 1) % n]).forEach(load); };
 
-    // autoplay: the bar under the current thumbnail fills, and when it is full the next project comes
-    var play = function () {
-      sec.classList.remove('run'); if (still.matches) return;
-      sec.style.setProperty('--dwell', DWELL + 'ms'); void sec.offsetWidth; sec.classList.add('run'); };
-    on(nav, 'animationend', function (e) { if (e.animationName === 'lx-pr' && !st.busy) go((st.i + 1) % P.length, true); });
+    // autoplay: the hairline fills, and when it is full the next project comes
+    var play = function () { sec.classList.remove('run'); if (still.matches) return; sec.style.setProperty('--dwell', DWELL + 'ms'); void sec.offsetWidth; sec.classList.add('run'); };
+    on(sec, 'animationend', function (e) { if (e.animationName === 'lx-pr' && !st.busy) show((st.i + 1) % P.length, true); });
 
-    var go = function (i, auto) {
-      if (st.busy || i === st.i || dead) return;
-      st.busy = true; sec.classList.remove('run'); info.setAttribute('aria-live', auto ? 'off' : 'polite');
-      ths[i].classList.add('wait');
+    var fbSet = function (i, im) { fb.querySelector('.b').src = im.b.src; fb.querySelector('.d').src = im.d.src; fb.querySelector('.w').textContent = P[i].word; };
+    var show = function (i, auto) {
+      if (dead) return;
+      if (st.busy) { if (!auto) st.q = i; return; }  // asked for during a transition: it plays when this one ends
+      if (i === st.i) return;
+      var dir = (i - st.i + P.length) % P.length <= P.length / 2 ? 1 : -1;
+      st.busy = true; sec.classList.remove('run'); name.setAttribute('aria-live', auto ? 'off' : 'polite');
+      ths[i].classList.add('wait'); placeFrame(i); setNum(i + 1, dir);
+      ths.forEach(function (b, k) { b.setAttribute('aria-current', k === i ? 'true' : 'false'); });
       load(i).then(function (im) {
         ths[i].classList.remove('wait'); if (dead) return;
-        if (!im) { st.busy = false; return; }
-        wordsOut().then(function () { if (dead) return; fill(i); wordsIn(0); });
-        if (!G) { // no WebGL: the new picture fades in over the old one
-          var top = stills[1]; top.src = im.src; top.classList.remove('on'); void top.offsetWidth; top.classList.add('on');
-          later(function () { stills[0].src = im.src; top.style.transition = 'none'; top.classList.remove('on'); void top.offsetWidth; top.style.transition = ''; st.i = i; st.busy = false; play(); }, 1300); return; }
-        tex(i, im); st.to = i; st.t0 = performance.now(); kick();
+        if (!im) { st.busy = false; placeFrame(st.i); setNum(st.i + 1, -dir); return; }
+        textOut().then(function () { if (dead) return; fill(i); textIn(0); });
+        if (!G) { fb.classList.add('out'); later(function () { fbSet(i, im); fb.classList.remove('out'); st.i = i; st.busy = false; play(); }, 620); return; }
+        texFor(i, im); st.to = i; st.t0 = performance.now(); kick();
       });
     };
 
-    // start on the project in the address, if there is one
+    // start on the project in the address, if there is one, and open out of the dark
     var m = String(location.hash).match(/^#\/more\/([\w-]+)/); P.forEach(function (p, k) { if (m && p.slug === m[1]) st.i = k; });
-    fill(st.i); size();
+    size(); fill(st.i); setNum(st.i + 1, 1); placeFrame(st.i, true);
     load(st.i).then(function (im) {
       if (dead || !im) return;
-      if (G) { tex(st.i, im); kick(); } else { stills[0].src = im.src; stills[0].classList.add('on'); }
-      sec.classList.add('ready'); wordsIn(150); preload(); play();
+      if (G) { texFor(st.i, im); st.busy = true; st.intro = true; st.to = st.i; st.t0 = performance.now(); kick(); }
+      else { fbSet(st.i, im); later(play, 600); }
+      sec.classList.add('ready'); textIn(still.matches ? 0 : 900); preload();
     });
 
-    on(nav, 'click', function (e) { var b = e.target.closest('.lx-th'); if (b) go(+b.getAttribute('data-i')); });
+    on(nav, 'click', function (e) { var b = e.target.closest('.lx-th'); if (b) show(+b.getAttribute('data-i')); });
+    var rz = 0;
     on(window, 'resize', function () {
-      size(); var no = orient();
-      if (no !== o && G) { o = no; st.busy = false; st.to = -1; load(st.i).then(function (im) { if (!dead && im) { tex(st.i, im); trim([o + st.i]); kick(); } }); }
-      kick(); });
+      clearTimeout(rz); rz = later(function () {
+        if (dead) return; size(); placeFrame(st.busy && st.to > -1 ? st.to : st.i, true);
+        var no = orient();
+        if (no !== o && G) { o = no; trim([]); st.to = -1; st.busy = false; st.intro = false; load(st.i).then(function (im) { if (!dead && im) { texFor(st.i, im); kick(); } }); return; }
+        if (G) { rewords(); kick(); } }, 140); });
     on(document, 'keydown', function (e) {
       if (!root.isConnected || e.altKey || e.metaKey || e.ctrlKey || /input|textarea|select/i.test(e.target.tagName)) return;
-      if (e.key === 'ArrowRight') go((st.i + 1) % P.length); else if (e.key === 'ArrowLeft') go((st.i + P.length - 1) % P.length); });
-    // hold the countdown while the tab is hidden, while reading the words or choosing a thumbnail, or when the slider is scrolled away
+      if (e.key === 'ArrowRight') show((st.i + 1) % P.length); else if (e.key === 'ArrowLeft') show((st.i + P.length - 1) % P.length); });
+    // the countdown holds while the tab is hidden, while the pointer is on the bottom row, or when the slider is scrolled away
     var why = {}, hold = function (k, v) { why[k] = v; sec.classList.toggle('hold', Object.keys(why).some(function (x) { return why[x]; })); };
     on(document, 'visibilitychange', function () { hold('tab', document.hidden); });
-    [info, nav].forEach(function (el, n) { on(el, 'pointerenter', function () { hold('p' + n, true); }); on(el, 'pointerleave', function () { hold('p' + n, false); }); });
+    on(bar, 'pointerenter', function () { hold('bar', true); }); on(bar, 'pointerleave', function () { hold('bar', false); });
     var io = new IntersectionObserver(function (es) { es.forEach(function (e) { hold('view', e.intersectionRatio < .5); }); }, { threshold: [0, .5, 1] }); io.observe(sec);
 
-    // swipes on a phone, and a tap that follows a swipe does not open the link
+    // swipes on a phone; a tap that ends a swipe does not open the link
     var sx0 = 0, sy0 = 0, swiped = 0;
     on(sec, 'touchstart', function (e) { var t = e.touches[0]; sx0 = t.clientX; sy0 = t.clientY; }, { passive: true });
     on(sec, 'touchend', function (e) { var t = e.changedTouches[0], dx = t.clientX - sx0, dy = t.clientY - sy0;
-      if (Math.abs(dx) > 44 && Math.abs(dx) > Math.abs(dy) * 1.3) { swiped = Date.now(); go((st.i + (dx < 0 ? 1 : P.length - 1)) % P.length); } }, { passive: true });
+      if (Math.abs(dx) > 44 && Math.abs(dx) > Math.abs(dy) * 1.3) { swiped = Date.now(); show((st.i + (dx < 0 ? 1 : P.length - 1)) % P.length); } }, { passive: true });
     on(hit, 'click', function (e) { if (Date.now() - swiped < 500) e.preventDefault(); });
 
-    // the cursor over the scene, and the scene drifting a touch with the pointer
+    // the disc over the scene, and the layers shifting apart with the pointer
     var cx = 0, cy = 0, tx = 0, ty = 0, craf = 0;
-    var follow = function () { cx += (tx - cx) * .22; cy += (ty - cy) * .22; cur.style.setProperty('--cx', cx.toFixed(1) + 'px'); cur.style.setProperty('--cy', cy.toFixed(1) + 'px');
-      craf = Math.abs(tx - cx) + Math.abs(ty - cy) > .4 ? requestAnimationFrame(follow) : 0; };
+    var follow = function () { cx += (tx - cx) * .2; cy += (ty - cy) * .2; cur.style.setProperty('--cx', cx.toFixed(1) + 'px'); cur.style.setProperty('--cy', cy.toFixed(1) + 'px');
+      craf = Math.abs(tx - cx) + Math.abs(ty - cy) > .3 ? requestAnimationFrame(follow) : 0; };
     on(hit, 'pointerenter', function (e) { if (!fine.matches) return; tx = cx = e.clientX; ty = cy = e.clientY; follow(); cur.classList.add('on'); });
     on(hit, 'pointerleave', function () { cur.classList.remove('on'); });
     on(sec, 'pointermove', function (e) {
       if (!fine.matches) return;
       if (cur.classList.contains('on')) { tx = e.clientX; ty = e.clientY; if (!craf) craf = requestAnimationFrame(follow); }
       if (still.matches) return;
-      st.tx = (e.clientX / st.w - .5) * -.012; st.ty = (e.clientY / st.h - .5) * .012; kick(); });
+      st.tx = (e.clientX / st.w - .5) * -1; st.ty = (e.clientY / st.h - .5) * 1; kick(); });
     on(sec, 'pointerleave', function () { st.tx = st.ty = 0; kick(); });
 
     live = { root: root, destroy: function () {
-      dead = true; io.disconnect(); offs.forEach(function (f) { f(); }); timers.forEach(clearTimeout);
+      dead = true; io.disconnect(); offs.forEach(function (f) { f(); }); timers.forEach(clearTimeout); clearTimeout(rz);
       if (st.raf) cancelAnimationFrame(st.raf); if (craf) cancelAnimationFrame(craf);
-      if (G) { Object.keys(texs).forEach(function (k) { G.drop(texs[k]); }); G.lose(); }
+      if (G) { trim([]); G.lose(); }
       live = null; } };
   }
 
