@@ -61877,7 +61877,6 @@ window.__ypImgs = function (r) { r.querySelectorAll('img[data-yp-src]').forEach(
     <div class="lx-bar">
       <i class="lx-line" aria-hidden="true"><b></b></i>
       <div class="lx-l">
-        <p class="lx-idx" aria-hidden="true"><span class="lx-num" data-lx-num></span><span class="lx-of" data-lx-of>/06</span></p>
         <div class="lx-name" aria-live="polite"><h2 class="lx-t" data-lx-t></h2><p class="lx-d" data-lx-d></p></div>
       </div>
       <nav class="lx-nav" aria-label="Projects" data-lx-nav><i class="lx-frame" aria-hidden="true"></i></nav>
@@ -73024,7 +73023,7 @@ button.tt-dz-b:active, .tt-dz-b.is-press, .tt-dz-b.pressed { background: #2563EB
 @keyframes lx-load { from { translate: -100% 0; } to { translate: 250% 0; } }
 .lx.ready .lx-load { opacity: 0; pointer-events: none; }
 
-/* the row along the bottom: a hairline that fills until the next project, the number and name on the left,
+/* the row along the bottom: a hairline that fills until the next project, the name and one line on the left,
    the thumbnails in the middle, what it is and where it lives on the right */
 .lx-bar { position: absolute; z-index: 2; left: var(--side); right: var(--side); bottom: clamp(24px, 4.4vh, 44px); display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: end; gap: 32px; padding-top: 24px; }
@@ -73034,17 +73033,13 @@ button.tt-dz-b:active, .tt-dz-b.is-press, .tt-dz-b.pressed { background: #2563EB
 .lx.hold .lx-line b { animation-play-state: paused; }
 @keyframes lx-pr { to { scale: 1 1; } }
 
-.lx-l { display: flex; align-items: flex-end; gap: 22px; min-width: 0; }
-.lx-idx { display: flex; align-items: flex-start; margin: 0; font: 600 clamp(40px, 3.5vw, 54px)/.86 'Plus Jakarta Sans', system-ui, sans-serif; letter-spacing: -0.045em; font-variant-numeric: tabular-nums; }
-.lx-num { display: inline-flex; }
-.lx-num > span { position: relative; display: inline-block; overflow: hidden; height: .86em; }
-.lx-num > span > i { display: block; font-style: normal; }
-.lx-of { margin: .12em 0 0 6px; font: 500 12.5px/1 'Geist', system-ui, sans-serif; letter-spacing: .04em; color: rgba(255,255,255,.5); }
+.lx-l { min-width: 0; }
 .lx-name { min-width: 0; padding-bottom: 1px; }
-.lx-t { margin: 0; font: 600 17px/1.2 'Plus Jakarta Sans', system-ui, sans-serif; letter-spacing: -0.012em; }
+.lx-t { margin: 0; font: 600 19px/1.2 'Plus Jakarta Sans', system-ui, sans-serif; letter-spacing: -0.012em; }
 .lx-t .w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .12em; margin-bottom: -.12em; }
 .lx-t .w > span { display: inline-block; }
-.lx-d { max-width: 38ch; margin: 6px 0 0; font: 400 13.5px/1.45 'Geist', system-ui, sans-serif; color: rgba(255,255,255,.58); }
+/* one line, never more */
+.lx-d { margin: 6px 0 0; overflow: hidden; font: 400 14px/1.4 'Geist', system-ui, sans-serif; white-space: nowrap; text-overflow: ellipsis; color: rgba(255,255,255,.58); }
 
 .lx-nav { position: relative; display: flex; gap: 10px; }
 .lx-th { position: relative; display: block; width: clamp(58px, 4.9vw, 78px); aspect-ratio: 16 / 10; padding: 0; border: 0; border-radius: 7px; background: #15151A; cursor: pointer;
@@ -73083,9 +73078,7 @@ button.tt-dz-b:active, .tt-dz-b.is-press, .tt-dz-b.pressed { background: #2563EB
 }
 @media (max-width: 760px) {
   .lx-bar { grid-template-columns: minmax(0, 1fr); bottom: 18px; row-gap: 16px; padding-top: 18px; }
-  .lx-l { gap: 14px; }
-  .lx-idx { font-size: 34px; }
-  .lx-t { font-size: 16px; } .lx-d { font-size: 13px; margin-top: 4px; }
+  .lx-t { font-size: 17px; } .lx-d { font-size: 13.5px; margin-top: 4px; }
   .lx-r { flex-direction: row; justify-content: space-between; align-items: center; text-align: left; }
   .lx-meta { justify-content: flex-start; font-size: 10px; }
   .lx-go { font-size: 14px; }
@@ -73099,7 +73092,7 @@ button.tt-dz-b:active, .tt-dz-b.is-press, .tt-dz-b.pressed { background: #2563EB
    the coloured background, the project's name set huge, and the devices in front of it. With the pointer the layers
    shift apart a little, nearest the most. Moving to another project melts the whole scene into the next through a
    glass lens that grows from the middle (the shader of the Lumina interactive list on 21st.dev, run here without
-   React, three.js or GSAP); the page opens the same way, out of the dark. The bottom row holds the number, the name,
+   React, three.js or GSAP); the page opens the same way, out of the dark. The bottom row holds the name and one line,
    the thumbnails and the link, and a hairline above it fills until the next project. The page is cloned in by the
    router, so this watches for it and wires it up each time it appears, and lets go of everything (the GPU context
    too) when it leaves */
@@ -73107,23 +73100,22 @@ button.tt-dz-b:active, .tt-dz-b.is-press, .tt-dz-b.pressed { background: #2563EB
   var FIG = 'https://www.figma.com/design/LYQ9xzdyJTAqzwye4h8xSq/Websites?node-id=2505-19708&t=9fKNzBUXhX7BBhkL-1';
   var P = [
     { slug: 'top10-apps', top: { l: 0.255, p: 0.3029 }, tint: '157,120,255', word: 'Top-10 Apps', title: 'Top-10 Mobiles apps', meta: ['Mobile apps', 'Customer and delivery'], href: FIG, go: 'View in Figma', cur: 'In Figma',
-      d: 'A shopping app for customers, and an app for the riders who deliver their orders.' },
+      d: 'Shopping and delivery apps for a phone store.' },
     { slug: 'top10-web', top: { l: 0.2933, p: 0.3961 }, tint: '255,92,170', word: 'Top-10 Store', title: 'Top-10 Mobiles website', meta: ['Responsive website', 'Laptop, tablet, phone'], href: FIG, go: 'View in Figma', cur: 'In Figma',
-      d: 'The same store on the web, designed for laptop, tablet and phone.' },
+      d: 'The same store on the web, for every screen.' },
     { slug: 'vijayeesam', top: { l: 0.2617, p: 0.3092 }, tint: '255,128,74', word: 'Vijayeesam', title: 'Vijayeesam', meta: ['Website', 'Designed in Figma'], href: 'https://vijayeesam.com/', go: 'Visit site', cur: 'Live site',
       d: 'A website for a performance marketing agency.' },
     { slug: 'aetherion', top: { l: 0.2617, p: 0.3092 }, tint: '64,214,206', word: 'Aetherion', title: 'Aetherion Pharma', meta: ['Website', 'Designed in Figma'], href: 'https://aetherionpharma.com/', go: 'Visit site', cur: 'Live site',
-      d: 'A website for a company making medicines, nutraceuticals and cosmetics.' },
+      d: 'A website for a pharma and nutraceutical company.' },
     { slug: 'ayuniva', top: { l: 0.2617, p: 0.3092 }, tint: '132,206,96', word: 'Ayuniva', title: 'Ayuniva Remedies', meta: ['Website', 'Built in Framer'], href: 'https://ayunivaremedies.com/', go: 'Visit site', cur: 'Live site',
-      d: 'A website for a maker of herbal extracts, probiotics and vitamins.' },
+      d: 'A website for a herbal remedies company.' },
     { slug: 'vrudhi', top: { l: 0.2617, p: 0.3092 }, tint: '96,150,255', word: 'Vrudhi', title: 'Vrudhi Lifesciences', meta: ['Website', 'Built in Framer'], href: 'https://vrudhilifesciences.com/', go: 'Visit site', cur: 'Live site',
-      d: 'A website for a pharma company that supplies medicines, APIs and surgical products.' }
+      d: 'A website for a pharmaceutical supplier.' }
   ];
   var BASE = 'assets/more/lx/', SWAP = 2500, DWELL = 6500, ZOOM = 1.045;
   var fine = matchMedia('(hover: hover) and (pointer: fine)'), still = matchMedia('(prefers-reduced-motion: reduce)'), live = null;
-  var pad = function (n) { return (n < 10 ? '0' : '') + n; };
   var ease = function (t) { return t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; };
-  var IO = 'cubic-bezier(.65,0,.35,1)', OUT = 'cubic-bezier(.16,1,.3,1)';
+  var OUT = 'cubic-bezier(.16,1,.3,1)';
 
   var VS = 'attribute vec2 a; varying vec2 vUv; void main () { vUv = a * .5 + .5; gl_Position = vec4(a, 0., 1.); }';
   // a scene is the background, then the name, then the devices (both stored with their light already multiplied by
@@ -73219,13 +73211,12 @@ button.tt-dz-b:active, .tt-dz-b.is-press, .tt-dz-b.pressed { background: #2563EB
     root.setAttribute('data-mp-on', '');
     var sec = root.querySelector('[data-lx]'), canvas = sec.querySelector('.lx-gl'), hit = sec.querySelector('.lx-hit'), nav = sec.querySelector('[data-lx-nav]');
     var bar = sec.querySelector('.lx-bar'), name = sec.querySelector('.lx-name'), T = sec.querySelector('[data-lx-t]'), D = sec.querySelector('[data-lx-d]');
-    var num = sec.querySelector('[data-lx-num]'), meta = sec.querySelector('[data-lx-meta]'), go = sec.querySelector('[data-lx-go]'), frameEl = nav.querySelector('.lx-frame');
+    var meta = sec.querySelector('[data-lx-meta]'), go = sec.querySelector('[data-lx-go]'), frameEl = nav.querySelector('.lx-frame');
     var cur = root.querySelector('.lx-cur'), curl = cur.querySelector('[data-lx-curl]'), fb = sec.querySelector('.lx-fb');
     var G = makeGL(canvas), timers = [], offs = [], dead = false;
     var on = function (el, ev, fn, o) { el.addEventListener(ev, fn, o); offs.push(function () { el.removeEventListener(ev, fn, o); }); };
     var later = function (fn, ms) { var t = setTimeout(fn, ms); timers.push(t); return t; };
     if (!G) sec.classList.add('nogl');
-    sec.querySelector('[data-lx-of]').textContent = '/' + pad(P.length);
 
     // pictures: wide ones on wide screens, tall ones on phones; decoded once, sent to the GPU only when needed
     var orient = function () { var r = sec.getBoundingClientRect(); return r.width / Math.max(1, r.height) < .85 ? 'p' : 'l'; };
@@ -73259,18 +73250,6 @@ button.tt-dz-b:active, .tt-dz-b.is-press, .tt-dz-b.pressed { background: #2563EB
       nav.style.setProperty('--fx', (t.offsetLeft - 4) + 'px'); nav.style.setProperty('--fw', (t.offsetWidth + 8) + 'px');
       if (snap) { void nav.offsetWidth; nav.classList.remove('snap'); } };
 
-    // the number rolls, digit by digit
-    var setNum = function (n, dir) {
-      var s = pad(n);
-      if (!num.children.length || still.matches) { num.innerHTML = s.split('').map(function (ch) { return '<span><i>' + ch + '</i></span>'; }).join(''); return; }
-      [].forEach.call(num.children, function (box, k) {
-        var old = box.lastElementChild; if (old.textContent === s[k]) return;
-        var ni = document.createElement('i'); ni.textContent = s[k]; ni.style.cssText = 'position:absolute;left:0;top:0'; box.appendChild(ni);
-        old.animate([{ transform: 'none' }, { transform: 'translateY(' + (-105 * dir) + '%)' }], { duration: 760, delay: k * 60, easing: IO, fill: 'forwards' }).finished
-          .then(function () { old.remove(); ni.style.cssText = ''; }, function () {});
-        ni.animate([{ transform: 'translateY(' + (105 * dir) + '%)' }, { transform: 'none' }], { duration: 760, delay: k * 60, easing: IO, fill: 'backwards' });
-      });
-    };
     // the words: each word rises into place inside its own line, and leaves upwards
     var words = function (s) { return s.split(' ').map(function (w) { return '<span class="w"><span>' + w + '</span></span>'; }).join(' '); };
     var fill = function (i) {
@@ -73329,13 +73308,12 @@ button.tt-dz-b:active, .tt-dz-b.is-press, .tt-dz-b.pressed { background: #2563EB
       if (dead) return;
       if (st.busy) { if (!auto) st.q = i; return; }  // asked for during a transition: it plays when this one ends
       if (i === st.i) return;
-      var dir = (i - st.i + P.length) % P.length <= P.length / 2 ? 1 : -1;
       st.busy = true; sec.classList.remove('run'); name.setAttribute('aria-live', auto ? 'off' : 'polite');
-      ths[i].classList.add('wait'); placeFrame(i); setNum(i + 1, dir);
+      ths[i].classList.add('wait'); placeFrame(i);
       ths.forEach(function (b, k) { b.setAttribute('aria-current', k === i ? 'true' : 'false'); });
       load(i).then(function (im) {
         ths[i].classList.remove('wait'); if (dead) return;
-        if (!im) { st.busy = false; placeFrame(st.i); setNum(st.i + 1, -dir); return; }
+        if (!im) { st.busy = false; placeFrame(st.i); return; }
         textOut().then(function () { if (dead) return; fill(i); textIn(0); });
         if (!G) { fb.classList.add('out'); later(function () { fbSet(i, im); fb.classList.remove('out'); st.i = i; st.busy = false; play(); }, 620); return; }
         texFor(i, im); st.to = i; st.t0 = performance.now(); kick();
@@ -73344,7 +73322,7 @@ button.tt-dz-b:active, .tt-dz-b.is-press, .tt-dz-b.pressed { background: #2563EB
 
     // start on the project in the address, if there is one, and open out of the dark
     var m = String(location.hash).match(/^#\/more\/([\w-]+)/); P.forEach(function (p, k) { if (m && p.slug === m[1]) st.i = k; });
-    size(); fill(st.i); setNum(st.i + 1, 1); placeFrame(st.i, true);
+    size(); fill(st.i); placeFrame(st.i, true);
     load(st.i).then(function (im) {
       if (dead || !im) return;
       if (G) { texFor(st.i, im); st.busy = true; st.intro = true; st.to = st.i; st.t0 = performance.now(); kick(); }
