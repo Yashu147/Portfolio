@@ -61887,7 +61887,7 @@ window.__ypImgs = function (r) { r.querySelectorAll('img[data-yp-src]').forEach(
     </div>
     <div class="lx-load" aria-hidden="true"><i></i></div>
   </section>
-  <div class="lx-cur" aria-hidden="true"><b>View</b><small data-lx-curl>Live site</small></div>
+  <div class="lx-cur" aria-hidden="true"><b>View</b></div>
 </div></template>
 <template id="ve6-src"><div data-cs-root="" style="background: #F4F4F1; color: #0B0B0C; font-family: 'Geist', system-ui, sans-serif; font-size: 18px; line-height: 1.65; min-height: 100vh; overflow-x: clip">
 
@@ -73007,7 +73007,10 @@ button.tt-dz-b:active, .tt-dz-b.is-press, .tt-dz-b.pressed { background: #2563EB
 #yp-page .lx-gl { z-index: 0; }
 .lx-hit { position: absolute; inset: 0; z-index: 1; -webkit-tap-highlight-color: transparent; }
 @media (hover: hover) and (pointer: fine) { .lx-hit { cursor: none; } }
-.lx::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(0deg, rgba(5,5,7,.6), rgba(5,5,7,0) 30%); }
+.lx::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(0deg, #0D0D11, rgba(13,13,17,.92) 5%, rgba(13,13,17,.6) 16%, rgba(13,13,17,0) 38%); }
+/* the footer that follows: its dark top is held longer, so the slider sinks into it with no edge */
+#yp-page .mp + .yft .yft-shade { background: linear-gradient(180deg, #0D0D11 0%, #0D0D11 16%, rgba(13,13,17,.72) 34%, rgba(13,13,17,.46) 58%, rgba(13,13,17,.78) 100%); }
 
 /* without WebGL: the same three layers as plain pictures and type, fading from one project to the next */
 .lx-fb { display: none; position: absolute; inset: 0; transition: opacity .6s ease; }
@@ -73063,11 +73066,10 @@ button.tt-dz-b:active, .tt-dz-b.is-press, .tt-dz-b.pressed { background: #2563EB
 .lx-go:focus-visible, .lx-th:focus-visible, .mp-back:focus-visible { outline: 2px solid #FFFFFF; outline-offset: 4px; }
 
 /* over the scene: the same white disc the home page shows over a case study */
-.lx-cur { position: fixed; left: 0; top: 0; z-index: 60; display: grid; place-content: center; justify-items: center; gap: 4px; width: 96px; height: 96px; margin: -48px 0 0 -48px;
+.lx-cur { position: fixed; left: 0; top: 0; z-index: 60; display: grid; place-items: center; width: 96px; height: 96px; margin: -48px 0 0 -48px;
   border-radius: 50%; background: #FFFFFF; color: #0F0F10; pointer-events: none; translate: var(--cx, -200px) var(--cy, -200px); scale: 0; transition: scale .45s var(--ease); }
 .lx-cur.on { scale: 1; }
 .lx-cur b { font: 700 13px/1 'Plus Jakarta Sans', system-ui, sans-serif; letter-spacing: .08em; text-transform: uppercase; }
-.lx-cur small { font: 600 8.5px/1 'Geist', system-ui, sans-serif; letter-spacing: .14em; text-transform: uppercase; opacity: .5; }
 
 /* the site colours every link on a page light grey (white on hover); this page sets its own */
 #yp-page .mp a.lx-go, #yp-page .mp a.lx-go:hover, #yp-page .mp a.mp-back, #yp-page .mp a.mp-back:hover { color: #FFFFFF; }
@@ -73089,8 +73091,7 @@ button.tt-dz-b:active, .tt-dz-b.is-press, .tt-dz-b.pressed { background: #2563EB
 </style>
 <script id="mp-js">
 /* More projects: a full screen slider of the six projects. Each scene is drawn on a WebGL canvas from three layers:
-   the coloured background, the project's name set huge, and the devices in front of it. With the pointer the layers
-   shift apart a little, nearest the most. Moving to another project melts the whole scene into the next through a
+   the coloured background, the project's name set huge, and the devices in front of it. Moving to another project melts the whole scene into the next through a
    glass lens that grows from the middle (the shader of the Lumina interactive list on 21st.dev, run here without
    React, three.js or GSAP); the page opens the same way, out of the dark. The bottom row holds the name and one line,
    the thumbnails and the link, and a hairline above it fills until the next project. The page is cloned in by the
@@ -73139,16 +73140,16 @@ button.tt-dz-b:active, .tt-dz-b.is-press, .tt-dz-b.pressed { background: #2563EB
     '  float progress = uProgress, time = progress * 5.; vec2 uv = vUv;',
     '  float br = progress * length(uRes) * .85;',
     '  vec2 p = uv * uRes, c = uRes * .5; float d = length(p - c), nd = d / max(br, .001);',
-    '  float param = smoothstep(br + 3., br - 3., d);',
+    '  float param = progress > 0. ? smoothstep(br + 3., br - 3., d) : 0.;',
+    '  float fade = 1. - smoothstep(.5, 1., progress);',
     '  vec3 img;',
     '  if (param > 0.) {',
-    '    float ro = .08 * pow(smoothstep(.3, 1., nd), 1.5);',
+    '    float ro = .08 * pow(smoothstep(.3, 1., nd), 1.5) * fade;',
     '    vec2 dir = d > 0. ? (p - c) / d : vec2(0.);',
-    '    vec2 dUV = uv - dir * ro + vec2(sin(time + nd * 10.), cos(time * .8 + nd * 8.)) * .015 * nd * param;',
-    '    float ca = .02 * pow(smoothstep(.3, 1., nd), 1.2);',
+    '    vec2 dUV = uv - dir * ro + vec2(sin(time + nd * 10.), cos(time * .8 + nd * 8.)) * .015 * nd * param * fade;',
+    '    float ca = .02 * pow(smoothstep(.3, 1., nd), 1.2) * fade;',
     '    img = vec3(scene2(dUV + dir * ca * 1.2).r, scene2(dUV + dir * ca * .2).g, scene2(dUV - dir * ca * .8).b);',
-    '    img += smoothstep(.95, 1., nd) * (1. - smoothstep(1., 1.01, nd)) * .08;',
-    '    if (progress > .95) img = mix(img, scene2(uv), (progress - .95) / .05);',
+    '    img += smoothstep(.95, 1., nd) * (1. - smoothstep(1., 1.01, nd)) * .08 * fade;',
     '  } else img = scene2(uv);',
     '  vec3 col = param >= 1. ? img : mix(scene1(uv), img, param);',
     '  col += (hash(gl_FragCoord.xy) - .5) / 255.;',
@@ -73190,15 +73191,22 @@ button.tt-dz-b:active, .tt-dz-b.is-press, .tt-dz-b.pressed { background: #2563EB
   }
 
   // the name, huge, set so the devices stand in front of its lower edge wherever they land on this screen; it fades
-  // into the project's colour as it nears them. On a tall screen a two word name takes two lines, so it can be larger
-  function drawWord(word, tint, W, H, dpr, devTop) {
+  // into the project's colour as it nears them. On a tall screen a two word name takes two lines, so it can be larger.
+  // Every name is set at one size: the largest at which the longest of them still fits
+  function wordSize(W, H, tops, iw, ih) {
+    var x = document.createElement('canvas').getContext('2d'), tall = W / H < .85, k = tall ? .42 : .38, minTop = tall ? 96 : 84;
+    x.font = '800 100px "Plus Jakarta Sans", system-ui, sans-serif'; if ('letterSpacing' in x) x.letterSpacing = '-5px';
+    return Math.min.apply(null, P.map(function (p, i) {
+      var lines = tall ? p.word.split(' ') : [p.word], n = lines.length, wid = Math.max.apply(null, lines.map(function (l) { return x.measureText(l).width; }));
+      return Math.min(100 * W * (tall ? .9 : .88) / wid, H * (tall ? .13 : .245) / .72, Math.max(20, (tops[i] - minTop) / (.72 + (n - 1) * .86 - k * .72)));
+    }));
+  }
+  function drawWord(word, tint, W, H, dpr, devTop, fs) {
     var c = document.createElement('canvas'); c.width = Math.max(1, Math.round(W * dpr)); c.height = Math.max(1, Math.round(H * dpr));
     var x = c.getContext('2d'); x.scale(dpr, dpr);
     var tall = W / H < .85, ls = 'letterSpacing' in x, k = tall ? .42 : .38, minTop = tall ? 96 : 84;
     var set = function (fs) { x.font = '800 ' + fs + 'px "Plus Jakarta Sans", system-ui, sans-serif'; if (ls) x.letterSpacing = (-0.05 * fs).toFixed(2) + 'px'; };
-    var lines = tall ? word.split(' ') : [word], n = lines.length;
-    set(100); var wid = Math.max.apply(null, lines.map(function (l) { return x.measureText(l).width; }));
-    var fs = Math.min(100 * W * (tall ? .9 : .88) / wid, H * (tall ? .13 : .245) / .72, Math.max(20, (devTop - minTop) / (.72 + (n - 1) * .86 - k * .72))); set(fs);
+    var lines = tall ? word.split(' ') : [word], n = lines.length; set(fs);
     var lh = fs * .86, cap = fs * .72, last = devTop + k * cap, base0 = last - (n - 1) * lh;
     var g = x.createLinearGradient(0, base0 - cap, 0, last + fs * .1);
     g.addColorStop(0, 'rgba(255,255,255,.97)'); g.addColorStop(.5, 'rgba(255,255,255,.78)'); g.addColorStop(1, 'rgba(' + tint + ',.22)');
@@ -73212,7 +73220,7 @@ button.tt-dz-b:active, .tt-dz-b.is-press, .tt-dz-b.pressed { background: #2563EB
     var sec = root.querySelector('[data-lx]'), canvas = sec.querySelector('.lx-gl'), hit = sec.querySelector('.lx-hit'), nav = sec.querySelector('[data-lx-nav]');
     var bar = sec.querySelector('.lx-bar'), name = sec.querySelector('.lx-name'), T = sec.querySelector('[data-lx-t]'), D = sec.querySelector('[data-lx-d]');
     var meta = sec.querySelector('[data-lx-meta]'), go = sec.querySelector('[data-lx-go]'), frameEl = nav.querySelector('.lx-frame');
-    var cur = root.querySelector('.lx-cur'), curl = cur.querySelector('[data-lx-curl]'), fb = sec.querySelector('.lx-fb');
+    var cur = root.querySelector('.lx-cur'), fb = sec.querySelector('.lx-fb');
     var G = makeGL(canvas), timers = [], offs = [], dead = false;
     var on = function (el, ev, fn, o) { el.addEventListener(ev, fn, o); offs.push(function () { el.removeEventListener(ev, fn, o); }); };
     var later = function (fn, ms) { var t = setTimeout(fn, ms); timers.push(t); return t; };
@@ -73228,17 +73236,19 @@ button.tt-dz-b:active, .tt-dz-b.is-press, .tt-dz-b.pressed { background: #2563EB
       return (imgs[k] = Promise.all([pic(BASE + P[i].slug + '-bg-' + o + '.webp'), pic(BASE + P[i].slug + '-dv-' + o + '.webp'), fontReady])
         .then(function (r) { return r[0] && r[1] ? { b: r[0], d: r[1] } : null; }));
     };
-    var st = { q: -1, i: 0, to: -1, prog: 0, px: 0, py: 0, tx: 0, ty: 0, raf: 0, t0: 0, busy: false, intro: false, w: 1, h: 1, dpr: 1 };
+    var st = { q: -1, i: 0, to: -1, prog: 0, px: 0, py: 0, raf: 0, t0: 0, busy: false, intro: false, w: 1, h: 1, dpr: 1 };
     var devTop = function (i, im) {
       var iw = im.d.naturalWidth, ih = im.d.naturalHeight, s = Math.max(st.w / iw, st.h / ih), y = (st.h - ih * s) / 2 + P[i].top[o] * ih * s;
       return (y - st.h / 2) * ZOOM + st.h / 2; };
-    var word = function (i, im) { return G.tex(drawWord(P[i].word, P[i].tint, st.w, st.h, st.dpr, devTop(i, im))); };
+    var word = function (i, im) {
+      if (!st.fs) st.fs = wordSize(st.w, st.h, P.map(function (p, k) { return devTop(k, im); }), im.d.naturalWidth, im.d.naturalHeight);
+      return G.tex(drawWord(P[i].word, P[i].tint, st.w, st.h, st.dpr, devTop(i, im), st.fs)); };
     var texFor = function (i, im) {
       var k = o + i; if (texs[k]) return texs[k];
       return (texs[k] = { b: G.tex(im.b), d: G.tex(im.d), w: word(i, im), im: im, sw: im.d.naturalWidth, sh: im.d.naturalHeight });
     };
     var trim = function (keep) { Object.keys(texs).forEach(function (k) { if (keep.indexOf(k) < 0) { var t = texs[k]; G.drop(t.b); G.drop(t.d); G.drop(t.w); delete texs[k]; } }); };
-    var rewords = function () { Object.keys(texs).forEach(function (k) { var t = texs[k]; G.drop(t.w); t.w = word(+k.slice(1), t.im); }); };
+    var rewords = function () { st.fs = 0; Object.keys(texs).forEach(function (k) { var t = texs[k]; G.drop(t.w); t.w = word(+k.slice(1), t.im); }); };
 
     // the thumbnails, and the frame that slides to the one showing
     P.forEach(function (p, i) {
@@ -73257,7 +73267,7 @@ button.tt-dz-b:active, .tt-dz-b.is-press, .tt-dz-b.pressed { background: #2563EB
       T.innerHTML = words(p.title); D.textContent = p.d;
       meta.innerHTML = p.meta.map(function (m) { return '<span>' + m + '</span>'; }).join('');
       go.href = p.href; go.querySelector('[data-lx-gol]').textContent = p.go; go.setAttribute('aria-label', p.go + ': ' + p.title + ', opens in a new tab');
-      hit.href = p.href; curl.textContent = p.cur;
+      hit.href = p.href;
       ths.forEach(function (b, k) { b.setAttribute('aria-current', k === i ? 'true' : 'false'); });
     };
     var outs = [];
@@ -73287,13 +73297,12 @@ button.tt-dz-b:active, .tt-dz-b.is-press, .tt-dz-b.pressed { background: #2563EB
       st.raf = 0; if (dead || !G) return;
       var a = texs[o + st.i], b = st.to > -1 ? texs[o + st.to] : a; if (!a || !b) return;
       if (st.to > -1) st.prog = ease(Math.min(1, (now - st.t0) / (still.matches ? 700 : SWAP)));
-      st.px += (st.tx - st.px) * .06; st.py += (st.ty - st.py) * .06;
       G.draw(a, b, st.to > -1 ? st.prog : 0, st.intro ? 1 : 0, st.w, st.h, st.px, st.py);
       if (st.to > -1 && st.prog >= 1) {
         st.i = st.to; st.to = -1; st.prog = 0; st.busy = false; st.intro = false; trim([o + st.i]); preload(); play();
         G.draw(texs[o + st.i], texs[o + st.i], 0, 0, st.w, st.h, st.px, st.py);
         if (st.q > -1) { var q = st.q; st.q = -1; show(q); } }
-      if (st.to > -1 || Math.abs(st.tx - st.px) + Math.abs(st.ty - st.py) > .002) kick();
+      if (st.to > -1) kick();
     };
     var kick = function () { if (!st.raf && !dead) st.raf = requestAnimationFrame(frame); };
     // the next and previous scenes wait ready; on a wide screen all of them do (on a phone, memory is short)
@@ -73336,7 +73345,7 @@ button.tt-dz-b:active, .tt-dz-b.is-press, .tt-dz-b.pressed { background: #2563EB
       clearTimeout(rz); rz = later(function () {
         if (dead) return; size(); placeFrame(st.busy && st.to > -1 ? st.to : st.i, true);
         var no = orient();
-        if (no !== o && G) { o = no; trim([]); st.to = -1; st.busy = false; st.intro = false; load(st.i).then(function (im) { if (!dead && im) { texFor(st.i, im); kick(); } }); return; }
+        if (no !== o && G) { o = no; st.fs = 0; trim([]); st.to = -1; st.busy = false; st.intro = false; load(st.i).then(function (im) { if (!dead && im) { texFor(st.i, im); kick(); } }); return; }
         if (G) { rewords(); kick(); } }, 140); });
     on(document, 'keydown', function (e) {
       if (!root.isConnected || e.altKey || e.metaKey || e.ctrlKey || /input|textarea|select/i.test(e.target.tagName)) return;
@@ -73354,18 +73363,14 @@ button.tt-dz-b:active, .tt-dz-b.is-press, .tt-dz-b.pressed { background: #2563EB
       if (Math.abs(dx) > 44 && Math.abs(dx) > Math.abs(dy) * 1.3) { swiped = Date.now(); show((st.i + (dx < 0 ? 1 : P.length - 1)) % P.length); } }, { passive: true });
     on(hit, 'click', function (e) { if (Date.now() - swiped < 500) e.preventDefault(); });
 
-    // the disc over the scene, and the layers shifting apart with the pointer
+    // the disc over the scene
     var cx = 0, cy = 0, tx = 0, ty = 0, craf = 0;
     var follow = function () { cx += (tx - cx) * .2; cy += (ty - cy) * .2; cur.style.setProperty('--cx', cx.toFixed(1) + 'px'); cur.style.setProperty('--cy', cy.toFixed(1) + 'px');
       craf = Math.abs(tx - cx) + Math.abs(ty - cy) > .3 ? requestAnimationFrame(follow) : 0; };
     on(hit, 'pointerenter', function (e) { if (!fine.matches) return; tx = cx = e.clientX; ty = cy = e.clientY; follow(); cur.classList.add('on'); });
     on(hit, 'pointerleave', function () { cur.classList.remove('on'); });
     on(sec, 'pointermove', function (e) {
-      if (!fine.matches) return;
-      if (cur.classList.contains('on')) { tx = e.clientX; ty = e.clientY; if (!craf) craf = requestAnimationFrame(follow); }
-      if (still.matches) return;
-      st.tx = (e.clientX / st.w - .5) * -1; st.ty = (e.clientY / st.h - .5) * 1; kick(); });
-    on(sec, 'pointerleave', function () { st.tx = st.ty = 0; kick(); });
+      if (fine.matches && cur.classList.contains('on')) { tx = e.clientX; ty = e.clientY; if (!craf) craf = requestAnimationFrame(follow); } });
 
     live = { root: root, destroy: function () {
       dead = true; io.disconnect(); offs.forEach(function (f) { f(); }); timers.forEach(clearTimeout); clearTimeout(rz);
