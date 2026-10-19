@@ -61871,11 +61871,13 @@ window.__ypImgs = function (r) { r.querySelectorAll('img[data-yp-src]').forEach(
 <div class="tt-nav-sc"><nav aria-label="Chapters"><span class="tt-nav-ind" aria-hidden="true"></span><button type="button" data-tt-go="ap-brief">The brief</button><button type="button" data-tt-go="ap-problem">Problem</button><button type="button" data-tt-go="ap-cust">Customer app</button><button type="button" data-tt-go="ap-del">Delivery app</button><button type="button" data-tt-go="ap-details">Details</button><button type="button" data-tt-go="ap-outcome">Outcome</button></nav></div>
 </div></div>
 
-<!-- 01 · the story in two pictures, read left to right: someone at home orders on the app; a delivery partner knocks at
-     their door with it. A mark on each phone leads to a card from that app, and the sentence runs across the two -->
+<!-- 01 · the story in two pictures. It opens on two phones side by side, the customer app and the delivery app, a tap
+     on the first; each phone then opens out into the moment it belongs to, at home and at the door. The sentence is cut
+     into bands that slide in from both sides, violet for the customer app and green for the delivery app, and close into
+     one white line. Then a mark on each phone and a card from its app -->
 <section class="tt-s ap-dp" data-tt-ch="Overview" data-theme="dark" data-ap-dp="">
-  <div class="ap-dp-p ap-dp-l" aria-hidden="true"><img src="assets/apps/hero-order.jpg" alt="" width="1200" height="1800" decoding="async" fetchpriority="high"></div>
-  <div class="ap-dp-p ap-dp-r" aria-hidden="true"><img src="assets/apps/hero-door.jpg" alt="" width="1200" height="1800" decoding="async" fetchpriority="high"></div>
+  <div class="ap-dp-p ap-dp-l" aria-hidden="true"><img class="ap-dp-ph" src="assets/apps/hero-order.jpg" alt="" width="1200" height="1800" decoding="async" fetchpriority="high"><img class="ap-dp-ui" src="assets/apps/u-2518-77173.webp" alt="" decoding="async"><i class="ap-dp-tap"></i></div>
+  <div class="ap-dp-p ap-dp-r" aria-hidden="true"><img class="ap-dp-ph" src="assets/apps/hero-door.jpg" alt="" width="1200" height="1800" decoding="async" fetchpriority="high"><img class="ap-dp-ui" src="assets/apps/d-2517-14902.webp" alt="" decoding="async"></div>
   <svg class="ap-dp-ln" aria-hidden="true"><line class="ap-dp-lnl" x1="0" y1="0" x2="0" y2="0"/><line class="ap-dp-lnr" x1="0" y1="0" x2="0" y2="0"/></svg>
   <i class="ap-dp-pin ap-dp-pinl" aria-hidden="true"></i>
   <i class="ap-dp-pin ap-dp-pinr" aria-hidden="true"></i>
@@ -61885,97 +61887,102 @@ window.__ypImgs = function (r) { r.querySelectorAll('img[data-yp-src]').forEach(
   <span class="ap-dp-k ap-dp-kr" aria-hidden="true"><i></i>Delivery partner app</span>
   <div class="ap-dp-b">
     <p class="ap-dp-tag">Case study 03</p>
-    <h1 class="ap-dp-t"><span class="ap-dp-h ap-dp-hl"><span class="ap-nw">Top<span class="ap-hy">-</span>10 Mobiles,</span></span> <span class="ap-dp-h ap-dp-hr">from a tap to your door<span class="ap-pn">.</span></span></h1>
+    <h1 class="ap-dp-t" aria-label="Top-10 Mobiles, from a tap to your door."><span class="ap-dp-h ap-dp-hl" aria-hidden="true"><span class="ap-dp-w">Top<span class="ap-hy">-</span>10</span> <span class="ap-dp-w">Mobiles,</span></span> <span class="ap-dp-h ap-dp-hr" aria-hidden="true"><span class="ap-dp-w">from</span> <span class="ap-dp-w">a</span> <span class="ap-dp-w">tap</span> <span class="ap-dp-w">to</span> <span class="ap-dp-w">your</span> <span class="ap-dp-w">door<span class="ap-pn">.</span></span></span></h1>
     <p class="ap-dp-s">One app to order online, and one for the store staff who deliver it.</p>
   </div>
   <p class="ap-dp-credit">Photos: Mikhail Nilov, RDNE Stock project, Pexels</p>
 </section>
 
-<!-- 02 · the brief: what the client sells and what the apps let people do, beside the choice the customer makes in the
-     app, delivery or store pickup, and the screen each one leads to -->
+<!-- 02 · the brief: what the client sells and why it needed two apps, then one order seen in both at once: a tracker
+     that runs on its own (or on a tap) and the two phones moving through it together, joined by the order they share -->
 <section class="tt-s ap-dark ap-bf" id="ap-brief" data-tt-ch="The brief" data-theme="dark">
-  <div class="tt-wrap ap-bf3">
-    <div class="ap-bf3-l">
-      <p class="ap-k r"><b>02</b><i></i>The brief</p>
-      <h2 class="ap-bf-t" data-split="">Buy it online. Get it delivered, or pick it up.</h2>
-      <p class="ap-bf-p r">Top-10 Mobiles sells phones, laptops and accessories in its own stores. The apps let people order without going in, and let delivery partners bring the order to them.</p>
+  <div class="tt-wrap">
+    <div class="ap-bf4-h">
+      <div><p class="ap-k r"><b>02</b><i></i>The brief</p><h2 class="ap-bf-t" data-split="">Two apps, one order.</h2></div>
+      <p class="ap-bf-p r">Top-10 Mobiles sells phones, laptops and accessories in its own stores. To sell online it needed two apps that share every order: one for customers, and one for the store staff who deliver. Customers can also pick up at a store nearby.</p>
+    </div>
+    <div class="ap-sync r" data-ap-sync="">
+      <div class="ap-tour-nav ap-trk" role="tablist" aria-label="One order, step by step" style="--n:5"><span class="ap-trk-line" aria-hidden="true"><b></b><i><svg viewBox="0 0 24 24"><circle cx="18.5" cy="17.5" r="3.5"/><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="15" cy="5" r="1"/><path d="M12 17.5V14l-3-3 4-3 2 3h2"/></svg></i></span><button type="button" role="tab" data-ap-tab=""><span></span>Accepted</button><button type="button" role="tab" data-ap-tab=""><span></span>Packed</button><button type="button" role="tab" data-ap-tab=""><span></span>Picked up</button><button type="button" role="tab" data-ap-tab=""><span></span>On the way</button><button type="button" role="tab" data-ap-tab=""><span></span>At the door</button></div>
+      <div class="ap-sync-st">
+        <figure class="ap-sync-ph"><figcaption class="ap-sync-k"><i></i>Customer app</figcaption><div class="ap-ph"><div class="ap-ph-f"><div class="ap-ph-s" data-stack><img src="assets/apps/u-2518-77173.webp" alt="Customer app, accepted" width="786" height="1704" loading="lazy" decoding="async" class="on"><img src="assets/apps/u-2518-78435.webp" alt="Customer app, packed" width="786" height="1704" loading="lazy" decoding="async"><img src="assets/apps/u-2518-79572.webp" alt="Customer app, picked up" width="786" height="1704" loading="lazy" decoding="async"><img src="assets/apps/u-2518-81958.webp" alt="Customer app, on the way" width="786" height="1704" loading="lazy" decoding="async"><img src="assets/apps/u-2518-39827.webp" alt="Customer app, at the door" width="786" height="1704" loading="lazy" decoding="async"></div></div></div><p class="ap-sync-cap"><span class="on">Order accepted, with the time it should arrive.</span><span>Packed at the store.</span><span>A partner is on it, and the delivery code appears.</span><span>On the map, with the time left.</span><span>Show the partner the code.</span></p></figure>
+        <div class="ap-sync-mid" aria-hidden="true"><span class="ap-sync-w"><i></i></span><b>Order #654321</b><span class="ap-sync-w ap-sync-w--r"><i></i></span></div>
+        <figure class="ap-sync-ph ap-sync-ph--d"><figcaption class="ap-sync-k"><i></i>Delivery app</figcaption><div class="ap-ph"><div class="ap-ph-f"><div class="ap-ph-s" data-stack><img src="assets/apps/d-2517-14421.webp" alt="Delivery app, accepted" width="786" height="1704" loading="lazy" decoding="async" class="on"><img src="assets/apps/d-2517-14717.webp" alt="Delivery app, packed" width="786" height="1704" loading="lazy" decoding="async"><img src="assets/apps/d-2517-14783.webp" alt="Delivery app, picked up" width="786" height="1704" loading="lazy" decoding="async"><img src="assets/apps/d-2517-15211.webp" alt="Delivery app, on the way" width="786" height="1704" loading="lazy" decoding="async"><img src="assets/apps/d-2517-14902.webp" alt="Delivery app, at the door" width="786" height="1704" loading="lazy" decoding="async"></div></div></div><p class="ap-sync-cap"><span class="on">A new order to accept, with its items.</span><span>The store marks it ready to collect.</span><span>Collected with the pickup code.</span><span>The route to the customer&rsquo;s door.</span><span>Code checked, order delivered.</span></p></figure>
+      </div>
     </div>
     <dl class="ap-facts r">
       <div><dt>Client</dt><dd>Top-10 Mobiles</dd></div>
-      <div><dt>Product</dt><dd>Customer and delivery partner apps</dd></div>
+      <div><dt>Product</dt><dd>Customer app and delivery app</dd></div>
       <div><dt>My role</dt><dd>UI/UX designer, most of the screens, with a team</dd></div>
       <div><dt>Tool</dt><dd>Figma</dd></div>
     </dl>
-    <div class="ap-bf3-st r">
-      <div class="ap-seg" role="radiogroup" aria-label="How the order reaches you" data-ap-choice="">
-        <span class="ap-seg-th" aria-hidden="true"></span>
-        <button type="button" role="radio" aria-checked="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.62l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg>Delivery</button>
-        <button type="button" role="radio" aria-checked="false" tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/><path d="M2 7h20"/><path d="M22 7v3a2 2 0 0 1-2 2 2.7 2.7 0 0 1-2-.8 2.7 2.7 0 0 1-2 .8 2.7 2.7 0 0 1-2-.8 2.7 2.7 0 0 1-2 .8 2.7 2.7 0 0 1-2-.8A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-2-.8A2.7 2.7 0 0 1 4 12a2 2 0 0 1-2-2V7"/></svg>Store pickup</button>
-      </div>
-      <div class="ap-ph"><div class="ap-ph-f"><div class="ap-ph-s" data-stack><img src="assets/apps/u-2518-81958.webp" alt="Delivery: the order on its way, on the map, with the code to share at the door" width="786" height="1704" loading="lazy" decoding="async" class="on"><img src="assets/apps/u-2518-42327.webp" alt="Store pickup: the order being packed, with the store's address and hours" width="786" height="1704" loading="lazy" decoding="async"></div></div></div>
-      <p class="ap-seg-cap"><span class="on">On its way, with a code to share at the door.</span><span>Packed for pickup, with the store's address and hours.</span></p>
-    </div>
   </div>
 </section>
 
-<!-- 03 · the problem: the one thing each side of the order needed -->
+<!-- 03 · the problem: the one thing each side of the order needed, each with a small moving picture of it: an order
+     that forks into delivery or pickup, and a single swipe button that moves an order on -->
 <section class="tt-s ap-dark ap-q ap-c" id="ap-problem" data-tt-ch="The problem" data-theme="dark">
   <div class="tt-wrap">
     <p class="ap-k r"><b>03</b><i></i>The problem</p>
     <h2 class="tt-h2" data-split="">Buying a phone meant a trip to the store.</h2>
     <p class="tt-p r">Top-10 Mobiles wanted to sell online. Each side of the order needed one thing.</p>
-    <div class="ap-pb2">
-      <a class="ap-pb2-c r" href="#ap-cust" data-jump-to="ap-cust">
-        <p class="ap-pb2-h"><i></i>Customers</p>
-        <h3>Easy online access.</h3>
-        <p>Order from home, then get it delivered, or pick it up at a store nearby.</p>
-        <ul class="ap-pb2-f"><li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg> Order online</li><li class="s" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h11v10H3zM14 10h4l3 3v4h-7"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg> Delivered</li><li class="s">or</li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9 5 4h14l2 5M4 9v11h16V9M3 9h18M10 20v-5h4v5"/></svg> Picked up</li></ul>
-        <em>See the customer app<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M4 9l4 4 4-4"/></svg></em>
-      </a>
-      <a class="ap-pb2-c ap-pb2-c--d r" href="#ap-del" data-jump-to="ap-del">
-        <p class="ap-pb2-h"><i></i>Delivery staff</p>
-        <h3>A simple app, few screens.</h3>
-        <p>The people delivering are Top-10 Mobiles&rsquo; own store staff. They needed a minimal app: what to collect, where to take it, and proof it arrived.</p>
-        <ul class="ap-pb2-f"><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 8 12 3 3 8v8l9 5 9-5zM3 8l9 5 9-5M12 13v8"/></svg> Collect</li><li class="s" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s7-6.1 7-12a7 7 0 0 0-14 0c0 5.9 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg> Deliver</li><li class="s" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg> Prove it</li></ul>
-        <em>See the delivery app<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M4 9l4 4 4-4"/></svg></em>
-      </a>
+    <div class="ap-pb3">
+      <article class="ap-pb3-c r">
+        <div class="ap-pb3-v ap-fk" aria-hidden="true">
+          <span class="ap-fk-n ap-fk-a"><i><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg></i>Order online</span>
+          <svg class="ap-fk-l" viewBox="0 0 100 100" preserveAspectRatio="none"><path pathLength="100" d="M0 50 C 48 50, 52 19, 100 19"/><path pathLength="100" d="M0 50 C 48 50, 52 81, 100 81"/><path class="c" pathLength="100" d="M0 50 C 48 50, 52 19, 100 19"/><path class="c c2" pathLength="100" d="M0 50 C 48 50, 52 81, 100 81"/></svg>
+          <span class="ap-fk-e"><span class="ap-fk-n"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h11v10H3zM14 10h4l3 3v4h-7"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg></i>Delivered</span><span class="ap-fk-n ap-fk-n2"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9 5 4h14l2 5M4 9v11h16V9M3 9h18M10 20v-5h4v5"/></svg></i>Picked up</span></span>
+        </div>
+        <div class="ap-pb3-t"><p class="ap-pb3-h"><i></i>Customers</p><h3>Easy online access.</h3><p>Order from home, then get it delivered, or pick it up at a store nearby.</p><a class="ap-pb3-go" href="#ap-cust" data-jump-to="ap-cust">See the customer app<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M4 9l4 4 4-4"/></svg></a></div>
+      </article>
+      <article class="ap-pb3-c ap-pb3-c--d r">
+        <div class="ap-pb3-v ap-swipe" aria-hidden="true" data-ap-swipe="">
+          <div class="ap-swipe-card"><p><small>Order ID</small><em data-sw-chip>New order</em></p><b>#654321</b><span class="ap-swipe-it">Apple iPhone 16 (128GB, Teal)</span>
+            <div class="ap-swipe-btn"><i data-sw-knob><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></i><span data-sw-label>Accept order</span></div></div>
+        </div>
+        <div class="ap-pb3-t"><p class="ap-pb3-h"><i></i>Delivery staff</p><h3>A simple app, few screens.</h3><p>The people delivering are Top-10 Mobiles&rsquo; own store staff. They needed a minimal app: what to collect, where to take it, and proof it arrived.</p><a class="ap-pb3-go" href="#ap-del" data-jump-to="ap-del">See the delivery app<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M4 9l4 4 4-4"/></svg></a></div>
+      </article>
     </div>
   </div>
 </section>
 
-<!-- 04 · the idea: a check at each hand-off -->
-<section class="tt-s ap-dark ap-c ap-last" data-tt-ch="The idea" data-theme="dark">
-  <div class="tt-wrap">
-    <p class="ap-k r"><b>04</b><i></i>The idea</p>
-    <h2 class="tt-h2" data-split="">Check it every time it changes hands.</h2>
-    <p class="tt-p r">At each hand-off one side shows a code and the other checks it. The order only moves on when they match, and the box is opened in front of the customer.</p>
-    <div class="ap-road r" aria-label="The order goes from the store to the partner with a pickup code, from the partner to the customer with a delivery code, and is opened at the door">
-      <div class="ap-road-line"><b></b></div>
-      <span class="ap-road-dot" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><path d="m3.3 7 8.7 5 8.7-5"/></svg></span>
-      <div class="ap-stop" style="left:6%"><i><svg viewBox="0 0 24 24"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/><path d="M2 7h20"/><path d="M22 7v3a2 2 0 0 1-2 2a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12a2 2 0 0 1-2-2V7"/></svg></i><b>Store</b><span>Packs the order</span></div>
-      <div class="ap-chk" style="left:28%"><i><u><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></u>Pickup code</i><span>The partner shows it at the store</span></div>
-      <div class="ap-stop" style="left:50%"><i><svg viewBox="0 0 24 24"><circle cx="18.5" cy="17.5" r="3.5"/><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="15" cy="5" r="1"/><path d="M12 17.5V14l-3-3 4-3 2 3h2"/></svg></i><b>Delivery partner</b><span>Carries it</span></div>
-      <div class="ap-chk ap-chk--2" style="left:72%"><i><u><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></u>Delivery code</i><span>The customer shows it at the door</span></div>
-      <div class="ap-stop" style="left:94%"><i><svg viewBox="0 0 24 24"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></i><b>Customer</b><span>Opens it, then accepts</span></div>
+<!-- 04 · the idea, as a journey that follows the scroll. The section holds still while the page moves: the line fills
+     from the store towards the customer, the parcel rides it, and each stop and each code wakes up in turn (a faint glow
+     as the line nears it, then solid once it's reached), with a line under it saying what happens there -->
+<section class="tt-s ap-dark ap-c ap-jy" data-tt-ch="The idea" data-theme="dark" data-ap-jy="">
+  <div class="ap-jy-pin">
+    <div class="tt-wrap">
+      <p class="ap-k r"><b>04</b><i></i>The idea</p>
+      <h2 class="tt-h2" data-split="">Check it every time it changes hands.</h2>
+      <p class="tt-p r">At each hand-off one side shows a code and the other checks it. The order only moves on when they match.</p>
+      <div class="ap-road ap-road--jy" aria-label="The order goes from the store to the partner with a pickup code, from the partner to the customer with a delivery code, and is opened at the door">
+        <div class="ap-road-line"><b></b></div>
+        <span class="ap-road-dot" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><path d="m3.3 7 8.7 5 8.7-5"/></svg></span>
+        <div class="ap-stop" style="left:6%;--x:6%"><i><svg viewBox="0 0 24 24"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/><path d="M2 7h20"/><path d="M22 7v3a2 2 0 0 1-2 2 2.7 2.7 0 0 1-2-.8 2.7 2.7 0 0 1-2 .8 2.7 2.7 0 0 1-2-.8 2.7 2.7 0 0 1-2 .8 2.7 2.7 0 0 1-2-.8A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-2-.8A2.7 2.7 0 0 1 4 12a2 2 0 0 1-2-2V7"/></svg></i><b>Store</b><span>Packs the order</span></div>
+        <div class="ap-chk" style="left:28%;--x:28%"><i><u><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></u>Pickup code</i><span>The partner shows it at the store</span></div>
+        <div class="ap-stop" style="left:50%;--x:50%"><i><svg viewBox="0 0 24 24"><circle cx="18.5" cy="17.5" r="3.5"/><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="15" cy="5" r="1"/><path d="M12 17.5V14l-3-3 4-3 2 3h2"/></svg></i><b>Delivery partner</b><span>Carries it</span></div>
+        <div class="ap-chk" style="left:72%;--x:72%"><i><u><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></u>Delivery code</i><span>The customer shows it at the door</span></div>
+        <div class="ap-stop" style="left:94%;--x:94%"><i><svg viewBox="0 0 24 24"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></i><b>Customer</b><span>Opens it, then accepts</span></div>
+      </div>
+      <div class="ap-jy-cap" aria-live="polite"><p class="on">Scroll to follow one order.</p><p>The store packs the order.</p><p>The partner shows the pickup code at the counter.</p><p>The partner carries it to the customer.</p><p>The customer shows the delivery code at the door.</p><p>The box is opened, checked, then accepted.</p></div>
     </div>
   </div>
 </section>
 
-<!-- 05 · the approach: one app for each side of the order -->
+<!-- 05 · the approach: two people, two different apps -->
 <section class="tt-s ap-light ap-c ap-last" data-tt-ch="Two apps" data-theme="dark" data-tt-sheet="light">
   <div class="tt-wrap">
     <p class="ap-k r"><b>05</b><i></i>The approach</p>
     <h2 class="tt-h2" data-split="">One app to buy, <br>one to deliver.</h2>
-    <p class="tt-p r">Each side of the order has its own job, so each got its own app.</p>
+    <p class="tt-p r">Each side has a different job, so each app was designed for its own people.</p>
     <div class="ap-split r">
       <a class="ap-side" href="#ap-cust" data-jump-to="ap-cust">
-        <div class="ap-side-t"><small><i></i>Customer app</small><h3>For the people buying.</h3><p>Find a phone, choose delivery or store pickup, and follow the order to the door.</p><span class="ap-app-go">See the customer app<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
+        <div class="ap-side-t"><small><i></i>Customer app</small><h3>For the people buying.</h3><p>Rich enough to compare phones, choose delivery or store pickup, and follow the order to the door.</p><span class="ap-app-go">See the customer app<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
         <div class="ap-ph"><div class="ap-ph-f"><div class="ap-ph-s"><img src="assets/apps/u-2518-14232.webp" alt="A product page in the customer app" width="786" height="1704" loading="lazy" decoding="async"></div></div></div>
       </a>
       <span class="ap-split-mid" aria-hidden="true">One order</span>
       <a class="ap-side ap-side--d" href="#ap-del" data-jump-to="ap-del">
-        <div class="ap-side-t"><small><i></i>Delivery partner app</small><h3>For the people delivering.</h3><p>Sign up, collect orders from the store, and hand each one over with proof.</p><span class="ap-app-go">See the delivery partner app<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
-        <div class="ap-ph"><div class="ap-ph-f"><div class="ap-ph-s"><img src="assets/apps/d-2517-15211.webp" alt="Out for delivery in the delivery partner app" width="786" height="1704" loading="lazy" decoding="async"></div></div></div>
+        <div class="ap-side-t"><small><i></i>Delivery app</small><h3>For the staff delivering.</h3><p>Kept minimal: one clear next step on each screen, and a swipe for each big one.</p><span class="ap-app-go">See the delivery app<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span></div>
+        <div class="ap-ph"><div class="ap-ph-f"><div class="ap-ph-s"><img src="assets/apps/d-2517-15211.webp" alt="Out for delivery in the delivery app" width="786" height="1704" loading="lazy" decoding="async"></div></div></div>
       </a>
     </div>
   </div>
@@ -74575,6 +74582,230 @@ a.ap-side:hover .ap-app-go svg { translate: 3px 0; }
   .ap-road-line b { scale: 1 var(--q, 0); }
   .ap-note-ph2 .ap-ph:nth-child(2) { margin-top: 0; }
 }
+
+/* ══ round 7 · hero to approach ══ */
+
+/* ── the hero's opening. Two phones stand side by side in the dark (the customer app, a tap on it; the delivery app),
+   then each opens out into its photo: the window grows from the phone's shape to its half of the screen while the app
+   fades and the photo settles. The seam, the sentence, the line and the cards follow ── */
+.ap-dp { --ph: min(58svh, 560px); --pw: calc(var(--ph) * .462); --g: 10px; --pr: calc(var(--pw) * .16); }
+.ap-dp .ap-dp-p { opacity: 0; animation: none; }
+.ap-dp-l { transform-origin: calc(100% - var(--g) - var(--pw) / 2) 50%; clip-path: inset(calc(50% - var(--ph) / 2) var(--g) calc(50% - var(--ph) / 2) calc(100% - var(--g) - var(--pw)) round var(--pr)); }
+.ap-dp-r { transform-origin: calc(var(--g) + var(--pw) / 2) 50%; clip-path: inset(calc(50% - var(--ph) / 2) calc(100% - var(--g) - var(--pw)) calc(50% - var(--ph) / 2) var(--g) round var(--pr)); }
+.ap-dp.go .ap-dp-l { animation: ap-dp-in .8s cubic-bezier(.2,.8,.2,1) .05s both, ap-dp-win-l 1.25s cubic-bezier(.76,0,.2,1) .95s both; }
+.ap-dp.go .ap-dp-r { animation: ap-dp-in .8s cubic-bezier(.2,.8,.2,1) .2s both, ap-dp-win-r 1.25s cubic-bezier(.76,0,.2,1) 1.05s both; }
+@keyframes ap-dp-in { from { opacity: 0; translate: 0 36px; scale: .92; } to { opacity: 1; translate: none; scale: 1; } }
+@keyframes ap-dp-win-l { from { clip-path: inset(calc(50% - var(--ph) / 2) var(--g) calc(50% - var(--ph) / 2) calc(100% - var(--g) - var(--pw)) round var(--pr)); } to { clip-path: inset(0 0 0 0 round 0); } }
+@keyframes ap-dp-win-r { from { clip-path: inset(calc(50% - var(--ph) / 2) calc(100% - var(--g) - var(--pw)) calc(50% - var(--ph) / 2) var(--g) round var(--pr)); } to { clip-path: inset(0 0 0 0 round 0); } }
+/* the photo starts close and settles back as the window opens */
+.ap-dp .ap-dp-p img.ap-dp-ph { scale: 1.24; transition: scale 2.3s cubic-bezier(.2,.7,.12,1) .95s; }
+.ap-dp.go .ap-dp-p img.ap-dp-ph { scale: 1; }
+/* the app on each phone, gone as the photo opens around it */
+.ap-dp-p::after { z-index: 1; opacity: 0; transition: opacity 1s ease 1.3s; }
+.ap-dp.go .ap-dp-p::after { opacity: 1; }
+.ap-dp .ap-dp-p img.ap-dp-ui { position: absolute; z-index: 2; top: calc(50% - var(--ph) / 2); width: var(--pw); height: var(--ph); object-fit: cover; object-position: 50% 0; border-radius: var(--pr); scale: 1; transition: none; pointer-events: none; }
+.ap-dp-l img.ap-dp-ui { right: var(--g); } .ap-dp-r img.ap-dp-ui { left: var(--g); }
+.ap-dp.go .ap-dp-p img.ap-dp-ui { animation: ap-dp-ui-out .75s cubic-bezier(.4,0,.2,1) 1.1s both; }
+@keyframes ap-dp-ui-out { to { opacity: 0; scale: 1.08; } }
+/* a tap on the customer's phone, just before it opens */
+.ap-dp-tap { position: absolute; z-index: 3; right: calc(var(--g) + var(--pw) * .5); top: calc(50% - var(--ph) / 2 + var(--ph) * .24); width: 54px; height: 54px; margin: -27px -27px 0 0; border-radius: 50%; background: rgba(255,255,255,.6); box-shadow: 0 0 0 1px rgba(255,255,255,.8); opacity: 0; pointer-events: none; }
+.ap-dp.go .ap-dp-tap { animation: ap-dp-tap .8s cubic-bezier(.2,.7,.3,1) .55s both; }
+@keyframes ap-dp-tap { 0% { opacity: 0; scale: .2; } 30% { opacity: .95; scale: .6; } 100% { opacity: 0; scale: 1.9; } }
+/* the seam once both are open */
+.ap-dp::before { opacity: 0; transition: opacity .9s ease 2s; }
+.ap-dp.go::before { opacity: 1; }
+
+/* the sentence: every word is cut into three bands that slide in from opposite sides, violet (the customer app) and
+   green (the delivery app), blurred, and close up into white. Once all are in, the real words take over */
+.ap-dp .ap-dp-t .ap-dp-h { opacity: 1; translate: none; filter: none; animation: none !important; }
+.ap-dp-w { position: relative; display: inline-block; padding-bottom: .12em; margin-bottom: -.12em; }
+.ap-dp-wt { display: inline-block; opacity: 0; }
+.ap-dp.set .ap-dp-wt { opacity: 1; }
+.ap-dp-bd { position: absolute; left: 0; top: 0; right: 0; bottom: 0; padding-bottom: .12em; white-space: nowrap; opacity: 0; pointer-events: none; }
+.ap-dp-bd:nth-child(2) { --dx: -.62em; --c: #B9A8FF; --k: 0; clip-path: inset(-.3em -.4em 66% -.4em); }
+.ap-dp-bd:nth-child(3) { --dx: .62em; --c: #5EE89A; --k: 1; clip-path: inset(34% -.4em 33% -.4em); }
+.ap-dp-bd:nth-child(4) { --dx: -.4em; --c: #B9A8FF; --k: 2; clip-path: inset(67% -.4em -.3em -.4em); }
+.ap-dp.go .ap-dp-bd { animation: ap-dp-shut 1s cubic-bezier(.2,.85,.12,1) both; animation-delay: calc(1.75s + var(--i, 0) * 60ms + var(--k) * 50ms); }
+.ap-dp.set .ap-dp-bd { display: none; }
+@keyframes ap-dp-shut { 0% { opacity: 0; transform: translateX(var(--dx)); color: var(--c); filter: blur(6px); } 22% { opacity: 1; } 55% { color: var(--c); filter: blur(1px); } 100% { opacity: 1; transform: none; color: #FFFFFF; filter: blur(0); } }
+/* the tag and the line under the sentence */
+.ap-dp.go .ap-dp-tag { animation: ap-dp-up .9s cubic-bezier(.2,.75,.15,1) 1.6s both; }
+.ap-dp.go .ap-dp-s { animation: ap-dp-up 1s cubic-bezier(.2,.75,.15,1) 2.75s both; }
+/* then the order shows up in both apps: a mark on the phone, a line from it, and the card growing out of the line's end */
+.ap-dp .ap-dp-c { opacity: 0; translate: none; scale: .55; animation: none; }
+.ap-dp-cl { transform-origin: 86% 100%; } .ap-dp-cr { transform-origin: 86% 0; }
+.ap-dp-c > * { opacity: 0; translate: 0 6px; }
+.ap-dp.go .ap-dp-pinl { animation: ap-dp-pop .5s cubic-bezier(.3,1.6,.5,1) 3.1s both; }
+.ap-dp.go .ap-dp-lnl { animation: ap-dp-draw .5s cubic-bezier(.5,0,.2,1) 3.3s both; }
+.ap-dp.go .ap-dp-cl { animation: ap-dp-card .8s cubic-bezier(.18,1.15,.3,1) 3.65s both; }
+.ap-dp.go .ap-dp-cl > * { animation: ap-dp-up .5s ease 3.9s both; }
+.ap-dp.go .ap-dp-pinr { animation: ap-dp-pop .5s cubic-bezier(.3,1.6,.5,1) 3.75s both; }
+.ap-dp.go .ap-dp-lnr { animation: ap-dp-draw .5s cubic-bezier(.5,0,.2,1) 3.95s both; }
+.ap-dp.go .ap-dp-cr { animation: ap-dp-card .8s cubic-bezier(.18,1.15,.3,1) 4.3s both; }
+.ap-dp.go .ap-dp-cr > * { animation: ap-dp-up .5s ease 4.55s both; }
+.ap-dp.go .ap-dp-c > :nth-child(2) { animation-delay: calc(var(--cd, 3.9s) + .07s); } .ap-dp.go .ap-dp-c > :nth-child(3) { animation-delay: calc(var(--cd, 3.9s) + .14s); }
+.ap-dp.go .ap-dp-c > :nth-child(4) { animation-delay: calc(var(--cd, 3.9s) + .21s); }
+.ap-dp-cr { --cd: 4.55s; }
+@keyframes ap-dp-card { from { opacity: 0; scale: .55; } to { opacity: 1; scale: 1; } }
+.ap-dp.go .ap-dp-pin::after { animation: ap-dp-ring 2.4s ease-out 4.8s infinite; }
+
+/* ── the brief: two apps, one order. A tracker over two phones that move through the same order together ── */
+.ap-bf4-h { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: end; gap: 24px clamp(40px, 6vw, 96px); }
+.ap-bf4-h .ap-bf-t { max-width: 11ch; }
+.ap-bf4-h .ap-bf-p { max-width: 44ch; margin: 0 0 8px; }
+.ap-sync { --ac: var(--ap-v); --ac2: #B9A8FF; --acs: rgba(91,63,224,.7); position: relative; isolation: isolate; overflow: hidden; margin-top: clamp(44px, 7vh, 72px); padding: clamp(32px, 4vw, 52px) clamp(20px, 3vw, 48px) clamp(32px, 4vw, 52px); border-radius: 36px;
+  background: radial-gradient(56% 60% at 50% 64%, rgba(108,72,255,.2), rgba(108,72,255,0) 72%), linear-gradient(180deg, #121118, #09090C); box-shadow: inset 0 0 0 1px rgba(255,255,255,.08); }
+.ap-sync::before { content: ""; position: absolute; z-index: -1; inset: 0; background: radial-gradient(rgba(255,255,255,.12) 1px, transparent 1.5px) 0 0 / 22px 22px;
+  -webkit-mask: radial-gradient(62% 62% at 50% 60%, #000, transparent); mask: radial-gradient(62% 62% at 50% 60%, #000, transparent); }
+.ap-sync .ap-trk { max-width: 860px; }
+.ap-sync-st { display: grid; grid-template-columns: auto minmax(140px, 300px) auto; justify-content: center; align-items: center; gap: clamp(14px, 2.6vw, 40px); margin-top: clamp(36px, 5vh, 56px); }
+.ap-sync-ph { display: grid; justify-items: center; gap: 18px; margin: 0; }
+.ap-sync-ph .ap-ph { --w: clamp(220px, min(17vw, 34svh), 290px); }
+.ap-sync-ph .ap-ph-s img { transition: opacity .55s ease; }
+.ap-sync-k { display: inline-flex; align-items: center; gap: 8px; height: 30px; padding: 0 13px; border-radius: 99px; font: 600 13px/1 'Geist', system-ui, sans-serif; color: #FFFFFF; background: rgba(255,255,255,.06); box-shadow: inset 0 0 0 1px rgba(255,255,255,.1); }
+.ap-sync-k i { width: 7px; height: 7px; border-radius: 50%; background: #A78BFA; box-shadow: 0 0 0 3px rgba(167,139,250,.2); }
+.ap-sync-ph--d .ap-sync-k i { background: #4ADE80; box-shadow: 0 0 0 3px rgba(74,222,128,.18); }
+.ap-sync-cap { display: grid; align-content: start; min-height: 3em; max-width: 26ch; margin: 0; text-align: center; font-size: 14.5px; line-height: 1.5; color: var(--mut); }
+.ap-sync-cap span { grid-area: 1 / 1; opacity: 0; translate: 0 6px; transition: opacity .45s ease, translate .45s ease; }
+.ap-sync-cap span.on { opacity: 1; translate: none; }
+/* the order both apps share, and its updates running out to each */
+.ap-sync-mid { display: flex; align-items: center; gap: 10px; }
+.ap-sync-mid b { flex: none; display: inline-flex; align-items: center; height: 36px; padding: 0 14px; border-radius: 99px; white-space: nowrap; font: 600 13px/1 'Geist', system-ui, sans-serif; font-variant-numeric: tabular-nums; color: #FFFFFF;
+  background: rgba(255,255,255,.07); box-shadow: inset 0 0 0 1px rgba(255,255,255,.14), 0 0 30px rgba(142,120,255,.25); }
+.ap-sync-w { position: relative; flex: 1; height: 2px; overflow: hidden; border-radius: 2px; background: repeating-linear-gradient(90deg, rgba(255,255,255,.3) 0 5px, transparent 5px 10px); }
+.ap-sync-w i { position: absolute; top: 0; bottom: 0; width: 45%; background: linear-gradient(90deg, transparent, #B9A8FF, transparent); animation: ap-sync-l 1.8s linear infinite; }
+.ap-sync-w--r i { background: linear-gradient(90deg, transparent, #5EE89A, transparent); animation-name: ap-sync-r; }
+@keyframes ap-sync-l { from { left: 100%; } to { left: -45%; } }
+@keyframes ap-sync-r { from { left: -45%; } to { left: 100%; } }
+.ap .ap-bf .ap-facts { margin-top: clamp(44px, 6vh, 64px); }
+
+/* ── the problem: two cards, each with a small moving picture of its need on top ── */
+.ap-pb3 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; max-width: 1120px; margin: clamp(44px, 7vh, 72px) auto 0; text-align: left; }
+.ap-pb3-c { display: flex; flex-direction: column; overflow: hidden; border-radius: 30px; background: rgba(255,255,255,.03); box-shadow: inset 0 0 0 1px rgba(255,255,255,.09); }
+.ap-pb3-v { position: relative; height: clamp(210px, 20vw, 260px); display: grid; place-items: center; border-bottom: 1px solid rgba(255,255,255,.08);
+  background: radial-gradient(70% 90% at 50% 110%, rgba(167,139,250,.18), rgba(167,139,250,0) 70%), radial-gradient(rgba(255,255,255,.09) 1px, transparent 1.4px) 0 0 / 18px 18px; }
+.ap-pb3-c--d .ap-pb3-v { background: radial-gradient(70% 90% at 50% 110%, rgba(74,222,128,.14), rgba(74,222,128,0) 70%), radial-gradient(rgba(255,255,255,.09) 1px, transparent 1.4px) 0 0 / 18px 18px; }
+.ap-pb3-t { display: flex; flex-direction: column; align-items: flex-start; flex: 1; padding: clamp(24px, 2.6vw, 38px); }
+.ap-pb3-h { display: flex; align-items: center; gap: 10px; margin: 0; font: 600 13px/1 'Geist', system-ui, sans-serif; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.7); }
+.ap-pb3-h i { width: 8px; height: 8px; border-radius: 50%; background: #A78BFA; box-shadow: 0 0 0 4px rgba(167,139,250,.18); }
+.ap-pb3-c--d .ap-pb3-h i { background: #4ADE80; box-shadow: 0 0 0 4px rgba(74,222,128,.16); }
+.ap-pb3-t h3 { margin: 18px 0 0; font: 700 clamp(26px, 2.4vw, 36px)/1.12 'Plus Jakarta Sans', system-ui, sans-serif; letter-spacing: -0.03em; color: #FFFFFF; }
+.ap-pb3-t > p:not(.ap-pb3-h) { max-width: 40ch; margin: 12px 0 0; font-size: 16px; line-height: 1.6; color: rgba(255,255,255,.66); }
+#yp-page .ap a.ap-pb3-go { display: inline-flex; align-items: center; gap: 8px; margin-top: auto; padding-top: 28px; text-decoration: none; font: 600 14.5px/1 'Geist', system-ui, sans-serif; color: #FFFFFF; }
+.ap-pb3-go svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; transition: translate .4s var(--ease); }
+#yp-page .ap a.ap-pb3-go:hover svg { translate: 0 3px; }
+/* an order that forks: delivered, or picked up; a light runs down each branch in turn */
+.ap-fk { grid-template-columns: auto minmax(60px, 1fr) auto; align-items: center; padding: 0 clamp(20px, 3vw, 40px); }
+.ap-fk-l { width: 100%; height: 116px; overflow: visible; }
+.ap-fk-l path { fill: none; stroke: rgba(255,255,255,.2); stroke-width: 1.5; vector-effect: non-scaling-stroke; stroke-dasharray: 3 4; }
+.ap-fk-l path.c { stroke: #C4B5FD; stroke-width: 2.2; stroke-dasharray: 16 84; stroke-dashoffset: 100; stroke-linecap: round; animation: ap-fk-run 2.6s cubic-bezier(.5,0,.5,1) infinite; }
+.ap-fk-l path.c2 { stroke: #86EFAC; animation-delay: 1.3s; }
+@keyframes ap-fk-run { 0% { stroke-dashoffset: 100; opacity: 0; } 10% { opacity: 1; } 80% { opacity: 1; } 100% { stroke-dashoffset: -16; opacity: 0; } }
+.ap-fk-e { display: grid; gap: 28px; }
+.ap-fk-n { display: inline-flex; align-items: center; gap: 10px; height: 44px; padding: 0 16px 0 6px; border-radius: 99px; white-space: nowrap; font: 600 14px/1 'Geist', system-ui, sans-serif; color: #FFFFFF;
+  background: rgba(255,255,255,.06); box-shadow: inset 0 0 0 1px rgba(255,255,255,.12); }
+.ap-fk-n i { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; color: #FFFFFF; background: var(--ap-v); }
+.ap-fk-n2 i { background: #16A34A; }
+.ap-fk-n svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.ap-fk-a { box-shadow: inset 0 0 0 1px rgba(196,181,253,.4), 0 0 28px rgba(142,120,255,.25); }
+/* one card, one button: the swipe moves the order on, and the button says what's next */
+.ap-swipe-card { width: min(300px, 82%); padding: 16px 16px 14px; border-radius: 20px; color: #111318; background: #FFFFFF; box-shadow: 0 30px 60px -28px rgba(0,0,0,.8); font-family: 'Geist', system-ui, sans-serif; }
+.ap-swipe-card p { display: flex; justify-content: space-between; align-items: center; margin: 0; }
+.ap-swipe-card small { font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase; color: #6B6F79; }
+.ap-swipe-card em { padding: 4px 8px; border-radius: 6px; font-style: normal; font-size: 11.5px; font-weight: 600; color: #4524DB; background: #EEEAFE; transition: opacity .3s ease; }
+.ap-swipe-card > b { display: block; margin-top: 4px; font-size: 20px; font-weight: 600; letter-spacing: -0.01em; }
+.ap-swipe-it { display: block; margin-top: 4px; font-size: 13px; color: #6B6F79; }
+.ap-swipe-btn { position: relative; display: grid; place-items: center; height: 48px; margin-top: 14px; border-radius: 99px; color: #FFFFFF; background: #4524DB; overflow: hidden; }
+.ap-swipe-btn span { font-size: 14.5px; font-weight: 600; transition: opacity .3s ease; }
+.ap-swipe-btn i { position: absolute; left: 4px; top: 4px; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; color: #4524DB; background: #FFFFFF; translate: var(--sx, 0px) 0; transition: translate .85s cubic-bezier(.65,0,.35,1); }
+.ap-swipe-btn i svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.ap-swipe-btn.snap i { transition: none; }
+.ap-swipe-btn.fade span, .ap-swipe-card.fade em { opacity: 0; }
+
+/* ── the idea, pinned: the section is tall and its content holds still while the journey plays out ── */
+.ap .ap-jy { height: 260vh; height: 260svh; padding: 0 !important; }
+.ap-jy-pin { position: sticky; top: 0; height: 100vh; height: 100svh; display: grid; align-content: center; padding-top: 40px; }
+.ap-jy-pin > .tt-wrap { width: 100%; }
+.ap-jy .tt-h2 { font-size: clamp(36px, min(4.6vw, 7.4svh), 72px); }
+.ap-road.ap-road--jy { margin-top: clamp(36px, 6svh, 64px); }
+.ap-road--jy .ap-road-line { background: repeating-linear-gradient(90deg, rgba(255,255,255,.14) 0 6px, transparent 6px 12px); }
+.ap-road--jy .ap-road-line b { scale: var(--f, 0) 1; background: linear-gradient(90deg, #8E78FF, #5B3FE0 45%, #22C55E); box-shadow: 0 0 14px rgba(142,120,255,.5); }
+.ap-road--jy .ap-road-dot { left: calc(6% + 88% * var(--f, 0)); opacity: 0; scale: .6; transition: opacity .35s ease, scale .35s ease; box-shadow: 0 0 0 6px rgba(91,63,224,.2), 0 10px 26px -6px rgba(91,63,224,.9); }
+.ap-road--jy.go .ap-road-dot { opacity: 1; scale: 1; }
+/* each stop: asleep, then a faint glow as the line nears, then solid once reached */
+.ap-road--jy .ap-stop > i { color: rgba(255,255,255,.32); background: #0C0C10; box-shadow: inset 0 0 0 1px rgba(255,255,255,.08); transition: color .5s ease, background .5s ease, box-shadow .6s ease, scale .6s cubic-bezier(.3,1.5,.5,1); }
+.ap-road--jy .ap-stop b, .ap-road--jy .ap-stop span, .ap-road--jy .ap-chk span { opacity: .38; transition: opacity .5s ease; }
+.ap-road--jy .ap-stop.near > i { color: #C4B5FD; box-shadow: inset 0 0 0 1.5px rgba(142,120,255,.55), 0 0 0 8px rgba(142,120,255,.06), 0 0 46px rgba(142,120,255,.28); }
+.ap-road--jy .ap-stop.on > i { color: #FFFFFF; background: var(--ap-v); box-shadow: inset 0 0 0 1px rgba(255,255,255,.18), 0 0 0 7px rgba(91,63,224,.16), 0 22px 44px -14px rgba(91,63,224,.95); scale: 1.06; }
+.ap-road--jy .ap-stop.on b, .ap-road--jy .ap-stop.on span, .ap-road--jy .ap-chk.on span { opacity: 1; }
+.ap-road--jy .ap-chk > i { opacity: .45; color: rgba(255,255,255,.7); background: #0C0C10; box-shadow: inset 0 0 0 1px rgba(255,255,255,.1); transition: opacity .5s ease, background .5s ease, box-shadow .6s ease, color .5s ease, scale .6s cubic-bezier(.3,1.5,.5,1); }
+.ap-road--jy .ap-chk > i u { color: rgba(255,255,255,.35); background: transparent; box-shadow: inset 0 0 0 1px rgba(255,255,255,.18); transition: all .5s ease; }
+.ap-road--jy .ap-chk.near > i { opacity: .9; box-shadow: inset 0 0 0 1.5px rgba(74,222,128,.5), 0 0 40px rgba(74,222,128,.22); }
+.ap-road--jy .ap-chk.on > i { opacity: 1; color: #FFFFFF; background: #16A34A; box-shadow: 0 0 0 6px rgba(22,163,74,.16), 0 18px 36px -12px rgba(22,163,74,.9); scale: 1.05; }
+.ap-road--jy .ap-chk.on > i u { color: #16A34A; background: #FFFFFF; box-shadow: none; }
+.ap-jy-cap { display: grid; margin-top: clamp(28px, 5svh, 52px); }
+.ap-jy-cap p { grid-area: 1 / 1; margin: 0; font: 600 clamp(19px, 1.7vw, 26px)/1.3 'Plus Jakarta Sans', system-ui, sans-serif; letter-spacing: -0.015em; color: #FFFFFF; opacity: 0; translate: 0 12px; filter: blur(4px); transition: opacity .45s ease, translate .5s ease, filter .45s ease; }
+.ap-jy-cap p:first-child { color: var(--mut); font-weight: 500; }
+.ap-jy-cap p.on { opacity: 1; translate: none; filter: none; }
+@media (max-height: 760px) and (min-width: 901px) { .ap-jy .tt-p { display: none; } }
+
+/* ── the approach, bigger: the split runs nearly the full width, with larger phones ── */
+.ap .ap-split { width: min(1360px, calc(100vw - 2 * var(--side))); max-width: none; margin-left: 50%; margin-right: 0; translate: -50% 0; }
+.ap-split .ap-side { gap: clamp(28px, 3vw, 56px); padding: clamp(32px, 4vw, 64px); }
+.ap-split .ap-side .ap-ph { --w: clamp(200px, 16.5vw, 270px); }
+.ap-split .ap-side h3 { font-size: clamp(26px, 2.3vw, 38px); }
+.ap-split .ap-side p { max-width: 30ch; font-size: clamp(15.5px, 1.15vw, 17.5px); }
+.ap-split .ap-split-mid { height: 44px; padding: 0 20px; font-size: 14px; }
+
+@media (max-width: 900px) {
+  .ap-dp { --ph: min(34svh, 290px); --g: 8px; }
+  .ap-dp-l { transform-origin: 50% calc(100% - var(--g) - var(--ph) / 2); clip-path: inset(calc(100% - var(--g) - var(--ph)) calc(50% - var(--pw) / 2) var(--g) calc(50% - var(--pw) / 2) round var(--pr)); }
+  .ap-dp-r { transform-origin: 50% calc(var(--g) + var(--ph) / 2); clip-path: inset(var(--g) calc(50% - var(--pw) / 2) calc(100% - var(--g) - var(--ph)) calc(50% - var(--pw) / 2) round var(--pr)); }
+  .ap-dp.go .ap-dp-l { animation: ap-dp-in .8s cubic-bezier(.2,.8,.2,1) .05s both, ap-dp-win-t 1.25s cubic-bezier(.76,0,.2,1) .95s both; }
+  .ap-dp.go .ap-dp-r { animation: ap-dp-in .8s cubic-bezier(.2,.8,.2,1) .2s both, ap-dp-win-b 1.25s cubic-bezier(.76,0,.2,1) 1.05s both; }
+  .ap-dp-l img.ap-dp-ui { right: auto; left: calc(50% - var(--pw) / 2); top: auto; bottom: var(--g); }
+  .ap-dp-r img.ap-dp-ui { left: calc(50% - var(--pw) / 2); top: var(--g); }
+  .ap-dp-tap { right: auto; left: 50%; top: calc(100% - var(--g) - var(--ph) * .76); margin: -27px 0 0 -27px; }
+  .ap-bf4-h { grid-template-columns: 1fr; }
+  .ap-sync { padding: 24px 14px 28px; border-radius: 26px; }
+  .ap-sync-st { grid-template-columns: 1fr 1fr; grid-template-areas: "mid mid" "c d"; gap: 18px 12px; }
+  .ap-sync-mid { grid-area: mid; justify-content: center; } .ap-sync-w { display: none; }
+  .ap-sync-ph:first-child { grid-area: c; } .ap-sync-ph--d { grid-area: d; }
+  .ap-sync-ph .ap-ph { --w: min(42vw, 200px); }
+  .ap-sync-cap { font-size: 13px; }
+  .ap-pb3 { grid-template-columns: 1fr; gap: 14px; }
+  .ap-pb3-v { height: 200px; }
+  .ap-fk { padding: 0 14px; } .ap-fk-n { height: 38px; padding: 0 12px 0 5px; font-size: 13px; gap: 8px; } .ap-fk-n i { width: 28px; height: 28px; } .ap-fk-e { gap: 22px; }
+  .ap-fk-l { height: 98px; }
+  /* the journey on a phone: one compact row, the words for each step under it */
+  .ap .ap-jy { height: 240svh; }
+  .ap-jy-pin { padding-top: 56px; }
+  .ap-road.ap-road--jy { display: block; height: 70px; max-width: none; margin-top: 34px; }
+  .ap-road--jy .ap-road-line { left: 6%; right: 6%; top: 28px; bottom: auto; width: auto; height: 2px; background: repeating-linear-gradient(90deg, rgba(255,255,255,.14) 0 6px, transparent 6px 12px); }
+  .ap-road--jy .ap-road-line b { transform-origin: left; scale: var(--f, 0) 1; background: linear-gradient(90deg, #8E78FF, #5B3FE0 45%, #22C55E); }
+  .ap-road--jy .ap-stop, .ap-road--jy .ap-chk { position: absolute; top: 0; left: var(--x) !important; translate: -50% 0; display: grid; justify-items: center; width: auto; padding: 0; margin: 0; }
+  .ap-road--jy .ap-stop > i { width: 56px; height: 56px; border-radius: 18px; } .ap-road--jy .ap-stop svg { width: 22px; height: 22px; }
+  .ap-road--jy .ap-stop b, .ap-road--jy .ap-stop span, .ap-road--jy .ap-chk span { display: none; }
+  .ap-road--jy .ap-chk { top: 13px; }
+  .ap-road--jy .ap-chk > i { width: 30px; height: 30px; padding: 0; gap: 0; justify-content: center; font-size: 0; }
+  .ap-road--jy .ap-chk > i u { width: 30px; height: 30px; }
+  .ap-road--jy .ap-road-dot { display: grid; top: 29px; }
+  .ap-jy-cap { min-height: 3.2em; }
+  .ap-split .ap-side .ap-ph { --w: min(52vw, 240px); }
+  .ap .ap-split { width: auto; margin-left: auto; translate: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ap-dp .ap-dp-p { opacity: 1 !important; clip-path: none !important; }
+  .ap-dp .ap-dp-p img.ap-dp-ui, .ap-dp-tap, .ap-dp-bd { display: none !important; }
+  .ap-dp-wt { opacity: 1 !important; }
+  .ap-dp .ap-dp-c, .ap-dp-c > * { opacity: 1 !important; scale: none !important; translate: none !important; }
+  .ap-dp-p::after, .ap-dp::before { opacity: 1 !important; transition: none !important; }
+  .ap-sync-w i, .ap-fk-l path.c { animation: none !important; }
+  .ap-jy-cap p { transition: none; }
+}
+
+@keyframes ap-dp-win-t { from { clip-path: inset(calc(100% - var(--g) - var(--ph)) calc(50% - var(--pw) / 2) var(--g) calc(50% - var(--pw) / 2) round var(--pr)); } to { clip-path: inset(0 0 0 0 round 0); } }
+@keyframes ap-dp-win-b { from { clip-path: inset(var(--g) calc(50% - var(--pw) / 2) calc(100% - var(--g) - var(--ph)) calc(50% - var(--pw) / 2) round var(--pr)); } to { clip-path: inset(0 0 0 0 round 0); } }
 </style>
 <script id="ap-js">
 /* Case study 03 · Top-10 Mobiles apps. The hero wipes in as the page opens. Each flow player walks through its steps
@@ -74677,8 +74908,15 @@ a.ap-side:hover .ap-app-go svg { translate: 3px 0; }
           m.ln.style.setProperty('--len', Math.ceil(len).toFixed(0));
         });
       };
+      // the sentence, cut into bands: each word keeps its real text (shown once the bands have closed) and three copies,
+      // each showing a third of it, that slide in from either side
+      var words = [].slice.call(dp.querySelectorAll('.ap-dp-w')), setT = 0;
+      words.forEach(function (w, i) { if (w.__cut) return; w.__cut = true; var html = w.innerHTML; w.style.setProperty('--i', i);
+        w.innerHTML = '<span class="ap-dp-wt">' + html + '</span>' + [0, 1, 2].map(function () { return '<span class="ap-dp-bd" aria-hidden="true">' + html + '</span>'; }).join(''); });
       var go = function () { if (started) return; started = true; place();
-        requestAnimationFrame(function () { requestAnimationFrame(function () { dp.classList.add('go'); }); }); };
+        requestAnimationFrame(function () { requestAnimationFrame(function () { dp.classList.add('go'); }); });
+        setT = setTimeout(function () { dp.classList.add('set'); }, still.matches ? 0 : 1750 + words.length * 60 + 100 + 1000 + 60); };
+      offs.push(function () { clearTimeout(setT); });
       var left = pics.filter(function (im) { return !im.complete; }).length;
       if (!left) go(); else { pics.forEach(function (im) { if (!im.complete) im.addEventListener('load', function () { if (--left <= 0) go(); }, { once: true }); }); setTimeout(go, 2500); }
       var ro = new ResizeObserver(place); ro.observe(dp);
@@ -74691,36 +74929,63 @@ a.ap-side:hover .ap-app-go svg { translate: 3px 0; }
       if (w.children.length) return; var m = w.textContent.match(/^(.*[^.,!?])([.,!?]+)$/); if (!m) return;
       w.textContent = m[1]; var e = document.createElement('span'); e.className = 'ap-pn'; e.textContent = m[2]; w.appendChild(e); }); };
     pn(); var pnT = setTimeout(pn, 600); offs.push(function () { clearTimeout(pnT); });
-    // the brief: delivery or store pickup, as the app's switch, each showing its screen and a line under it; it switches
-    // by itself while it's in view, until one is picked
-    [].forEach.call(root.querySelectorAll('[data-ap-choice]'), function (ch) {
-      var box = ch.closest('.ap-bf3-st'), btns = [].slice.call(ch.querySelectorAll('button')), shots = [].slice.call(box.querySelectorAll('[data-stack] img')), caps = [].slice.call(box.querySelectorAll('.ap-seg-cap span'));
-      var idx = 0, auto = !still.matches, vis = false, t0 = 0, raf = 0, DUR = 4600;
-      var show = function (i) { idx = i; ch.style.setProperty('--i', i); ch.style.setProperty('--p', 0);
-        btns.forEach(function (b, k) { b.setAttribute('aria-checked', k === i ? 'true' : 'false'); b.tabIndex = k === i ? 0 : -1; });
-        shots.forEach(function (im, k) { im.classList.toggle('on', k === i); }); caps.forEach(function (c, k) { c.classList.toggle('on', k === i); }); t0 = performance.now(); };
-      var stop = function () { auto = false; if (raf) { cancelAnimationFrame(raf); raf = 0; } };
-      var tick = function (now) { raf = 0; if (!ch.isConnected || !auto || !vis) return; var p = Math.min(1, (now - t0) / DUR); ch.style.setProperty('--p', p.toFixed(3)); if (p >= 1) show((idx + 1) % btns.length); raf = requestAnimationFrame(tick); };
-      btns.forEach(function (b, k) { var f = function () { stop(); show(k); }; b.addEventListener('click', f); offs.push(function () { b.removeEventListener('click', f); }); });
-      var key = function (e) { var d = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key]; if (!d) return; e.preventDefault(); stop(); show((idx + d + btns.length) % btns.length); btns[idx].focus(); };
-      ch.addEventListener('keydown', key); offs.push(function () { ch.removeEventListener('keydown', key); });
-      var io = new IntersectionObserver(function (es) { vis = es[es.length - 1].intersectionRatio >= .4; if (vis && auto && !raf) { t0 = performance.now(); raf = requestAnimationFrame(tick); } }, { threshold: [0, .4] });
+    // the brief: one order in both apps. A tracker runs through its steps on its own while it's in view (a tap picks one
+    // and stops it); both phones and the line under each move to that step together
+    [].forEach.call(root.querySelectorAll('[data-ap-sync]'), function (box) {
+      var nav = box.querySelector('.ap-trk'), tabs = [].slice.call(nav.querySelectorAll('[data-ap-tab]')), figs = [].slice.call(box.querySelectorAll('.ap-sync-ph'));
+      var idx = 0, n = tabs.length, auto = !still.matches, vis = false, t0 = 0, raf = 0, DUR = 3600;
+      var fill = function (f) { nav.style.setProperty('--f', Math.min(1, f).toFixed(4)); };
+      var show = function (i) { var back = i < idx; idx = i;
+        tabs.forEach(function (t, k) { t.setAttribute('aria-selected', k === i ? 'true' : 'false'); t.classList.toggle('done', k < i); });
+        figs.forEach(function (f) { [].forEach.call(f.querySelectorAll('[data-stack] img'), function (im, k) { im.classList.toggle('on', k === i); });
+          [].forEach.call(f.querySelectorAll('.ap-sync-cap span'), function (c, k) { c.classList.toggle('on', k === i); }); });
+        nav.classList.toggle('jump', back); fill(i / (n - 1)); if (back) requestAnimationFrame(function () { nav.classList.remove('jump'); });
+        t0 = performance.now(); };
+      var tick = function (now) { raf = 0; if (!box.isConnected || !auto || !vis) return; var p = Math.min(1, (now - t0) / DUR);
+        if (idx < n - 1) fill((idx + p) / (n - 1)); if (p >= 1) show((idx + 1) % n); raf = requestAnimationFrame(tick); };
+      tabs.forEach(function (t, k) { var f = function () { auto = false; if (raf) { cancelAnimationFrame(raf); raf = 0; } nav.classList.add('ease'); show(k); };
+        t.addEventListener('click', f); offs.push(function () { t.removeEventListener('click', f); }); });
+      var io = new IntersectionObserver(function (es) { vis = es[es.length - 1].intersectionRatio >= .3; if (vis && auto && !raf) { t0 = performance.now(); raf = requestAnimationFrame(tick); } }, { threshold: [0, .3, .6] });
       io.observe(box); offs.push(function () { io.disconnect(); if (raf) cancelAnimationFrame(raf); });
       show(0);
     });
+    // the problem's swipe button: the knob runs across, the order moves on, and the button says what's next
+    [].forEach.call(root.querySelectorAll('[data-ap-swipe]'), function (sw) {
+      var btn = sw.querySelector('.ap-swipe-btn'), knob = sw.querySelector('[data-sw-knob]'), label = sw.querySelector('[data-sw-label]'), chip = sw.querySelector('[data-sw-chip]'), card = sw.querySelector('.ap-swipe-card');
+      var steps = [['Accept order', 'New order'], ['Order picked', 'Accepted'], ['Reached drop', 'Picked'], ['Order delivered', 'At the door'], ['Accept order', 'Delivered']];
+      var k = 0, vis = false, tm = 0;
+      var run = function () {
+        tm = 0; if (!sw.isConnected || !vis || still.matches) return;
+        btn.style.setProperty('--sx', (btn.clientWidth - knob.offsetWidth - 8) + 'px');
+        tm = setTimeout(function () {
+          btn.classList.add('fade'); card.classList.add('fade');
+          tm = setTimeout(function () {
+            k = (k + 1) % (steps.length - 1); btn.classList.add('snap'); btn.style.setProperty('--sx', '0px');
+            label.textContent = steps[k][0]; chip.textContent = steps[k][1];
+            requestAnimationFrame(function () { requestAnimationFrame(function () { btn.classList.remove('snap', 'fade'); card.classList.remove('fade'); }); });
+            tm = setTimeout(run, 1300);
+          }, 320);
+        }, 950);
+      };
+      var io = new IntersectionObserver(function (es) { var v = es[es.length - 1].isIntersecting; if (v && !vis) { vis = true; if (!tm) tm = setTimeout(run, 700); } else if (!v) { vis = false; clearTimeout(tm); tm = 0; } }, { threshold: 0 });
+      io.observe(sw); offs.push(function () { io.disconnect(); clearTimeout(tm); });
+    });
     [].forEach.call(root.querySelectorAll('[data-ap-tour]'), function (b) { tour(b, offs); });
-    // the idea's road follows the scroll: the line fills as the page moves, the parcel rides along it, and each stop and
-    // code lights up as it's passed (all of it at once when motion is reduced)
-    [].forEach.call(root.querySelectorAll('.ap-road'), function (rd) {
-      var marks = [].slice.call(rd.querySelectorAll('.ap-stop, .ap-chk')).map(function (el) { return { el: el, at: (parseFloat(el.style.left) - 6) / 88 }; });
-      var raf = 0, last = -1;
+    // the idea, pinned: while the page scrolls through the tall section, its content holds still and the journey plays.
+    // The line fills to each stop in turn; a stop glows as the line nears it and turns solid once it's reached, and the
+    // line under the road says what happens there. Before the first stop nothing is lit
+    [].forEach.call(root.querySelectorAll('[data-ap-jy]'), function (sec) {
+      var rd = sec.querySelector('.ap-road'), marks = [].slice.call(rd.querySelectorAll('.ap-stop, .ap-chk')), caps = [].slice.call(sec.querySelectorAll('.ap-jy-cap p'));
+      var raf = 0, lastQ = -1, lastS = -1;
       var set = function () {
-        raf = 0; if (!rd.isConnected) return;
-        var r = rd.getBoundingClientRect(), vh = innerHeight, tall = r.height > 400, q;
-        q = still.matches ? 1 : tall ? (vh * .72 - r.top) / r.height : (vh * .86 - r.top) / (vh * .46);
-        q = Math.max(0, Math.min(1, q)); if (Math.abs(q - last) < .002) return; last = q;
-        rd.style.setProperty('--q', q.toFixed(4));
-        marks.forEach(function (m, k) { m.el.classList.toggle('on', tall ? q >= (k + .5) / marks.length : q >= m.at - .01); });
+        raf = 0; if (!sec.isConnected) return;
+        var r = sec.getBoundingClientRect(), span = Math.max(1, r.height - innerHeight);
+        var q = still.matches ? 1 : Math.max(0, Math.min(1, -r.top / span)); if (Math.abs(q - lastQ) < .001) return; lastQ = q;
+        rd.style.setProperty('--f', Math.max(0, Math.min(1, (q - .08) / .8)).toFixed(4));
+        rd.classList.toggle('go', q > .085);
+        var s = 0;
+        marks.forEach(function (m, k) { var at = .08 + k * .2, on = q >= at - .004; m.classList.toggle('on', on); m.classList.toggle('near', !on && q >= at - .075); if (on) s = k + 1; });
+        if (s !== lastS) { lastS = s; caps.forEach(function (c, k) { c.classList.toggle('on', k === s); }); }
       };
       var go = function () { if (!raf) raf = requestAnimationFrame(set); };
       addEventListener('scroll', go, { passive: true }); addEventListener('resize', go); go();
@@ -74728,7 +74993,7 @@ a.ap-side:hover .ap-app-go svg { translate: 3px 0; }
     });
     // lists that tick in as they arrive, and the two loops (the road, the hand-off) that start once they're seen
     var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } }); }, { threshold: .3 });
-    [].forEach.call(root.querySelectorAll('.ap-q-g, .ap-docs, .ap-road, .ap-pair, .ap-qa, .ap-fan'), function (el) {
+    [].forEach.call(root.querySelectorAll('.ap-docs, .ap-pair, .ap-qa, .ap-fan'), function (el) {
       [].forEach.call(el.querySelectorAll('li, .ap-doc'), function (li, k) { li.style.setProperty('--k', k); });
       io.observe(el); });
     offs.push(function () { io.disconnect(); });
