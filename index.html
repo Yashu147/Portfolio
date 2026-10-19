@@ -61918,7 +61918,7 @@ window.__ypImgs = function (r) { r.querySelectorAll('img[data-yp-src]').forEach(
 <!-- 03 · the problem: the one thing each side of the order needed, each with a small moving picture of it: an order
      that forks into delivery or pickup, and a single swipe button that moves an order on -->
 <div class="ap-at" id="ap-problem" aria-hidden="true"></div>
-<section class="tt-s ap-dark ap-q ap-c" data-ap-x="doors" data-tt-ch="The problem" data-theme="dark">
+<section class="tt-s ap-dark ap-q ap-c" data-ap-x="dive" data-tt-ch="The problem" data-theme="dark">
   <div class="tt-wrap">
     <p class="ap-k r"><b>03</b>The problem</p>
     <h2 class="tt-h2" data-split="">Buying a phone meant a trip to the store.</h2>
@@ -61988,7 +61988,7 @@ window.__ypImgs = function (r) { r.querySelectorAll('img[data-yp-src]').forEach(
 
 <!-- 06 · the customer app opens, as a card -->
 <div class="ap-at" id="ap-cust" aria-hidden="true"></div>
-<section class="tt-s ap-light ap-part" data-ap-x="card" data-tt-ch="Customer app" data-theme="light">
+<section class="tt-s ap-light ap-part" data-ap-x="fly" data-tt-ch="Customer app" data-theme="light">
   <div class="tt-wrap ap-part-in">
     <h2 class="ap-part-h" data-split="">Customer app</h2>
     <p class="ap-part-p r">Shop the store near you, then follow the order until it's in your hand.</p>
@@ -62069,7 +62069,7 @@ window.__ypImgs = function (r) { r.querySelectorAll('img[data-yp-src]').forEach(
 
 <!-- 12 · the delivery partner app opens, as a card -->
 <div class="ap-at" id="ap-del" aria-hidden="true"></div>
-<section class="tt-s ap-dark ap-part" data-ap-x="swipe" data-tt-ch="Delivery app" data-theme="dark">
+<section class="tt-s ap-dark ap-part" data-ap-x="ride" data-tt-ch="Delivery app" data-theme="dark">
   <div class="tt-wrap ap-part-in">
     <h2 class="ap-part-h" data-split="">Delivery partner app</h2>
     <p class="ap-part-p r">What to collect, where to go, and proof that it arrived. Everything a partner needs on a shift.</p>
@@ -74859,31 +74859,45 @@ a.ap-side:hover .ap-app-go svg { translate: 3px 0; }
    screens; the rest of the hero fades and the brief's words come up around them */
 .ap-dp.ap-mo .ap-dp-b, .ap-dp.ap-mo .ap-dp-c, .ap-dp.ap-mo .ap-dp-pin, .ap-dp.ap-mo .ap-dp-ln, .ap-dp.ap-mo .ap-dp-k, .ap-dp.ap-mo .ap-dp-credit { opacity: var(--mo) !important; }
 .ap-dp.ap-mo::before, .ap-dp.ap-mo .ap-dp-p::after { opacity: var(--mo) !important; transition: none !important; }
-.ap-dp.ap-mo .ap-dp-p { overflow: hidden; clip-path: none !important; animation: none !important; opacity: var(--mw, 1) !important; }
+.ap-dp.ap-mo .ap-dp-p { overflow: hidden; opacity: var(--mw, 1) !important; }
+/* once the hero has handed over it stays as it ended: nothing in it plays again on the way back */
+.ap-dp.ap-done::before, .ap-dp.ap-done .ap-dp-p::after { transition: none !important; }
 .ap-bf7.ap-mi .ap-bf7-txt, .ap-bf7.ap-mi .ap-bf7-facts { opacity: var(--bt); translate: 0 calc((1 - var(--bt)) * 24px); }
 .ap-bf7.ap-mi .ap-bf7-ph { opacity: var(--bp); }
 .ap-bf7.ap-mi .ap-bf7-cap { opacity: var(--bc); translate: calc((1 - var(--bc)) * var(--cx, 0px)) 0; }
 .ap-bf7.ap-mi .ap-bf7-cap--l { --cx: 30px; } .ap-bf7.ap-mi .ap-bf7-cap--r { --cx: -30px; }
 
-/* 2 · the brief opens like the store's sliding doors: two halves of it slide apart onto the problem */
-.ap-fx > .ap-door { inset: 0; overflow: hidden; }
-.ap-door > .ap-bf-stage { position: absolute; inset: 0; }
-.ap-door-l { clip-path: inset(0 50% 0 0); } .ap-door-r { clip-path: inset(0 0 0 50%); }
-.ap-door::after { content: ""; position: absolute; top: 0; bottom: 0; width: 120px; pointer-events: none; }
-.ap-door-l::after { right: 50%; background: linear-gradient(270deg, rgba(255,255,255,.08), rgba(255,255,255,0)); box-shadow: inset -1px 0 0 rgba(255,255,255,.18); }
-.ap-door-r::after { left: 50%; background: linear-gradient(90deg, rgba(255,255,255,.08), rgba(255,255,255,0)); box-shadow: inset 1px 0 0 rgba(255,255,255,.18); }
-.ap-fx > .ap-seam { left: 50%; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: linear-gradient(180deg, rgba(185,168,255,0), #B9A8FF 30%, #FFFFFF 50%, #B9A8FF 70%, rgba(185,168,255,0)); box-shadow: 0 0 24px 4px rgba(142,120,255,.6); }
+/* 2 · into the app: the brief's other parts step aside while the customer phone grows */
+.ap-bf7.ap-dv .ap-bf7-txt, .ap-bf7.ap-dv .ap-bf7-cap, .ap-bf7.ap-dv .ap-bf7-facts { opacity: var(--dv); }
+.ap-bf7.ap-dv .ap-bf7-txt { translate: 0 calc((1 - var(--dv)) * -36px); }
+.ap-bf7.ap-dv .ap-bf7-cap--l { translate: calc((1 - var(--dv)) * -40px) 0; }
+.ap-bf7.ap-dv .ap-bf7-cap--r { translate: calc((1 - var(--dv)) * 40px) 0; }
+.ap-bf7.ap-dv .ap-bf7-ph--d { opacity: var(--dv); translate: calc((1 - var(--dv)) * 140px) 0; }
+.ap-bf7.ap-dv .ap-bf7-ph::before { opacity: var(--dv); }
+.ap-bf7.ap-dv .ap-bf7-ph:not(.ap-bf7-ph--d) { z-index: 5; }
 
-/* 3 · the customer card grows into the customer app */
-.ap-tint { position: absolute; left: 0; right: 0; top: 0; z-index: 59; display: block; background: #ECE8FF; opacity: 0; pointer-events: none; }
-.ap-cardgo .ap-split .ap-side:first-child > * { opacity: var(--cf, 1) !important; }
+/* 3 · the customer app lifts off its card */
+.ap-fx > .ap-fly { left: 0; top: 0; transform-origin: 50% 50%; }
+.ap-fly .ap-ph { --w: var(--fw); margin: 0; }
+.ap-fly .ap-ph-f { box-shadow: 0 calc(var(--lift, 0) * 50px + 20px) calc(var(--lift, 0) * 70px + 40px) -24px rgba(14,15,20,.55); }
+.ap .tt-s.ap-fl .tt-wrap > :not(.ap-split), .ap .tt-s.ap-fl .ap-split-mid, .ap .tt-s.ap-fl .ap-side--d, .ap .tt-s.ap-fl .ap-side:first-child .ap-side-t { opacity: var(--fa) !important; }
+.ap .tt-s.ap-fl .ap-side--d { translate: calc((1 - var(--fa)) * 80px) 0; }
+.ap .tt-s.ap-fl .tt-wrap > :not(.ap-split) { translate: 0 calc((1 - var(--fa)) * -30px); }
+.ap .tt-s.ap-fl .ap-side:first-child .ap-ph { opacity: 0 !important; }
+.ap-part.ap-cg .ap-part-h, .ap-part.ap-cg .ap-part-p, .ap-part.ap-cg .ap-part-m { opacity: var(--ct) !important; translate: 0 calc((1 - var(--ct)) * 28px) !important; }
+.ap-part.ap-cg .ap-fan { opacity: 1 !important; transform: none !important; }
+.ap-part.ap-cg .ap-fan .ap-ph { transition: none !important; }
+.ap-part.ap-cg .ap-fan .ap-ph:nth-child(2) { opacity: var(--cc) !important; }
+.ap-part.ap-cg .ap-fan .ap-ph:nth-child(1) { opacity: var(--cs) !important; rotate: calc(var(--cs) * -9deg) !important; translate: calc(100% - var(--cs) * 82%) 8% !important; }
+.ap-part.ap-cg .ap-fan .ap-ph:nth-child(3) { opacity: var(--cs) !important; rotate: calc(var(--cs) * 9deg) !important; translate: calc(-100% + var(--cs) * 82%) 8% !important; }
 
-/* 4 · swipe to hand over: the delivery app's own button, as big as the screen. Its knob runs across, and the delivery
-   chapter is drawn in behind it */
-.ap-fx > .ap-sw-track { left: 0; right: 0; top: 50%; height: 2px; margin-top: -1px; background: repeating-linear-gradient(90deg, rgba(255,255,255,.35) 0 8px, transparent 8px 16px); }
-.ap-fx > .ap-sw-glow { top: 0; bottom: 0; width: 160px; margin-left: -160px; background: linear-gradient(90deg, rgba(34,197,94,0), rgba(34,197,94,.22)); box-shadow: inset -2px 0 0 #4ADE80; }
-.ap-fx > .ap-sw-knob { top: 50%; width: 84px; height: 84px; margin: -42px 0 0 -42px; border-radius: 50%; background: #16A34A; box-shadow: 0 0 0 10px rgba(34,197,94,.18), 0 24px 50px -14px rgba(22,163,74,.9); color: #FFFFFF; }
-.ap-sw-knob svg { position: absolute; inset: 0; margin: auto; width: 34px; height: 34px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+/* 4 · a delivery rider brings in the delivery app */
+.ap-fx > .ap-rider { left: 0; top: 0; }
+.ap-rider svg { display: block; width: 100%; height: auto; overflow: visible; }
+.ap-rd-w { transform-box: fill-box; transform-origin: 50% 50%; }
+.ap-rd-speed { stroke: rgba(255,255,255,.7); stroke-width: 4; opacity: 0; }
+.ap-fx > .ap-rd-road { right: 0; height: 2px; background: repeating-linear-gradient(90deg, rgba(14,15,20,.28) 0 10px, transparent 10px 20px); }
+.ap-fx > .ap-rd-trail { top: 0; bottom: 0; width: 220px; background: linear-gradient(90deg, rgba(34,197,94,0), rgba(34,197,94,.16)); box-shadow: inset -2px 0 0 rgba(74,222,128,.7); }
 
 /* 5 · loading: the screen fills with tiles, as a page does while it loads, and clears again onto the details */
 .ap-fx > .ap-tiles { inset: 0; }
@@ -75077,17 +75091,18 @@ a.ap-side:hover .ap-app-go svg { translate: 3px 0; }
       io.observe(sw); offs.push(function () { io.disconnect(); clearTimeout(tm); });
     });
     [].forEach.call(root.querySelectorAll('[data-ap-tour]'), function (b) { tour(b, offs); });
-    // the chapters hand over, each in its own way: the hero's photos land in the two apps; the brief opens like the
-    // store's sliding doors; the customer card grows into the customer app; a swipe hands over to the delivery app; the
-    // screen loads, tile by tile, into the details; and a delivered check opens into the outcome. While one plays, the
-    // chapter ending is held in place and the next is held at the top of the screen, so only the transition moves
+    // the chapters hand over, each in its own way: the hero's photos land in the two apps; the page dives into the
+    // customer app's screen to reach the problem; the customer app lifts off its card into its own chapter; a delivery
+    // rider brings in the delivery app; the screen loads, tile by tile, into the details; and a delivered check opens
+    // into the outcome. While one plays, the chapter ending is held in place and the next is held at the top of the
+    // screen, so only the transition moves
     (function () {
       var fx = root.querySelector(':scope > .ap-fx');
       if (!fx) { fx = document.createElement('div'); fx.className = 'ap-fx'; fx.setAttribute('aria-hidden', 'true'); root.appendChild(fx); }
-      fx.innerHTML = '<i class="ap-seam"></i><i class="ap-sw-track"></i><i class="ap-sw-glow"></i><i class="ap-sw-knob"><svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></i>' +
+      fx.innerHTML = '<i class="ap-rd-trail"></i><i class="ap-rd-road"></i><div class="ap-rider">' + "<svg viewBox=\"0 0 320 210\" xmlns=\"http://www.w3.org/2000/svg\" class=\"ap-rd-svg\"> <g class=\"ap-rd-speed\" fill=\"none\" stroke-linecap=\"round\"><path d=\"M-6 74h-58M-10 104h-44M-4 176h-70\"/></g> <ellipse cx=\"166\" cy=\"202\" rx=\"122\" ry=\"6\" fill=\"rgba(0,0,0,.24)\"/> <path d=\"M22 108h84\" stroke=\"#2B2D36\" stroke-width=\"6\" stroke-linecap=\"round\"/> <rect x=\"18\" y=\"38\" width=\"88\" height=\"68\" rx=\"11\" fill=\"#16A34A\"/> <path d=\"M18 52a11 11 0 0 1 11-14h66a11 11 0 0 1 11 14z\" fill=\"#15803D\"/> <rect x=\"18\" y=\"38\" width=\"88\" height=\"68\" rx=\"11\" fill=\"none\" stroke=\"rgba(0,0,0,.12)\" stroke-width=\"1.5\"/> <circle cx=\"62\" cy=\"78\" r=\"15\" fill=\"#FFFFFF\" opacity=\".95\"/> <path d=\"M55 78.5l5 5 9.5-10\" fill=\"none\" stroke=\"#16A34A\" stroke-width=\"3.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/> <path d=\"M40 158c1-28 22-46 54-48h64c12 0 18 8 18 20v28z\" fill=\"#2B2D36\"/> <path d=\"M42 156c2-26 22-43 52-45h64c11 0 17 7 17 18\" fill=\"none\" stroke=\"rgba(255,255,255,.16)\" stroke-width=\"2\"/> <path d=\"M58 138c8-12 20-18 36-19h40\" fill=\"none\" stroke=\"#5B3FE0\" stroke-width=\"5\" stroke-linecap=\"round\"/> <path d=\"M168 146h60v14h-60z\" fill=\"#2B2D36\"/> <path d=\"M214 160c-6-34 2-70 16-90l16 5c-10 20-15 50-11 85z\" fill=\"#2B2D36\"/> <path d=\"M233 82c-8 18-12 44-9 74\" fill=\"none\" stroke=\"#5B3FE0\" stroke-width=\"4\" stroke-linecap=\"round\"/> <path d=\"M246 76c-10 20-15 50-11 84\" fill=\"none\" stroke=\"rgba(255,255,255,.14)\" stroke-width=\"2\"/> <rect x=\"82\" y=\"100\" width=\"88\" height=\"17\" rx=\"8.5\" fill=\"#111318\"/> <path d=\"M238 96l28 66\" stroke=\"#80848E\" stroke-width=\"7\" stroke-linecap=\"round\"/> <path d=\"M234 158c9-22 52-24 64 0\" fill=\"none\" stroke=\"#2B2D36\" stroke-width=\"9\" stroke-linecap=\"round\"/> <path d=\"M232 76l12-30\" stroke=\"#2B2D36\" stroke-width=\"10\" stroke-linecap=\"round\"/> <path d=\"M236 46h22\" stroke=\"#111318\" stroke-width=\"7\" stroke-linecap=\"round\"/> <circle cx=\"242\" cy=\"84\" r=\"6\" fill=\"#FDE68A\"/><circle cx=\"242\" cy=\"84\" r=\"11\" fill=\"#FDE68A\" opacity=\".18\"/> <path d=\"M126 108l50 4 6 32\" fill=\"none\" stroke=\"#1E1B4B\" stroke-width=\"20\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/> <rect x=\"174\" y=\"138\" width=\"30\" height=\"12\" rx=\"6\" fill=\"#111318\"/> <path d=\"M112 112c-3-28 8-56 32-70l28 11c-12 20-17 38-17 59z\" fill=\"#5B3FE0\"/> <path d=\"M138 50c10-4 18-4 26 0\" fill=\"none\" stroke=\"#4524DB\" stroke-width=\"4\" stroke-linecap=\"round\"/> <path d=\"M158 56c20 6 40 0 74-10\" fill=\"none\" stroke=\"#5B3FE0\" stroke-width=\"15\" stroke-linecap=\"round\"/> <circle cx=\"236\" cy=\"45\" r=\"8\" fill=\"#111318\"/> <circle cx=\"156\" cy=\"26\" r=\"22\" fill=\"#FFFFFF\"/> <circle cx=\"156\" cy=\"26\" r=\"22\" fill=\"none\" stroke=\"rgba(14,15,20,.22)\" stroke-width=\"1.5\"/> <path d=\"M158 15c11 0 19 6 21 15v5c-7 2.5-15 2.5-21 0z\" fill=\"#111318\"/><path d=\"M163 19c6 1 10 4 12 8\" fill=\"none\" stroke=\"rgba(255,255,255,.35)\" stroke-width=\"2\" stroke-linecap=\"round\"/> <path d=\"M136 20c4-10 13-15 23-15\" fill=\"none\" stroke=\"#16A34A\" stroke-width=\"5\" stroke-linecap=\"round\"/> <g class=\"ap-rd-w ap-rd-wb\"> <circle cx=\"72\" cy=\"170\" r=\"32\" fill=\"#111318\"/> <circle cx=\"72\" cy=\"170\" r=\"20\" fill=\"#3A3D48\"/> <path d=\"M72 152v36M54 170h36M59.3 157.3l25.4 25.4M84.7 157.3l-25.4 25.4\" stroke=\"#8A8E98\" stroke-width=\"2.6\"/> <circle cx=\"72\" cy=\"170\" r=\"6.5\" fill=\"#D4D6DC\"/> </g> <g class=\"ap-rd-w ap-rd-wf\"> <circle cx=\"266\" cy=\"170\" r=\"32\" fill=\"#111318\"/> <circle cx=\"266\" cy=\"170\" r=\"20\" fill=\"#3A3D48\"/> <path d=\"M266 152v36M248 170h36M253.3 157.3l25.4 25.4M278.7 157.3l-25.4 25.4\" stroke=\"#8A8E98\" stroke-width=\"2.6\"/> <circle cx=\"266\" cy=\"170\" r=\"6.5\" fill=\"#D4D6DC\"/> </g> </svg>" + '</div>' +
         '<div class="ap-tiles"></div><i class="ap-ring"></i><i class="ap-ck"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></i>';
       var $ = function (s) { return fx.querySelector(s); };
-      var seam = $('.ap-seam'), track = $('.ap-sw-track'), glow = $('.ap-sw-glow'), knob = $('.ap-sw-knob'), tiles = $('.ap-tiles'), ck = $('.ap-ck'), ckp = ck.querySelector('path'), ring = $('.ap-ring');
+      var rider = $('.ap-rider'), road = $('.ap-rd-road'), trail = $('.ap-rd-trail'), wheels = [].slice.call(rider.querySelectorAll('.ap-rd-w')), speed = rider.querySelector('.ap-rd-speed'), tiles = $('.ap-tiles'), ck = $('.ap-ck'), ckp = ck.querySelector('path'), ring = $('.ap-ring');
       var cl = function (t) { return Math.max(0, Math.min(1, t)); };
       var EIO = function (t) { return t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; };
       var EO = function (t) { return 1 - Math.pow(1 - t, 3); };
@@ -75103,7 +75118,7 @@ a.ap-side:hover .ap-app-go svg { translate: 3px 0; }
           start: function (P) {
             // if the hero is still coming in, it finishes at once: the page is moving on
             P.a.getAnimations({ subtree: true }).forEach(function (an) { try { if (an.effect && an.effect.getTiming().iterations !== Infinity) an.finish(); } catch (e) {} });
-            P.a.classList.add('ap-mo'); P.b.classList.add('ap-mi');
+            P.a.classList.add('ap-mo', 'ap-done'); P.b.classList.add('ap-mi');
             P.win = [P.a.querySelector('.ap-dp-l'), P.a.querySelector('.ap-dp-r')]; P.scr = [].slice.call(P.b.querySelectorAll('.ap-bf7-ph .ap-ph-s')); },
           frame: function (P, p, vw, vh) {
             P.a.style.zIndex = 3; P.b.style.zIndex = 2;
@@ -75125,57 +75140,83 @@ a.ap-side:hover .ap-app-go svg { translate: 3px 0; }
           end: function (P) { P.a.classList.remove('ap-mo'); P.b.classList.remove('ap-mi'); P.a.style.backgroundColor = '';
             (P.win || []).forEach(function (w) { ['left', 'top', 'width', 'height', 'right', 'bottom', 'borderRadius'].forEach(function (k) { w.style[k] = ''; }); }); }
         },
-        // 2 · the brief opens like the store's sliding doors: two halves of it slide apart, and the problem comes forward
-        // from behind them
-        doors: {
+        // 2 · into the app: the customer phone moves to the middle of the screen and grows until its screen fills it; the
+        // problem shows inside the screen as it grows, a little smaller at first, so the page dives into the app
+        dive: {
           start: function (P) {
-            var st = P.a.querySelector('.ap-bf-stage');
-            if (!P.doors) P.doors = ['l', 'r'].map(function (s) { var d = document.createElement('div'); d.className = 'ap-door ap-door-' + s + ' ap-dark'; fx.appendChild(d); return d; });
-            P.doors.forEach(function (d) { d.innerHTML = ''; d.appendChild(st.cloneNode(true)); on(d, true); });
-            on(seam, true); P.a.style.visibility = 'hidden'; },
+            P.a.classList.add('ap-dv');
+            P.ph = P.a.querySelector('.ap-bf7-ph'); P.s0 = P.ph.querySelector('.ap-ph-s');
+            P.ph.style.transform = ''; P.ph.style.transformOrigin = '';
+            var s = P.s0.getBoundingClientRect(), w = P.ph.getBoundingClientRect();
+            P.S = { cx: s.left + s.width / 2, cy: s.top + s.height / 2, w: s.width, h: s.height, r: parseFloat(getComputedStyle(P.s0).borderTopLeftRadius) || 0 };
+            P.ph.style.transformOrigin = (P.S.cx - w.left).toFixed(1) + 'px ' + (P.S.cy - w.top).toFixed(1) + 'px';
+          },
           frame: function (P, p, vw, vh, top) {
-            P.b.style.zIndex = 2;
-            var e = EIO(cl((p - .06) / .86));
-            P.doors[0].style.transform = 'translate3d(' + (-58 * e).toFixed(2) + '%,0,0) scale(' + (1 - .04 * e).toFixed(4) + ')';
-            P.doors[1].style.transform = 'translate3d(' + (58 * e).toFixed(2) + '%,0,0) scale(' + (1 - .04 * e).toFixed(4) + ')';
-            seam.style.opacity = (cl(p / .05) * (1 - cl((p - .07) / .1))).toFixed(3);
-            P.b.style.transformOrigin = '50% ' + (vh / 2).toFixed(0) + 'px';
-            P.b.style.transform = 'translate3d(0,' + (-top).toFixed(1) + 'px,0) scale(' + (.9 + .1 * e).toFixed(4) + ')';
-            P.dimB.style.opacity = (.6 * (1 - e)).toFixed(3);
+            P.a.style.zIndex = 2; P.b.style.zIndex = 3;
+            var S = P.S, e = EIO(cl((p - .03) / .85)), k1 = Math.max(vw / S.w, vh / S.h) * 1.08, k = Math.exp(Math.log(k1) * e);
+            var dx = (vw / 2 - S.cx) * e, dy = (vh / 2 - S.cy) * e;
+            P.ph.style.transform = 'translate3d(' + dx.toFixed(1) + 'px,' + dy.toFixed(1) + 'px,0) scale(' + k.toFixed(4) + ')';
+            P.a.style.setProperty('--dv', (1 - cl(p / .22)).toFixed(3));
+            // the screen's outline on the page, then the same in the problem's own (scaled) terms
+            var cx = S.cx + dx, cy = S.cy + dy, hw = S.w * k / 2, hh = S.h * k / 2, bs = .55 + .45 * e, ox = vw / 2, oy = vh / 2;
+            var L = ox + (cx - hw - ox) / bs, R = ox + (cx + hw - ox) / bs, T = oy + (cy - hh - oy) / bs, B = oy + (cy + hh - oy) / bs, hb = P.b.offsetHeight;
+            P.b.style.clipPath = 'inset(' + T.toFixed(1) + 'px ' + (vw - R).toFixed(1) + 'px ' + (hb - B).toFixed(1) + 'px ' + L.toFixed(1) + 'px round ' + (S.r * k / bs).toFixed(1) + 'px)';
+            P.b.style.opacity = cl((p - .1) / .3).toFixed(3);
+            P.b.style.transformOrigin = ox.toFixed(0) + 'px ' + oy.toFixed(0) + 'px';
+            P.b.style.transform = 'translate3d(0,' + (-top).toFixed(1) + 'px,0) scale(' + bs.toFixed(4) + ')';
           },
-          end: function (P) { (P.doors || []).forEach(function (d) { on(d, false); d.style.transform = ''; }); on(seam, false); P.a.style.visibility = ''; P.dimB.style.opacity = 0; P.b.style.transformOrigin = ''; }
+          end: function (P) { P.a.classList.remove('ap-dv'); if (P.ph) { P.ph.style.transform = ''; P.ph.style.transformOrigin = ''; } P.b.style.transformOrigin = ''; }
         },
-        // 3 · the customer card grows into the customer app: the next chapter opens inside the card's own outline and
-        // spreads to fill the screen, in the card's colour at first
-        card: {
-          start: function (P) { P.card = P.a.querySelector('.ap-side'); P.a.classList.add('ap-cardgo');
-            if (!P.tint) { P.tint = document.createElement('i'); P.tint.className = 'ap-tint'; P.tint.setAttribute('aria-hidden', 'true'); P.b.appendChild(P.tint); } },
+        // 3 · the customer app lifts off its card: the phone rises out of the customer card and flies to the middle of the
+        // customer app's chapter, turning a little on the way; the chapter fills in around it, and the two other phones
+        // fan out from behind it as it lands
+        fly: {
+          start: function (P) {
+            P.a.classList.add('ap-fl'); P.b.classList.add('ap-cg');
+            P.src = P.a.querySelector('.ap-split .ap-side .ap-ph'); P.fan = P.b.querySelector('.ap-fan'); P.fan.classList.add('is-in');
+            P.dst = P.fan.querySelectorAll('.ap-ph')[1];
+            if (!P.fly) { P.fly = document.createElement('div'); P.fly.className = 'ap-fly'; fx.appendChild(P.fly); }
+            P.fly.innerHTML = ''; P.fly.appendChild(P.src.cloneNode(true)); on(P.fly, true);
+          },
           frame: function (P, p, vw, vh) {
             P.a.style.zIndex = 2; P.b.style.zIndex = 3;
-            var r = P.card.getBoundingClientRect(), e = EIO(cl((p - .04) / .86)), hb = P.b.offsetHeight, f = 1 - e;
-            P.b.style.clipPath = 'inset(' + (r.top * f).toFixed(1) + 'px ' + ((vw - r.right) * f).toFixed(1) + 'px ' + (hb - vh + (vh - r.bottom) * f).toFixed(1) + 'px ' + (r.left * f).toFixed(1) + 'px round ' + (32 * f).toFixed(1) + 'px)';
-            P.b.style.opacity = cl(p / .1).toFixed(3);
-            P.tint.style.opacity = (1 - cl((p - .12) / .4)).toFixed(3);
-            P.a.style.setProperty('--cf', (1 - cl(p / .12)).toFixed(3));
-            P.dimA.style.opacity = (.5 * e).toFixed(3);
+            var r0 = P.src.getBoundingClientRect(), r1 = P.dst.getBoundingClientRect(), e = EIO(cl((p - .06) / .8)), arc = Math.sin(Math.PI * e);
+            var cx = lerp(r0.left + r0.width / 2, r1.left + r1.width / 2, e), cy = lerp(r0.top + r0.height / 2, r1.top + r1.height / 2, e) - arc * vh * .08;
+            var s = lerp(r0.width / r1.width, 1, e) * (1 + .06 * arc);
+            P.fly.style.width = r1.width.toFixed(1) + 'px'; P.fly.style.setProperty('--fw', r1.width.toFixed(1) + 'px'); P.fly.style.setProperty('--lift', arc.toFixed(3));
+            P.fly.style.transform = 'translate3d(' + (cx - r1.width / 2).toFixed(1) + 'px,' + (cy - r1.height / 2).toFixed(1) + 'px,0) rotate(' + (-7 * arc).toFixed(2) + 'deg) scale(' + s.toFixed(4) + ')';
+            var landed = p >= .87; P.fly.style.opacity = landed ? 0 : 1;
+            P.a.style.setProperty('--fa', (1 - cl(p / .25)).toFixed(3));
+            P.b.style.opacity = cl((p - .16) / .3).toFixed(3);
+            P.b.style.setProperty('--ct', EO(cl((p - .52) / .36)).toFixed(3));
+            P.b.style.setProperty('--cs', EO(cl((p - .66) / .3)).toFixed(3));
+            P.b.style.setProperty('--cc', landed ? 1 : 0);
           },
-          end: function (P) { P.a.classList.remove('ap-cardgo'); if (P.tint) P.tint.style.opacity = 0; P.dimA.style.opacity = 0; }
+          end: function (P) { P.a.classList.remove('ap-fl'); P.b.classList.remove('ap-cg'); if (P.fly) on(P.fly, false); }
         },
-        // 4 · swipe to hand over: the delivery app's swipe button, as wide as the screen. Its knob runs across and the
-        // delivery chapter is drawn in behind it
-        swipe: {
-          start: function (P) { [track, glow, knob].forEach(function (el) { on(el, true); }); },
+        // 4 · a delivery rider brings in the delivery app: a partner on a scooter rides across the screen, and the delivery
+        // chapter appears behind him. His wheels turn and he bobs as he moves, so they keep pace with the scroll; when the
+        // page moves fast, speed lines trail behind him
+        ride: {
+          start: function (P) { [rider, road, trail].forEach(function (el) { on(el, true); }); P.lx = null; },
           frame: function (P, p, vw, vh) {
             P.a.style.zIndex = 2; P.b.style.zIndex = 3;
-            var e = EIO(cl((p - .06) / .86)), x = -70 + (vw + 140) * e, a = cl(p / .05) * (1 - cl((p - .9) / .08));
-            P.b.style.clipPath = 'inset(0 ' + Math.max(0, vw - x).toFixed(1) + 'px 0 0)';
-            knob.style.left = x.toFixed(1) + 'px'; knob.style.opacity = a.toFixed(3);
-            knob.style.transform = 'scale(' + EB(cl(p / .07)).toFixed(3) + ')';
-            glow.style.left = x.toFixed(1) + 'px'; glow.style.opacity = a.toFixed(3);
-            track.style.left = Math.max(0, x).toFixed(1) + 'px'; track.style.opacity = (a * .9).toFixed(3);
-            P.dimA.style.opacity = (.35 * e).toFixed(3);
+            var RW = vw < 600 ? 190 : vw < 1000 ? 260 : Math.min(380, vw * .26), RH = RW * 210 / 320, u = RW / 320;
+            var t = cl((p - .02) / .94), e = .65 * t + .35 * t * t * (3 - 2 * t), x = -RW * 1.05 + (vw + RW * 1.7) * e;
+            var gy = vh * .66, y = gy - 202 * u + Math.sin(x / 26) * 1.6;
+            rider.style.width = RW + 'px'; rider.style.transform = 'translate3d(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px,0)';
+            var ang = (x / (2 * Math.PI * 32 * u)) * 360;
+            wheels.forEach(function (w, k) { w.style.transform = 'rotate(' + ang.toFixed(1) + 'deg)'; });
+            var v = P.lx === null ? 0 : Math.abs(x - P.lx); P.lx = x; P.sp = lerp(P.sp || 0, cl(v / 26), .35);
+            speed.style.opacity = P.sp.toFixed(3);
+            // the new chapter is drawn in up to the back of the box
+            var edge = x + 26 * u;
+            P.b.style.clipPath = 'inset(0 ' + Math.max(0, vw - edge).toFixed(1) + 'px 0 0)';
+            trail.style.left = (edge - 220).toFixed(1) + 'px';
+            road.style.left = Math.max(0, x + 300 * u).toFixed(1) + 'px'; road.style.top = (gy - 1).toFixed(1) + 'px';
+            P.dimA.style.opacity = (.2 * e).toFixed(3);
           },
-          end: function (P) { [track, glow, knob].forEach(function (el) { on(el, false); }); P.dimA.style.opacity = 0; }
+          end: function (P) { [rider, road, trail].forEach(function (el) { on(el, false); }); P.dimA.style.opacity = 0; }
         },
         // 5 · loading: the screen fills with tiles, as a page does while it loads, and they clear onto the details
         tiles: {
@@ -75228,7 +75269,7 @@ a.ap-side:hover .ap-app-go svg { translate: 3px 0; }
         var vh = innerHeight;
         pairs.forEach(function (P) { var ha = P.a.offsetHeight; P.a.style.setProperty('--stk', Math.min(0, vh - ha) + 'px');
           P.dimA.style.top = Math.max(0, ha - vh) + 'px'; P.dimA.style.height = vh + 'px'; P.dimB.style.top = '0'; P.dimB.style.height = vh + 'px';
-          if (P.tint) { P.tint.style.height = vh + 'px'; } P.st = -1; });
+          P.st = -1; });
       };
       var raf = 0;
       var frame = function () {
