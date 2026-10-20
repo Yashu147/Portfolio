@@ -60222,12 +60222,10 @@ renderer.setAnimationLoop(now => {
   .ve6 .vx-a b { font-size: clamp(56px, 10vw, 160px); line-height: 0.9; font-weight: 600; letter-spacing: -0.055em; color: #0B0B0C; }
   .ve6 .vx-m { display: none; }
   @media (max-width: 760px) {
-    .ve6 .vx { height: auto; }
-    .ve6 .vx-stick { position: relative; height: auto; display: flex; flex-direction: column; background: #FFFFFF; }
-    .ve6 .vx-img { position: relative; order: 2; width: 100% !important; height: auto !important; left: 0 !important; top: 0 !important; transform: none !important; }
-    .ve6 .vx-scrim, .ve6 .vx-foot, .ve6 .vx-a { display: none; }
-    .ve6 .vx-m { display: flex; flex-direction: column; gap: 12px; padding: 0 22px 32px; }
-    .ve6 .vx-m b { font-size: 44px; line-height: 0.98; font-weight: 600; letter-spacing: -0.05em; }
+    .ve6 .vx { height: 320vh; }
+    .ve6 .vx-stick { height: 100svh; }
+    .ve6 .vx-big { white-space: normal; font-size: clamp(38px, 11vw, 48px); line-height: 0.98; }
+    .ve6 .vx-foot { padding: 0 22px 34px; }
   }
   /* why it helps */
   .ve6 .vz-why { margin-top: 20px; padding: 26px 28px 28px; border-radius: 18px; background: #FFFFFF; box-shadow: inset 0 0 0 1px #E4E4DF; }
@@ -63292,8 +63290,9 @@ window.__veFix = function (host) {
     st(T[0], b === 1 || b === 2, b >= 3); st(T[1], b === 2, b >= 3); st(T[2], b === 3, b === 4); st(T[3], b === 4, false);
   };
   const layout = () => {
-    const narrow = innerWidth < 900;
+    const narrow = false, ph = innerWidth < 760, tall = ph || innerHeight / innerWidth > 1.15;
     if (narrow !== still) { still = narrow; run.classList.toggle("vox-static", narrow); }
+    run.classList.toggle("vox-n", ph);
     RW = items.map(it => it.firstElementChild.offsetWidth + 2);
     if (narrow) { G = null; wins.forEach(w => { w.style.transform = ""; w._t = ""; }); rise.style.transform = ""; macBox.style.opacity = ""; lastRise = lastMo = null; setBeat(4, true); k = -1; roll.style.width = ""; items.forEach(it => it.classList.remove("on", "gone")); return; }
     const W = stick.clientWidth, H = stick.clientHeight;
@@ -63301,8 +63300,8 @@ window.__veFix = function (host) {
     const h1 = T[0].offsetHeight, h2 = T[1].offsetHeight, h3 = T[2].offsetHeight, h4 = T[3].offsetHeight;
     const tb = t0 + Math.max(h1 + gap + h2, h3, h4);
     const top0 = tb + Math.max(26, H * 0.035), bot = H - Math.max(30, H * 0.055);   // the whole laptop, with floor left under it
-    const S = Math.max(320, Math.min((bot - top0) / (BASE - SCR.t), W * 0.82));
-    const my = top0 - SCR.t * S, mx = (W - S) / 2;
+    const S = tall ? Math.min((bot - top0) / (BASE - SCR.t), W * (ph ? 1.02 : 0.92)) : Math.max(320, Math.min((bot - top0) / (BASE - SCR.t), W * 0.82));
+    const my = top0 - SCR.t * S + (tall ? Math.max(0, (bot - top0 - (BASE - SCR.t) * S) * 0.3) : 0), mx = (W - S) / 2;
     // beat 2: the Mac steps back so its copies fit beside it, centred in the room under the two lines
     const z2 = Math.min(0.62, (W * 0.34) / S), tb12 = t0 + h1 + gap + h2, visH = (0.84 - 0.22) * S * z2;
     const lid = Math.max(tb12 + 30, tb12 + (H - tb12 - visH) / 2), yo = (lid - my - 0.22 * S * z2) / (S * (1 - z2));
@@ -63311,8 +63310,10 @@ window.__veFix = function (host) {
       "--z2": z2.toFixed(3), "--zo": (yo * 100).toFixed(2) + "%", "--dh2": dh2.toFixed(1) + "px" };
     for (const p in css) stick.style.setProperty(p, css[p]);
     const os = { x: mx + SCR.l * S, y: my + SCR.t * S, w: SCR.w * S, h: SCR.h * S };
-    G = { W, H, fl: WIN.map(w => { const fw = w.w * os.w, fh = w.h * os.h, fx = os.x + w.l * os.w, fy = os.y + w.t * os.h;
-      return { dx: w.sx * W - (fx + fw / 2), dy: w.sy * H - (fy + fh / 2), s: (w.sw * W) / fw, r: w.r }; }) };
+    // on a phone the windows wait in the room under the Mac, a little larger for the narrow stage
+    const WP = [[0.28, 0.66, 0.42, -7], [0.74, 0.64, 0.4, 6], [0.22, 0.83, 0.36, 5], [0.53, 0.79, 0.36, -3], [0.8, 0.85, 0.36, -5]];
+    G = { W, H, fl: WIN.map((w, i) => { const fw = w.w * os.w, fh = w.h * os.h, fx = os.x + w.l * os.w, fy = os.y + w.t * os.h, z = tall ? WP[i] : [w.sx, w.sy, w.sw, w.r];
+      return { dx: z[0] * W - (fx + fw / 2), dy: z[1] * H - (fy + fh / 2), s: (z[2] * W) / fw, r: z[3] }; }) };
     k = -1; lastFill = []; lastRise = lastMo = null;   // (the roll's widths and position are set again on the next frame)
   };
   const frame = () => {
@@ -63323,7 +63324,7 @@ window.__veFix = function (host) {
     // off screen the scene simply matches the scroll; on screen it eases towards it, no faster than RATE
     if (r.bottom < -40 || r.top > vh + 40) { q = target; tPrev = 0; return; }
     if (q === null || !tPrev) q = target;
-    else { const dt = Math.min(0.05, now - tPrev), cap = (target < q ? RATE_BACK : RATE) * dt, d = (target - q) * (1 - Math.exp(-dt * 5));
+    else { const tch = matchMedia("(hover: none)").matches, dt = Math.min(0.05, now - tPrev), cap = (tch ? 0.6 : target < q ? RATE_BACK : RATE) * dt, d = (target - q) * (1 - Math.exp(-dt * (tch ? 8 : 5)));
       q = Math.abs(target - q) < 0.0004 ? target : q + Math.max(-cap, Math.min(cap, d)); }
     tPrev = now;
     const p = q, chasing = p !== target;
@@ -63360,7 +63361,7 @@ window.__veFix = function (host) {
   // and rests there, with nothing to snap back. (Touch, which the page does not ease, is held directly.)
   const pins = () => { const r = run.getBoundingClientRect(), top = scrollY + r.top; return [top, top + r.height - innerHeight]; };
   const gate = (next, cur) => {
-    if (!G || q === null) return next;
+    if (!G || q === null || matchMedia("(hover: none)").matches) return next;
     const [a, b] = pins();
     if (next < cur && q > 0.002 && cur >= a - 1 && next < a) return Math.min(cur, a);
     if (next > cur && q < 0.998 && cur <= b + 1 && next > b) return Math.max(cur, b);
@@ -63370,7 +63371,7 @@ window.__veFix = function (host) {
   if (eng) eng.gate = gate;
   let touchT = 0, ty0 = 0;
   const hold = () => {   // after a touch only: a fling that carried past the pin comes back to it
-    if (!G || q === null || performance.now() - touchT > 1500) return;
+    if (!G || q === null || performance.now() - touchT > 1500 || matchMedia("(hover: none)").matches) return;
     const [a, b] = pins(), y = scrollY;
     if (y < a && y > a - innerHeight && q > 0.002) window.scrollTo({ top: a, behavior: "instant" });
     else if (y > b && y < b + innerHeight && q < 0.998) window.scrollTo({ top: b, behavior: "instant" });
@@ -63710,7 +63711,9 @@ window.__veRD = function (host) {
     const B = Array.prototype.slice.call(board.querySelectorAll(".vfb-b"));
     if (!reduce && below(board)) {
       board.classList.add("pre");
-      seen(board, () => B.forEach((b, i) => {
+      if (innerWidth <= 760) B.forEach(b => seen(b, () => { b.classList.add("typing");
+        const a = setTimeout(() => { b.classList.remove("typing"); b.classList.add("said"); }, 700); offs.push(() => clearTimeout(a)); }, { threshold: 0.6 }));
+      else seen(board, () => B.forEach((b, i) => {
         const a = setTimeout(() => b.classList.add("said"), 120 + i * 170);
         offs.push(() => clearTimeout(a));
       }), { threshold: 0.25 });
@@ -63782,6 +63785,10 @@ window.__veRD = function (host) {
   if (frag && !reduce) {
     on(frag, "pointermove", e => { if (e.pointerType === "touch") return; const r = frag.getBoundingClientRect(); frag.style.setProperty("--vwd-sx", (((e.clientX - r.left) / r.width - 0.5) * 92).toFixed(1) + "px"); });
     on(frag, "pointerleave", () => frag.style.setProperty("--vwd-sx", "0px"));
+    if (matchMedia("(hover: none)").matches) { let fq = 0;
+      const fs = () => { fq = 0; const r = frag.getBoundingClientRect(), vh = innerHeight; if (r.bottom < 0 || r.top > vh) return;
+        const p = Math.max(0, Math.min(1, (vh - r.top) / (vh + r.height))); frag.style.setProperty("--vwd-sx", ((p - 0.5) * 110).toFixed(1) + "px"); };
+      on(window, "scroll", () => { if (!fq) fq = requestAnimationFrame(fs); }, { passive: true }); fs(); }
   }
 
   // It was acting in the dark: one light slides in, then follows the pointer. At rest it lights the first line only
@@ -63802,6 +63809,11 @@ window.__veRD = function (host) {
     on(room, "pointermove", e => { if (e.pointerType === "touch") return; hov = true; const rr = room.getBoundingClientRect(); pool.style.opacity = ""; set(e.clientX - rr.left, e.clientY - rr.top); });
     on(room, "pointerleave", () => { hov = false; set.apply(null, rest()); });
     on(window, "resize", () => { if (!hov) instant(() => set.apply(null, rest())); });
+    if (matchMedia("(hover: none)").matches && !reduce) { let dq = 0;
+      const ds = () => { dq = 0; const rr = room.getBoundingClientRect(), vh = innerHeight; if (rr.bottom < 0 || rr.top > vh) return;
+        const hr = head.getBoundingClientRect(), p = Math.max(0, Math.min(1, (vh * 0.62 - hr.top) / Math.max(1, hr.height)));
+        pool.style.opacity = ""; set(hr.left - rr.left + hr.width * (0.32 + 0.36 * p), hr.top - rr.top + hr.height * (0.12 + 0.76 * p)); };
+      on(window, "scroll", () => { if (!dq) dq = requestAnimationFrame(ds); }, { passive: true }); }
   }
   return () => offs.splice(0).forEach(f => { try { f(); } catch (x) {} });
 };
@@ -64416,7 +64428,7 @@ window.__veTR = function (host) {
             E = vxRun.querySelector(".vx-eye"), BIG = vxRun.querySelector(".vx-big"), S = vxRun.querySelector(".vx-scrim"),
             LS = Array.prototype.slice.call(vxRun.querySelectorAll(".vx-l > span"));
       // the two lines: the longer one fills the stage's width
-      const fit = () => { const foot = BIG.parentElement, cs = getComputedStyle(foot), room = foot.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+      const fit = () => { if (innerWidth < 760) { BIG.style.fontSize = ""; return; } const foot = BIG.parentElement, cs = getComputedStyle(foot), room = foot.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
         BIG.style.fontSize = "96px"; const w = Math.max.apply(null, LS.map(x => x.offsetWidth)); if (w) BIG.style.fontSize = Math.min(220, 96 * room / w).toFixed(1) + "px"; };
       // the laptop's screen in the photo (share of the picture): centre and size; AY: how the photo sits when it is
       // taller than the stage (a little above centre, so the room over the laptop stays in view)
@@ -64425,7 +64437,7 @@ window.__veTR = function (host) {
       let raf = 0, last = "", box = "";
       const frame = () => {
         raf = 0;
-        if (innerWidth < 760) { img.style.transform = ""; return; }
+        const ph = innerWidth < 760;
         const r = vxRun.getBoundingClientRect(), vh = innerHeight;
         if (r.bottom < -50 || r.top > vh + 50) return;
         const pa = cl(-r.top / Math.max(1, r.height - vh)), p = cl(pa / 0.567);
@@ -64434,7 +64446,7 @@ window.__veTR = function (host) {
           stick.style.clipPath = q > 0 ? "inset(" + (q * sh * 0.5).toFixed(1) + "px " + (q * sw * 0.5).toFixed(1) + "px round " + (12 + q * 28).toFixed(1) + "px)" : "";
           stick.style.transform = q > 0 ? "scale(" + (1 - 0.1 * q).toFixed(4) + ")" : ""; }
         // the photo covers the stage
-        const W = Math.max(sw, sh * 1.5), H = W / 1.5, ox = (sw - W) / 2, oy = (sh - H) * AY;
+        const W = Math.max(sw, sh * 1.5), H = W / 1.5, ox = ph ? Math.max(sw - W, Math.min(0, sw / 2 - 0.37 * W)) : (sw - W) / 2, oy = (sh - H) * AY;
         const bk = W + "," + ox + "," + oy;
         if (bk !== box) { box = bk; img.style.width = W + "px"; img.style.left = ox + "px"; img.style.top = oy + "px"; img.style.transformOrigin = (SX * W) + "px " + (SY * H) + "px"; fit(); }
         // zoom about the screen's centre so the screen covers the stage, and carry it to the stage's centre
@@ -64470,9 +64482,15 @@ window.__veTR = function (host) {
       const stairs = voRun.querySelector(".vo-stairs");
       const frame = () => {
         raf = 0;
-        if (innerWidth < 760) { bricks.forEach((b, o) => { if (how[o].last) { b.style.transform = ""; b.style.opacity = ""; how[o].last = ""; } }); voRun.classList.add("vo-landed"); return; }
+
         const r = voRun.getBoundingClientRect(), vh = innerHeight;
         if (r.bottom < -50 || r.top > vh + 50) return;
+        if (innerWidth < 760) {
+          bricks.forEach((b, o) => { const t = b.getBoundingClientRect().top - (how[o].dy || 0), e = cl((vh * 0.98 - t) / (vh * 0.32)), k = 1 - Math.pow(1 - e, 3), h = how[o];
+            h.dy = -(1 - k) * 120; const tf = k >= 1 ? "none" : "translate3d(0," + h.dy.toFixed(1) + "px,0) rotate(" + ((1 - k) * h.t * 1.6).toFixed(2) + "deg)", op = cl(e * 2.5).toFixed(3), key = tf + op;
+            if (key !== h.last) { b.style.transform = tf; b.style.opacity = op; h.last = key; } });
+          voRun.classList.toggle("vo-landed", how.every(h => h.last.indexOf("none") === 0)); return;
+        }
         // the staircase keeps its proportions and scales down as a whole on a short screen, so every step's words fit
         if (fitH !== vh) { fitH = vh; const sh = stairs.offsetHeight, room = vh - 72 - 24 - 90; stairs.style.transform = sh > room ? "scale(" + (room / sh).toFixed(4) + ")" : "";
           stairs.style.marginTop = sh > room ? (room - sh).toFixed(0) + "px" : ""; }
@@ -64731,6 +64749,7 @@ window.__veTR = function (host) {
     };
     const queue = () => { if (!hraf) hraf = requestAnimationFrame(hit); };
     const onMove = e => { if (e.pointerType && e.pointerType !== "mouse") return; mx = e.clientX; my = e.clientY; queue(); };
+    if (matchMedia("(hover: none)").matches) { const mid = () => { mx = innerWidth / 2; my = innerHeight * 0.52; }; mid(); addEventListener("resize", mid); queue(); }
     const onOut = e => { if (!e.relatedTarget) { mx = -1; queue(); } };
     addEventListener("pointermove", onMove, { passive: true });
     addEventListener("scroll", queue, { passive: true });
@@ -68389,7 +68408,7 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
   /* Wherever you work closes into the outcome's dark */
   .ve6 .vx { height: 458vh !important; background: #0B0B0C; }
   .ve6 .vx-stick { transform-origin: 50% 50%; }
-  @media (max-width: 760px) { .ve6 .vx { height: auto !important; background: none; } }
+
   /* the two jobs, pictured */
   .ve6 .vwd-vis { margin: clamp(28px, 4vw, 56px) 0 clamp(24px, 3vw, 40px); width: 100%; max-width: 520px; }
   .ve6 .vwd-vis svg { display: block; width: 100%; height: auto; overflow: visible; }
@@ -75980,4 +75999,78 @@ a.ap-side:hover .ap-app-go svg { translate: 3px 0; }
   /* the tint fills the whole frame; only the picture keeps to the padded box */
   html #services .ysx-art[class*="ysx-p"] { background-origin: content-box !important; background-clip: border-box !important; }
 </style>
+<style id="yp-mob-vox">
+  /* the obvious fix on a phone: a shorter run (the scene follows the finger), the lines sized for the width */
+  @media (max-width: 760px) {
+    .ve6 .vox { height: 520vh; }
+    .ve6 .vox.vox-n .vox-t { padding: 0 22px; }
+    .ve6 .vox.vox-n .vox-mid { font-size: clamp(27px, 7.4vw, 34px); max-width: none; }
+    .ve6 .vox.vox-n .vox-big { font-size: clamp(30px, 8.6vw, 40px); }
+    .ve6 .vox.vox-n .vox-label { top: calc(var(--t0, 150px) - 40px); }
+  }
+</style>
+<style id="yp-mob-wrap">
+  @media (max-width: 760px) {
+    .tt .tt-h2, .tt .tt-h1, .tt .tt-q3-t, .tt .tt-ap7-t { white-space: normal !important; overflow-wrap: break-word; text-wrap: balance; }
+  }
+</style>
+<script id="yp-touch">
+/* Touch screens have no hover, so the effects that follow a mouse follow the reading position instead:
+   - the home page's case cards: the devices lift as a card reaches the middle of the screen
+   - the More projects band wakes when it is in the middle of the screen
+   - case 02's glass cards: their light sweeps across them as they scroll through the screen
+   - the robot in the home hero looks at your finger while you touch the screen */
+(function () {
+  if (!matchMedia("(hover: none)").matches) return;
+  var raf = 0, cl = function (v) { return v < 0 ? 0 : v > 1 ? 1 : v; };
+  var tick = function () {
+    raf = 0; var vh = innerHeight;
+    document.querySelectorAll("#showcase [data-case]").forEach(function (c) { var r = c.getBoundingClientRect(), m = (r.top + r.bottom) / 2;
+      c.classList.toggle("yt-c", m > vh * 0.3 && m < vh * 0.7); });
+    var band = document.getElementById("more-band");
+    if (band) { var br = band.getBoundingClientRect(), on = br.top < vh * 0.62 && br.bottom > vh * 0.38; band.classList.toggle("is-hot", on);
+      if (on) { band.style.setProperty("--mx", (br.width / 2) + "px"); band.style.setProperty("--my", (br.height / 2) + "px"); } }
+    document.querySelectorAll("#yp-page [data-tt-spot] li, #yp-page .tt-ap7-c, #yp-page .tt-ap7-f, #yp-page .tt-q4 .tt-bq").forEach(function (el) {
+      var r = el.getBoundingClientRect(); if (r.bottom < 0 || r.top > vh) return;
+      var p = cl((vh * 0.9 - r.top) / (vh * 0.8));
+      el.style.setProperty("--sx", (r.width * (0.15 + 0.7 * p)).toFixed(0) + "px"); el.style.setProperty("--sy", (r.height * (0.2 + 0.6 * p)).toFixed(0) + "px");
+      el.style.setProperty("--spot", (Math.sin(p * Math.PI) * 0.9 + 0.1).toFixed(2)); });
+  };
+  var q = function () { if (!raf) raf = requestAnimationFrame(tick); };
+  addEventListener("scroll", q, { passive: true }); addEventListener("resize", q); addEventListener("hashchange", function () { setTimeout(q, 400); });
+  setTimeout(q, 600);
+  // the robot looks where you touch, and back to itself a moment after you let go
+  var off = 0, look = function (t) { var P = window.__heroPointer; if (!P || !t) return; P.on = true;
+    P.x = Math.max(-1, Math.min(1, (t.clientX / innerWidth) * 2 - 1)); P.y = Math.max(-1, Math.min(1, -((t.clientY / innerHeight) * 2 - 1))); clearTimeout(off); };
+  addEventListener("touchstart", function (e) { look(e.touches[0]); }, { passive: true });
+  addEventListener("touchmove", function (e) { look(e.touches[0]); }, { passive: true });
+  addEventListener("touchend", function () { clearTimeout(off); off = setTimeout(function () { var P = window.__heroPointer; if (P) P.on = false; }, 1400); }, { passive: true });
+})();
+</script>
+<style id="yp-touch-css">
+  @media (hover: none) { #showcase [data-case].yt-c .hcd { transform: translateY(-1.4%) scale(1.012); } }
+</style>
+<style id="yp-mob-deck">
+  @media (max-width: 767px) {
+    #services .ysx-cards { padding-bottom: 8vh; }
+    #services .ysx-card { position: sticky; top: calc(78px + var(--i, 0) * 10px); background: #FFFFFF; padding-top: 18px; padding-bottom: 28px;
+      transform-origin: 50% 0; scale: var(--sk, 1); filter: brightness(var(--sb, 1)); will-change: scale; }
+    html.dark #services .ysx-card { background: #0D0D11; }
+    #services .ysx-card .ysx-art { aspect-ratio: auto; height: min(calc(100vw - 40px), calc(100svh - 420px)); }
+    #services .ysx-card + .ysx-card .ysx-card-title { border-top: 0 !important; padding-top: 0 !important; }
+    #services .ysx-card { box-shadow: 0 -18px 30px -24px rgba(14,15,20,.25); border-radius: 18px 18px 0 0; }
+    html.dark #services .ysx-card { box-shadow: 0 -18px 30px -24px rgba(0,0,0,.8); }
+  }
+</style>
+<script id="yp-mob-deck-js">
+(function () {
+  var raf = 0, q = function () { if (!raf) raf = requestAnimationFrame(tick); };
+  function tick() { raf = 0; if (innerWidth > 767) return;
+    var cs = [].slice.call(document.querySelectorAll('#services .ysx-card'));
+    cs.forEach(function (c, i) { c.style.setProperty('--i', i); var n = cs[i + 1]; if (!n) { c.style.setProperty('--sk', 1); c.style.setProperty('--sb', 1); return; }
+      var t = 78 + i * 10, d = n.getBoundingClientRect().top - t, h = c.offsetHeight, k = Math.max(0, Math.min(1, 1 - d / h));
+      c.style.setProperty('--sk', (1 - .07 * k).toFixed(4)); c.style.setProperty('--sb', (1 - .22 * k).toFixed(3)); }); }
+  addEventListener('scroll', q, { passive: true }); addEventListener('resize', q); setTimeout(q, 300);
+})();
+</script>
 </body></html>
