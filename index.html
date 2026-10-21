@@ -77470,4 +77470,23 @@ html.dark #services .s7 .d-3sh { background: radial-gradient(closest-side, rgba(
   /* phones: the footer's links are a full finger's height to tap */
   @media (max-width: 760px) { #yp-page .yft-links a, .yft-links a { padding: 12px 4px !important; } }
 </style>
+<style id="yp-v15">
+  :root { --bj-top: calc(var(--yp-top, 150px) * .78); --bj-bot: calc(var(--yp-bot, 120px) * .9); --bj-gap: calc(var(--yp-gap, 100px) * .9); --bj-foot: 112px; --bj-drum: 36vh; }
+  @media (max-width: 760px) { :root { --bj-top: 70px; --bj-gap: 46px; --bj-foot: 62px; --bj-drum: 30vh; } }
+  @media (min-width: 761px) and (max-width: 1100px) { :root { --bj-foot: 124px; } }
+  html:not(.dark) #about-drum::after, html:not(.dark) #work > div::before, html:not(.dark) #work > div::after, html:not(.dark) #services::before,
+  html:not(.dark) #services::after, html:not(.dark) #timeline::before, html:not(.dark) #timeline::after, html:not(.dark) #spline::before,
+  html:not(.dark):not(.fp-on) #spline::after, html:not(.dark):not(.fp-on) #site-foot::before { content: ""; position: absolute; left: 0; right: 0; z-index: 0; pointer-events: none; }
+  html:not(.dark) #about-drum::after { bottom: 0; height: var(--bj-drum); background: linear-gradient(to bottom, rgb(13,13,17) 0%, rgb(16,16,20) 14.3%, rgb(30,30,34) 28.6%, rgb(61,61,64) 42.9%, rgb(105,105,107) 57.1%, rgb(153,153,155) 71.4%, rgb(199,199,200) 85.7%, rgb(232,232,233) 100%); }
+  html:not(.dark) #work > div::before { top: 0; height: var(--bj-top); background: linear-gradient(to bottom, rgb(232,232,233) 0%, rgb(240,240,240) 14.3%, rgb(246,246,246) 28.6%, rgb(250,250,250) 42.9%, rgb(253,253,253) 57.1%, rgb(254,254,254) 71.4%, rgb(255,255,255) 85.7%, rgb(255,255,255) 100%); }
+  html:not(.dark) #work > div::after { bottom: 0; height: var(--bj-gap); background: linear-gradient(to bottom, rgb(255,255,255) 0%, rgb(249,249,249) 14.3%, rgb(220,220,221) 28.6%, rgb(166,166,167) 42.9%, rgb(102,102,105) 57.1%, rgb(48,48,51) 71.4%, rgb(19,19,23) 85.7%, rgb(13,13,17) 100%); }
+  html:not(.dark) #services::before { top: 0; height: var(--bj-top); background: linear-gradient(to bottom, rgb(11,11,12) 0%, rgb(17,17,18) 14.3%, rgb(46,46,47) 28.6%, rgb(101,101,101) 42.9%, rgb(165,165,166) 57.1%, rgb(220,220,220) 71.4%, rgb(249,249,249) 85.7%, rgb(255,255,255) 100%); }
+  html:not(.dark) #services::after { bottom: 0; height: var(--bj-bot); background: linear-gradient(to bottom, rgb(255,255,255) 0%, rgb(254,254,254) 14.3%, rgb(249,249,249) 28.6%, rgb(238,238,238) 42.9%, rgb(220,220,221) 57.1%, rgb(195,195,196) 71.4%, rgb(166,166,167) 85.7%, rgb(134,134,136) 100%); }
+  html:not(.dark) #timeline::before { top: 0; height: var(--bj-top); background: linear-gradient(to bottom, rgb(134,134,136) 0%, rgb(102,102,105) 14.3%, rgb(73,73,76) 28.6%, rgb(48,48,51) 42.9%, rgb(30,30,34) 57.1%, rgb(19,19,23) 71.4%, rgb(14,14,18) 85.7%, rgb(13,13,17) 100%); }
+  html:not(.dark) #timeline::after { bottom: 0; height: var(--bj-bot); background: linear-gradient(to bottom, rgb(13,13,17) 0%, rgb(14,14,18) 14.3%, rgb(19,19,23) 28.6%, rgb(30,30,34) 42.9%, rgb(48,48,51) 57.1%, rgb(73,73,76) 71.4%, rgb(102,102,105) 85.7%, rgb(134,134,136) 100%); }
+  html:not(.dark) #spline::before { top: 0; height: var(--bj-top); background: linear-gradient(to bottom, rgb(134,134,136) 0%, rgb(166,166,167) 14.3%, rgb(195,195,196) 28.6%, rgb(220,220,221) 42.9%, rgb(238,238,238) 57.1%, rgb(249,249,249) 71.4%, rgb(254,254,254) 85.7%, rgb(255,255,255) 100%); }
+  html:not(.dark):not(.fp-on) #spline::after { bottom: 0; height: var(--bj-bot); background: linear-gradient(to bottom, rgb(255,255,255) 0%, rgb(254,254,254) 14.3%, rgb(249,249,249) 28.6%, rgb(238,238,238) 42.9%, rgb(220,220,221) 57.1%, rgb(195,195,196) 71.4%, rgb(166,166,167) 85.7%, rgb(134,134,136) 100%); }
+  html:not(.dark):not(.fp-on) #site-foot::before { top: 0; height: var(--bj-foot); background: linear-gradient(to bottom, rgb(134,134,136) 0%, rgb(102,102,105) 14.3%, rgb(73,73,76) 28.6%, rgb(48,48,51) 42.9%, rgb(30,30,34) 57.1%, rgb(19,19,23) 71.4%, rgb(14,14,18) 85.7%, rgb(13,13,17) 100%); }
+  html:not(.dark):not(.fp-on) #site-foot::before { z-index: 1; }   /* over the footer's own backdrop; its text starts below */
+</style>
 </body></html>
