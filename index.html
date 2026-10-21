@@ -57328,6 +57328,9 @@ if (HERO) {
   if (Q.get("theme") === "light") html.classList.remove("dark");
   // layers
   const dots = el("canvas", "hx-dots"); document.body.prepend(dots);
+  const melt = el("div", "hx-melt"); melt.setAttribute("aria-hidden", "true"); dots.after(melt);
+  const meltFit = () => { const m = document.getElementById("yp-work"); if (!m) return; const t = m.offsetTop; melt.style.top = (t * .58) + "px"; melt.style.height = (t * .42 + 1) + "px"; };
+  document.addEventListener("DOMContentLoaded", meltFit); addEventListener("load", meltFit); addEventListener("resize", meltFit);
   const h1 = el("h1", "hx-title"); h1.setAttribute("aria-label", COPY.line1 + " " + COPY.line2);
   const mkLine = (cls, word) => { const line = el("span", "hx-line " + cls), inner = el("span", "hx-in"); inner.textContent = word; line.setAttribute("aria-hidden", "true"); line.appendChild(inner); return line; };
   let L1 = mkLine("hx-l1", COPY.line1), L2 = mkLine("hx-l2", COPY.line2); h1.append(L1, L2); document.body.prepend(h1);
@@ -58485,7 +58488,7 @@ renderer.setAnimationLoop(now => {
   #timeline .yph-label i { background: rgba(255,255,255,.22); }
   #timeline .yph-grey { color: #5f5f66; }
   #timeline .yph-ink { color: #ffffff; }
-  #timeline .yph-rule { background: rgba(255,255,255,.14); }
+  #timeline .yph-rule { background: rgba(255,255,255,.08); }
   #timeline .ytl-frame { position: relative; margin: 0 clamp(20px, 4vw, 56px); }
   #timeline .ytl-list { list-style: none; margin: 0; padding: clamp(28px, 4vh, 44px) 0; }
   #timeline .ytl-item { position: relative; display: grid; grid-template-columns: 1fr 1fr; align-items: center; padding: clamp(28px, 4vh, 44px) 0; }
@@ -58728,7 +58731,7 @@ renderer.setAnimationLoop(now => {
   html.dark .yph-label i { background: rgba(255,255,255,.22); }
   html.dark .yph-grey { color: #55555d; }
   html.dark .yph-ink { color: var(--dk-ink); }
-  html.dark .yph-rule { background: rgba(255,255,255,.12); }
+  html.dark .yph-rule { background: rgba(255,255,255,.08); }
 
   /* Selected work: the head's screen */
   html.dark #work > div { background: var(--dk-bg) !important; }
@@ -58748,8 +58751,8 @@ renderer.setAnimationLoop(now => {
   /* How I work */
   html.dark #spline { background: var(--dk-bg) !important; }
   html.dark #spline [data-flow-rail] > div[aria-hidden="true"]:first-child { background: var(--dk-bg) !important; }
-  html.dark #spline [data-step] { --sk-ink: #f4f2ed; --sk-body: rgba(244,242,237,.8); --sk-dim: rgba(244,242,237,.48); --sk-line: rgba(255,255,255,.1);
-    color: #f4f2ed !important; border-left-color: rgba(255,255,255,.1) !important; }
+  html.dark #spline [data-step] { --sk-ink: #f4f2ed; --sk-body: rgba(244,242,237,.8); --sk-dim: rgba(244,242,237,.48); --sk-line: rgba(255,255,255,.08);
+    color: #f4f2ed !important; border-left-color: rgba(255,255,255,.08) !important; }
   html.dark #spline [data-step-slab] { background: #1d1d24 !important; box-shadow: inset 0 0 0 1px rgba(255,255,255,.08); }
 
   /* nothing on the page flashes white while the theme sweeps across */
@@ -59375,7 +59378,7 @@ renderer.setAnimationLoop(now => {
   .yph-line { display: block; font-weight: 800; font-size: clamp(34px, 6.6vw, 118px); line-height: 1.02; letter-spacing: -0.05em; text-transform: uppercase; padding: 0.04em 0 0.06em; }
   .yph-grey { color: #b0b0b3; }
   .yph-ink { color: #101014; padding-left: 9vw; }
-  .yph-rule { width: 100%; height: 1px; background: rgba(16,16,20,0.12); transform-origin: 0 50%; }
+  .yph-rule { width: 100%; height: 1px; background: rgba(16,16,20,0.09); transform-origin: 0 50%; }
   @media (max-width: 760px) {
     .yph-top { flex-direction: column; gap: 18px; }
     .yph-note { align-items: flex-start; text-align: left; }
@@ -61011,7 +61014,7 @@ window.__ypImgs = function (r) { r.querySelectorAll('img[data-yp-src]').forEach(
     <div style="position: sticky; top: 0; height: 100vh; height: 100svh; max-height: 100vh; box-sizing: border-box; display: flex; flex-direction: column; justify-content: flex-start; overflow: hidden; padding: clamp(150px, 19vh, 220px) 0 clamp(40px, 6vh, 70px);">
       <div data-ref="flowRef" data-flow-box="" data-rise="" data-flow-track="" style="position: relative; z-index: 2; width: 100%; flex: 1 1 auto; min-height: 0; max-height: min(74vh, 760px); overflow: hidden; pointer-events: none;">
       <div data-flow-rail="" style="position: relative; display: flex; align-items: stretch; gap: 0; height: 100%; width: max-content; padding: 0 clamp(20px, 4vw, 56px); will-change: transform;"><div aria-hidden="true" style="position: absolute; inset: 0; background: #ffffff; pointer-events: none;"></div><div data-step-slab="" aria-hidden="true" style="position: absolute; left: 0; top: 0; bottom: 0; width: 0; background: #0f0f10; opacity: 0; pointer-events: none; will-change: transform, opacity;"></div>
-      <article data-step="discover" style="position: relative; flex: none; width: clamp(300px, 27vw, 400px); height: 100%; min-height: 0; box-sizing: border-box; display: flex; flex-direction: column; gap: clamp(9px, 1.3vh, 14px); padding: clamp(18px, 2.1vw, 32px); background: transparent; border: 1px solid var(--sk-line, rgba(16,16,20,0.13)); border-left: 1px solid rgba(16,16,20,0.13); color: #101014;">
+      <article data-step="discover" style="position: relative; flex: none; width: clamp(300px, 27vw, 400px); height: 100%; min-height: 0; box-sizing: border-box; display: flex; flex-direction: column; gap: clamp(9px, 1.3vh, 14px); padding: clamp(18px, 2.1vw, 32px); background: transparent; border: 1px solid var(--sk-line, rgba(16,16,20,0.09)); border-left: 1px solid rgba(16,16,20,0.09); color: #101014;">
         <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 2px;">
           <h3 style="margin: 0; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-weight: 700; font-size: clamp(26px, 2.5vw, 38px); letter-spacing: -0.035em; line-height: 1.04; color: var(--sk-ink, #101014);">Listen</h3>
           <span style="font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-weight: 600; font-size: 16.5px; letter-spacing: 0.02em; color: #d97e16;">/01</span>
@@ -61048,7 +61051,7 @@ window.__ypImgs = function (r) { r.querySelectorAll('img[data-yp-src]').forEach(
           <li style="display: flex; gap: 8px;"><span aria-hidden="true" style="color: #d97e16; font-weight: 700; flex: none;">+</span><span>Agree on the goal and the limits.</span></li>
         </ul>
       </article>
-      <article data-step="define" style="position: relative; flex: none; width: clamp(300px, 27vw, 400px); height: 100%; min-height: 0; box-sizing: border-box; display: flex; flex-direction: column; gap: clamp(9px, 1.3vh, 14px); padding: clamp(18px, 2.1vw, 32px); background: transparent; border: 1px solid var(--sk-line, rgba(16,16,20,0.13)); border-left: 0; color: #101014;">
+      <article data-step="define" style="position: relative; flex: none; width: clamp(300px, 27vw, 400px); height: 100%; min-height: 0; box-sizing: border-box; display: flex; flex-direction: column; gap: clamp(9px, 1.3vh, 14px); padding: clamp(18px, 2.1vw, 32px); background: transparent; border: 1px solid var(--sk-line, rgba(16,16,20,0.09)); border-left: 0; color: #101014;">
         <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 2px;">
           <h3 style="margin: 0; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-weight: 700; font-size: clamp(26px, 2.5vw, 38px); letter-spacing: -0.035em; line-height: 1.04; color: var(--sk-ink, #101014);">Ideate</h3>
           <span style="font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-weight: 600; font-size: 16.5px; letter-spacing: 0.02em; color: #1170cf;">/02</span>
@@ -61085,7 +61088,7 @@ window.__ypImgs = function (r) { r.querySelectorAll('img[data-yp-src]').forEach(
           <li style="display: flex; gap: 8px;"><span aria-hidden="true" style="color: #1170cf; font-weight: 700; flex: none;">+</span><span>Decide what to build first.</span></li>
         </ul>
       </article>
-      <article data-step="ideate" style="position: relative; flex: none; width: clamp(300px, 27vw, 400px); height: 100%; min-height: 0; box-sizing: border-box; display: flex; flex-direction: column; gap: clamp(9px, 1.3vh, 14px); padding: clamp(18px, 2.1vw, 32px); background: transparent; border: 1px solid var(--sk-line, rgba(16,16,20,0.13)); border-left: 0; color: #101014;">
+      <article data-step="ideate" style="position: relative; flex: none; width: clamp(300px, 27vw, 400px); height: 100%; min-height: 0; box-sizing: border-box; display: flex; flex-direction: column; gap: clamp(9px, 1.3vh, 14px); padding: clamp(18px, 2.1vw, 32px); background: transparent; border: 1px solid var(--sk-line, rgba(16,16,20,0.09)); border-left: 0; color: #101014;">
         <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 2px;">
           <h3 style="margin: 0; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-weight: 700; font-size: clamp(26px, 2.5vw, 38px); letter-spacing: -0.035em; line-height: 1.04; color: var(--sk-ink, #101014);">Design</h3>
           <span style="font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-weight: 600; font-size: 16.5px; letter-spacing: 0.02em; color: #7433d9;">/03</span>
@@ -61122,7 +61125,7 @@ window.__ypImgs = function (r) { r.querySelectorAll('img[data-yp-src]').forEach(
           <li style="display: flex; gap: 8px;"><span aria-hidden="true" style="color: #7433d9; font-weight: 700; flex: none;">+</span><span>Refine until it feels right.</span></li>
         </ul>
       </article>
-      <article data-step="ship" style="position: relative; flex: none; width: clamp(300px, 27vw, 400px); height: 100%; min-height: 0; box-sizing: border-box; display: flex; flex-direction: column; gap: clamp(9px, 1.3vh, 14px); padding: clamp(18px, 2.1vw, 32px); background: transparent; border: 1px solid var(--sk-line, rgba(16,16,20,0.13)); border-left: 0; color: #101014;">
+      <article data-step="ship" style="position: relative; flex: none; width: clamp(300px, 27vw, 400px); height: 100%; min-height: 0; box-sizing: border-box; display: flex; flex-direction: column; gap: clamp(9px, 1.3vh, 14px); padding: clamp(18px, 2.1vw, 32px); background: transparent; border: 1px solid var(--sk-line, rgba(16,16,20,0.09)); border-left: 0; color: #101014;">
         <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 2px;">
           <h3 style="margin: 0; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-weight: 700; font-size: clamp(26px, 2.5vw, 38px); letter-spacing: -0.035em; line-height: 1.04; color: var(--sk-ink, #101014);">Launch</h3>
           <span style="font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-weight: 600; font-size: 16.5px; letter-spacing: 0.02em; color: #d32279;">/04</span>
@@ -75884,7 +75887,7 @@ html.dark #services .s7 { --tx: #f4f2ed; --mut: #9a9aa6; --sf: #1e1e25; --sf2: #
   --sh: inset 0 0 0 1px rgba(255,255,255,.07), 0 .8em 2em -.6em rgba(0,0,0,.75); --cell: rgba(255,255,255,.08); --lab: #98989f; --cellbg: rgba(13,13,17,.86); --grey: #55555d; }
 #services .s7 .s8-run { position: relative; }
 #services .s7 .s8-pin { position: sticky; top: 0; height: 100svh; overflow: hidden; }
-#services .s7 .s8-space { display: block; height: calc(19 * var(--step)); }
+#services .s7 .s8-space { display: block; height: calc(var(--n, 7) * var(--sv, 34svh)); }
 #services .s7 .s8-stage { position: absolute; inset: 0; --cw: clamp(320px, min(34vw, 56svh), 520px); --ch: calc(var(--cw) * .8); }
 /* one soft light in the skill's colour behind the name */
 #services .s7 .s8-glow { position: absolute; left: 50%; top: var(--ty, 40%); width: min(110vw, 1400px); height: min(90svh, 820px); transform: translate(-50%, -50%); pointer-events: none;
@@ -77161,11 +77164,12 @@ html.dark #services .s7 .d-3sh { background: radial-gradient(closest-side, rgba(
 </style>
 <script id="yp-skills-js">
 /* What I do: the screen holds still while the page scrolls; the scroll turns a ring of five demos around the skill's
-   name. The ring has weight: a spring pulls it towards where the scroll says it should be, so it speeds up, glides,
-   and settles with the slightest overshoot; the cards lean into the turn. When the scroll stops between two demos,
-   the ring settles on the nearer one. Cards at the back go out of focus and hold still; a demo starts over when its
-   card comes round again. Every five demos the name changes to the next skill. On laptops the front card tilts
-   towards the cursor and catches the light. A card on the ring can be clicked to bring it to the front. */
+   name, which stays put. On laptops each skill has two stops: its first demo at the front with one at each side, then
+   half a turn, which brings the two from the back to the front side by side; the next scroll moves on to the next
+   skill. On phones the ring turns one demo at a time. The ring has weight: a spring pulls it to each stop, so it
+   speeds up, glides and settles. Cards at the back go out of focus and hold still; a demo starts over when its card
+   comes round again. On laptops a front card tilts towards the cursor and catches the light. A card on the ring can
+   be clicked to bring it to the front. */
 (function () {
   var sec = document.getElementById('services'); if (!sec) return;
   var root = sec.querySelector('.s8'), run = sec.querySelector('[data-s8-run]'), pin = sec.querySelector('[data-s8-pin]'), stage = sec.querySelector('[data-s8-stage]');
@@ -77173,8 +77177,14 @@ html.dark #services .s7 .d-3sh { background: radial-gradient(closest-side, rgba(
   var slots = [].slice.call(sec.querySelectorAll('[data-s8-slot]')), titles = [].slice.call(sec.querySelectorAll('[data-s8-t]'));
   var R = slots.length, LAST = R * titles.length - 1, TAU = Math.PI * 2, RAD = Math.PI / 180;
   var hover = matchMedia('(hover: hover) and (pointer: fine)');
-  var L = null, P = 0, V = 0, E = 0, EV = 0, U = 0, raf = 0, prev = 0, sk = -1, fr = -1, live = false, last = -1e9, seen = false;
-  var H = { on: false, mx: 0, my: 0, x: 0, y: 0, vx: 0, vy: 0, o: 0 };
+  var L = null, P = 0, V = 0, E = 0, EV = 0, U = 0, raf = 0, prev = 0, sk = -1, live = false, last = -1e9, seen = false, frontKey = '';
+  var H = { on: false, slot: -1, mx: 0, my: 0, x: 0, y: 0, vx: 0, vy: 0, o: 0 };
+  // the places the ring rests: laptops, two per skill (0, 2.5, 5, 7.5 ... 17.5); phones, every demo (0 to 19)
+  var S = [], NS = 1;
+  function stops(desk) {
+    S = []; for (var i = 0; desk ? i < titles.length * 2 : i <= LAST; i++) S.push(desk ? i * R / 2 : i);
+    NS = S.length - 1; root.style.setProperty('--n', NS); root.style.setProperty('--sv', desk ? '34svh' : '16svh');
+  }
   slots.forEach(function (s) { s._face = s.querySelector('.s8-face'); s._glare = s.querySelector('.s8-glare'); s._cards = [].slice.call(s.querySelectorAll('[data-s7-card]')); s._g = -1; s._far = null; s._f = -1; });
   var colors = slots[0]._cards.map(function (c) { return c.style.getPropertyValue('--c'); });
   function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
@@ -77185,11 +77195,13 @@ html.dark #services .s7 .d-3sh { background: radial-gradient(closest-side, rgba(
   }
   function layout() {
     var W = stage.clientWidth, Hh = stage.clientHeight, desk = W >= 768 && Hh < W * 1.15;
-    stage.classList.toggle('is-flat', !desk);
+    stage.classList.toggle('is-flat', !desk); stops(desk);
     var cw = slots[0].offsetWidth, ch = slots[0].offsetHeight, tilt = desk ? 24 : 7;
     L = { W: W, H: Hh, desk: desk, cw: cw, ch: ch, cosT: Math.cos(tilt * RAD), sinT: Math.sin(tilt * RAD) };
     var p72 = proj(72 * RAD), side = desk ? Math.min(W * 0.36, 560) : W * 0.62;
     L.r = side / p72.x;
+    // at a laptop's second stop the two front cards sit where the single front card sits, at the same size
+    var p0 = proj(0), p36 = proj(36 * RAD); L.pdy = (p0.y - p36.y) * L.r; L.pds = p0.s / p36.s - 1;
     // the name fits the width, and its second line fits between the cards at the sides
     titles.forEach(function (t) { t.style.removeProperty('--tf'); });
     function wide(l) { var c = l.querySelectorAll('.s8-ch'), a = c[0], b = c[c.length - 1]; return b.offsetLeft + b.offsetWidth - a.offsetLeft; }
@@ -77205,15 +77217,16 @@ html.dark #services .s7 .d-3sh { background: radial-gradient(closest-side, rgba(
     stage.style.setProperty('--ty', ty.toFixed(1) + 'px');
   }
   function span() { return Math.max(1, run.offsetHeight - pin.offsetHeight); }
-  // where the scroll says the ring should be (0 to 19): it rests on each demo, then turns to the next; once the scroll
-  // stops, on the nearer demo
+  // where the scroll says the ring should be: it rests at each stop, then turns to the next; once the scroll stops,
+  // at the nearer one
   function target(now) {
-    var r = run.getBoundingClientRect(), t = clamp(-r.top / span(), 0, 1) * LAST;
+    if (!L) layout();
+    var r = run.getBoundingClientRect(), t = clamp(-r.top / span(), 0, 1) * NS;
     U = clamp(1 - r.top / innerHeight, 0, 1); seen = r.bottom > 0 && r.top < innerHeight;
-    if (now - last > 170) return Math.round(t);
-    var i = Math.floor(t), f = t - i;
+    if (now - last > 170) return S[Math.round(t)];
+    var i = Math.min(NS - 1, Math.floor(t)), f = clamp(t - i, 0, 1);
     f = f < 0.3 ? 0 : f > 0.7 ? 1 : (f = (f - 0.3) / 0.4, f * f * f * (f * (f * 6 - 15) + 10));
-    return Math.min(LAST, i + f);
+    return S[i] + (S[i + 1] - S[i]) * f;
   }
   function title(k) {
     titles.forEach(function (t, i) {
@@ -77235,46 +77248,45 @@ html.dark #services .s7 .d-3sh { background: radial-gradient(closest-side, rgba(
   function draw() {
     if (!L) layout();
     var e = clamp(E, 0, 1), Q = P - (1 - e) * 1.4, spread = 0.6 + 0.4 * e;
-    var lean = clamp(V * 3.4, -10, 10), squash = 1 - Math.min(0.04, Math.abs(V) * 0.012);
+    var lean = clamp(V * 2, -8, 8), squash = 1 - Math.min(0.03, Math.abs(V) * 0.006), fk = '', dy = 0, ds = 1;
+    if (L.desk) { var pb = ((P / (R / 2)) % 2 + 2) % 2, pw = pb <= 1 ? pb : 2 - pb; pw = pw * pw * (3 - 2 * pw); dy = pw * L.pdy; ds = 1 + pw * L.pds; }
     stage.style.setProperty('--e', e.toFixed(3));
-    tbox.style.setProperty('--tx2', clamp(V * 5, -18, 18).toFixed(2) + 'px');
     if ((e > 0.55) !== live) { live = e > 0.55; stage.classList.toggle('is-live', live); }
     slots.forEach(function (s, j) {
       var a = (j - Q) / R * TAU, pr = proj(a), c = Math.cos(a), d = (c + 1) / 2;
-      var x = L.cx + pr.x * L.r * spread - L.cw / 2, y = L.cy + pr.y * L.r * spread - L.ch / 2, sc = pr.s * squash * (0.86 + 0.14 * e);
+      var x = L.cx + pr.x * L.r * spread - L.cw / 2, y = L.cy + dy + pr.y * L.r * spread - L.ch / 2, sc = pr.s * ds * squash * (0.86 + 0.14 * e);
       s.style.transform = 'translate3d(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px,0) perspective(1400px) rotateY(' + (Math.sin(a) * 22 + lean).toFixed(2) + 'deg) scale(' + sc.toFixed(4) + ')';
       s.style.opacity = (e * (0.45 + 0.55 * Math.pow(d, 0.7))).toFixed(3);
       var b = Math.round(Math.max(0, 0.56 - d) * 16 * 2) / 2;
       if (b !== s._f) { s._f = b; s.style.filter = b > 0 ? 'blur(' + b + 'px)' : ''; }
       s.style.zIndex = c > -0.25 ? 10 + Math.round(d * 20) : 1;
-      // which demo this card shows: the one due at its place next; it changes only while the card is at the back
-      var g = j + R * Math.round((P - j) / R); if (g < 0) g += R; if (g > LAST) g -= R;
+      // which demo this card shows: the one due at its place next; it changes only once the card has passed the back
+      var raw = (P - j) / R; if (s._k === undefined || Math.abs(raw - s._k) > 0.53) s._k = Math.round(raw);
+      var g = j + R * s._k; if (g < 0) g += R; if (g > LAST) g -= R;
       if (g !== s._g) { s._g = g; var kk = Math.floor(g / R); s._cards.forEach(function (cd, i) { cd.classList.toggle('is-on', i === kk); }); }
       // at the back it holds still; coming round again, its demo starts over
       var far = s._far ? d < 0.3 : d < 0.2;
       if (far !== s._far) { s._far = far; s.classList.toggle('is-far', far); if (far) play(s, false); }
       play(s, seen && !far);
+      if (Math.cos((j - P) / R * TAU) > 0.7) fk += j;
+      // a front card under the cursor
+      var tilt = L.desk && hover.matches && j === H.slot;
+      if (tilt) {
+        s._face.style.setProperty('--hx', (-H.y * 5).toFixed(2) + 'deg'); s._face.style.setProperty('--hy', (H.x * 7).toFixed(2) + 'deg');
+        s._glare.style.setProperty('--gx', (50 + H.x * 50).toFixed(1) + '%'); s._glare.style.setProperty('--gy', (50 + H.y * 50).toFixed(1) + '%'); s._glare.style.setProperty('--go', H.o.toFixed(3));
+      } else if (s._tilt) { s._face.style.removeProperty('--hx'); s._face.style.removeProperty('--hy'); s._glare.style.removeProperty('--go'); }
+      s._tilt = tilt;
     });
-    var n = Math.round(P), f = ((n % R) + R) % R;
-    if (f !== fr) {
-      slots.forEach(function (s, j) { s.classList.toggle('is-front', j === f); if (j !== f) { s._face.style.removeProperty('--hx'); s._face.style.removeProperty('--hy'); s._glare.style.removeProperty('--go'); } });
-      fr = f;
-    }
-    // the front card under the cursor
-    if (L.desk && hover.matches) {
-      var fs = slots[fr]._face;
-      fs.style.setProperty('--hx', (-H.y * 5).toFixed(2) + 'deg'); fs.style.setProperty('--hy', (H.x * 7).toFixed(2) + 'deg');
-      slots[fr]._glare.style.setProperty('--gx', (50 + H.x * 50).toFixed(1) + '%'); slots[fr]._glare.style.setProperty('--gy', (50 + H.y * 50).toFixed(1) + '%');
-      slots[fr]._glare.style.setProperty('--go', H.o.toFixed(3));
-    }
-    var ks = clamp(Math.floor(n / R), 0, titles.length - 1); if (ks !== sk) { sk = ks; title(ks); }
+    if (fk !== frontKey) { frontKey = fk; slots.forEach(function (s, j) { s.classList.toggle('is-front', fk.indexOf(j) >= 0); }); }
+    if (H.on && fk.indexOf(H.slot) < 0) H.on = false;
+    var ks = clamp(Math.floor((P + 0.5) / R), 0, titles.length - 1); if (ks !== sk) { sk = ks; title(ks); }
   }
   // springs: the ring (a touch under critical damping, so it settles with the slightest overshoot), the way in, the tilt
   function tick(now) {
     raf = 0; var dt = Math.min(0.05, prev ? (now - prev) / 1000 : 1 / 60); prev = now;
     var t = target(now), steps = Math.ceil(dt / (1 / 240)), h = dt / steps;
     for (var i = 0; i < steps; i++) {
-      V += (60 * (t - P) - 13.4 * V) * h; P += V * h;
+      V += (46 * (t - P) - 12.6 * V) * h; P += V * h;
       EV += (60 * (U - E) - 15.5 * EV) * h; E += EV * h;
       var tx = H.on ? H.mx : 0, ty = H.on ? H.my : 0;
       H.vx += (170 * (tx - H.x) - 17 * H.vx) * h; H.x += H.vx * h;
@@ -77287,16 +77299,16 @@ html.dark #services .s7 .d-3sh { background: radial-gradient(closest-side, rgba(
     if (busy) raf = requestAnimationFrame(tick); else { prev = 0; P = t; V = 0; draw(); }
   }
   function kick() { if (!raf) raf = requestAnimationFrame(tick); }
-  // one scroll, one card: while the screen is held, a wheel gesture, a swipe or an arrow key turns the ring by one card
-  // and no more, and the next turn waits for this one to finish. Before the first card or after the last, the page
-  // scrolls on as usual; coming in from above (or below), it stops on the first (or last) card instead of flying past.
+  // one scroll, one stop: while the screen is held, a wheel gesture, a swipe or an arrow key moves the ring to the next
+  // stop and no further, and the next turn waits for this one to finish. Before the first stop or after the last, the
+  // page scrolls on as usual; coming in from above (or below), it stops at the first (or last) instead of flying past.
   var lastWheel = -1e9, lastTouch = -1e9, used = false, lockUntil = 0, prevTop = null, ty0 = null, tDir = 0, tUsed = false;
-  function posOf(g) { return run.getBoundingClientRect().top + scrollY + g / LAST * span() + 1; }
+  function posOf(k) { return run.getBoundingClientRect().top + scrollY + k / NS * span() + (k < NS ? 1 : 0); }
   function held() { var r = run.getBoundingClientRect(); return r.top <= 2 && r.top >= -span() - 2; }
-  function idx() { return clamp(Math.round(clamp(-run.getBoundingClientRect().top / span(), 0, 1) * LAST), 0, LAST); }
+  function idx() { return clamp(Math.round(clamp(-run.getBoundingClientRect().top / span(), 0, 1) * NS), 0, NS); }
   // straight there: the page's own easing notices the jump and takes it as its new resting place
   function jump(y) { scrollTo({ top: y, behavior: 'instant' }); }
-  function stepTo(g) { lockUntil = performance.now() + 680; last = performance.now(); jump(Math.round(posOf(g))); kick(); }
+  function stepTo(g) { lockUntil = performance.now() + 760; last = performance.now(); jump(Math.round(posOf(g))); kick(); }
   function land(g, touch) {
     used = true; lockUntil = performance.now() + 420;
     if (touch) { var h = document.documentElement; h.style.overflow = 'hidden'; scrollTo({ top: Math.round(posOf(g)), behavior: 'instant' }); requestAnimationFrame(function () { h.style.overflow = ''; }); }
@@ -77307,41 +77319,55 @@ html.dark #services .s7 .d-3sh { background: radial-gradient(closest-side, rgba(
     var now = performance.now(); if (now - lastWheel > 240) used = false; lastWheel = now;
     if (!held()) return;
     var nxt = idx() + (e.deltaY > 0 ? 1 : -1);
-    if ((nxt < 0 || nxt > LAST) && !used) return;
+    if ((nxt < 0 || nxt > NS) && !used) return;
     e.preventDefault(); e.stopPropagation();
-    if (used || nxt < 0 || nxt > LAST || now < lockUntil) return;
+    if (used || nxt < 0 || nxt > NS || now < lockUntil) return;
     used = true; stepTo(nxt);
   }, { passive: false, capture: true });
   addEventListener('keydown', function (e) {
     if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey || !held()) return;
     var t = e.target; if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
     var d = { ArrowDown: 1, PageDown: 1, ArrowUp: -1, PageUp: -1, ' ': e.shiftKey ? -1 : 1 }[e.key]; if (!d) return;
-    var nxt = idx() + d; if (nxt < 0 || nxt > LAST) return;
+    var nxt = idx() + d; if (nxt < 0 || nxt > NS) return;
     e.preventDefault(); e.stopPropagation(); if (performance.now() >= lockUntil) stepTo(nxt);
   }, { capture: true });
   pin.addEventListener('touchstart', function (e) { ty0 = e.touches.length === 1 ? e.touches[0].clientY : null; tDir = 0; tUsed = false; }, { passive: true });
   pin.addEventListener('touchmove', function (e) {
     if (ty0 === null || !held()) return;
     var dy = ty0 - e.touches[0].clientY;
-    if (!tDir) { if (Math.abs(dy) < 2) return; tDir = dy > 0 ? 1 : -1; var n0 = idx() + tDir; if (n0 < 0 || n0 > LAST) { ty0 = null; return; } }
+    if (!tDir) { if (Math.abs(dy) < 2) return; tDir = dy > 0 ? 1 : -1; var n0 = idx() + tDir; if (n0 < 0 || n0 > NS) { ty0 = null; return; } }
     if (e.cancelable) e.preventDefault();
     var nxt = idx() + tDir;
-    if (!tUsed && Math.abs(dy) > 26 && nxt >= 0 && nxt <= LAST && performance.now() >= lockUntil) { tUsed = true; stepTo(nxt); }
+    if (!tUsed && Math.abs(dy) > 26 && nxt >= 0 && nxt <= NS && performance.now() >= lockUntil) { tUsed = true; stepTo(nxt); }
   }, { passive: false });
   addEventListener('touchend', function () { lastTouch = performance.now(); }, { passive: true });
-  slots.forEach(function (s) { s.addEventListener('click', function () { if (!s.classList.contains('is-front')) stepTo(s._g); }); });
+  // a card that is not at the front: to the stop that brings it there (the side cards of a laptop's first stop are
+  // already as close as they come)
+  function stopFor(g) {
+    if (!L.desk) return g;
+    var c = g % R, k = Math.floor(g / R) * 2;
+    return c === 2 || c === 3 ? k + 1 : c === 0 || Math.floor(idx() / 2) !== k / 2 ? k : idx();
+  }
+  slots.forEach(function (s) { s.addEventListener('click', function () { if (!s.classList.contains('is-front')) { var k = stopFor(s._g); if (k !== idx()) stepTo(k); } }); });
   addEventListener('scroll', function () {
     var r = run.getBoundingClientRect(), sp = span(), now = performance.now(), wheel = now - lastWheel < 1200, touch = now - lastTouch < 1600;
     if (prevTop !== null && (wheel || touch)) {
       if (prevTop > 2 && r.top <= 2 && r.top > -sp) land(0, !wheel);
-      else if (prevTop < -sp - 2 && r.top >= -sp - 2 && r.top < 0) land(LAST, !wheel);
+      else if (prevTop < -sp - 2 && r.top >= -sp - 2 && r.top < 0) land(NS, !wheel);
     }
     prevTop = run.getBoundingClientRect().top; last = now; kick();
   }, { passive: true });
   stage.addEventListener('pointermove', function (e) {
-    if (!L || !L.desk || !hover.matches || fr < 0) return;
-    var r = slots[fr]._face.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
-    H.on = x >= 0 && x <= 1 && y >= 0 && y <= 1; H.mx = clamp(x * 2 - 1, -1, 1); H.my = clamp(y * 2 - 1, -1, 1); kick();
+    if (!L || !L.desk || !hover.matches) return;
+    var hit = -1, x = 0, y = 0;
+    slots.forEach(function (s, j) {
+      if (hit >= 0 || !s.classList.contains('is-front')) return;
+      var r = s._face.getBoundingClientRect(), u = (e.clientX - r.left) / r.width, v = (e.clientY - r.top) / r.height;
+      if (u >= 0 && u <= 1 && v >= 0 && v <= 1) { hit = j; x = u; y = v; }
+    });
+    if (hit !== H.slot && hit >= 0) { H.x = H.y = H.vx = H.vy = 0; H.o = 0; }
+    H.on = hit >= 0; if (hit >= 0) { H.slot = hit; H.mx = x * 2 - 1; H.my = y * 2 - 1; }
+    kick();
   });
   stage.addEventListener('pointerleave', function () { H.on = false; kick(); });
   addEventListener('resize', function () { L = null; kick(); });
@@ -77425,4 +77451,23 @@ html.dark #services .s7 .d-3sh { background: radial-gradient(closest-side, rgba(
   addEventListener('scroll', q, { passive: true }); addEventListener('resize', q); setTimeout(q, 300);
 })();
 </script>
+<style id="yp-v14">
+  .hx-melt { position: absolute; left: 0; top: 58vh; width: 100%; height: 42vh; z-index: 0; pointer-events: none;
+    background: linear-gradient(to bottom, rgba(220,221,224,0) 0%, rgba(220,221,224,.55) 38%, rgba(220,221,224,.9) 70%, rgb(220,221,224) 100%); }
+  html.dark .hx-melt { background: linear-gradient(to bottom, rgba(11,11,13,0) 0%, rgba(11,11,13,.6) 38%, rgba(11,11,13,.92) 70%, rgb(11,11,13) 100%); }
+  #about-drum::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 64vh; z-index: 0; pointer-events: none;
+    background: linear-gradient(to bottom, rgb(220,221,224) 0%, rgb(186,187,191) 7%, rgb(132,133,138) 16%, rgb(83,84,89) 27%, rgb(47,47,53) 40%, rgb(26,26,31) 55%, rgb(17,17,21) 72%, rgb(13,13,17) 100%); }
+  html.dark #about-drum::before { background: linear-gradient(to bottom, rgb(11,11,13) 0%, rgb(13,13,17) 100%); }
+  #about-drum .track { background: transparent !important; }
+  #about-drum .stage { z-index: 1; }
+  #about-drum .hint { mix-blend-mode: difference; }
+  /* "Could be yours": the label sits in the middle of the space right of the circle, the same gap on both sides as
+     the menu's Let's Talk; on hover the dark fill covers the whole pill, as it does there */
+  [data-screen-label="Coming soon"] .start-build.sb-inv { width: calc(var(--sb) * 244px); }
+  [data-screen-label="Coming soon"] .start-build.sb-inv .label { left: calc(var(--sb) * 62px + (var(--sb) * 182px - var(--lw, 62px)) / 2); }
+  [data-screen-label="Coming soon"] .start-build.sb-inv:hover .tile { width: calc(var(--sb) * 238px); }
+  [data-screen-label="Coming soon"] .start-build.sb-inv:hover .label { transform: translateX(calc(var(--sb) * -62px)); }
+  /* phones: the footer's links are a full finger's height to tap */
+  @media (max-width: 760px) { #yp-page .yft-links a, .yft-links a { padding: 12px 4px !important; } }
+</style>
 </body></html>
