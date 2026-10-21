@@ -75878,7 +75878,7 @@ a.ap-side:hover .ap-app-go svg { translate: 3px 0; }
 @property --gc { syntax: '<color>'; inherits: true; initial-value: #7433d9; }
 #services .s7 { --tx: #16161b; --mut: #71717d; --sf: #ffffff; --sf2: #f2f2f5; --ln: rgba(16,16,20,.08); --hl: rgba(16,16,20,.14); --sk: #e9e9ee; --stg: #f4f4f6;
   --sh: 0 .06em .2em rgba(16,16,20,.06), 0 .8em 2em -.6em rgba(16,16,20,.22); --ok: #1f9d55; --bad: #e5484d; --cell: rgba(16,16,20,.09); --lab: #6e6e73;
-  --cellbg: rgba(255,255,255,.9); --grey: #b0b0b3; --step: 16svh;
+  --cellbg: rgba(255,255,255,.9); --grey: #b0b0b3; --step: 22svh;
   position: relative; padding: var(--yp-gap, 96px) 0 var(--yp-bot, 120px); transition: --gc 1.2s ease; }
 html.dark #services .s7 { --tx: #f4f2ed; --mut: #9a9aa6; --sf: #1e1e25; --sf2: #2a2a32; --ln: rgba(255,255,255,.07); --hl: rgba(255,255,255,.14); --sk: #2e2e37; --stg: #151519;
   --sh: inset 0 0 0 1px rgba(255,255,255,.07), 0 .8em 2em -.6em rgba(0,0,0,.75); --cell: rgba(255,255,255,.08); --lab: #98989f; --cellbg: rgba(13,13,17,.86); --grey: #55555d; }
@@ -75897,7 +75897,7 @@ html.dark #services .s7 .s8-glow { background: radial-gradient(closest-side, col
   line-height: .92; letter-spacing: -0.055em; text-transform: uppercase; }
 #services .s7 .s8-sr { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 #services .s7 .s8-ln { display: block; padding: .04em .08em .06em; white-space: nowrap; }
-#services .s7 .s8-l1 { color: var(--grey); }
+#services .s7 .s8-l1 { color: var(--ink, #101014); }
 #services .s7 .s8-l2 { color: var(--ink, #101014); }
 #services .s7 .s8-ch { display: inline-block; opacity: 0; filter: blur(.12em); transform: translate3d(0, .32em, 0) scale(.96);
   transition: opacity .32s ease calc(var(--i) * 12ms), filter .32s ease calc(var(--i) * 12ms), transform .4s cubic-bezier(.4,0,.8,.2) calc(var(--i) * 12ms); }
@@ -75932,7 +75932,7 @@ html.dark #services .s7 .s8-glare { mix-blend-mode: normal; background: radial-g
 #services .s7 .s8-stage.is-flat { --cw: min(64vw, 600px); --ch: min(calc(var(--cw) * .84), calc(100svh - 360px)); }
 #services .s7 .is-flat .s8-t { font-size: var(--tf, min(12vw, 128px)); }
 @media (max-width: 767px) {
-  #services .s7 { --step: 15svh; }
+  #services .s7 { --step: 20svh; }
   #services .s7 .s8-stage.is-flat { --cw: min(80vw, 360px); --ch: min(calc(var(--cw) * 1.14), calc(100svh - 250px)); }
   #services .s7 .is-flat .s8-t { font-size: var(--tf, 14vw); }
   #services .s7 .s8-face { border-radius: 24px; }
@@ -77141,7 +77141,7 @@ html.dark #services .s7 .d-3sh { background: radial-gradient(closest-side, rgba(
   function draw() {
     if (!L) layout();
     var e = clamp(E, 0, 1), Q = P - (1 - e) * 1.4, spread = 0.6 + 0.4 * e;
-    var lean = clamp(V * 2.6, -11, 11), squash = 1 - Math.min(0.045, Math.abs(V) * 0.009);
+    var lean = clamp(V * 3.4, -10, 10), squash = 1 - Math.min(0.04, Math.abs(V) * 0.012);
     stage.style.setProperty('--e', e.toFixed(3));
     tbox.style.setProperty('--tx2', clamp(V * 5, -18, 18).toFixed(2) + 'px');
     if ((e > 0.55) !== live) { live = e > 0.55; stage.classList.toggle('is-live', live); }
@@ -77180,7 +77180,7 @@ html.dark #services .s7 .d-3sh { background: radial-gradient(closest-side, rgba(
     raf = 0; var dt = Math.min(0.05, prev ? (now - prev) / 1000 : 1 / 60); prev = now;
     var t = target(now), steps = Math.ceil(dt / (1 / 240)), h = dt / steps;
     for (var i = 0; i < steps; i++) {
-      V += (110 * (t - P) - 18 * V) * h; P += V * h;
+      V += (60 * (t - P) - 13.4 * V) * h; P += V * h;
       EV += (60 * (U - E) - 15.5 * EV) * h; E += EV * h;
       var tx = H.on ? H.mx : 0, ty = H.on ? H.my : 0;
       H.vx += (170 * (tx - H.x) - 17 * H.vx) * h; H.x += H.vx * h;
@@ -77193,12 +77193,57 @@ html.dark #services .s7 .d-3sh { background: radial-gradient(closest-side, rgba(
     if (busy) raf = requestAnimationFrame(tick); else { prev = 0; P = t; V = 0; draw(); }
   }
   function kick() { if (!raf) raf = requestAnimationFrame(tick); }
-  function go(g) {
-    var y = run.getBoundingClientRect().top + scrollY + g / LAST * span() + 1, S = window.__ypScroll;
-    if (S && S.to && S.enabled) S.to(y, 1100); else scrollTo({ top: y, behavior: 'smooth' });
+  // one scroll, one card: while the screen is held, a wheel gesture, a swipe or an arrow key turns the ring by one card
+  // and no more, and the next turn waits for this one to finish. Before the first card or after the last, the page
+  // scrolls on as usual; coming in from above (or below), it stops on the first (or last) card instead of flying past.
+  var lastWheel = -1e9, lastTouch = -1e9, used = false, lockUntil = 0, prevTop = null, ty0 = null, tDir = 0, tUsed = false;
+  function posOf(g) { return run.getBoundingClientRect().top + scrollY + g / LAST * span() + 1; }
+  function held() { var r = run.getBoundingClientRect(); return r.top <= 2 && r.top >= -span() - 2; }
+  function idx() { return clamp(Math.round(clamp(-run.getBoundingClientRect().top / span(), 0, 1) * LAST), 0, LAST); }
+  // straight there: the page's own easing notices the jump and takes it as its new resting place
+  function jump(y) { scrollTo({ top: y, behavior: 'instant' }); }
+  function stepTo(g) { lockUntil = performance.now() + 680; last = performance.now(); jump(Math.round(posOf(g))); kick(); }
+  function land(g, touch) {
+    used = true; lockUntil = performance.now() + 420;
+    if (touch) { var h = document.documentElement; h.style.overflow = 'hidden'; scrollTo({ top: Math.round(posOf(g)), behavior: 'instant' }); requestAnimationFrame(function () { h.style.overflow = ''; }); }
+    else jump(Math.round(posOf(g)));
   }
-  slots.forEach(function (s) { s.addEventListener('click', function () { if (!s.classList.contains('is-front')) go(s._g); }); });
-  addEventListener('scroll', function () { last = performance.now(); kick(); }, { passive: true });
+  addEventListener('wheel', function (e) {
+    if (e.ctrlKey || e.metaKey || !e.deltaY || Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
+    var now = performance.now(); if (now - lastWheel > 240) used = false; lastWheel = now;
+    if (!held()) return;
+    var nxt = idx() + (e.deltaY > 0 ? 1 : -1);
+    if ((nxt < 0 || nxt > LAST) && !used) return;
+    e.preventDefault(); e.stopPropagation();
+    if (used || nxt < 0 || nxt > LAST || now < lockUntil) return;
+    used = true; stepTo(nxt);
+  }, { passive: false, capture: true });
+  addEventListener('keydown', function (e) {
+    if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey || !held()) return;
+    var t = e.target; if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
+    var d = { ArrowDown: 1, PageDown: 1, ArrowUp: -1, PageUp: -1, ' ': e.shiftKey ? -1 : 1 }[e.key]; if (!d) return;
+    var nxt = idx() + d; if (nxt < 0 || nxt > LAST) return;
+    e.preventDefault(); e.stopPropagation(); if (performance.now() >= lockUntil) stepTo(nxt);
+  }, { capture: true });
+  pin.addEventListener('touchstart', function (e) { ty0 = e.touches.length === 1 ? e.touches[0].clientY : null; tDir = 0; tUsed = false; }, { passive: true });
+  pin.addEventListener('touchmove', function (e) {
+    if (ty0 === null || !held()) return;
+    var dy = ty0 - e.touches[0].clientY;
+    if (!tDir) { if (Math.abs(dy) < 2) return; tDir = dy > 0 ? 1 : -1; var n0 = idx() + tDir; if (n0 < 0 || n0 > LAST) { ty0 = null; return; } }
+    if (e.cancelable) e.preventDefault();
+    var nxt = idx() + tDir;
+    if (!tUsed && Math.abs(dy) > 26 && nxt >= 0 && nxt <= LAST && performance.now() >= lockUntil) { tUsed = true; stepTo(nxt); }
+  }, { passive: false });
+  addEventListener('touchend', function () { lastTouch = performance.now(); }, { passive: true });
+  slots.forEach(function (s) { s.addEventListener('click', function () { if (!s.classList.contains('is-front')) stepTo(s._g); }); });
+  addEventListener('scroll', function () {
+    var r = run.getBoundingClientRect(), sp = span(), now = performance.now(), wheel = now - lastWheel < 1200, touch = now - lastTouch < 1600;
+    if (prevTop !== null && (wheel || touch)) {
+      if (prevTop > 2 && r.top <= 2 && r.top > -sp) land(0, !wheel);
+      else if (prevTop < -sp - 2 && r.top >= -sp - 2 && r.top < 0) land(LAST, !wheel);
+    }
+    prevTop = run.getBoundingClientRect().top; last = now; kick();
+  }, { passive: true });
   stage.addEventListener('pointermove', function (e) {
     if (!L || !L.desk || !hover.matches || fr < 0) return;
     var r = slots[fr]._face.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
