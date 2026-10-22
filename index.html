@@ -77143,7 +77143,12 @@ html.dark #services .s7 .mfc-c b { color: #6cb6ff; }
   /* the work header and selected work: paper, the blurred backdrop and its grain off, the details in ink, the column lines faint */
   html:not(.dark) #work > div { background: var(--lp) !important; }
   html:not(.dark) #showcase, html:not(.dark) #showcase [data-case-bg] { background: var(--lp) !important; color: #101014 !important; }
-  html:not(.dark) #showcase [data-case-bg] > * { display: none !important; }
+  /* the case backdrop stays: the active case's picture, blurred, under a paper veil so the page stays light; it
+     fades in and out at the section's ends */
+  html:not(.dark) #showcase [data-case-bg-img]:not([data-case-bg-static]) { filter: blur(10px) saturate(1.15) !important; }
+  html:not(.dark) #showcase [data-case-bg-img="soon"] { background: radial-gradient(120% 80% at 50% 110%, #8fa6f2 0%, #b9c6f4 45%, #d9def4 100%) !important; }
+  html:not(.dark) #showcase [data-case-bg]::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: rgba(244,242,237,.6); }
+  html:not(.dark) #showcase [data-case-bg] { -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 22%, #000 80%, transparent 100%); mask-image: linear-gradient(to bottom, transparent 0, #000 22%, #000 80%, transparent 100%); }
   html:not(.dark) #showcase [style*="background: #0f0f10"]:not([data-case-bg]) { background: #e7e4dd !important; }
   html:not(.dark) #showcase [style*="border-left: 1px solid rgba(255,255,255,0.14)"] { border-color: rgba(16,16,20,.09) !important; }
   html:not(.dark) #showcase a[data-case] { color: #101014 !important; }
@@ -77187,15 +77192,8 @@ html.dark #services .s7 .mfc-c b { color: #6cb6ff; }
   html:not(.dark) .progressive-blur > div:nth-child(7) { -webkit-backdrop-filter: blur(15.3px) !important; backdrop-filter: blur(15.3px) !important; }
   html:not(.dark) .progressive-blur > div:nth-child(8) { -webkit-backdrop-filter: blur(20px) !important; backdrop-filter: blur(20px) !important; }
 
-  /* the footer: the page stays paper; the film and the rocket bar under it are one card on it (home only: a case
-     page ends on its own dark chapter, and the footer runs on from it full width as before), words still white on
-     the picture */
-  html:not(.dark) { --fc: 16px; --fr: 28px; }
-  html:not(.dark) #yp-work > .yft { background: var(--lp); }
-  html:not(.dark) #yp-work > .yft .yft-media { inset: var(--fc) var(--fc) 0; border-radius: var(--fr) var(--fr) 0 0; overflow: hidden; transform: translateZ(0); }
-  html:not(.dark) #yp-work > .yft .yft-shade { background: linear-gradient(180deg, rgba(13,13,17,.55) 0%, rgba(13,13,17,.4) 20%, rgba(13,13,17,.38) 50%, rgba(13,13,17,.78) 100%); }
-  html:not(.dark) #yp-work > .btt { width: auto; margin: -1px var(--fc) var(--fc); border-radius: 0 0 var(--fr) var(--fr); }
-  html:not(.dark) body:has(#yp-work > .btt) { background: var(--lp); }
-  @media (max-width: 760px) { html:not(.dark) { --fc: 10px; --fr: 22px; } }
+  /* the footer: full width with square edges, as in dark mode; the film shows from its top edge (no black band
+     against the paper above), words still white on the picture */
+  html:not(.dark) #yp-work > .yft .yft-shade { background: linear-gradient(180deg, rgba(13,13,17,.5) 0%, rgba(13,13,17,.4) 20%, rgba(13,13,17,.38) 50%, rgba(13,13,17,.78) 100%); }
 </style>
 </body></html>
