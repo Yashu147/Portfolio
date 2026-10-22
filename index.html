@@ -2274,22 +2274,12 @@ void main() {
   }
 </style>
 <style id="yp-v21">
-  /* Resume: the home button's circle, with a page in place of the house */
-  .hx-home.hx-cv i { -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M7.2 1.8h6.9l5.1 5.1v13.3a2 2 0 0 1-2 2H7.2a2 2 0 0 1-2-2V3.8a2 2 0 0 1 2-2zm6.3 1.6v3.5a.6.6 0 0 0 .6.6h3.5zM8.4 11.6h7.2v1.6H8.4zm0 3.6h7.2v1.6H8.4zm0-7.2h3.4v1.6H8.4z'/%3E%3C/svg%3E"); mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M7.2 1.8h6.9l5.1 5.1v13.3a2 2 0 0 1-2 2H7.2a2 2 0 0 1-2-2V3.8a2 2 0 0 1 2-2zm6.3 1.6v3.5a.6.6 0 0 0 .6.6h3.5zM8.4 11.6h7.2v1.6H8.4zm0 3.6h7.2v1.6H8.4zm0-7.2h3.4v1.6H8.4z'/%3E%3C/svg%3E"); }
+  /* Resume: the home button's circle at every size, a CV in place of the house, and its own name in the tag on hover */
+  .hx-home.hx-cv i { -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'%3E%3Cpath fill-rule='evenodd' d='M28 2H68A14 14 0 0 1 82 16V80A14 14 0 0 1 68 94H28A14 14 0 0 1 14 80V16A14 14 0 0 1 28 2ZM48 21.5A12 12 0 1 0 48 45.5A12 12 0 1 0 48 21.5ZM31.5 57H64.5A3.5 3.5 0 0 1 64.5 64H31.5A3.5 3.5 0 0 1 31.5 57ZM31.5 71H55.5A3.5 3.5 0 0 1 55.5 78H31.5A3.5 3.5 0 0 1 31.5 71Z'/%3E%3C/svg%3E"); mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'%3E%3Cpath fill-rule='evenodd' d='M28 2H68A14 14 0 0 1 82 16V80A14 14 0 0 1 68 94H28A14 14 0 0 1 14 80V16A14 14 0 0 1 28 2ZM48 21.5A12 12 0 1 0 48 45.5A12 12 0 1 0 48 21.5ZM31.5 57H64.5A3.5 3.5 0 0 1 64.5 64H31.5A3.5 3.5 0 0 1 31.5 57ZM31.5 71H55.5A3.5 3.5 0 0 1 55.5 78H31.5A3.5 3.5 0 0 1 31.5 71Z'/%3E%3C/svg%3E"); }
   body.hero .hx-glass-in a.hx-home.hx-cv { margin-left: 5px; }
-  body.hero .hx-glass-in a.hx-home.hx-cv::before { content: none; }
-  /* wider screens: the word beside the page, in a pill as tall as the circles */
-  @media (min-width: 761px) {
-    body.hero .hx-glass-in a.hx-home.hx-cv { display: inline-flex; gap: 7px; width: auto; padding: 0 18px 0 14px; border-radius: 999px; }
-    .hx-home.hx-cv i { width: 18px; height: 18px; }
-    .hx-cv span { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; line-height: 1; }
-    body.hero .hx-glass-in a.hx-home.hx-cv:hover, body.hero .hx-glass-in a.hx-home.hx-cv:focus-visible { transform: scale(1.04); }
-  }
-  /* phones: the page alone; the name stays for screen readers */
-  @media (max-width: 760px) {
-    body.hero .hx-glass-in a.hx-home.hx-cv { margin-left: 4px; }
-    .hx-cv span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-  }
+  body.hero .hx-glass-in a.hx-home.hx-cv::before { content: "Resume"; }
+  .hx-cv span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  @media (max-width: 760px) { body.hero .hx-glass-in a.hx-home.hx-cv { margin-left: 4px; } }
   /* phones up to 420px wide: circles 46, then 44 (Apple's smallest comfortable target), then 38 on the very
      narrowest (320px), so the merged pill always keeps at least ~16px either side */
   @media (max-width: 420px) {
@@ -3917,7 +3907,7 @@ window.__ypImgs = function (r) { r.querySelectorAll('img[data-yp-src]').forEach(
   <div data-ref="caseCursorRef" aria-hidden="true" style="position: fixed; left: 0; top: 0; z-index: 60; width: 96px; height: 96px; margin: -48px 0 0 -48px; border-radius: 50%; background: #ffffff; color: #0f0f10; display: grid; place-items: center; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; pointer-events: none; opacity: 0; transform: translate3d(-200px,-200px,0) scale(0.6); will-change: transform, opacity;">View</div>
   <div aria-hidden="true" data-blur-bar="" style="position: sticky; bottom: 0; z-index: 3; height: 180px; margin-top: -180px; pointer-events: none; -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); -webkit-mask-image: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 45%, rgba(0,0,0,0) 100%); mask-image: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 45%, rgba(0,0,0,0) 100%);"></div>
 </section>
-<a id="more-band" class="ym-band" href="#/more" aria-label="More projects"><span class="ym-glow" aria-hidden="true"></span><span class="ym-in"><b class="ym-word" aria-hidden="true"><span class="ym-ch" style="--d: 0ms"><span>M</span><span style="color: #7433d9">M</span></span><span class="ym-ch" style="--d: 28ms"><span>o</span><span style="color: #5944d6">o</span></span><span class="ym-ch" style="--d: 56ms"><span>r</span><span style="color: #3e54d4">r</span></span><span class="ym-ch" style="--d: 84ms"><span>e</span><span style="color: #2365d1">e</span></span><span class="ym-sp"></span><span class="ym-ch" style="--d: 112ms"><span>p</span><span style="color: #2369c7">p</span></span><span class="ym-ch" style="--d: 140ms"><span>r</span><span style="color: #5854b0">r</span></span><span class="ym-ch" style="--d: 168ms"><span>o</span><span style="color: #8c3e98">o</span></span><span class="ym-ch" style="--d: 196ms"><span>j</span><span style="color: #c12981">j</span></span><span class="ym-ch" style="--d: 224ms"><span>e</span><span style="color: #d43367">e</span></span><span class="ym-ch" style="--d: 252ms"><span>c</span><span style="color: #d64c4c">c</span></span><span class="ym-ch" style="--d: 280ms"><span>t</span><span style="color: #d76531">t</span></span><span class="ym-ch" style="--d: 308ms"><span>s</span><span style="color: #d97e16">s</span></span></b></span></a>
+<a id="more-band" class="ym-band" href="#/more" aria-label="More projects"><span class="ym-glow" aria-hidden="true"></span><span class="ym-in"><b class="ym-word" aria-hidden="true"><span class="ym-ch" style="--d: 0ms"><span>M</span><span style="color: #7433d9">M</span></span><span class="ym-ch" style="--d: 28ms"><span>o</span><span style="color: #5944d6">o</span></span><span class="ym-ch" style="--d: 56ms"><span>r</span><span style="color: #3e54d4">r</span></span><span class="ym-ch" style="--d: 84ms"><span>e</span><span style="color: #2365d1">e</span></span><span class="ym-sp"></span><span class="ym-ch" style="--d: 112ms"><span>p</span><span style="color: #2369c7">p</span></span><span class="ym-ch" style="--d: 140ms"><span>r</span><span style="color: #5854b0">r</span></span><span class="ym-ch" style="--d: 168ms"><span>o</span><span style="color: #8c3e98">o</span></span><span class="ym-ch" style="--d: 196ms"><span>j</span><span style="color: #c12981">j</span></span><span class="ym-ch" style="--d: 224ms"><span>e</span><span style="color: #d43367">e</span></span><span class="ym-ch" style="--d: 252ms"><span>c</span><span style="color: #d64c4c">c</span></span><span class="ym-ch" style="--d: 280ms"><span>t</span><span style="color: #d76531">t</span></span><span class="ym-ch" style="--d: 308ms"><span>s</span><span style="color: #d97e16">s</span></span><span class="ym-ch ym-arw" style="--d: 336ms"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 5.5 19.5 12 13 18.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span style="color: #d97e16"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 5.5 19.5 12 13 18.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></b></span></a>
 <section id="services" class="ysx" style="--n:4; --acc:#7433d9">
   <div class="ysx-headwrap">
 <div class="yph"><div class="yph-top"><div class="yph-label"><span><img data-yp-src="0" alt="" draggable="false">What I do</span><i aria-hidden="true"></i></div></div><h2 class="yph-title" aria-label="From the first idea to the final pixel."><span class="yph-line yph-grey" aria-hidden="true"><span class="yph-in">From the first idea</span></span></h2><div class="yph-rule" aria-hidden="true"></div><div class="yph-line yph-ink" aria-hidden="true"><span class="yph-in">to the final pixel.</span></div><div class="yph-rule" aria-hidden="true"></div></div>
@@ -10460,6 +10450,8 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
   const Y_OFFSET = 0.05;       // the ring sits a little below centre (× viewport height), so its top rows clear the nav
   const SMOOTH = 0.12;         // 0..1 lerp factor; 1 = no smoothing
   const TOTAL = (N + 1) * STEP; // total rotation across the full scroll
+  // the turn runs from the first line at the centre to the last line at the centre
+  const ROT0 = STEP, ROT1 = N * STEP;
 
   // Safari's toolbar changes the visible height as a swipe ends; the drum reads the full, stable
   // screen height on phones instead, so the text never jumps when the toolbar moves
@@ -10486,7 +10478,7 @@ addEventListener("hashchange", () => { const r = routeOf(); if (r) { go(r); if (
   let current = 0, target = 0;
 
   const render = (p) => {
-    const rot = p * TOTAL;
+    const rot = ROT0 + p * (ROT1 - ROT0);
     for (let i = 0; i < N; i++) {
       const deg = -STEP * (i + 1) + rot;          // row angle on the drum
       const rad = deg * Math.PI / 180;
@@ -20048,12 +20040,19 @@ html.dark #services .s7 .mfc-c b { color: #6cb6ff; }
   /* the work header and selected work: paper, the blurred backdrop and its grain off, the details in ink, the column lines faint */
   html:not(.dark) #work > div { background: var(--lp) !important; }
   html:not(.dark) #showcase, html:not(.dark) #showcase [data-case-bg] { background: var(--lp) !important; color: #101014 !important; }
-  /* the case backdrop stays: the active case's picture, blurred, under a paper veil so the page stays light; it
-     fades in and out at the section's ends */
-  html:not(.dark) #showcase [data-case-bg-img]:not([data-case-bg-static]) { filter: blur(10px) saturate(1.15) !important; }
+  /* the case backdrop stays: the active case's picture, blurred, lifted and saturated, under a thin paper veil, so
+     its colour reads as clearly as in dark mode while the page stays light. It fades into the paper at the section's
+     top and bottom edges (layer 1: over the backdrop, under the cards) */
+  html:not(.dark) #showcase [data-case-bg-img]:not([data-case-bg-static]) { filter: blur(10px) saturate(1.6) brightness(1.4) !important; }
+  html:not(.dark) #showcase::before, html:not(.dark) #showcase::after { content: ""; position: absolute; left: 0; right: 0; z-index: 1; height: 32vh; pointer-events: none; }
+  html:not(.dark) #showcase::before { top: 0; background: linear-gradient(to bottom, var(--lp), rgba(244,242,237,0)); }
+  html:not(.dark) #showcase::after { bottom: 0; background: linear-gradient(to top, var(--lp), rgba(244,242,237,0)); }
   html:not(.dark) #showcase [data-case-bg-img="soon"] { background: radial-gradient(120% 80% at 50% 110%, #8fa6f2 0%, #b9c6f4 45%, #d9def4 100%) !important; }
-  html:not(.dark) #showcase [data-case-bg]::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: rgba(244,242,237,.6); }
-  html:not(.dark) #showcase [data-case-bg] { -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 22%, #000 80%, transparent 100%); mask-image: linear-gradient(to bottom, transparent 0, #000 22%, #000 80%, transparent 100%); }
+  html:not(.dark) #showcase [data-case-bg]::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: rgba(244,242,237,.24); }
+  /* each card's two text rows sit on a frosted paper band, so they read on any colour the backdrop takes */
+  html:not(.dark) #showcase a[data-case] > div:first-child, html:not(.dark) #showcase a[data-case] > div:last-child,
+  html:not(.dark) #showcase [data-screen-label="Coming soon"] > div:first-child, html:not(.dark) #showcase [data-screen-label="Coming soon"] > div:last-child {
+    background: rgba(244,242,237,.78); -webkit-backdrop-filter: blur(12px) saturate(1.2); backdrop-filter: blur(12px) saturate(1.2); }
   html:not(.dark) #showcase [style*="background: #0f0f10"]:not([data-case-bg]) { background: #e7e4dd !important; }
   html:not(.dark) #showcase [style*="border-left: 1px solid rgba(255,255,255,0.14)"] { border-color: rgba(16,16,20,.09) !important; }
   html:not(.dark) #showcase a[data-case] { color: #101014 !important; }
@@ -20100,5 +20099,26 @@ html.dark #services .s7 .mfc-c b { color: #6cb6ff; }
   /* the footer: full width with square edges, as in dark mode; the film shows from its top edge (no black band
      against the paper above), words still white on the picture */
   html:not(.dark) #yp-work > .yft .yft-shade { background: linear-gradient(180deg, rgba(13,13,17,.5) 0%, rgba(13,13,17,.4) 20%, rgba(13,13,17,.38) 50%, rgba(13,13,17,.78) 100%); }
+</style>
+<style id="yp-v22">
+  /* More projects: an arrow after the words, rolling with them on hover */
+  .ym-band .ym-arw { margin-left: .16em; }
+  .ym-band .ym-arw > span { display: flex; flex: none; align-items: center; justify-content: center; height: 1.04em; }
+  .ym-band .ym-arw svg { width: .62em; height: .62em; }
+  /* the words and arrow always fit the width, with 20px either side (narrow phones ran them off the edge) */
+  .ym-band .ym-word { font-size: min(clamp(44px, 8.4vw, 148px), calc((100vw - 40px) / 8.75)); }
+  /* the timeline's logos: finished tiles with room around the mark */
+  #timeline .ytl-logo { position: relative; overflow: hidden; box-sizing: border-box; padding: 12% 16%; border-radius: 22px;
+    background-origin: content-box !important;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.12), 0 28px 56px -34px rgba(0,0,0,.85);
+    transition: transform .6s cubic-bezier(.22,1,.36,1), box-shadow .6s cubic-bezier(.22,1,.36,1); }
+  #timeline .ytl-logo::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+    background: linear-gradient(155deg, rgba(255,255,255,.2) 0%, rgba(255,255,255,0) 36%), linear-gradient(to top, rgba(0,0,0,.06), rgba(0,0,0,0) 40%); }
+  html:not(.dark) #timeline .ytl-logo { box-shadow: inset 0 0 0 1px rgba(16,16,20,.09), 0 28px 56px -36px rgba(16,16,20,.4); }
+  @media (hover: hover) and (pointer: fine) {
+    #timeline .ytl-logo:hover { transform: translateY(-6px); box-shadow: inset 0 0 0 1px rgba(255,255,255,.16), 0 40px 70px -36px rgba(0,0,0,.9); }
+    html:not(.dark) #timeline .ytl-logo:hover { box-shadow: inset 0 0 0 1px rgba(16,16,20,.1), 0 40px 70px -38px rgba(16,16,20,.45); }
+  }
+  @media (max-width: 760px) { #timeline .ytl-logo { border-radius: 18px; } }
 </style>
 </body></html>
