@@ -19928,6 +19928,8 @@ html.dark #services .s7 .mhx-tb b, html.dark #services .s7 .mhx-rs b { color: va
       // well before it covers anything)
       var c = 0; for (var j = i + 1; j < N; j++) c += clamp((rs[i].bottom - rs[j].top) / Math.max(1, rs[i].height - (tops[j] - tops[i])), 0, 1);
       var sc = (1 - 0.04 * Math.min(c, 3)).toFixed(4), cv = (Math.min(1, c) * DM[i]).toFixed(3);
+      // phones: no scale or dim while scrolling (written by script, it trails the native scroll by a frame and the card shivers)
+      if (isRow) { sc = '1.0000'; cv = '0.000'; }
       if (last[i] !== sc + cv) { last[i] = sc + cv; faces[i].style.transform = sc === '1.0000' ? '' : 'scale(' + sc + ')'; if (dims[i]) dims[i].style.opacity = cv; }
       var p = panels[i];
       if (a[i] > 0.2) { if (!p.classList.contains('is-up')) { p.classList.add('is-up'); snap(i); } }
