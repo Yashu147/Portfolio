@@ -20152,4 +20152,45 @@ html.dark #services .s7 .mhx-tb b, html.dark #services .s7 .mhx-rs b { color: va
   }
   @media (max-width: 760px) { #timeline .ytl-logo { border-radius: 18px; } }
 </style>
+<style id="yp-v29-mob">
+  @media (max-width: 760px) {
+    #about-drum .row { top: var(--ydr-c, 50%) !important; }
+    #about-drum .stage { perspective-origin: 50% var(--ydr-c, 50%); }
+    #about-drum { --ydr-c: 34%; }
+    #about-drum .hint { top: 84px !important; }
+  }
+  /* the More projects band ends on a fraction of a pixel: on phones the page's dark backdrop showed through the
+     sliver below it as a thick line. It now overlaps the next section by 2px, so only its own hairline shows */
+  #more-band { margin-bottom: -2px; }
+</style>
+<style id="yp-v29-acts">
+  [data-a] img { transform-origin: 50% 60%; animation: ypActNudge 5s cubic-bezier(.3,.7,.3,1) 3s infinite both; }
+  [data-a="Backflip"] img { animation-name: ypActFlip; animation-delay: 3.25s; }
+  [data-a="Spin"] img { animation-name: ypActSpin; animation-delay: 3.5s; }
+  [data-a="Hello"] img { transform-origin: 70% 90%; animation-name: ypActWave; animation-delay: 3.75s; }
+  @keyframes ypActFlip { 0% { transform: none; } 10% { transform: translateY(-3px) rotate(-180deg) scale(1.12); } 18%, 100% { transform: rotate(-360deg); } }
+  @keyframes ypActSpin { 0% { transform: none; } 16%, 100% { transform: rotate(360deg); } 8% { transform: rotate(200deg) scale(1.12); } }
+  @keyframes ypActWave { 0%, 20%, 100% { transform: none; } 4% { transform: rotate(16deg) scale(1.08); } 8% { transform: rotate(-12deg) scale(1.08); } 12% { transform: rotate(12deg) scale(1.08); } 16% { transform: rotate(-6deg); } }
+  @keyframes ypActNudge { 0%, 16%, 100% { transform: none; } 8% { transform: scale(1.14); } }
+  [data-a][aria-pressed="true"] img { animation: none; }
+  @media (prefers-reduced-motion: reduce) { [data-a] img { animation: none; } }
+</style>
+<script id="yp-v29-robot">
+(function () {
+  var seq = ["Hello", "Backflip", "Spin"], GAP = 2000, tries = 0;
+  var busy = function () { return !!document.querySelector('[data-a][aria-pressed="true"]'); };
+  // each action starts when the robot is free, and the next one two seconds after it has really finished
+  var run = function (i) {
+    if (i >= seq.length || scrollY > innerHeight) return;              // the reader has moved on: the robot keeps its own pace
+    var n = 0;
+    var start = function () {
+      if (window.robot.play(seq[i])) { var done = function () { if (busy()) setTimeout(done, 200); else setTimeout(function () { run(i + 1); }, GAP); }; setTimeout(done, 400); }
+      else if (++n < 150) setTimeout(start, 200);                     // busy with something else: wait for it
+    };
+    start();
+  };
+  var wait = function () { if (window.robot && window.robot.play) setTimeout(function () { run(0); }, 1200); else if (++tries < 80) setTimeout(wait, 150); };
+  if (document.readyState === "complete") wait(); else addEventListener("load", wait);
+})();
+</script>
 </body></html>
