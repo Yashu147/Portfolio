@@ -10809,10 +10809,13 @@ document.querySelectorAll(".start-build").forEach(window.__ypStartBuild);
 <script>setTimeout(function () { if (!document.querySelector(".hx-top")) document.documentElement.classList.add("hx-fallback"); }, 5000);</script>
 <script>(function () {
   if (!matchMedia("(hover: none)").matches) return;
+  if (matchMedia("(max-width: 760px)").matches) document.documentElement.classList.add("ydr-short");
   let raf = 0, cur = "";
   const go = () => { raf = 0;
     const tr = document.querySelector("#about-drum .track"), st = tr && tr.querySelector(".stage"); if (!st) return;
-    const r = tr.getBoundingClientRect(), s = r.top > 0 ? "a" : r.bottom < innerHeight ? "b" : "";
+    const sh = st.offsetHeight, off = Math.max(0, Math.round((innerHeight - sh) / 2));
+    const r = tr.getBoundingClientRect(), s = r.top > off ? "a" : r.bottom < off + sh ? "b" : "";
+    const tp = s ? "" : off + "px"; if (st.style.top !== tp) st.style.top = tp;
     if (s !== cur) { st.classList.toggle("ydr-a", s === "a"); st.classList.toggle("ydr-b", s === "b"); cur = s; } };
   addEventListener("scroll", () => { if (!raf) raf = requestAnimationFrame(go); }, { passive: true });
   addEventListener("resize", go); addEventListener("hashchange", () => setTimeout(go, 60)); setTimeout(go, 0); setTimeout(go, 1500);
@@ -20154,10 +20157,11 @@ html.dark #services .s7 .mhx-tb b, html.dark #services .s7 .mhx-rs b { color: va
 </style>
 <style id="yp-v29-mob">
   @media (max-width: 760px) {
-    #about-drum .row { top: var(--ydr-c, 50%) !important; }
-    #about-drum .stage { perspective-origin: 50% var(--ydr-c, 50%); }
-    #about-drum { --ydr-c: 34%; }
-    #about-drum .hint { top: 84px !important; }
+    /* the drum's screen is 60% of the phone's, held in the middle while it turns: the lines keep their place
+       on screen, and the blank above the first line (arriving) and below the last (leaving) shrink alike */
+    html.ydr-short #about-drum .track { height: 160vh !important; }
+    html.ydr-short #about-drum .stage { height: 60vh !important; -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 9%, #000 86%, transparent 100%); mask-image: linear-gradient(180deg, transparent 0, #000 9%, #000 86%, transparent 100%); }
+    html.ydr-short #about-drum .hint { top: 22px !important; }
   }
   /* the More projects band ends on a fraction of a pixel: on phones the page's dark backdrop showed through the
      sliver below it as a thick line. It now overlaps the next section by 2px, so only its own hairline shows */
