@@ -1,0 +1,702 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PDP Redesign — Mobile</title>
+<link rel="stylesheet" href="base.css">
+<style>
+  html, body { background: #E6E8EB; }
+  .phone { max-width: 402px; margin: 0 auto; background: var(--band); min-height: 100vh; position: relative; overflow-x: clip; padding-bottom: 76px; }
+  .pin { position: fixed; left: 50%; transform: translateX(-50%); width: min(402px, 100%); }
+  .sec { background: #fff; padding: 16px; }
+  .sec + .sec { margin-top: 8px; }
+  .sec-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+  .sec-head .count { color: var(--ink-3); font-weight: 600; }
+  .row-link { display: inline-flex; align-items: center; gap: 2px; font-size: 13px; font-weight: 700; color: var(--red); background: none; border: 0; padding: 0; }
+
+  /* header */
+  .header { position: sticky; top: 0; z-index: 30; background: #fff; height: 56px; display: flex; align-items: center; padding: 0 4px; transition: box-shadow .2s; }
+  .header.scrolled { box-shadow: 0 1px 0 var(--line); }
+  .header .logo { height: 18px; margin-left: 2px; }
+  .header .spacer { flex: 1; }
+  .badge { position: absolute; top: 5px; right: 3px; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: var(--red); color: #fff; font-size: 11px; font-weight: 700; display: grid; place-items: center; transform: scale(0); transition: transform .25s var(--ease); box-shadow: 0 0 0 2px #fff; }
+  .badge.on { transform: scale(1); }
+  .badge.bump { animation: bump .45s var(--ease); }
+  @keyframes bump { 40% { transform: scale(1.4); } }
+  .icon-btn.liked { color: var(--red); }
+  .icon-btn.liked svg { fill: currentColor; }
+
+  /* gallery: full bleed */
+  .gallery { position: relative; background: var(--tile); aspect-ratio: 1 / 1.02; overflow: hidden; }
+  .track { display: flex; height: 100%; transition: transform .35s var(--ease); }
+  .slide { flex: 0 0 100%; height: 100%; display: grid; place-items: center; overflow: hidden; }
+  .slide img { width: 84%; mix-blend-mode: multiply; }
+  .slide.z2 img { transform: scale(2.3); transform-origin: 63% 79%; }
+  .slide.z3 img { transform: scale(2.1); transform-origin: 27% 47%; }
+  .dots { position: absolute; left: 50%; bottom: 16px; transform: translateX(-50%); display: flex; gap: 5px; }
+  .dots button { width: 6px; height: 6px; border-radius: 3px; border: 0; padding: 0; background: rgba(27,29,36,.25); transition: width .25s var(--ease), background .25s; }
+  .dots button[aria-current="true"] { width: 18px; background: var(--ink); }
+  .g-pill { position: absolute; left: 12px; bottom: 44px; display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 10px; background: rgba(255,255,255,.95); border-radius: var(--r-pill); font-size: 12px; font-weight: 600; color: var(--ink-2); box-shadow: var(--shadow-1); }
+  .g-btn { position: absolute; right: 12px; bottom: 44px; display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; background: #fff; border: 0; border-radius: var(--r-pill); font-size: 12px; font-weight: 700; box-shadow: var(--shadow-1); }
+  .g-top { position: absolute; top: 12px; right: 12px; display: grid; gap: 8px; }
+  .g-top .icon-btn { width: 38px; height: 38px; background: #fff; box-shadow: var(--shadow-1); }
+
+  /* info */
+  .brand-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .brand { font-size: 18px; font-weight: 800; letter-spacing: -.01em; }
+  .brand-all { font-size: 12px; font-weight: 600; color: var(--ink-3); display: inline-flex; align-items: center; }
+  .title { margin-top: 2px; }
+  .qa-chip { margin-top: 10px; }
+  .price-row { display: flex; align-items: center; gap: 8px; margin-top: 14px; }
+  .price { font-size: 26px; font-weight: 800; letter-spacing: -.02em; line-height: 1; }
+  .per { font-size: 13px; color: var(--ink-3); align-self: flex-end; margin-bottom: 2px; }
+  .qty-chip { margin-left: auto; display: inline-flex; align-items: center; gap: 4px; height: 34px; padding: 0 10px 0 12px; border-radius: var(--r-sm); border: 0; background: #fff; box-shadow: inset 0 0 0 1px var(--line-2); font-size: 13px; font-weight: 700; }
+  .stock-line { margin-top: 8px; font-size: 13px; color: var(--success); font-weight: 600; display: flex; align-items: center; gap: 6px; }
+  .stock-line .sep { width: 3px; height: 3px; border-radius: 50%; background: var(--line-2); }
+  .stock-line .soft { color: var(--ink-3); font-weight: 500; }
+  .ids { display: flex; gap: 16px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line); }
+  .copy { display: inline-flex; align-items: center; gap: 5px; background: none; border: 0; padding: 0; color: var(--ink-3); font-size: 12px; }
+  .copy b { font-weight: 600; color: var(--ink-2); }
+
+  /* works with */
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .note { display: flex; gap: 10px; align-items: flex-start; margin-top: 14px; padding: 12px; border-radius: var(--r-md); background: var(--tile); font-size: 13px; color: var(--ink-2); }
+  .note .ic { margin-top: 1px; color: var(--ink-2); }
+
+  /* offers */
+  .offer { display: flex; gap: 12px; align-items: flex-start; padding: 10px 0; }
+  .offer + .offer { border-top: 1px dashed var(--line-2); }
+  .offer .tagi { width: 32px; height: 32px; border-radius: 50%; background: var(--success-tint); color: var(--success); display: grid; place-items: center; flex: none; }
+  .offer .grow { flex: 1; font-size: 13px; color: var(--ink-2); }
+  .offer .grow b { color: var(--ink); display: block; font-size: 14px; }
+
+  /* delivery */
+  .d-row { display: flex; gap: 12px; align-items: center; }
+  .d-row .grow { flex: 1; }
+  .zip-btn { display: inline-flex; align-items: center; height: 32px; padding: 0 12px; border-radius: var(--r-sm); border: 0; background: #fff; box-shadow: inset 0 0 0 1px var(--line-2); font-size: 13px; font-weight: 700; }
+  .eta { margin-top: 12px; display: flex; gap: 12px; align-items: flex-start; }
+  .eta .ic { color: var(--ink-2); margin-top: 1px; }
+  .perks { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line); }
+  .perk { display: grid; justify-items: center; gap: 6px; text-align: center; font-size: 12px; line-height: 1.3; color: var(--ink-2); font-weight: 500; }
+  .perk .ci { width: 40px; height: 40px; border-radius: 50%; background: var(--tile); display: grid; place-items: center; color: var(--ink); }
+  .perk + .perk { border-left: 1px solid var(--line); }
+
+  /* business */
+  .biz { width: 100%; display: flex; align-items: center; gap: 12px; border: 0; text-align: left; background: #fff; padding: 14px 16px; }
+  .biz .ci { width: 40px; height: 40px; border-radius: 12px; background: var(--tile); display: grid; place-items: center; flex: none; }
+  .biz .grow { flex: 1; }
+
+  /* highlights */
+  .tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .tile { padding: 12px 10px; border-radius: var(--r-md); background: var(--tile); }
+  .tile .ic { color: var(--ink-3); }
+  .tile .v { font-size: 14px; font-weight: 700; margin-top: 10px; line-height: 1.25; }
+  .tile .k { font-size: 12px; color: var(--ink-3); margin-top: 2px; }
+  .acc { border-top: 1px solid var(--line); }
+  .acc-head { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 0; border: 0; background: none; text-align: left; font-size: 14px; font-weight: 700; }
+  .acc-head .ic { transition: transform .2s var(--ease); color: var(--ink-3); }
+  .acc[open] .acc-head .ic { transform: rotate(90deg); }
+  .acc-body { display: none; padding: 0 0 16px; font-size: 13px; color: var(--ink-2); }
+  .acc[open] .acc-body { display: block; }
+  .acc-body ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
+  .spec-group + .spec-group { margin-top: 14px; }
+  .spec-group h4 { margin: 0 0 4px; font-size: 11px; font-weight: 700; color: var(--ink-3); text-transform: uppercase; letter-spacing: .06em; }
+  .spec-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .spec-table th, .spec-table td { text-align: left; padding: 8px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .spec-table th { font-weight: 400; color: var(--ink-3); width: 44%; padding-right: 12px; }
+  .spec-table td { color: var(--ink); font-weight: 600; }
+  .about { font-size: 13px; color: var(--ink-2); margin: 14px 0 6px; }
+
+  /* Q&A */
+  .qa-item { padding: 12px 0; }
+  .qa-item + .qa-item { border-top: 1px solid var(--line); }
+  .qa-item .q { font-weight: 700; font-size: 14px; display: flex; gap: 8px; }
+  .qa-item .a { font-size: 13px; color: var(--ink-2); display: flex; gap: 8px; margin-top: 6px; }
+  .qa-item .tg { flex: none; width: 20px; font-weight: 800; color: var(--ink-3); }
+  .qa-item .a .tg { color: var(--success); }
+
+  /* reviews */
+  .empty { padding: 16px; border-radius: var(--r-md); background: var(--tile); display: flex; gap: 12px; align-items: center; }
+  .empty .ci { width: 44px; height: 44px; border-radius: 50%; background: #fff; display: grid; place-items: center; flex: none; color: var(--star); }
+  .empty .grow { flex: 1; }
+  .store { margin-top: 12px; padding: 14px; border-radius: var(--r-md); box-shadow: inset 0 0 0 1px var(--line); }
+  .store-top { display: flex; align-items: center; gap: 12px; }
+  .score { display: inline-flex; align-items: center; gap: 4px; height: 28px; padding: 0 8px; border-radius: 6px; background: var(--success); color: #fff; font-weight: 800; font-size: 14px; flex: none; }
+  .score svg { fill: currentColor; }
+  .quote { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 13px; color: var(--ink); }
+  .quote .by { font-size: 12px; color: var(--ink-3); margin-top: 4px; }
+
+  /* rail */
+  .rail { display: flex; gap: 10px; overflow-x: auto; margin: 0 -16px; padding: 0 16px 2px; scroll-snap-type: x mandatory; scrollbar-width: none; }
+  .p-card { flex: 0 0 150px; scroll-snap-align: start; display: grid; gap: 6px; align-content: start; }
+  .p-card .pi { height: 150px; border-radius: var(--r-md); background: var(--tile); display: grid; place-items: center; overflow: hidden; position: relative; }
+  .p-card .pi img { width: 84%; mix-blend-mode: multiply; }
+  .p-card .add { position: absolute; right: 8px; bottom: 8px; width: 32px; height: 32px; border-radius: 50%; background: #fff; border: 0; display: grid; place-items: center; box-shadow: var(--shadow-1); }
+  .p-card .pb { font-size: 13px; font-weight: 700; margin-top: 2px; }
+  .p-card .pn { font-size: 12px; line-height: 1.35; color: var(--ink-3); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .p-card .pp { font-weight: 800; font-size: 14px; }
+
+  /* footer */
+  .footer { margin-top: 8px; background: #fff; padding: 20px 16px 24px; }
+  .help { display: flex; align-items: center; gap: 12px; padding: 14px; border-radius: var(--r-md); background: var(--tile); }
+  .help .grow { flex: 1; }
+  .links { margin-top: 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px 16px; font-size: 13px; color: var(--ink-2); }
+  .legal { margin-top: 16px; font-size: 11px; color: var(--ink-3); }
+
+  /* always-on action bar */
+  .actionbar { bottom: 0; z-index: 40; background: #fff; padding: 10px 12px calc(10px + env(safe-area-inset-bottom)); display: flex; gap: 8px; align-items: center; box-shadow: var(--shadow-bar); }
+  .actionbar .wish { width: 48px; height: 48px; border-radius: var(--r-md); box-shadow: inset 0 0 0 1px var(--line-2); flex: none; }
+  .actionbar .btn { flex: 1; }
+  .btn .spin { width: 18px; height: 18px; border-radius: 50%; border: 2.5px solid rgba(0,0,0,.15); border-top-color: currentColor; animation: spin .7s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* sheets */
+  .backdrop { position: fixed; inset: 0; background: rgba(16,24,40,.45); opacity: 0; pointer-events: none; transition: opacity .25s var(--ease); z-index: 60; }
+  .backdrop.on { opacity: 1; pointer-events: auto; }
+  .sheet { bottom: 0; z-index: 70; background: #fff; border-radius: 20px 20px 0 0; box-shadow: var(--shadow-sheet); padding: 8px 16px calc(16px + env(safe-area-inset-bottom)); transform: translate(-50%, 105%); transition: transform .3s var(--ease); max-height: 88vh; overflow-y: auto; }
+  .sheet.on { transform: translate(-50%, 0); }
+  .sheet:focus { outline: none; }
+  .grab { width: 36px; height: 4px; border-radius: 2px; background: var(--line-2); margin: 0 auto 8px; }
+  .sheet-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .sheet-head .t-h2 { display: flex; align-items: center; gap: 8px; font-size: 17px; }
+  .added-item { display: flex; gap: 12px; margin-top: 12px; padding: 12px; border-radius: var(--r-md); background: var(--tile); }
+  .added-item .ai { width: 64px; height: 64px; border-radius: 10px; background: #fff; display: grid; place-items: center; flex: none; }
+  .added-item .ai img { width: 88%; mix-blend-mode: multiply; }
+  .sum-row { display: flex; justify-content: space-between; font-size: 13px; padding: 5px 0; color: var(--ink-2); }
+  .sum-row b { color: var(--ink); }
+  .sum-row.total { font-size: 15px; font-weight: 800; color: var(--ink); border-top: 1px dashed var(--line-2); margin-top: 6px; padding-top: 12px; }
+  .upsell { margin-top: 14px; display: flex; gap: 12px; align-items: center; padding: 10px; border-radius: var(--r-md); box-shadow: inset 0 0 0 1px var(--line); }
+  .upsell .ai { width: 56px; height: 56px; border-radius: 10px; background: var(--tile); display: grid; place-items: center; flex: none; }
+  .upsell .ai img { width: 88%; mix-blend-mode: multiply; }
+  .qty-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 14px; }
+  .qty-grid button { height: 48px; border-radius: var(--r-md); border: 0; background: #fff; box-shadow: inset 0 0 0 1px var(--line-2); font-weight: 700; font-size: 15px; }
+  .qty-grid button[aria-pressed="true"] { box-shadow: inset 0 0 0 2px var(--ink); background: var(--tile); }
+  .opt { width: 100%; display: flex; align-items: center; gap: 12px; padding: 14px 0; border: 0; border-bottom: 1px solid var(--line); background: none; text-align: left; }
+  .opt:last-of-type { border-bottom: 0; }
+  .opt .ci { width: 40px; height: 40px; border-radius: 12px; background: var(--tile); display: grid; place-items: center; flex: none; }
+  .opt .grow { flex: 1; }
+  .field { display: grid; gap: 6px; margin-top: 14px; }
+  .field label { font-size: 13px; font-weight: 700; }
+  .field input { height: 50px; border-radius: var(--r-md); border: 1px solid var(--line-2); padding: 0 14px; font: inherit; font-size: 16px; }
+  .field input:focus { outline: 2px solid var(--ink); outline-offset: 0; border-color: transparent; }
+  .field .err { font-size: 12px; color: var(--red-press); display: none; }
+  .field.bad .err { display: block; }
+  .field.bad input { border-color: var(--red-press); }
+
+  /* full screens */
+  .screen { top: 0; bottom: 0; z-index: 80; background: var(--band); overflow-y: auto; transform: translate(-50%, 0) translateX(100%); opacity: 0; pointer-events: none; transition: transform .3s var(--ease), opacity .2s; }
+  .screen.on { transform: translate(-50%, 0); opacity: 1; pointer-events: auto; }
+  .s-head { position: sticky; top: 0; background: #fff; height: 56px; display: flex; align-items: center; gap: 4px; padding: 0 4px; box-shadow: 0 1px 0 var(--line); z-index: 2; }
+  .s-head .t-h2 { flex: 1; font-size: 17px; }
+  .line-item { display: flex; gap: 12px; }
+  .line-item .ai { width: 84px; height: 84px; border-radius: var(--r-md); background: var(--tile); display: grid; place-items: center; flex: none; }
+  .line-item .ai img { width: 88%; mix-blend-mode: multiply; }
+  .line-item .grow { flex: 1; min-width: 0; }
+  .li-actions { display: grid; grid-template-columns: 1fr 1fr; margin: 14px -16px -16px; border-top: 1px solid var(--line); }
+  .li-actions button { height: 46px; border: 0; background: none; font-size: 13px; font-weight: 700; color: var(--ink-2); display: flex; align-items: center; justify-content: center; gap: 6px; }
+  .li-actions button + button { border-left: 1px solid var(--line); }
+  .cart-foot { position: sticky; bottom: 0; background: #fff; padding: 10px 16px calc(12px + env(safe-area-inset-bottom)); display: flex; gap: 12px; align-items: center; box-shadow: var(--shadow-bar); }
+  .cart-foot .tot { flex: 1; }
+  .cart-foot .tot b { font-size: 18px; font-weight: 800; display: block; line-height: 1.2; }
+  .cart-foot .btn { flex: 1.3; }
+  .express { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+  .express button { height: 46px; border-radius: var(--r-md); border: 0; box-shadow: inset 0 0 0 1px var(--line-2); background: #fff; font-weight: 800; font-size: 15px; }
+  .express .pp { color: #003087; }
+  .express .pp i { color: #009CDE; }
+  .express .ap { background: #000; color: #fff; box-shadow: none; }
+
+  .viewer { top: 0; bottom: 0; z-index: 85; background: #fff; display: grid; place-items: center; opacity: 0; pointer-events: none; transition: opacity .2s; }
+  .viewer.on { opacity: 1; pointer-events: auto; }
+  .viewer img { width: 100%; }
+  .viewer .icon-btn { position: absolute; top: 12px; right: 12px; background: var(--tile); }
+
+  /* fix markers (?fixes=1) */
+  .fx { display: none; }
+  body.show-fixes .fx { display: inline-flex; position: absolute; z-index: 25; align-items: center; gap: 4px; height: 22px; padding: 0 8px; border-radius: var(--r-pill); background: #0B8A52; color: #fff; font-size: 11px; font-weight: 800; box-shadow: 0 2px 6px rgba(0,0,0,.2); white-space: nowrap; letter-spacing: .01em; }
+  body.show-fixes [data-fix]:not(.pin):not(.header) { position: relative; }
+  body.static .phone { padding-bottom: 0; }
+  body.static .header { position: relative; }
+  body.static .sheet, body.static .screen, body.static .viewer, body.static .backdrop, body.static .toast { display: none; }
+  body.static .actionbar { position: static; transform: none; width: 100%; box-shadow: 0 -1px 0 var(--line); }
+</style>
+</head>
+<body>
+<div class="phone" id="top">
+
+  <header class="header" id="header" data-fix="P8">
+    <span class="fx" style="right:100px;top:17px">P1 · P8</span>
+    <button class="icon-btn" aria-label="Back" data-i="arrow-left" data-s="22"></button>
+    <img class="logo" src="../assets/dk-logo.svg" alt="DK Hardware">
+    <span class="spacer"></span>
+    <button class="icon-btn" aria-label="Search" data-i="search" data-s="22"></button>
+    <button class="icon-btn" aria-label="Cart" id="cartBtn" data-i="shopping-cart" data-s="22"><span class="badge" id="badge">0</span></button>
+  </header>
+
+  <!-- gallery: full-bleed, product first -->
+  <div class="gallery" id="gallery" data-fix="P1">
+    <span class="fx" style="left:12px;top:12px">P1 · product first</span>
+    <div class="track" id="track">
+      <div class="slide"><img src="../assets/product.png" alt="Milwaukee 48-59-1810 vehicle charger with an M12 and an M18 battery (batteries shown for scale)"></div>
+      <div class="slide z2"><img src="../assets/product.png" alt="Close-up of the 12V/24V DC vehicle plug"></div>
+      <div class="slide z3"><img src="../assets/product.png" alt="Close-up of the charge status panel"></div>
+    </div>
+    <div class="g-top">
+      <button class="icon-btn" aria-label="Share" data-i="share-2" data-s="18"></button>
+      <button class="icon-btn" aria-label="View full screen" id="expandBtn" data-i="expand" data-s="18"></button>
+    </div>
+    <span class="g-pill" data-fix="P2"><span data-i="info" data-s="14"></span>Batteries sold separately</span>
+    <button class="g-btn"><span data-i="layers" data-s="15"></span>Similar</button>
+    <div class="dots" role="tablist" aria-label="Product images">
+      <button aria-current="true" data-go="0" aria-label="Image 1"></button>
+      <button data-go="1" aria-label="Image 2"></button>
+      <button data-go="2" aria-label="Image 3"></button>
+    </div>
+  </div>
+
+  <!-- info -->
+  <section class="sec" data-fix="P6">
+    <span class="fx" style="right:16px;top:-30px">P6 · clear brand + title</span>
+    <div class="brand-row">
+      <a href="#" class="brand">Milwaukee</a>
+      <a href="#" class="brand-all">All Milwaukee<span data-i="chevron-right" data-s="14"></span></a>
+    </div>
+    <h1 class="t-h1 title">M12/M18 Lithium-Ion Multi-Voltage DC Vehicle Battery Charger, Red</h1>
+    <a href="#qa" class="chip chip-soft qa-chip" data-fix="P5"><span data-i="message-circle" data-s="14"></span>9 answered questions<span data-i="chevron-right" data-s="14"></span></a>
+
+    <div data-fix="P4" style="position:relative">
+      <span class="fx" style="right:100px;top:2px">P4 · plain price</span>
+      <div class="price-row">
+        <span class="price">$227.58</span><span class="per">each</span>
+        <button class="qty-chip" data-open="sheet-qty" aria-label="Choose quantity">Qty <span id="qVal">1</span><span data-i="chevron-down" data-s="16"></span></button>
+      </div>
+      <div class="stock-line"><span data-i="circle-check" data-s="15"></span>In stock<span class="sep"></span><span class="soft">644 units · 26 bought in the last 7 days</span></div>
+    </div>
+    <div class="ids">
+      <button class="copy" data-copy="48-59-1810">Model <b>48-59-1810</b><span data-i="copy" data-s="13"></span></button>
+      <button class="copy" data-copy="045242518715">UPC <b>045242518715</b><span data-i="copy" data-s="13"></span></button>
+    </div>
+  </section>
+
+  <!-- works with -->
+  <section class="sec" data-fix="P2">
+    <span class="fx" style="right:16px;top:14px">P2 · fit answered</span>
+    <div class="sec-head"><h2 class="t-h2">Works with</h2></div>
+    <div class="chips">
+      <span class="chip chip-line"><span data-i="check" data-s="15"></span>M12 batteries</span>
+      <span class="chip chip-line"><span data-i="check" data-s="15"></span>M18 batteries</span>
+      <span class="chip chip-line"><span data-i="check" data-s="15"></span>12V DC outlet</span>
+      <span class="chip chip-line"><span data-i="check" data-s="15"></span>24V DC outlet</span>
+      <span class="chip chip-line"><span data-i="check" data-s="15"></span>Auto shut-off</span>
+    </div>
+    <div class="note"><span data-i="info" data-s="16"></span><span><b class="strong">Charger only.</b> Batteries are sold separately. Vehicle use only: it won't run from a wall outlet or a transformer.</span></div>
+  </section>
+
+  <!-- offers -->
+  <section class="sec" data-fix="P4">
+    <span class="fx" style="right:16px;top:14px">P4 · one offers list</span>
+    <div class="sec-head"><h2 class="t-h2">Offers for you</h2></div>
+    <div class="offer"><span class="tagi" data-i="tag" data-s="16"></span><div class="grow"><b>Bulk pricing</b>Save up to $22.76 per unit on bulk orders</div><button class="row-link" data-open="sheet-b2b">Tiers<span data-i="chevron-right" data-s="14"></span></button></div>
+    <div class="offer"><span class="tagi" data-i="wallet" data-s="16"></span><div class="grow"><b>Pay over time</b>4 interest-free payments with Affirm, or from $21/mo</div></div>
+    <div class="offer"><span class="tagi" data-i="credit-card" data-s="16"></span><div class="grow"><b>PayPal</b>From $21.74/mo, as low as 0% APR</div></div>
+    <div class="offer"><span class="tagi" data-i="badge-check" data-s="16"></span><div class="grow"><b>Lowest price guarantee</b>Found it cheaper? We'll match it</div></div>
+  </section>
+
+  <!-- delivery -->
+  <section class="sec" data-fix="P4">
+    <span class="fx" style="right:96px;top:20px">P4 · delivery date</span>
+    <div class="d-row"><span data-i="map-pin" data-s="18"></span><div class="grow">Deliver to <b id="zipLabel">10001</b></div><button class="zip-btn" data-open="sheet-zip">Change</button></div>
+    <div class="eta"><span data-i="truck" data-s="18"></span><div><b>Get it by Tue, Nov 3</b><div class="t-small muted">Ships in 1 business day</div></div></div>
+    <div class="perks" data-fix="P5">
+      <div class="perk"><span class="ci" data-i="rotate-ccw" data-s="18"></span>30-day easy returns</div>
+      <div class="perk"><span class="ci" data-i="shield-check" data-s="18"></span>5-year warranty</div>
+      <div class="perk"><span class="ci" data-i="lock" data-s="18"></span>Secure payment</div>
+    </div>
+  </section>
+
+  <!-- business -->
+  <section class="sec" style="padding:0" data-fix="P3">
+    <span class="fx" style="right:44px;top:6px">P3</span>
+    <button class="biz" data-open="sheet-b2b">
+      <span class="ci" data-i="briefcase" data-s="18"></span>
+      <span class="grow"><b style="display:block">Buying for a business?</b><span class="t-small muted">Volume pricing, quotes, Net 30 terms</span></span>
+      <span data-i="chevron-right" data-s="18"></span>
+    </button>
+  </section>
+
+  <!-- highlights + details -->
+  <section class="sec" data-fix="P7">
+    <span class="fx" style="right:16px;top:14px">P2 · P7 · one clean spec set</span>
+    <div class="sec-head"><h2 class="t-h2">Highlights</h2></div>
+    <div class="tiles">
+      <div class="tile"><span data-i="car" data-s="18"></span><div class="v">12/24V DC</div><div class="k">Input</div></div>
+      <div class="tile"><span data-i="battery-charging" data-s="18"></span><div class="v">M12 &amp; M18</div><div class="k">Batteries</div></div>
+      <div class="tile"><span data-i="clock" data-s="18"></span><div class="v">30–60 min</div><div class="k">Charge time</div></div>
+      <div class="tile"><span data-i="cable" data-s="18"></span><div class="v">6.3 ft</div><div class="k">Cord</div></div>
+      <div class="tile"><span data-i="plug" data-s="18"></span><div class="v">1 battery</div><div class="k">At a time</div></div>
+      <div class="tile"><span data-i="shield-check" data-s="18"></span><div class="v">5 years</div><div class="k">Warranty</div></div>
+    </div>
+    <p class="about">Keep your M12 and M18 batteries topped up between jobs. Plug into your truck's 12V or 24V DC outlet; protective electronics shut the charger down before it can drain the vehicle battery.</p>
+    <div class="acc">
+      <button class="acc-head" aria-expanded="false">All specifications<span data-i="chevron-right" data-s="18"></span></button>
+      <div class="acc-body">
+        <div class="spec-group"><h4>Compatibility</h4><table class="spec-table">
+          <tr><th>Battery platform</th><td>Milwaukee M12 and M18</td></tr>
+          <tr><th>Batteries at once</th><td>1</td></tr></table></div>
+        <div class="spec-group"><h4>Power</h4><table class="spec-table">
+          <tr><th>Input</th><td>12V / 24V DC (vehicle outlet)</td></tr>
+          <tr><th>Output</th><td>18V (also charges 12V M12)</td></tr>
+          <tr><th>Charge time</th><td>30–60 min, varies by battery</td></tr>
+          <tr><th>Protection</th><td>Auto shut-off before vehicle battery runs low</td></tr></table></div>
+        <div class="spec-group"><h4>Size</h4><table class="spec-table">
+          <tr><th>Dimensions</th><td>7 × 5⅞ × 3 in</td></tr>
+          <tr><th>Cord length</th><td>6.3 ft</td></tr></table></div>
+        <div class="spec-group"><h4>General</h4><table class="spec-table">
+          <tr><th>Brand</th><td>Milwaukee</td></tr>
+          <tr><th>Model</th><td>48-59-1810</td></tr>
+          <tr><th>UPC</th><td>045242518715</td></tr>
+          <tr><th>Color</th><td>Red</td></tr>
+          <tr><th>Warranty</th><td>5 years</td></tr>
+          <tr><th>Country of origin</th><td>Vietnam</td></tr></table></div>
+      </div>
+    </div>
+    <div class="acc">
+      <button class="acc-head" aria-expanded="false">What's in the box<span data-i="chevron-right" data-s="18"></span></button>
+      <div class="acc-body"><ul><li>1 × Milwaukee 48-59-1810 DC vehicle charger with 6.3 ft cord</li><li>Batteries are not included</li></ul></div>
+    </div>
+    <div class="acc">
+      <button class="acc-head" aria-expanded="false">Safety &amp; warnings<span data-i="chevron-right" data-s="18"></span></button>
+      <div class="acc-body"><ul><li>For vehicle use only. Do not use with any transformer.</li><li>California Prop 65: this product may contain chemicals known to the State of California to cause cancer or reproductive harm. P65Warnings.ca.gov</li></ul></div>
+    </div>
+  </section>
+
+  <!-- Q&A -->
+  <section class="sec" id="qa" data-fix="P7">
+    <span class="fx" style="right:96px;top:14px">P7 · no duplicates</span>
+    <div class="sec-head"><h2 class="t-h2">Questions &amp; answers <span class="count">9</span></h2><button class="row-link">View all<span data-i="chevron-right" data-s="14"></span></button></div>
+    <div class="qa-item"><div class="q"><span class="tg">Q</span>Can I use it with a wall outlet or a transformer?</div><div class="a"><span class="tg">A</span>No. It's built for vehicles only: plug it into a 12V or 24V DC outlet.</div></div>
+    <div class="qa-item"><div class="q"><span class="tg">Q</span>Will it drain my vehicle's battery?</div><div class="a"><span class="tg">A</span>No. Protective electronics shut the charger down before the vehicle battery runs low.</div></div>
+    <button class="btn btn-soft btn-block" style="height:42px;font-size:13px;margin-top:6px">Ask a question</button>
+  </section>
+
+  <!-- reviews -->
+  <section class="sec" id="reviews" data-fix="P5">
+    <span class="fx" style="right:16px;top:14px">P5 · honest proof</span>
+    <div class="sec-head"><h2 class="t-h2">Ratings &amp; reviews</h2></div>
+    <div class="empty">
+      <span class="ci" data-i="star" data-s="20"></span>
+      <div class="grow"><b style="display:block">No reviews for this charger yet</b><span class="t-small muted">Own one? Help the next buyer.</span></div>
+      <button class="row-link">Write<span data-i="chevron-right" data-s="14"></span></button>
+    </div>
+    <div class="store">
+      <div class="store-top">
+        <span class="score">4.8<span id="oneStar"></span></span>
+        <div><b style="display:block;font-size:13px">DK Hardware store rating</b><span class="t-micro muted">Shopper Approved · rates the store's service, not this charger</span></div>
+      </div>
+      <div class="quote">"Order arrived quickly, correct product, good quality."<div class="by">Robert A. H. · Aug 25, 2026</div></div>
+    </div>
+  </section>
+
+  <!-- rail -->
+  <section class="sec">
+    <div class="sec-head"><h2 class="t-h2">Customers also bought</h2><button class="row-link">View all<span data-i="chevron-right" data-s="14"></span></button></div>
+    <div class="rail">
+      <div class="p-card">
+        <div class="pi"><img src="../assets/rel-supercharger.png" alt=""><button class="add" aria-label="Add M18 Super Charger to cart" data-i="plus" data-s="18"></button></div>
+        <div class="pb">Milwaukee</div>
+        <div class="pn">M18 Dual Bay Simultaneous Super Charger, 48-59-1815</div>
+        <div class="pp">$373.33</div>
+      </div>
+      <div class="p-card">
+        <div class="pi"><img src="../assets/rel-scissors.png" alt=""><button class="add" aria-label="Add Jobsite Scissors to cart" data-i="plus" data-s="18"></button></div>
+        <div class="pb">Milwaukee</div>
+        <div class="pn">48-22-4041 Jobsite Scissors, 9 in, Iron Carbide Blade</div>
+        <div class="pp">$29.65</div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="help">
+      <span data-i="phone" data-s="20"></span>
+      <div class="grow"><b style="display:block">Need help choosing?</b><span class="t-small muted">Call 877-509-8040 or chat 24/7</span></div>
+      <button class="row-link">Chat<span data-i="chevron-right" data-s="14"></span></button>
+    </div>
+    <div class="links"><a href="#">Customer service</a><a href="#">Returns</a><a href="#">Shipping</a><a href="#">Net 30 terms</a><a href="#">Track order</a><a href="#">About DK</a></div>
+    <div class="legal">© 2026 DK Hardware Supply · Concept redesign for a UX assignment</div>
+  </footer>
+
+  <!-- always-on action bar -->
+  <div class="pin actionbar" id="actionbar" data-fix="P3">
+    <span class="fx" style="left:12px;top:-12px">P3 · always reachable</span>
+    <button class="icon-btn wish" id="likeBtn" aria-label="Save to wishlist" data-i="heart" data-s="22"></button>
+    <button class="btn btn-outline" id="addBtn"><span class="lbl">Add to cart</span></button>
+    <button class="btn btn-primary" id="buyNow">Buy now</button>
+  </div>
+</div>
+
+<!-- ======= prototype layers ======= -->
+<div class="backdrop" id="backdrop"></div>
+
+<div class="pin sheet" id="sheet-added" role="dialog" aria-modal="true" aria-labelledby="addedT">
+  <div class="grab"></div>
+  <div class="sheet-head">
+    <h2 class="t-h2" id="addedT"><span class="ok" data-i="circle-check" data-s="22"></span>Added to cart</h2>
+    <button class="icon-btn" aria-label="Close" data-close data-i="x"></button>
+  </div>
+  <div class="added-item">
+    <div class="ai"><img src="../assets/product.png" alt=""></div>
+    <div style="flex:1;min-width:0">
+      <div class="t-small" style="font-weight:700">Milwaukee M12/M18 DC Vehicle Battery Charger</div>
+      <div class="t-micro muted" style="margin-top:2px">Qty <span class="aQty">1</span> · Model 48-59-1810</div>
+      <div style="font-weight:800;margin-top:6px" class="aLine">$227.58</div>
+    </div>
+  </div>
+  <div style="margin-top:10px">
+    <div class="sum-row"><span>Cart subtotal (<span class="cQty">1</span> item<span class="cS"></span>)</span><b class="cSub">$227.58</b></div>
+    <div class="sum-row"><span>Shipping and tax</span><span>At checkout</span></div>
+  </div>
+  <div class="upsell">
+    <div class="ai"><img src="../assets/rel-supercharger.png" alt=""></div>
+    <div style="flex:1;min-width:0"><div class="t-micro muted">Charge at the shop too</div><div class="t-small" style="font-weight:700">M18 Dual Bay Super Charger</div><div class="t-small" style="font-weight:800">$373.33</div></div>
+    <button class="btn btn-soft" style="height:36px;padding:0 12px;font-size:13px">Add</button>
+  </div>
+  <div style="display:grid;gap:8px;margin-top:14px">
+    <button class="btn btn-primary btn-block" data-go-screen="screen-cart">Go to cart<span data-i="arrow-right" data-s="18"></span></button>
+    <button class="btn btn-ghost btn-block" data-close>Continue shopping</button>
+  </div>
+</div>
+
+<div class="pin sheet" id="sheet-qty" role="dialog" aria-modal="true" aria-labelledby="qtyT">
+  <div class="grab"></div>
+  <div class="sheet-head"><h2 class="t-h2" id="qtyT">Select quantity</h2><button class="icon-btn" aria-label="Close" data-close data-i="x"></button></div>
+  <div class="qty-grid" id="qtyGrid"></div>
+  <button class="opt" data-open="sheet-b2b" style="margin-top:10px;border-top:1px solid var(--line)"><span class="ci" data-i="tag" data-s="18"></span><span class="grow"><b style="display:block">Need 10 or more?</b><span class="t-small muted">Save up to $22.76 per unit with bulk pricing</span></span><span data-i="chevron-right" data-s="18"></span></button>
+</div>
+
+<div class="pin sheet" id="sheet-zip" role="dialog" aria-modal="true" aria-labelledby="zipT">
+  <div class="grab"></div>
+  <div class="sheet-head"><h2 class="t-h2" id="zipT">Where should we deliver?</h2><button class="icon-btn" aria-label="Close" data-close data-i="x"></button></div>
+  <div class="field" id="zipField">
+    <label for="zipIn">ZIP code</label>
+    <input id="zipIn" inputmode="numeric" maxlength="5" value="10001" autocomplete="postal-code">
+    <span class="err">Enter a 5-digit US ZIP code, like 33166.</span>
+  </div>
+  <button class="btn btn-dark btn-block" style="margin-top:14px" id="zipSave">Check delivery date</button>
+</div>
+
+<div class="pin sheet" id="sheet-b2b" role="dialog" aria-modal="true" aria-labelledby="bizT">
+  <div class="grab"></div>
+  <div class="sheet-head"><h2 class="t-h2" id="bizT">Buying for a business</h2><button class="icon-btn" aria-label="Close" data-close data-i="x"></button></div>
+  <p class="t-small muted" style="margin:2px 0 4px">Trade and bulk options, kept out of the way of everyday shoppers.</p>
+  <button class="opt"><span class="ci" data-i="tag" data-s="18"></span><span class="grow"><b style="display:block">Get volume pricing</b><span class="t-small muted">Save up to $22.76 per unit</span></span><span data-i="chevron-right" data-s="18"></span></button>
+  <button class="opt"><span class="ci" data-i="file-text" data-s="18"></span><span class="grow"><b style="display:block">Request a custom quote</b><span class="t-small muted">For large or mixed orders</span></span><span data-i="chevron-right" data-s="18"></span></button>
+  <button class="opt"><span class="ci" data-i="building-2" data-s="18"></span><span class="grow"><b style="display:block">Apply for Net 30 terms</b><span class="t-small muted">Tax-exempt and trade accounts</span></span><span data-i="chevron-right" data-s="18"></span></button>
+  <button class="opt"><span class="ci" data-i="wrench" data-s="18"></span><span class="grow"><b style="display:block">Quick order form</b><span class="t-small muted">Add many part numbers at once</span></span><span data-i="chevron-right" data-s="18"></span></button>
+</div>
+
+<div class="pin screen" id="screen-cart" role="dialog" aria-modal="true" aria-labelledby="cartT">
+  <div class="s-head">
+    <button class="icon-btn" aria-label="Back to product" data-back data-i="arrow-left" data-s="22"></button>
+    <h2 class="t-h2" id="cartT">My cart (<span class="cQty">1</span>)</h2>
+  </div>
+  <div id="cartFull">
+    <div class="sec d-row" style="padding:12px 16px"><span data-i="map-pin" data-s="18"></span><div class="grow t-small">Deliver to <b class="zipEcho">10001</b></div><button class="zip-btn" data-open="sheet-zip">Change</button></div>
+    <div class="sec">
+      <div class="line-item">
+        <div class="ai"><img src="../assets/product.png" alt=""></div>
+        <div class="grow">
+          <div class="t-micro" style="font-weight:800">Milwaukee</div>
+          <div class="t-small ink-2">M12/M18 Multi-Voltage DC Vehicle Battery Charger, Red</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:10px">
+            <div class="qty" aria-label="Quantity">
+              <button id="cMinus" aria-label="Decrease quantity" data-i="minus" data-s="16"></button>
+              <output class="cQty">1</output>
+              <button id="cPlus" aria-label="Increase quantity" data-i="plus" data-s="16"></button>
+            </div>
+            <b class="cSub" style="font-size:16px">$227.58</b>
+          </div>
+          <div class="t-micro" style="color:var(--success);font-weight:600;margin-top:8px">Get it by Tue, Nov 3</div>
+        </div>
+      </div>
+      <div class="li-actions">
+        <button id="saveLater"><span data-i="heart" data-s="16"></span>Save for later</button>
+        <button id="removeBtn"><span data-i="trash-2" data-s="16"></span>Remove</button>
+      </div>
+    </div>
+    <div class="sec">
+      <h2 class="t-h3 muted" style="text-transform:uppercase;letter-spacing:.06em;font-size:12px;margin-bottom:8px">Price details</h2>
+      <div class="sum-row"><span>Price (<span class="cQty">1</span> item<span class="cS"></span>)</span><b class="cSub">$227.58</b></div>
+      <div class="sum-row"><span>Shipping</span><span>Calculated at checkout</span></div>
+      <div class="sum-row"><span>Estimated tax</span><span>Calculated at checkout</span></div>
+      <div class="sum-row total"><span>Estimated total</span><span class="cSub">$227.58</span></div>
+      <div class="express"><button class="pp">Pay<i>Pal</i></button><button class="ap">Apple Pay</button></div>
+    </div>
+    <div class="sec t-small muted" style="display:flex;gap:10px;align-items:center"><span data-i="shield-check" data-s="18"></span>30-day easy returns · 5-year Milwaukee warranty · Secure payment</div>
+    <div class="cart-foot">
+      <div class="tot"><b class="cSub">$227.58</b><span class="t-micro muted">plus tax &amp; shipping</span></div>
+      <button class="btn btn-primary" data-go-screen="screen-done">Checkout</button>
+    </div>
+  </div>
+  <div id="cartEmpty" hidden style="padding:56px 24px;text-align:center">
+    <div style="width:72px;height:72px;border-radius:50%;background:#fff;display:grid;place-items:center;margin:0 auto" data-i="shopping-cart" data-s="30"></div>
+    <b style="display:block;font-size:17px;margin-top:14px">Your cart is empty</b>
+    <span class="t-small muted" style="display:block;margin-top:4px">The charger is one tap away if you change your mind.</span>
+    <button class="btn btn-primary" data-back style="margin-top:18px">Back to the charger</button>
+  </div>
+</div>
+
+<div class="pin screen" id="screen-done" role="dialog" aria-modal="true" aria-labelledby="doneT">
+  <div class="s-head"><button class="icon-btn" aria-label="Back to cart" data-back-to="screen-cart" data-i="arrow-left" data-s="22"></button><h2 class="t-h2" id="doneT">Checkout</h2></div>
+  <div style="padding:56px 24px;text-align:center">
+    <div style="width:72px;height:72px;border-radius:50%;background:var(--success-tint);color:var(--success);display:grid;place-items:center;margin:0 auto" data-i="lock" data-s="30"></div>
+    <b style="display:block;font-size:17px;margin-top:14px">Secure checkout starts here</b>
+    <span class="t-small muted" style="display:block;margin:4px auto 0;max-width:290px">End of the add-to-cart prototype. Address, payment and review would follow.</span>
+    <button class="btn btn-outline" data-restart style="margin-top:18px">Restart prototype</button>
+  </div>
+</div>
+
+<div class="pin viewer" id="viewer" role="dialog" aria-modal="true" aria-label="Image viewer">
+  <img src="../assets/product.png" alt="Milwaukee 48-59-1810 vehicle charger">
+  <button class="icon-btn" aria-label="Close" id="viewerClose" data-i="x"></button>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="../assets/icons.js"></script>
+<script>
+(function () {
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const UNIT = 227.58;
+  const money = n => '$' + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  const params = new URLSearchParams(location.search);
+  if (params.has('fixes')) document.body.classList.add('show-fixes');
+  if (params.has('static')) document.body.classList.add('static');
+
+  document.addEventListener('DOMContentLoaded', () => { $('#oneStar').innerHTML = icon('star', 13); });
+
+  // header hairline on scroll
+  addEventListener('scroll', () => $('#header').classList.toggle('scrolled', scrollY > 4), { passive: true });
+
+  // gallery
+  let slide = 0;
+  const go = i => {
+    slide = (i + 3) % 3;
+    $('#track').style.transform = `translateX(${-100 * slide}%)`;
+    $$('.dots button').forEach((d, k) => d.setAttribute('aria-current', k === slide));
+  };
+  $$('.dots button').forEach(d => d.addEventListener('click', () => go(+d.dataset.go)));
+  let x0 = null;
+  $('#gallery').addEventListener('touchstart', e => x0 = e.touches[0].clientX, { passive: true });
+  $('#gallery').addEventListener('touchend', e => { if (x0 === null) return; const dx = e.changedTouches[0].clientX - x0; if (Math.abs(dx) > 40) go(slide + (dx < 0 ? 1 : -1)); x0 = null; });
+  $('#track').addEventListener('click', () => go(slide + 1));
+  $('#expandBtn').addEventListener('click', () => $('#viewer').classList.add('on'));
+  $('#viewerClose').addEventListener('click', () => $('#viewer').classList.remove('on'));
+  $('#likeBtn').addEventListener('click', e => { const b = e.currentTarget; b.classList.toggle('liked'); toast(b.classList.contains('liked') ? 'Saved to your wishlist' : 'Removed from wishlist'); });
+
+  $$('[data-copy]').forEach(b => b.addEventListener('click', () => { navigator.clipboard && navigator.clipboard.writeText(b.dataset.copy).catch(() => {}); toast('Copied ' + b.dataset.copy); }));
+
+  let tt;
+  function toast(msg) { const t = $('#toast'); t.innerHTML = icon('circle-check', 16) + msg; t.classList.add('show'); clearTimeout(tt); tt = setTimeout(() => t.classList.remove('show'), 1800); }
+
+  $$('.acc-head').forEach(h => h.addEventListener('click', () => {
+    const a = h.parentElement, open = !a.hasAttribute('open');
+    a.toggleAttribute('open', open); h.setAttribute('aria-expanded', open);
+  }));
+
+  // quantity sheet
+  let q = 1;
+  const grid = $('#qtyGrid');
+  for (let i = 1; i <= 10; i++) { const b = document.createElement('button'); b.textContent = i; b.setAttribute('aria-pressed', i === 1); b.addEventListener('click', () => { setQ(i); closeSheet(); }); grid.appendChild(b); }
+  function setQ(v) { q = v; $('#qVal').textContent = q; $$('button', grid).forEach(b => b.setAttribute('aria-pressed', +b.textContent === q)); }
+
+  // cart
+  let cart = 0;
+  function renderCart() {
+    $$('.cQty').forEach(e => e.textContent = cart);
+    $$('.cS').forEach(e => e.textContent = cart === 1 ? '' : 's');
+    $$('.cSub').forEach(e => e.textContent = money(cart * UNIT));
+    const b = $('#badge'); b.textContent = cart; b.classList.toggle('on', cart > 0);
+    $('#cMinus').disabled = cart <= 1;
+    $('#cartFull').hidden = cart === 0; $('#cartEmpty').hidden = cart !== 0;
+    const add = $('#addBtn');
+    if (cart > 0) { add.className = 'btn btn-dark'; add.innerHTML = 'Go to cart' + icon('arrow-right', 18); add.dataset.mode = 'go'; }
+    else { add.className = 'btn btn-outline'; add.innerHTML = 'Add to cart'; add.dataset.mode = 'add'; }
+  }
+  function bump() { const b = $('#badge'); b.classList.remove('bump'); void b.offsetWidth; b.classList.add('bump'); }
+
+  // overlays
+  let openSheet = null;
+  function open(id) {
+    if (openSheet) openSheet.classList.remove('on');
+    const s = document.getElementById(id); s.classList.add('on'); openSheet = s;
+    $('#backdrop').classList.add('on');
+    const f = s.querySelector('input') || s; if (f === s) s.tabIndex = -1;
+    setTimeout(() => f.focus({ preventScroll: true }), 300);
+  }
+  function closeSheet() { if (openSheet) openSheet.classList.remove('on'); openSheet = null; $('#backdrop').classList.remove('on'); }
+  function screen(id) { closeSheet(); $$('.screen').forEach(s => s.classList.toggle('on', s.id === id)); }
+  function back() { $$('.screen').forEach(s => s.classList.remove('on')); }
+
+  document.addEventListener('click', e => {
+    const o = e.target.closest('[data-open]'); if (o) { open(o.dataset.open); return; }
+    if (e.target.closest('[data-close]')) closeSheet();
+    const g = e.target.closest('[data-go-screen]'); if (g) screen(g.dataset.goScreen);
+    if (e.target.closest('[data-back]')) back();
+    const bt = e.target.closest('[data-back-to]'); if (bt) screen(bt.dataset.backTo);
+  });
+  $('#backdrop').addEventListener('click', closeSheet);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeSheet(); $('#viewer').classList.remove('on'); } });
+  $('#cartBtn').addEventListener('click', () => screen('screen-cart'));
+
+  function add(btn, then) {
+    btn.disabled = true; btn.innerHTML = '<span class="spin"></span>Adding';
+    setTimeout(() => {
+      cart += q; renderCart(); bump();
+      $$('.aQty').forEach(e => e.textContent = q);
+      $$('.aLine').forEach(e => e.textContent = money(q * UNIT));
+      btn.disabled = false;
+      if (btn.id === 'buyNow') btn.innerHTML = 'Buy now';
+      then();
+    }, 550);
+  }
+  $('#addBtn').addEventListener('click', e => {
+    if (e.currentTarget.dataset.mode === 'go') { screen('screen-cart'); return; }
+    add(e.currentTarget, () => open('sheet-added'));
+  });
+  $('#buyNow').addEventListener('click', e => add(e.currentTarget, () => screen('screen-cart')));
+
+  $('#cMinus').addEventListener('click', () => { if (cart > 1) { cart--; renderCart(); } });
+  $('#cPlus').addEventListener('click', () => { cart++; renderCart(); bump(); });
+  $('#removeBtn').addEventListener('click', () => { cart = 0; renderCart(); toast('Charger removed from cart'); });
+  $('#saveLater').addEventListener('click', () => { cart = 0; renderCart(); $('#likeBtn').classList.add('liked'); toast('Moved to your wishlist'); });
+  $$('[data-restart]').forEach(b => b.addEventListener('click', () => { cart = 0; setQ(1); renderCart(); back(); scrollTo(0, 0); }));
+
+  $('#zipSave').addEventListener('click', () => {
+    const v = $('#zipIn').value.trim(), ok = /^\d{5}$/.test(v);
+    $('#zipField').classList.toggle('bad', !ok);
+    if (!ok) return;
+    $('#zipLabel').textContent = v; $$('.zipEcho').forEach(e => e.textContent = v);
+    closeSheet(); toast('Delivery date updated for ' + v);
+  });
+  $('#zipIn').addEventListener('input', () => $('#zipField').classList.remove('bad'));
+
+  renderCart();
+
+  // static export states: ?state=added|cart|qty|zip|b2b|scrolled|done|empty
+  const st = params.get('state');
+  if (st) document.addEventListener('DOMContentLoaded', () => setTimeout(() => {
+    if (st === 'added') { cart = 1; renderCart(); open('sheet-added'); }
+    if (st === 'cart') { cart = 1; renderCart(); screen('screen-cart'); }
+    if (st === 'empty') { cart = 0; renderCart(); screen('screen-cart'); }
+    if (st === 'done') { cart = 1; renderCart(); screen('screen-done'); }
+    if (st === 'qty') open('sheet-qty');
+    if (st === 'zip') open('sheet-zip');
+    if (st === 'b2b') open('sheet-b2b');
+    if (st === 'scrolled') { cart = 1; renderCart(); scrollTo(0, 1180); }
+  }, 50));
+})();
+</script>
+</body>
+</html>
