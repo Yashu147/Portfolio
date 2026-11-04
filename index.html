@@ -6863,7 +6863,7 @@ window.__veTR = function (host) {
       items.push(H => {
         if (PH()) {
           const r = el.getBoundingClientRect(); if (r.top > H || r.bottom < -H) return;
-          const W = st.clientWidth, Hs = st.offsetHeight, s = Math.max(0, -r.top), s1 = Hs * 0.6, q = cl(s / s1), e = io(q);
+          const W = st.clientWidth, Hs = st.offsetHeight, s = Math.max(0, -r.top), s1 = Math.max(60, Hs - 50), q = cl(s / s1), e = io(q);
           const b = Hs + (s1 + 34 - Hs) * e, w = W + (Math.min(126, W * 0.32) - W) * e, x = ((W - w) / 2).toFixed(1);
           const rad = (q < 0.5 ? 44 * seg(q, 0, 0.3) : 44 - 27 * seg(q, 0.5, 1)).toFixed(1);
           n.style.clipPath = "inset(0 " + x + "px " + (Hs - b).toFixed(1) + "px " + x + "px round 0 0 " + rad + "px " + rad + "px)";
@@ -21481,12 +21481,18 @@ html:not(.js) #learning .ylr-slab { opacity: 1; transform: translateZ(calc(var(-
     /* My role's rows: wider cards; the one the row rests on is lit in its own colour (see the script) */
     html body .ve6 [data-rail] > a { flex: 0 0 min(300px, 84%) !important; }
     /* the challenge keeps its question mark on a phone, behind the words */
-    html body .ve6 .vca-q::after { display: block; top: 6px; right: 20px; font-size: 118px; }
+    html body .ve6 .vca { grid-auto-rows: 1fr; }
+    html body .ve6 .vca-q .vca-t { margin-top: auto; }
+    html body .ve6 .vca-q::after { display: block; top: 4px; right: 22px; font-size: 150px; }
+    /* text runs the full width of its box: Safari's "pretty" wrapping evens the right edge by pulling every line in,
+       which left a wide empty band at the right of cards and paragraphs on an iPhone */
+    html body .ve6, html body .ve6 :not(h1, h1 *) { text-wrap-style: auto !important; }
+    /* My role into the Dynamic Notch: the black after My role fills only about half the screen, so the next section is
+       always in sight below it and nobody mistakes it for the end of the page */
+    html body .ve6 .vt-notch .vt-st { height: 46vh; height: 46svh; }
     html body .ve6 .vca-q .vca-l, html body .ve6 .vca-q .vca-t { position: relative; z-index: 1; }
-    /* the hero picture is wider than a phone: it is shown at full height and drifts slowly across, from the person at
-       the laptop over the sky and back, so the whole picture is seen without making it smaller */
-    html body .ve6 #top > img { inset: 0 auto 0 0 !important; width: auto !important; max-width: none; height: 100% !important; will-change: transform;
-      transform: translate3d(calc((100vw - 100%) * 0.8), 0, 0); animation: yp-hero-pan 26s cubic-bezier(0.45, 0, 0.55, 1) 2.5s infinite alternate both; }
+    /* the hero picture on a phone is framed on the person at the laptop, and stays still */
+    html body .ve6 #top > img { object-position: 80% 50%; }
     /* the AI Browser's window: laid out narrower for the phone (the prototype picks its width from this shape), so the
        whole app shows a third larger than a scaled-down desktop window would */
     html body .ve6 .vab-scr { aspect-ratio: 1.2 !important; }
@@ -21517,8 +21523,7 @@ html:not(.js) #learning .ylr-slab { opacity: 1; transform: translateZ(calc(var(-
     html body .ve6 .vfp-bar { border-radius: 16px; }
     html body .ve6 .vab-mac .ve-mac-lid { border-radius: 16px !important; }
   }
-  @media (max-width: 760px) and (prefers-reduced-motion: reduce) { .ve6 .vo-s { transform: none; opacity: 1; transition: none; } html body .ve6 #top > img { animation: none; } }
-  @keyframes yp-hero-pan { from { transform: translate3d(calc((100vw - 100%) * 0.8), 0, 0); } to { transform: translate3d(calc((100vw - 100%) * 0.06), 0, 0); } }
+  @media (max-width: 760px) and (prefers-reduced-motion: reduce) { .ve6 .vo-s { transform: none; opacity: 1; transition: none; } }
   /* the next case study takes over from the closing blue at its top and hands over to the footer's colour at its foot,
      so neither join is a hard edge (the blurred picture behind it has light patches that showed as a band) */
   /* the closing blue ends in near-black at the foot of its own screen; the next case study starts from that black and
@@ -21529,7 +21534,7 @@ html:not(.js) #learning .ylr-slab { opacity: 1; transform: translateZ(calc(var(-
   .ve6 .vnx-bg::after { background: linear-gradient(180deg, #0D0D11 0%, rgba(13,13,17,0.55) 12%, rgba(13,13,17,0.18) 30%, rgba(13,13,17,0.22) 62%, rgba(13,13,17,0.8) 86%, #0D0D11 100%); }
   /* dark meets dark at fractional pixels: overlap by one, so Safari never blends the light page behind into a line */
   html body .ve6 .vnx { margin-top: -1px; }
-  html body footer.yft { margin-top: -1px; }
+  html body footer.yft { margin-top: -1px; overflow-x: clip; }
   @media (max-width: 860px) { html body .ve6 .vwd-room + .vwd-room::before { display: none; } }
 </style>
 </body></html>
