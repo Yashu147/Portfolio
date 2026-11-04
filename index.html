@@ -6841,8 +6841,19 @@ window.__veTR = function (host) {
   const io = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2, out = t => 1 - Math.pow(1 - t, 3);
   const items = [], offs = [];
   const near = (r, H) => r.bottom > -H * 0.2 && r.top < H * 1.2;
-  const PH = () => innerWidth < 760, pass = (r, H) => cl((H * 0.92 - r.top) / (H * 0.8));   // phones: nothing pins; a break plays as it comes up the screen
-  const pinned = (el, H) => { const r = el.getBoundingClientRect(); return near(r, H) ? (PH() ? pass(r, H) : cl(-r.top / Math.max(1, r.height - H))) : -1; };
+  // phones: nothing pins, so a break waits until its screen fills the display and then plays by itself, at its own pace
+  // (time, not the finger, so it is as smooth as the phone); it plays back once that screen has gone well below again
+  const PH = () => innerWidth < 760, TW = new Map(), DUR = { notch: 1.2, shut: 1.0, break: 1.4, wall: 1.4 };
+  let moving = false;
+  const play = (el, H) => { const r = el.getBoundingClientRect(); let s = TW.get(el); if (!s) TW.set(el, s = { v: 0, want: 0, t: 0 });
+    if (r.top >= H) { s.v = s.want = 0; s.t = 0; return 0; }          // below the screen: ready to play again
+    if (r.bottom <= 0) { s.v = s.want = 1; s.t = 0; return 1; }       // above it: played
+    if (r.top <= H * 0.04 && r.bottom >= H * 0.85) s.want = 1; else if (r.top > H * 0.6) s.want = 0;
+    const now = performance.now(), dt = s.t ? Math.min(0.05, (now - s.t) / 1000) : 0, d = DUR[el.getAttribute("data-vt")] || 1.2;
+    s.v = s.v < s.want ? Math.min(s.want, s.v + dt / d) : Math.max(s.want, s.v - dt / (d * 0.75));
+    if (s.v !== s.want) { s.t = now; moving = true; } else s.t = 0;
+    return s.v; };
+  const pinned = (el, H) => { const r = el.getBoundingClientRect(); return near(r, H) ? (PH() ? play(el, H) : cl(-r.top / Math.max(1, r.height - H))) : -1; };
 
   // Problem to My role
   const role = host.querySelector("#role");
@@ -6884,7 +6895,7 @@ window.__veTR = function (host) {
         const p = pinned(el, H); if (p < 0) return;
         const o = io(seg(p, 0.06, 0.72));
         L.style.transform = "translateX(" + (-(1 - o) * 101).toFixed(2) + "%)"; R.style.transform = "translateX(" + ((1 - o) * 101).toFixed(2) + "%)";
-        C.style.opacity = (seg(p, 0.64, 0.72) * (1 - seg(p, 0.82, 0.98))).toFixed(3);
+        C.style.opacity = (seg(p, 0.64, 0.72) * (1 - seg(p, 0.82, 0.98))).toFixed(3); st.style.backgroundColor = PH() && p >= 0.97 ? "#0B0B0C" : "";
         // the closing edges light up electric blue as they meet, and the seam flares once they have
         st.style.setProperty("--gl", (seg(p, 0.28, 0.66) * (1 - seg(p, 0.8, 0.98))).toFixed(3));
       });
@@ -6897,11 +6908,11 @@ window.__veTR = function (host) {
       const show = on => { if (!body || on === shown) return; shown = on; body.classList.toggle("vt-in", on); };
       if (body) { body.classList.add("vt-hold"); offs.push(() => body.classList.remove("vt-hold", "vt-in")); }
       items.push(H => {
-        const r = el.getBoundingClientRect(), q = PH() ? pass(r, H) : cl(-r.top / Math.max(1, r.height - H));
+        const r = el.getBoundingClientRect(), q = PH() ? (TW.get(el) || { v: 0 }).v : cl(-r.top / Math.max(1, r.height - H));
         if (q >= 0.86) show(true); else if (q < 0.7 || shown === null) show(false);
         const p = pinned(el, H); if (p < 0) return;
         const c = out(seg(p, 0.04, 0.22)), o = io(seg(p, 0.3, 0.86));
-        C.style.transform = "translateX(-50%) scaleY(" + c.toFixed(3) + ")"; C.style.opacity = (1 - seg(p, 0.22, 0.3)).toFixed(3);
+        st.style.backgroundColor = PH() && p <= 0.02 ? "#0B0B0C" : ""; C.style.transform = "translateX(-50%) scaleY(" + c.toFixed(3) + ")"; C.style.opacity = (1 - seg(p, 0.22, 0.3)).toFixed(3);
         L.style.transform = "translateX(" + (-o * 101).toFixed(2) + "%)"; R.style.transform = "translateX(" + (o * 101).toFixed(2) + "%)";
         // the crack glows, and the parting edges carry the light out with them
         st.style.setProperty("--gl", (seg(p, 0.1, 0.24) * (1 - seg(p, 0.55, 0.86))).toFixed(3));
@@ -7007,7 +7018,7 @@ window.__veTR = function (host) {
   const vwd = host.querySelector(".vwd"); if (vwd && visIO) visIO.observe(vwd);
   offs.push(() => { if (visIO) visIO.disconnect(); cancelAnimationFrame(wraf); });
   let raf = 0;
-  const frame = () => { raf = 0; const H = innerHeight; for (const f of items) f(H); };
+  const frame = () => { raf = 0; moving = false; const H = innerHeight; for (const f of items) f(H); if (moving) raf = requestAnimationFrame(frame); };
   const queue = () => { if (!raf) raf = requestAnimationFrame(frame); };
   addEventListener("scroll", queue, { passive: true }); addEventListener("resize", queue);
   frame();
@@ -7452,8 +7463,8 @@ window.__veTR = function (host) {
         if (ph && r.top > vh) { vxT.v = 0; vxT.t = 0; }   // below the screen again: it plays again next time
         if (r.bottom < -50 || r.top > vh + 50) return;
         let pa;
-        if (ph) { const now = performance.now(), want = r.top < vh * 0.3 ? 0.567 : vxT.v, dt = vxT.t ? Math.min(0.05, (now - vxT.t) / 1000) : 0;
-          vxT.t = now; vxT.v = Math.min(want, vxT.v + dt * 0.567 / 2.6); pa = vxT.v;
+        if (ph) { const now = performance.now(), want = r.top <= vh * 0.04 ? 0.567 : vxT.v, dt = vxT.t ? Math.min(0.05, (now - vxT.t) / 1000) : 0;
+          vxT.t = now; vxT.v = Math.min(want, vxT.v + dt * 0.567 / 3.6); pa = vxT.v;
           if (vxT.v < want) { if (!raf) raf = requestAnimationFrame(frame); } else vxT.t = 0; }
         else pa = cl(-r.top / Math.max(1, r.height - vh));
         const p = cl(pa / 0.567);
@@ -7501,15 +7512,13 @@ window.__veTR = function (host) {
 
         const r = voRun.getBoundingClientRect(), vh = innerHeight;
         if (innerWidth < 760) {
-          // phones: as each step comes up the screen it slides in from the right and settles; scrolling back slides it
-          // out again. "We are here" appears once the step it marks has landed.
-          let nowIn = false;
-          bricks.forEach((b, o) => { if (!b.classList.contains("vo-s")) return;
-            const t = b.getBoundingClientRect().top, e = cl((vh * 0.97 - t) / (vh * 0.3)), k = 1 - Math.pow(1 - e, 3), h = how[o];
-            const tf = k >= 1 ? "none" : "translate3d(" + ((1 - k) * 110).toFixed(1) + "%,0,0) rotate(" + ((1 - k) * 6).toFixed(2) + "deg)", op = cl(e * 1.8).toFixed(3), key = tf + op;
-            if (key !== h.last) { b.style.transform = tf; b.style.opacity = op; h.last = key; }
-            if (b.classList.contains("vo-now")) nowIn = k >= 1; });
-          voRun.classList.toggle("vo-landed", nowIn);
+          // phones: once Step 1 is on screen the staircase is built from the ground up, each step sliding in from the
+          // right after the one below it (the motion is CSS, so it runs as smoothly as the phone can); it goes again once
+          // the staircase has gone back below the screen. "We are here" lands after the step it marks.
+          if (!voRun._clr) { voRun._clr = 1; bricks.forEach(b => { b.style.transform = ""; b.style.opacity = ""; }); }
+          const st = voRun.querySelector(".vo-stairs").getBoundingClientRect();
+          if (st.bottom <= vh * 0.96 && st.bottom > 0) voRun.classList.add("vo-in", "vo-landed");
+          else if (st.top >= vh) voRun.classList.remove("vo-in", "vo-landed");
           return;
         }
         if (r.bottom < -50 || r.top > vh + 50) return;
@@ -21307,12 +21316,30 @@ html:not(.js) #learning .ylr-slab { opacity: 1; transform: translateZ(calc(var(-
     html body .ve6 .vo-stage { position: relative !important; top: auto !important; height: auto !important; padding-top: 56px; padding-bottom: 8px; }
     /* the staircase climbs: Step 1, the widest, at the bottom; Launch, the narrowest, on top */
     .ve6 .vo-stairs { grid-template-rows: repeat(5, auto); }
-    .ve6 .vo-s { grid-row: var(--r); min-height: 92px; padding: 14px 16px 15px; margin-left: calc(var(--i) * 8%); transform-origin: 100% 100%; }
+    .ve6 .vo-s { grid-row: var(--r); min-height: 92px; padding: 14px 16px 15px; margin-left: calc(var(--i) * 8%); transform-origin: 100% 100%;
+      transform: translate3d(112%, 0, 0) rotate(5deg); opacity: 0;
+      transition: transform 950ms cubic-bezier(0.2, 0.9, 0.25, 1), opacity 650ms ease; transition-delay: calc(var(--i) * 170ms); }
+    .ve6 .vo-pin.vo-in .vo-s { transform: none; opacity: 1; }
+    .ve6 .vo-pin .vo-here { transition-delay: 0ms; }
+    .ve6 .vo-pin.vo-landed .vo-here { transition-delay: 1100ms; }
+    /* the hero's line under the title starts where the title starts */
+    html body [data-hero] [data-hero-content] > div[data-hero-reveal] { justify-content: flex-start !important; }
+    html body [data-hero] [data-hero-content] > div[data-hero-reveal] > p { width: 100% !important; }
+    /* no hairlines: the doors carry no edge light on a phone, and each chapter break overlaps its neighbours by a pixel so
+       the page behind never shows between two dark edges */
+    html body .ve6 .vt-st .vt-l, html body .ve6 .vt-st .vt-r { box-shadow: none !important; }
+    html body .ve6 .vt { margin-top: -1px; }
+    html body .ve6 .vt-shut { margin-bottom: -1px; }
     .ve6 .vo-key { margin-top: 22px; }
     /* the AI Browser: the feature card and the live window share one width and one corner */
     html body .ve6 .vab-mac.ve-mac { margin: 0; }
     html body .ve6 .vfp-bar { border-radius: 16px; }
     html body .ve6 .vab-mac .ve-mac-lid { border-radius: 16px !important; }
   }
+  @media (max-width: 760px) and (prefers-reduced-motion: reduce) { .ve6 .vo-s { transform: none; opacity: 1; transition: none; } }
+  /* the next case study takes over from the closing blue at its top and hands over to the footer's colour at its foot,
+     so neither join is a hard edge (the blurred picture behind it has light patches that showed as a band) */
+  .ve6 .vnx-bg::after { background: linear-gradient(180deg, #1170CF 0%, rgba(17,112,207,0.6) 9%, rgba(13,13,17,0.48) 30%, rgba(13,13,17,0.52) 62%, rgba(13,13,17,0.84) 84%, #0D0D11 100%); }
+  @media (max-width: 860px) { html body .ve6 .vwd-room + .vwd-room::before { display: none; } }
 </style>
 </body></html>
