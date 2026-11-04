@@ -21071,21 +21071,23 @@ html:not(.js) #learning .ylr-slab { opacity: 1; transform: translateZ(calc(var(-
 <script id="yp-edge-js">
 (function () {
   if (!window.matchMedia || !matchMedia('(hover: none)').matches) return;
-  var d = document, html = d.documentElement, T = null, B = null, cands = [], timer = 0, cur = { t: '', b: '' };
+  var d = document, html = d.documentElement, T = null, B = null, cands = [], quiet = [], timer = 0, cur = { t: '', b: '' };
   var cvs = d.createElement('canvas'); cvs.width = 4; cvs.height = 1;
   var cx = cvs.getContext('2d', { willReadFrequently: true });
 
   function strip(c) { var e = d.createElement('div'); e.className = 'yp-edge ' + c; e.setAttribute('aria-hidden', 'true'); d.body.appendChild(e); return e; }
 
-  // every fixed or sticky box on the page, gathered in small slices so a scroll is never held up; positions are read
-  // fresh on each update
+  // every fixed or sticky box on the page, and the top of every part that lets taps through (a scrim, a glow, a whole
+  // stage), gathered in small slices so a scroll is never held up; positions are read fresh on each update
   var job = 0;
   function scan() {
-    var all = d.body.getElementsByTagName('*'), out = [], i = 0, me = ++job;
+    var all = d.body.getElementsByTagName('*'), out = [], qt = [], i = 0, me = ++job;
     (function slice() {
       if (me !== job) return; var end = Math.min(all.length, i + 250);
-      for (; i < end; i++) { var e = all[i]; if (e === T || e === B) continue; var p = getComputedStyle(e).position; if (p === 'fixed' || p === 'sticky') out.push(e); }
-      if (i < all.length) setTimeout(slice, 0); else { cands = out; update(); }
+      for (; i < end; i++) { var e = all[i]; if (e === T || e === B) continue; var cs = getComputedStyle(e), p = cs.position;
+        if (p === 'fixed' || p === 'sticky') out.push(e);
+        if (cs.pointerEvents === 'none' && e.parentElement && getComputedStyle(e.parentElement).pointerEvents !== 'none') qt.push(e); }
+      if (i < all.length) setTimeout(slice, 0); else { cands = out; quiet = qt; update(); }
     })();
   }
 
@@ -21110,12 +21112,12 @@ html:not(.js) #learning .ylr-slab { opacity: 1; transform: translateZ(calc(var(-
   }
 
   // the picture under one stretch of the edge (images, video and 2D canvases, after object-fit; cross-origin ones are skipped)
-  // a still image is read through a copy 48px wide, made once; video and canvases are read as they are
+  // a still image is read through a copy 256px wide, made once; video and canvases are read as they are
   var thumbs = new WeakMap();
   function source(e, nw, nh) {
     if (e.tagName !== 'IMG') return { el: e, k: 1 };
     var t = thumbs.get(e); if (t && t.src === e.currentSrc) return t;
-    var w = Math.min(48, nw), h = Math.max(1, Math.round(nh * w / nw)), c = d.createElement('canvas'); c.width = w; c.height = h;
+    var w = Math.min(256, nw), h = Math.max(1, Math.round(nh * w / nw)), c = d.createElement('canvas'); c.width = w; c.height = h;
     c.getContext('2d').drawImage(e, 0, 0, w, h); t = { el: c, k: w / nw, src: e.currentSrc }; thumbs.set(e, t); return t;
   }
   function picture(e, x0, x1, y) {
@@ -21201,9 +21203,12 @@ html:not(.js) #learning .ylr-slab { opacity: 1; transform: translateZ(calc(var(-
     // colour; there the strip carries the colour of the first or last screen instead
     var vh = innerHeight, se = d.scrollingElement || html, y0 = window.scrollY || se.scrollTop, t = pinned(4), b = pinned(vh - 4), ct = '', cb = '';
     var nt = !!t || y0 < 80, nb = !!b || y0 + vh > se.scrollHeight - 80;
-    // some stages let taps through, which also hides them from the measuring; for that moment they take taps again
-    // (only those: restyling a stage costs time)
-    var pr = [t, b].filter(function (e, n, a) { return e && a.indexOf(e) === n && getComputedStyle(e).pointerEvents === 'none'; });
+    // parts that let taps through are hidden from the measuring; for that moment they take taps again. Only those parts
+    // are switched (restyling a whole stage costs time), or the stage itself when it lets taps through as a whole.
+    var pr = [];
+    [t, b].forEach(function (s, n) { if (!s || (n && s === t)) return;
+      if (getComputedStyle(s).pointerEvents === 'none') pr.push(s);
+      else quiet.forEach(function (q) { if (s.contains(q)) pr.push(q); }); });
     if (nt || nb) { pr.forEach(function (e) { e.classList.add('yp-probe'); });
       try { if (nt) ct = colorAt(4); if (nb) cb = colorAt(vh - 4); } finally { pr.forEach(function (e) { e.classList.remove('yp-probe'); }); } }
     put(T, 't', ct); put(B, 'b', cb);
