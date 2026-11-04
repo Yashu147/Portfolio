@@ -7455,7 +7455,7 @@ window.__veTR = function (host) {
           stick.style.clipPath = q > 0 ? "inset(" + (q * sh * 0.5).toFixed(1) + "px " + (q * sw * 0.5).toFixed(1) + "px round " + (12 + q * 28).toFixed(1) + "px)" : "";
           stick.style.transform = q > 0 ? "scale(" + (1 - 0.1 * q).toFixed(4) + ")" : ""; }
         // the photo covers the stage
-        const BT = window.__ypBleedT || 0, BB = window.__ypBleedB || 0, W = Math.max(sw, (sh + BT + BB) * 1.5), H = W / 1.5, ox = ph ? Math.max(sw - W, Math.min(0, sw / 2 - 0.37 * W)) : (sw - W) / 2, oy = (sh + BB - H) * AY;
+        const W = Math.max(sw, sh * 1.5), H = W / 1.5, ox = ph ? Math.max(sw - W, Math.min(0, sw / 2 - 0.37 * W)) : (sw - W) / 2, oy = (sh - H) * AY;
         const bk = W + "," + ox + "," + oy;
         if (bk !== box) { box = bk; img.style.width = W + "px"; img.style.left = ox + "px"; img.style.top = oy + "px"; img.style.transformOrigin = (SX * W) + "px " + (SY * H) + "px"; fit(); }
         // zoom about the screen's centre so the screen covers the stage, and carry it to the stage's centre
@@ -7495,10 +7495,14 @@ window.__veTR = function (host) {
         const r = voRun.getBoundingClientRect(), vh = innerHeight;
         if (r.bottom < -50 || r.top > vh + 50) return;
         if (innerWidth < 760) {
-          bricks.forEach((b, o) => { const t = b.getBoundingClientRect().top - (how[o].dy || 0), e = cl((vh * 0.98 - t) / (vh * 0.32)), k = 1 - Math.pow(1 - e, 3), h = how[o];
-            h.dy = -(1 - k) * 120; const tf = k >= 1 ? "none" : "translate3d(0," + h.dy.toFixed(1) + "px,0) rotate(" + ((1 - k) * h.t * 1.6).toFixed(2) + "deg)", op = cl(e * 2.5).toFixed(3), key = tf + op;
+          // the stage pins and the staircase is built from the ground up: each step slides in from the right and settles,
+          // Step 1 first, Launch last; scrolling back slides them out again
+          const steps = bricks.filter(b => b.classList.contains("vo-s")), M = steps.length, L2 = 1.6;
+          const q = cl(-r.top / Math.max(1, r.height - vh)), T2 = seg(q, 0.05, 0.8) * (M - 1 + L2);
+          steps.forEach((b, i) => { const e = cl((T2 - i) / L2), k = 1 - Math.pow(1 - e, 3), h = how[bricks.indexOf(b)];
+            const tf = k >= 1 ? "none" : "translate3d(" + ((1 - k) * innerWidth * 0.9).toFixed(1) + "px,0,0) rotate(" + ((1 - k) * 5).toFixed(2) + "deg)", op = cl(e * 2).toFixed(3), key = tf + op;
             if (key !== h.last) { b.style.transform = tf; b.style.opacity = op; h.last = key; } });
-          voRun.classList.toggle("vo-landed", how.every(h => h.last.indexOf("none") === 0)); return;
+          voRun.classList.toggle("vo-landed", q >= 0.84); return;
         }
         // the staircase keeps its proportions and scales down as a whole on a short screen, so every step's words fit
         if (fitH !== vh) { fitH = vh; const sh = stairs.offsetHeight, room = vh - 72 - 24 - 90; stairs.style.transform = sh > room ? "scale(" + (room / sh).toFixed(4) + ")" : "";
@@ -21059,10 +21063,12 @@ html:not(.js) #learning .ylr-slab { opacity: 1; transform: translateZ(calc(var(-
 <style id="yp-edge">
 /* iOS 26 Safari paints the status bar and the toolbar with a colour of its own whenever a full-width fixed or sticky box
    sits at the middle of that edge (4px in), and shows the page itself under them when the first box there is narrow.
-   The case pages are full of such boxes: pinned stages, fixed bars. So on touch screens:
+   It also never draws a pinned (sticky) box under the bars: there it shows what lies behind the box in the page.
+   So on touch screens:
    - a small mark sits at each of those two points, so Safari never paints a bar and the portfolio runs under both;
-   - a pinned stage's backdrop reaches 64px past its top and bottom, and is shown there only while the stage is pinned to
-     that edge, so the scene itself continues under the bars (and never covers the sections before and after it);
+   - while a full-screen stage is pinned to an edge, a band in its scroll container lies just past that edge, under the
+     bar, painted with what the stage shows along that edge (sampled at seven points, so a beam, a photo or a glow carries
+     on), so the scene continues under the bar; the stage covers the band everywhere else;
    - at the very top and end of a page, where there is no page beyond the bar, a faint strip gives Safari the colour of
      the first or last screen instead of the plain page colour. */
 .yp-edge{position:fixed;left:0;right:0;height:12px;z-index:2147483647;opacity:.11;display:none;pointer-events:auto;contain:strict}
@@ -21072,28 +21078,13 @@ html:not(.js) #learning .ylr-slab { opacity: 1; transform: translateZ(calc(var(-
 .yp-pin::after{content:"";position:absolute;inset:0}
 .yp-pin-t{top:0}
 .yp-pin-b{bottom:0}
+.yp-rb{position:absolute;left:0;right:0;top:0;height:160px;display:none;pointer-events:none;will-change:transform}
 .yp-probe,.yp-probe *{pointer-events:auto!important}
-@media (hover: none) {
-  :root { --yp-bt: 64px; --yp-bb: 64px; }
-  /* the stages clip with clip-path instead of overflow, so the clip can open past their edges while pinned */
-  .ve6 .vox-stick, .ve6 .vt-st, .ve6 .vx-stick { overflow: visible; -webkit-clip-path: inset(0); clip-path: inset(0); }
-  .ve6 .vox-stick.yp-bt, .ve6 .vt-st.yp-bt, .ve6 .vx-stick.yp-bt { -webkit-clip-path: inset(calc(-1 * var(--yp-bt)) 0 0 0); clip-path: inset(calc(-1 * var(--yp-bt)) 0 0 0); }
-  .ve6 .vox-stick.yp-bb, .ve6 .vt-st.yp-bb, .ve6 .vx-stick.yp-bb { -webkit-clip-path: inset(0 0 calc(-1 * var(--yp-bb)) 0); clip-path: inset(0 0 calc(-1 * var(--yp-bb)) 0); }
-  .ve6 .vox-stick.yp-bt.yp-bb, .ve6 .vt-st.yp-bt.yp-bb, .ve6 .vx-stick.yp-bt.yp-bb { -webkit-clip-path: inset(calc(-1 * var(--yp-bt)) 0 calc(-1 * var(--yp-bb)) 0); clip-path: inset(calc(-1 * var(--yp-bt)) 0 calc(-1 * var(--yp-bb)) 0); }
-  /* the backdrops that reach past the edges: the Problem wall, the doors and the beam, the dark screen that folds
-     into the notch (upwards only: its fold is measured from its bottom), the closing blue */
-  .ve6 .vox-stick .vox-wall, .ve6 .vt-st .vt-l, .ve6 .vt-st .vt-r, .ve6 .vt-st .vt-c { top: calc(-1 * var(--yp-bt)); bottom: calc(-1 * var(--yp-bb)); }
-  .ve6 .vt-st .vt-n { top: calc(-1 * var(--yp-bt)); }
-  .ve6 .vo-arch-st.yp-bt, .ve6 .vo-arch-st.yp-bb { overflow: visible; }
-  .ve6 .vo-arch-st .vo-close { margin-top: calc(-1 * var(--yp-bt)); height: calc(100% + var(--yp-bt) + var(--yp-bb)); padding-top: var(--yp-bt) !important; padding-bottom: var(--yp-bb) !important; }
-}
 </style>
 <script id="yp-edge-js">
 (function () {
   if (!window.matchMedia || !matchMedia('(hover: none)').matches) return;
   var d = document, html = d.documentElement, T = null, B = null, PT = null, PB = null, cands = [], quiet = [], stages = [], ps = new WeakMap(), timer = 0, raf = 0, cur = { t: '', b: '', pt: '', pb: '' };
-  // read by the photo stage, which sizes its picture to cover the stage and these margins
-  window.__ypBleedT = 64; window.__ypBleedB = 64;
   var cvs = d.createElement('canvas'); cvs.width = 4; cvs.height = 1;
   var cx = cvs.getContext('2d', { willReadFrequently: true });
 
@@ -21109,7 +21100,7 @@ html:not(.js) #learning .ylr-slab { opacity: 1; transform: translateZ(calc(var(-
       for (; i < end; i++) { var e = all[i]; if (e === T || e === B || e === PT || e === PB) continue; var cs = getComputedStyle(e), p = cs.position;
         if (p === 'fixed' || p === 'sticky') out.push(e);
         if (cs.pointerEvents === 'none' && e.parentElement && getComputedStyle(e.parentElement).pointerEvents !== 'none') qt.push(e); }
-      if (i < all.length) setTimeout(slice, 0); else { cands = out; quiet = qt.filter(paints); ps = new WeakMap(); stages = Array.prototype.slice.call(d.querySelectorAll('.ve6 .vox-stick, .ve6 .vt-st, .ve6 .vx-stick, .ve6 .vo-arch-st')); update(); bleed(); }
+      if (i < all.length) setTimeout(slice, 0); else { cands = out; quiet = qt.filter(paints); ps = new WeakMap(); findStages(); update(); bands(); }
     })();
   }
 
@@ -21221,7 +21212,7 @@ html:not(.js) #learning .ylr-slab { opacity: 1; transform: translateZ(calc(var(-
 
   // what is painted at one point: the boxes there, front to back, each with its fill and its opacity
   function paintAt(x, y, seg, op) {
-    var hits = d.elementsFromPoint(x, y).filter(function (e) { return e !== T && e !== B && e !== PT && e !== PB; }), acc = [0, 0, 0], left = 1;
+    var hits = d.elementsFromPoint(x, y).filter(function (e) { return e !== T && e !== B && e !== PT && e !== PB && !e.classList.contains('yp-rb'); }), acc = [0, 0, 0], left = 1;
     function alpha(e) { if (op.has(e)) return op.get(e); var a = +getComputedStyle(e).opacity || 0, p = e.parentElement; if (p && a > 0) a *= alpha(p); op.set(e, a); return a; }
     var layers = hits.map(function (e) { return { e: e }; });
     hits.forEach(function (e) {
@@ -21282,17 +21273,52 @@ html:not(.js) #learning .ylr-slab { opacity: 1; transform: translateZ(calc(var(-
     put(T, 't', ct); put(B, 'b', cb); show(PT, 'pt', !ct); show(PB, 'pb', !cb);
   }
 
-  // a stage pinned to an edge opens its clip past that edge, so its backdrop runs on under the bar; it closes again as soon
-  // as the stage moves off that edge, so the backdrop never lies over the sections before and after it
-  function bleed() {
-    raf = 0; var vh = innerHeight;
-    for (var i = 0; i < stages.length; i++) {
-      var s = stages[i], r = s.getBoundingClientRect(); if (r.height < 1) continue;
-      s.classList.toggle('yp-bt', r.top <= 0.5 && r.bottom > 0);
-      s.classList.toggle('yp-bb', r.bottom >= vh - 0.5 && r.top < vh);
-    }
+  // full-screen stages that pin at the top and are alone in their scroll container (a container shared with other
+  // sections would show the bands over them)
+  function findStages() {
+    var vh = innerHeight, vw = innerWidth, keep = [];
+    cands.forEach(function (e) {
+      var cs = getComputedStyle(e), run = e.parentElement; if (cs.position !== 'sticky' || !run || Math.abs(parseFloat(cs.top) || 0) > 2) return;
+      if (e.offsetHeight < vh * 0.88 || e.offsetWidth < vw * 0.9) return;
+      var others = Array.prototype.some.call(run.children, function (k) { return k !== e && !k.classList.contains('yp-rb') && k.offsetHeight > 2 && getComputedStyle(k).display !== 'none'; }); if (others) return;
+      if (getComputedStyle(run).position === 'static') run.style.position = 'relative';
+      var st = stages.filter(function (o) { return o.s === e; })[0];
+      if (!st) { st = { s: e, run: run, t: band(run), b: band(run), ct: '', cb: '' }; }
+      keep.push(st);
+    });
+    stages.forEach(function (o) { if (keep.indexOf(o) < 0) { o.t.remove(); o.b.remove(); } });
+    stages = keep;
   }
-  function frame() { if (!raf) raf = requestAnimationFrame(bleed); }
+  function band(run) { var e = d.createElement('i'); e.className = 'yp-rb'; e.setAttribute('aria-hidden', 'true'); run.insertBefore(e, run.firstChild); return e; }
+
+  // the colours along one edge of the screen, left to right, as a gradient
+  function edgeGradient(y) {
+    var w = innerWidth, op = new Map(), N = 7, stops = [];
+    for (var n = 0; n < N; n++) { var v = paintAt(w * (n + 0.5) / N, y, w / N, op); stops.push('rgb(' + Math.round(v[0]) + ',' + Math.round(v[1]) + ',' + Math.round(v[2]) + ') ' + ((n + 0.5) / N * 100).toFixed(1) + '%'); }
+    return 'linear-gradient(90deg,' + stops.join(',') + ')';
+  }
+
+  // where the bands sit (every frame) and what they show (a few times a second, and when a scroll ends)
+  function bands(paint) {
+    raf = 0; var vh = innerHeight;
+    stages.forEach(function (o) {
+      var r = o.s.getBoundingClientRect(), top = r.top <= 0.5 && r.bottom > 0, bot = r.bottom >= vh - 0.5 && r.top < vh, rr = o.run.getBoundingClientRect();
+      if (paint && (top || bot)) {
+        var pr = getComputedStyle(o.s).pointerEvents === 'none' ? [o.s] : quiet.filter(function (q) { return o.s.contains(q); });
+        pr.forEach(function (e) { e.classList.add('yp-probe'); });
+        try { if (top) o.ct = edgeGradient(1.5); if (bot) o.cb = edgeGradient(vh - 1.5); } finally { pr.forEach(function (e) { e.classList.remove('yp-probe'); }); }
+      }
+      place(o.t, top && o.ct, o.ct, -rr.top - 158);
+      place(o.b, bot && o.cb, o.cb, -rr.top + vh - 2);
+    });
+  }
+  function place(e, on, bg, y) {
+    if (!on) { if (e.style.display !== 'none') e.style.display = 'none'; return; }
+    if (e.style.background !== bg) e.style.background = bg;
+    e.style.transform = 'translate3d(0,' + y.toFixed(1) + 'px,0)'; if (e.style.display !== 'block') e.style.display = 'block';
+  }
+  function frame() { if (!raf) raf = requestAnimationFrame(function () { bands(false); }); }
+  var ptimer = 0; function repaint() { if (!ptimer) ptimer = setTimeout(function () { ptimer = 0; bands(true); }, 120); }
 
   // while scrolling, a few times a second is enough for the bars; a stop always measures once more
   function soon() { if (!timer) timer = setTimeout(update, 180); }
@@ -21301,16 +21327,27 @@ html:not(.js) #learning .ylr-slab { opacity: 1; transform: translateZ(calc(var(-
   function start() {
     T = strip('yp-edge yp-edge-t'); B = strip('yp-edge yp-edge-b'); PT = strip('yp-pin yp-pin-t'); PB = strip('yp-pin yp-pin-b'); settle();
     // the page builds itself for a few seconds after load: keep the edges current meanwhile
-    var n = 0, iv = setInterval(function () { update(); bleed(); if (++n === 4 || n === 12) scan(); if (n > 16) clearInterval(iv); }, 500);
+    var n = 0, iv = setInterval(function () { update(); bands(true); if (++n === 4 || n === 12) scan(); if (n > 16) clearInterval(iv); }, 500);
     addEventListener('scroll', soon, { passive: true });
     addEventListener('scroll', frame, { passive: true });
+    addEventListener('scroll', repaint, { passive: true });
+    addEventListener('scrollend', function () { bands(true); }, { passive: true });
     addEventListener('scrollend', update, { passive: true });
     addEventListener('touchend', soon, { passive: true });
-    addEventListener('resize', function () { setTimeout(settle, 150); frame(); });
+    addEventListener('resize', function () { setTimeout(settle, 150); repaint(); });
     addEventListener('hashchange', function () { setTimeout(settle, 400); setTimeout(settle, 1600); });
     addEventListener('load', function () { setTimeout(settle, 800); });
   }
   if (d.body) start(); else d.addEventListener('DOMContentLoaded', start);
 })();
 </script>
+<style id="yp-steps">
+  @media (max-width: 760px) {
+    .ve6 .vo-pin { height: 230vh; height: 230lvh; }
+    .ve6 .vo-stage { position: sticky; top: 0; height: 100vh; height: 100svh; padding-top: 84px; padding-bottom: 24px; justify-content: center; }
+    .ve6 .vo-stairs { grid-template-rows: repeat(5, auto); }
+    .ve6 .vo-s { grid-row: var(--r); min-height: 92px; padding: 14px 16px 15px; margin-left: calc(var(--i) * 8%); transform-origin: 100% 100%; }
+    .ve6 .vo-key { margin-top: 22px; }
+  }
+</style>
 </body></html>
