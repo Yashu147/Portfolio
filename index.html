@@ -6841,13 +6841,11 @@ window.__veTR = function (host) {
   const io = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2, out = t => 1 - Math.pow(1 - t, 3);
   const items = [], offs = [];
   const near = (r, H) => r.bottom > -H * 0.2 && r.top < H * 1.2;
-  // phones: nothing pins, so a break is drawn from where its own screen is as it passes through the display; the scene
-  // and the finger move together, both ways. The doors meet as their screen fills the display and the seam flares as it
-  // moves on; the closed doors crack once theirs fills it and part over the next third of a screen.
   const PH = () => innerWidth < 760;
-  const pass = (el, H) => { const t = el.getBoundingClientRect().top, k = el.getAttribute("data-vt");
-    return k === "shut" ? cl((H - t) / (H * 1.39)) : k === "break" ? cl((H * 0.165 - t) / (H * 0.48)) : cl(-t / H); };
-  const pinned = (el, H) => { const r = el.getBoundingClientRect(); return near(r, H) ? (PH() ? pass(el, H) : cl(-r.top / Math.max(1, r.height - H))) : -1; };
+  // a phone's seam of light: centred on the screen, growing or shrinking evenly both ways (at k = 1 a little taller than the screen)
+  const seam = (C, el, st, H, k) => { const S = st.offsetHeight || 1, vc = H / 2 - el.getBoundingClientRect().top, L = Math.min(S, H * 1.5);
+    C.style.transformOrigin = "50% 50%"; C.style.transform = "translateX(-50%) translateY(" + (vc - S / 2).toFixed(1) + "px) scaleY(" + (k * L / S).toFixed(4) + ")"; };
+  const pinned = (el, H) => { const r = el.getBoundingClientRect(); return near(r, H) ? cl(-r.top / Math.max(1, r.height - H)) : -1; };
 
   // Problem to My role
   const role = host.querySelector("#role");
@@ -6897,7 +6895,7 @@ window.__veTR = function (host) {
         const p = pinned(el, H); if (p < 0) return;
         const o = io(seg(p, 0.06, 0.72));
         L.style.transform = "translateX(" + (-(1 - o) * 101).toFixed(2) + "%)"; R.style.transform = "translateX(" + ((1 - o) * 101).toFixed(2) + "%)";
-        C.style.opacity = (seg(p, 0.64, 0.72) * (1 - seg(p, 0.82, 0.98))).toFixed(3); st.style.backgroundColor = PH() && p >= 0.97 ? "#0B0B0C" : "";
+        C.style.opacity = (seg(p, 0.64, 0.72) * (1 - seg(p, 0.82, 0.98))).toFixed(3); st.style.backgroundColor = PH() && p >= 0.97 ? "#0B0B0C" : ""; if (PH()) { seam(C, el, st, H, 1 - io(seg(p, 0.76, 0.95))); C.style.opacity = (seg(p, 0.64, 0.72) * (1 - seg(p, 0.92, 0.97))).toFixed(3); }
         // the closing edges light up electric blue as they meet, and the seam flares once they have
         st.style.setProperty("--gl", (seg(p, 0.28, 0.66) * (1 - seg(p, 0.8, 0.98))).toFixed(3));
       });
@@ -6910,11 +6908,11 @@ window.__veTR = function (host) {
       const show = on => { if (!body || on === shown) return; shown = on; body.classList.toggle("vt-in", on); };
       if (body) { body.classList.add("vt-hold"); offs.push(() => body.classList.remove("vt-hold", "vt-in")); }
       items.push(H => {
-        const r = el.getBoundingClientRect(), q = PH() ? pass(el, H) : cl(-r.top / Math.max(1, r.height - H));
-        if (PH()) { if (q >= 0.3) show(true); else if (q < 0.12 || shown === null) show(false); } else if (q >= 0.86) show(true); else if (q < 0.7 || shown === null) show(false);
+        const r = el.getBoundingClientRect(), q = cl(-r.top / Math.max(1, r.height - H));
+        if (PH()) show(true); else if (q >= 0.86) show(true); else if (q < 0.7 || shown === null) show(false);
         const p = pinned(el, H); if (p < 0) return;
         const c = out(seg(p, 0.04, 0.22)), o = io(seg(p, 0.3, 0.86));
-        st.style.backgroundColor = PH() && p <= 0.02 ? "#0B0B0C" : ""; C.style.transform = "translateX(-50%) scaleY(" + c.toFixed(3) + ")"; C.style.opacity = (1 - seg(p, 0.22, 0.3)).toFixed(3);
+        st.style.backgroundColor = PH() && p <= 0.02 ? "#0B0B0C" : ""; if (PH()) seam(C, el, st, H, c); else C.style.transform = "translateX(-50%) scaleY(" + c.toFixed(3) + ")"; C.style.opacity = (1 - seg(p, 0.22, 0.3)).toFixed(3);
         L.style.transform = "translateX(" + (-o * 101).toFixed(2) + "%)"; R.style.transform = "translateX(" + (o * 101).toFixed(2) + "%)";
         // the crack glows, and the parting edges carry the light out with them
         st.style.setProperty("--gl", (seg(p, 0.1, 0.24) * (1 - seg(p, 0.55, 0.86))).toFixed(3));
@@ -21472,12 +21470,14 @@ html:not(.js) #learning .ylr-slab { opacity: 1; transform: translateZ(calc(var(-
   @media (max-width: 760px) {
     html body .ve6 .vox, html body .ve6 .vt, html body .ve6 .vx, html body .ve6 .vo-pin { height: auto !important; }
     html body .ve6 .vox-stick, html body .ve6 .vt-st, html body .ve6 .vx-stick, html body .ve6 .vo-arch-st { position: relative !important; top: auto !important; height: 100vh; height: 100svh; }
-    html body .ve6 .vt-break { margin-bottom: -100vh; margin-bottom: -100svh; }
+    /* the two door scenes are tall on a phone and their doors run the whole height, so while the screen is inside a scene
+       the doors look still and only slide sideways with the scroll (no pinning). Each starts and ends on a full screen:
+       white, the doors close, black; black, the doors open, white. Nothing else shares their screen. */
+    html body .ve6 .vt-shut .vt-st, html body .ve6 .vt-break .vt-st { height: 230vh; height: 230svh; }
+    html body .ve6 .vt-break { margin-bottom: 0; }
     /* My role into the Dynamic Notch: the black screen and the section after it follow each other, so as the black folds
        up into a notch the section comes up from below it, never under it */
     html body .ve6 .vt-notch { margin-bottom: 0; }
-    /* the AI Browser starts lower behind the closed doors, so its title is what the opening doors show */
-    html body .ve6 #v2 { padding-top: calc(40svh - 28px) !important; }
     /* My role's rows: wider cards; the one the row rests on is lit in its own colour (see the script) */
     html body .ve6 [data-rail] > a { flex: 0 0 min(300px, 84%) !important; }
     /* the challenge keeps its question mark on a phone, behind the words */
