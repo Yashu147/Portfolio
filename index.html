@@ -7466,19 +7466,13 @@ window.__veTR = function (host) {
       // taller than the stage (a little above centre, so the room over the laptop stays in view)
       const SX = 0.674, SY = 0.432, SW = 0.41, SH = 0.366, AY = 1, cl = x => Math.min(1, Math.max(0, x)), seg = (p, a, b) => cl((p - a) / (b - a));
       const io = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2, out = t => 1 - Math.pow(1 - t, 3);
-      let raf = 0, last = "", box = "", vxT = { v: 0, t: 0 };
+      let raf = 0, last = "", box = "";
       const frame = () => {
         raf = 0;
         const ph = innerWidth < 760;
         const r = vxRun.getBoundingClientRect(), vh = innerHeight;
-        if (ph && r.top > vh) { vxT.v = 0; vxT.t = 0; }   // below the screen again: it plays again next time
         if (r.bottom < -50 || r.top > vh + 50) return;
-        let pa;
-        if (ph) { const now = performance.now(), want = r.top <= vh * 0.04 ? 0.567 : vxT.v, dt = vxT.t ? Math.min(0.05, (now - vxT.t) / 1000) : 0;
-          vxT.t = now; vxT.v = Math.min(want, vxT.v + dt * 0.567 / 3.6); pa = vxT.v;
-          if (vxT.v < want) { if (!raf) raf = requestAnimationFrame(frame); } else vxT.t = 0; }
-        else pa = cl(-r.top / Math.max(1, r.height - vh));
-        const p = cl(pa / 0.567);
+        const pr = cl(-r.top / Math.max(1, r.height - vh)), pa = ph ? 0.567 * cl((pr - 0.1) / 0.9) : pr, p = cl(pa / 0.567);
         const sw = stick.clientWidth, sh = stick.clientHeight;
         { const q = io(seg(pa, 0.581, 1));
           stick.style.clipPath = q > 0 ? "inset(" + (q * sh * 0.5).toFixed(1) + "px " + (q * sw * 0.5).toFixed(1) + "px round " + (12 + q * 28).toFixed(1) + "px)" : "";
@@ -21452,29 +21446,25 @@ html:not(.js) #learning .ylr-slab { opacity: 1; transform: translateZ(calc(var(-
   .ve6 .vox-code .vox-pr { bottom: 1.75em; background: #1F883D; }
   .ve6 .vox-stick.b4 .vox-code .vox-cl:nth-child(4), .ve6 .vox-stick.b4 .vox-code .vox-cl:nth-child(5) { background: rgba(17,112,207,0.3); box-shadow: inset 0.2em 0 0 #4AA3FF; }
 
-  /* the AI's moment: the Mac's notch opens into a small live activity (the Dynamic Notch, before it has its name),
-     with a light made of the five apps' colours turning in it, instead of a floating message */
-  .ve6 .vox-toast { top: 0; gap: 0.6em; padding: 0.55em 1.15em 0.7em 0.7em; border-radius: 0 0 1.2em 1.2em; font-size: 1.15cqw; color: #FFFFFF; background: #050505;
-    box-shadow: 0 0.6em 1.5em -0.6em rgba(0,0,0,0.5); opacity: 0; transform: translate(-50%, 0);
-    -webkit-clip-path: inset(0 calc(50% - 5.85cqw) calc(100% - 2.8cqh) calc(50% - 5.85cqw) round 0 0 0.55cqw 0.55cqw);
-    clip-path: inset(0 calc(50% - 5.85cqw) calc(100% - 2.8cqh) calc(50% - 5.85cqw) round 0 0 0.55cqw 0.55cqw);
-    transition: opacity 1ms linear, clip-path 800ms cubic-bezier(0.32, 0.72, 0, 1), -webkit-clip-path 800ms cubic-bezier(0.32, 0.72, 0, 1); }
-  .ve6 .vox-toast i { flex: none; width: 1.35em; height: 1.35em; border-radius: 50%; box-shadow: 0 0 0.7em rgba(90,150,255,0.55);
-    background: conic-gradient(from 0deg, #DC4C3E, #F4511E, #D9730D, #1F883D, #1A73E8, #611F69, #DC4C3E); animation: yp-orb 2.6s linear infinite; }
-  @keyframes yp-orb { to { transform: rotate(1turn); } }
-  .ve6 .vox-stick.b4 .vox-toast { opacity: 1; transform: translate(-50%, 0); transition-delay: 1900ms;
-    -webkit-clip-path: inset(0 0 0 0 round 0 0 1.2em 1.2em); clip-path: inset(0 0 0 0 round 0 0 1.2em 1.2em); }
-  @media (prefers-reduced-motion: reduce) { .ve6 .vox-toast i { animation: none; } }
+  /* no floating message over the Mac when the AI is done: the ticks and the finished work say it */
+  .ve6 .vox-toast { display: none !important; }
 </style>
 <style id="yp-phone">
   @media (max-width: 760px) {
-    html body .ve6 .vox, html body .ve6 .vt, html body .ve6 .vx, html body .ve6 .vo-pin { height: auto !important; }
-    html body .ve6 .vox-stick, html body .ve6 .vt-st, html body .ve6 .vx-stick, html body .ve6 .vo-arch-st { position: relative !important; top: auto !important; height: 100vh; height: 100svh; }
+    html body .ve6 .vox, html body .ve6 .vt, html body .ve6 .vo-pin { height: auto !important; }
+    html body .ve6 .vox-stick, html body .ve6 .vt-st, html body .ve6 .vo-arch-st { position: relative !important; top: auto !important; height: 100vh; height: 100svh; }
     /* the two door scenes are tall on a phone and their doors run the whole height, so while the screen is inside a scene
        the doors look still and only slide sideways with the scroll (no pinning). Each starts and ends on a full screen:
        white, the doors close, black; black, the doors open, white. Nothing else shares their screen. */
     html body .ve6 .vt-shut .vt-st, html body .ve6 .vt-break .vt-st { height: 230vh; height: 230svh; }
     html body .ve6 .vt-break { margin-bottom: 0; }
+    /* Wherever you work: pinned on a phone too, so the camera move runs with the scroll (a short hold on the white
+       screen, then about three swipes of pull-back and the sentence). The photo sits in a rounded card on a white page:
+       Safari never draws a pinned scene under its bars, and what it shows there instead is this same white. */
+    html body .ve6 .vx { height: 330vh !important; height: 330svh !important; background: #FFFFFF; }
+    html body .ve6 .vx-stick { position: sticky !important; top: 0 !important; height: 100vh; height: 100svh; clip-path: inset(10px round 26px); }
+    /* Then we hit a wall: the two sentences run on as one paragraph */
+    html body .ve6 #wall .vw-sub .vw-l { display: inline; }
     /* My role into the Dynamic Notch: the black screen and the section after it follow each other, so as the black folds
        up into a notch the section comes up from below it, never under it */
     html body .ve6 .vt-notch { margin-bottom: 0; }
@@ -21483,7 +21473,7 @@ html:not(.js) #learning .ylr-slab { opacity: 1; transform: translateZ(calc(var(-
     /* the challenge keeps its question mark on a phone, behind the words */
     html body .ve6 .vca { grid-auto-rows: 1fr; }
     html body .ve6 .vca-q .vca-t { margin-top: auto; }
-    html body .ve6 .vca-q::after { display: block; top: 4px; right: 22px; font-size: 150px; }
+    html body .ve6 .vca-q::after { display: block; top: -38px; right: 22px; font-size: 400px; letter-spacing: 0; }
     /* text runs the full width of its box: Safari's "pretty" wrapping evens the right edge by pulling every line in,
        which left a wide empty band at the right of cards and paragraphs on an iPhone */
     html body .ve6, html body .ve6 :not(h1, h1 *) { text-wrap-style: auto !important; }
