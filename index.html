@@ -21111,8 +21111,9 @@ html:not(.js) #learning .ylr-slab { opacity: 1; transform: translateZ(calc(var(-
     return null;
   }
 
-  // the picture under one stretch of the edge (images, video and 2D canvases, after object-fit; cross-origin ones are skipped)
-  // a still image is read through a copy 256px wide, made once; video and canvases are read as they are
+  // the picture under one stretch of the edge (images and video, after object-fit; cross-origin ones are skipped). Canvases
+  // are left out: a WebGL one reads back as black or empty, so what lies under it is used instead.
+  // a still image is read through a copy 256px wide, made once; video is read as it plays
   var thumbs = new WeakMap();
   function source(e, nw, nh) {
     if (e.tagName !== 'IMG') return { el: e, k: 1 };
@@ -21174,7 +21175,7 @@ html:not(.js) #learning .ylr-slab { opacity: 1; transform: translateZ(calc(var(-
       var e = hits[i]; if (e === T || e === B) continue;
       var a = alpha(e); if (a < 0.05) continue;
       var cs = getComputedStyle(e), f = null, tag = e.tagName;
-      if (tag === 'IMG' || tag === 'VIDEO' || tag === 'CANVAS') f = picture(e, x - seg / 2, x + seg / 2, y);
+      if (tag === 'IMG' || tag === 'VIDEO') f = picture(e, x - seg / 2, x + seg / 2, y);
       if (cs.backgroundImage.indexOf('gradient') > -1) f = over(f, gradient(cs.backgroundImage, e, x, y));
       // a box paints its background colour, then its gradient, then (for media) its picture
       f = over(f, rgba(cs.backgroundColor));
