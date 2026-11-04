@@ -21071,7 +21071,7 @@ html:not(.js) #learning .ylr-slab { opacity: 1; transform: translateZ(calc(var(-
 <script id="yp-edge-js">
 (function () {
   if (!window.matchMedia || !matchMedia('(hover: none)').matches) return;
-  var d = document, html = d.documentElement, T = null, B = null, cands = [], quiet = [], timer = 0, cur = { t: '', b: '' };
+  var d = document, html = d.documentElement, T = null, B = null, cands = [], quiet = [], ps = new WeakMap(), timer = 0, cur = { t: '', b: '' };
   var cvs = d.createElement('canvas'); cvs.width = 4; cvs.height = 1;
   var cx = cvs.getContext('2d', { willReadFrequently: true });
 
@@ -21087,8 +21087,19 @@ html:not(.js) #learning .ylr-slab { opacity: 1; transform: translateZ(calc(var(-
       for (; i < end; i++) { var e = all[i]; if (e === T || e === B) continue; var cs = getComputedStyle(e), p = cs.position;
         if (p === 'fixed' || p === 'sticky') out.push(e);
         if (cs.pointerEvents === 'none' && e.parentElement && getComputedStyle(e.parentElement).pointerEvents !== 'none') qt.push(e); }
-      if (i < all.length) setTimeout(slice, 0); else { cands = out; quiet = qt; update(); }
+      if (i < all.length) setTimeout(slice, 0); else { cands = out; quiet = qt.filter(paints); ps = new WeakMap(); update(); }
     })();
+  }
+
+  // a part that lets taps through matters only if something in it fills an area (text is not read anyway)
+  function fills(e) {
+    var cs = getComputedStyle(e), bc = rgba(cs.backgroundColor);
+    if (e.tagName === 'IMG' || e.tagName === 'VIDEO' || cs.backgroundImage !== 'none' || (bc && bc[3] >= 0.02)) return true;
+    return ['::before', '::after'].some(function (k) { var q = getComputedStyle(e, k); return q.content !== 'none' && q.display !== 'none' && q.backgroundImage !== 'none'; });
+  }
+  function paints(e) {
+    if (fills(e)) return true; var all = e.getElementsByTagName('*');
+    for (var i = 0; i < all.length; i++) if (fills(all[i])) return true; return false;
   }
 
   // the fixed or sticky box on screen at the middle of this edge, if any
@@ -21127,7 +21138,12 @@ html:not(.js) #learning .ylr-slab { opacity: 1; transform: translateZ(calc(var(-
       var nw = e.naturalWidth || e.videoWidth || e.width, nh = e.naturalHeight || e.videoHeight || e.height; if (!nw || !nh) return null;
       var r = e.getBoundingClientRect(); if (r.width < 1 || r.height < 1) return null;
       var sw = nw, sh = nh, ox = 0, oy = 0;
-      if (getComputedStyle(e).objectFit === 'cover') { var k = Math.max(r.width / nw, r.height / nh); sw = r.width / k; sh = r.height / k; ox = (nw - sw) / 2; oy = (nh - sh) / 2; }
+      var ecs = getComputedStyle(e);
+      if (ecs.objectFit === 'cover') { var k = Math.max(r.width / nw, r.height / nh), pos = ecs.objectPosition.split(' ');
+        sw = r.width / k; sh = r.height / k;
+        // where the crop sits: object-position in % of the spare picture, or in px from the box's edge
+        var at = function (v, spare) { var n = parseFloat(v); if (isNaN(n)) return spare / 2; return /%$/.test(v) ? spare * n / 100 : -n / k; };
+        ox = at(pos[0], nw - sw); oy = at(pos[1] || '50%', nh - sh); }
       var mx = function (v) { return ox + Math.min(1, Math.max(0, (v - r.left) / r.width)) * sw; }, my = function (v) { return oy + Math.min(1, Math.max(0, (v - r.top) / r.height)) * sh; };
       var sx = mx(x0), sy = my(y - 6), w = Math.max(1, mx(x1) - sx), h = Math.max(1, my(y + 6) - sy);
       var src = source(e, nw, nh), q = src.k;
@@ -21167,18 +21183,43 @@ html:not(.js) #learning .ylr-slab { opacity: 1; transform: translateZ(calc(var(-
     for (var q = 0; q < 3; q++) out.push((a[q] * a[3] + b[q] * b[3] * (1 - a[3])) / o); out.push(o); return out;
   }
 
+  // ::before and ::after layers that cover their whole box (a wash over a photo, a glow): the point lookup cannot see
+  // them, so they are added by hand, ::after above the box's children and ::before just above its own background.
+  // They rarely change, so each box's are read once and kept until the next scan.
+  function pseudos(e) {
+    if (ps.has(e)) return ps.get(e); var out = [];
+    ['::after', '::before'].forEach(function (k) {
+      var q = getComputedStyle(e, k); if (q.content === 'none' || q.display === 'none' || q.visibility === 'hidden' || (+q.opacity || 0) < 0.05 || (q.position !== 'absolute' && q.position !== 'fixed')) return;
+      var cover = ['top', 'right', 'bottom', 'left'].every(function (sd) { var v = q[sd]; return v !== 'auto' && parseFloat(v) <= 0; }); if (!cover) return;
+      var bc = rgba(q.backgroundColor); if (q.backgroundImage.indexOf('gradient') < 0 && (!bc || bc[3] < 0.02)) return;
+      out.push({ k: k, bi: q.backgroundImage, bc: bc, op: +q.opacity || 0 });
+    });
+    ps.set(e, out); return out;
+  }
+
   // what is painted at one point: the boxes there, front to back, each with its fill and its opacity
   function paintAt(x, y, seg, op) {
-    var hits = d.elementsFromPoint(x, y), acc = [0, 0, 0], left = 1;
+    var hits = d.elementsFromPoint(x, y).filter(function (e) { return e !== T && e !== B; }), acc = [0, 0, 0], left = 1;
     function alpha(e) { if (op.has(e)) return op.get(e); var a = +getComputedStyle(e).opacity || 0, p = e.parentElement; if (p && a > 0) a *= alpha(p); op.set(e, a); return a; }
-    for (var i = 0; i < hits.length && left > 0.04; i++) {
-      var e = hits[i]; if (e === T || e === B) continue;
-      var a = alpha(e); if (a < 0.05) continue;
-      var cs = getComputedStyle(e), f = null, tag = e.tagName;
-      if (tag === 'IMG' || tag === 'VIDEO') f = picture(e, x - seg / 2, x + seg / 2, y);
-      if (cs.backgroundImage.indexOf('gradient') > -1) f = over(f, gradient(cs.backgroundImage, e, x, y));
-      // a box paints its background colour, then its gradient, then (for media) its picture
-      f = over(f, rgba(cs.backgroundColor));
+    var layers = hits.map(function (e) { return { e: e }; });
+    hits.forEach(function (e) {
+      pseudos(e).forEach(function (L) {
+        var self = -1, kid = -1;
+        for (var n = 0; n < layers.length; n++) { var l = layers[n]; if (l.p) continue; if (l.e === e) { self = n; break; } if (kid < 0 && e.contains(l.e)) kid = n; }
+        layers.splice(L.k === '::after' && kid >= 0 ? kid : self, 0, { e: e, p: L });
+      });
+    });
+    for (var i = 0; i < layers.length && left > 0.04; i++) {
+      var e = layers[i].e, P = layers[i].p, a = alpha(e); if (a < 0.05) continue;
+      var f = null;
+      if (P) { a *= P.op; if (a < 0.05) continue; if (P.bi.indexOf('gradient') > -1) f = gradient(P.bi, e, x, y); f = over(f, P.bc); }
+      else {
+        var cs = getComputedStyle(e), tag = e.tagName;
+        if (tag === 'IMG' || tag === 'VIDEO') f = picture(e, x - seg / 2, x + seg / 2, y);
+        if (cs.backgroundImage.indexOf('gradient') > -1) f = over(f, gradient(cs.backgroundImage, e, x, y));
+        // a box paints its background colour, then its gradient, then (for media) its picture
+        f = over(f, rgba(cs.backgroundColor));
+      }
       if (!f) continue;
       var k = f[3] * a; for (var j = 0; j < 3; j++) acc[j] += f[j] * k * left; left *= 1 - k;
     }
