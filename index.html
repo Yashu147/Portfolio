@@ -6329,11 +6329,11 @@ window.__veFix = function (host) {
     raf = 0;
     if (!G) return;
     const r = run.getBoundingClientRect(), vh = innerHeight, now = performance.now() / 1000;
-    const target = cl(-r.top / Math.max(1, r.height - vh));
+    const PHN = innerWidth < 760, target = PHN ? (r.top > vh * 0.9 ? 0 : r.top < vh * 0.35 ? 1 : (q === null ? 0 : q)) : cl(-r.top / Math.max(1, r.height - vh));
     // off screen the scene simply matches the scroll; on screen it eases towards it, no faster than RATE
     if (r.bottom < -40 || r.top > vh + 40) { q = target; tPrev = 0; return; }
-    if (q === null || !tPrev) q = target;
-    else { const tch = matchMedia("(hover: none)").matches, dt = Math.min(0.05, now - tPrev), cap = (tch ? 0.6 : target < q ? RATE_BACK : RATE) * dt, d = (target - q) * (1 - Math.exp(-dt * (tch ? 8 : 5)));
+    if (q === null || !tPrev) q = PHN ? (q === null ? 0 : q) : target;
+    else { const tch = matchMedia("(hover: none)").matches, dt = Math.min(0.05, now - tPrev), cap = (PHN ? (target < q ? 0.5 : 0.08) : tch ? 0.6 : target < q ? RATE_BACK : RATE) * dt, d = PHN ? target - q : (target - q) * (1 - Math.exp(-dt * (tch ? 8 : 5)));
       q = Math.abs(target - q) < 0.0004 ? target : q + Math.max(-cap, Math.min(cap, d)); }
     tPrev = now;
     const p = q, chasing = p !== target;
@@ -6841,7 +6841,8 @@ window.__veTR = function (host) {
   const io = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2, out = t => 1 - Math.pow(1 - t, 3);
   const items = [], offs = [];
   const near = (r, H) => r.bottom > -H * 0.2 && r.top < H * 1.2;
-  const pinned = (el, H) => { const r = el.getBoundingClientRect(); return near(r, H) ? cl(-r.top / Math.max(1, r.height - H)) : -1; };
+  const PH = () => innerWidth < 760, pass = (r, H) => cl((H * 0.92 - r.top) / (H * 0.8));   // phones: nothing pins; a break plays as it comes up the screen
+  const pinned = (el, H) => { const r = el.getBoundingClientRect(); return near(r, H) ? (PH() ? pass(r, H) : cl(-r.top / Math.max(1, r.height - H))) : -1; };
 
   // Problem to My role
   const role = host.querySelector("#role");
@@ -6882,7 +6883,7 @@ window.__veTR = function (host) {
       items.push(H => {
         const p = pinned(el, H); if (p < 0) return;
         const o = io(seg(p, 0.06, 0.72));
-        L.style.transform = "translateX(" + (-(1 - o) * 100).toFixed(2) + "%)"; R.style.transform = "translateX(" + ((1 - o) * 100).toFixed(2) + "%)";
+        L.style.transform = "translateX(" + (-(1 - o) * 101).toFixed(2) + "%)"; R.style.transform = "translateX(" + ((1 - o) * 101).toFixed(2) + "%)";
         C.style.opacity = (seg(p, 0.64, 0.72) * (1 - seg(p, 0.82, 0.98))).toFixed(3);
         // the closing edges light up electric blue as they meet, and the seam flares once they have
         st.style.setProperty("--gl", (seg(p, 0.28, 0.66) * (1 - seg(p, 0.8, 0.98))).toFixed(3));
@@ -6896,12 +6897,12 @@ window.__veTR = function (host) {
       const show = on => { if (!body || on === shown) return; shown = on; body.classList.toggle("vt-in", on); };
       if (body) { body.classList.add("vt-hold"); offs.push(() => body.classList.remove("vt-hold", "vt-in")); }
       items.push(H => {
-        const r = el.getBoundingClientRect(), q = cl(-r.top / Math.max(1, r.height - H));
+        const r = el.getBoundingClientRect(), q = PH() ? pass(r, H) : cl(-r.top / Math.max(1, r.height - H));
         if (q >= 0.86) show(true); else if (q < 0.7 || shown === null) show(false);
         const p = pinned(el, H); if (p < 0) return;
         const c = out(seg(p, 0.04, 0.22)), o = io(seg(p, 0.3, 0.86));
         C.style.transform = "translateX(-50%) scaleY(" + c.toFixed(3) + ")"; C.style.opacity = (1 - seg(p, 0.22, 0.3)).toFixed(3);
-        L.style.transform = "translateX(" + (-o * 100).toFixed(2) + "%)"; R.style.transform = "translateX(" + (o * 100).toFixed(2) + "%)";
+        L.style.transform = "translateX(" + (-o * 101).toFixed(2) + "%)"; R.style.transform = "translateX(" + (o * 101).toFixed(2) + "%)";
         // the crack glows, and the parting edges carry the light out with them
         st.style.setProperty("--gl", (seg(p, 0.1, 0.24) * (1 - seg(p, 0.55, 0.86))).toFixed(3));
       });
@@ -6921,7 +6922,7 @@ window.__veTR = function (host) {
     const lit = (ws, p) => { const n = ws.length, soft = 5; ws.forEach((w, i) => { w.style.opacity = (0.14 + 0.86 * cl((p * (n + soft) - i) / soft)).toFixed(3); }); };
     const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
     // the stage is pinned over the last screen of the dark section, which stays pinned under it for the whole run
-    const fit = () => { const sh = stage.offsetHeight; arch.style.marginTop = -sh + "px"; if (dark) dark.style.top = (sh - dark.offsetHeight) + "px"; };
+    const fit = () => { if (PH()) { arch.style.marginTop = ""; if (dark) dark.style.top = ""; return; } const sh = stage.offsetHeight; arch.style.marginTop = -sh + "px"; if (dark) dark.style.top = (sh - dark.offsetHeight) + "px"; };
     fit();
     const ro = "ResizeObserver" in window ? new ResizeObserver(fit) : null;
     if (ro) { ro.observe(stage); if (dark) ro.observe(dark); }
@@ -6936,13 +6937,13 @@ window.__veTR = function (host) {
         const k = still ? 1 : cl((H * 0.88 - (r.top + lift - Math.max(0, off))) / (H * 0.5 + r.height * 0.6));
         if (k !== l.k) { l.k = k; lit(l.ws, k); }
       });
-      const p = cl(off / DISC);   // the disc runs with the scroll, as the other chapter transitions do
+      const p = PH() ? cl((H - arch.getBoundingClientRect().top) / H) : cl(off / DISC);   // the disc runs with the scroll, as the other chapter transitions do
       if (p === lastP) return;
       lastP = p;
       const R = Math.hypot(vw * 0.5, vh) * 1.03, rad = Math.pow(p, 1.55) * R;
       const cp = p >= 1 ? "none" : "circle(" + rad.toFixed(1) + "px at 50% 100%)";
       stage.style.webkitClipPath = cp; stage.style.clipPath = cp;
-      lift = rad * 0.95;
+      lift = PH() ? 0 : rad * 0.95;
       if (dark) dark.style.transform = lift > 0.5 ? "translate3d(0," + (-lift).toFixed(1) + "px,0)" : "";
       if (close) {
         if (p >= 0.9 && !shown) { shown = true; close.classList.add("is-in"); }
@@ -7443,13 +7444,19 @@ window.__veTR = function (host) {
       // taller than the stage (a little above centre, so the room over the laptop stays in view)
       const SX = 0.674, SY = 0.432, SW = 0.41, SH = 0.366, AY = 1, cl = x => Math.min(1, Math.max(0, x)), seg = (p, a, b) => cl((p - a) / (b - a));
       const io = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2, out = t => 1 - Math.pow(1 - t, 3);
-      let raf = 0, last = "", box = "";
+      let raf = 0, last = "", box = "", vxT = { v: 0, t: 0 };
       const frame = () => {
         raf = 0;
         const ph = innerWidth < 760;
         const r = vxRun.getBoundingClientRect(), vh = innerHeight;
+        if (ph && r.top > vh) { vxT.v = 0; vxT.t = 0; }   // below the screen again: it plays again next time
         if (r.bottom < -50 || r.top > vh + 50) return;
-        const pa = cl(-r.top / Math.max(1, r.height - vh)), p = cl(pa / 0.567);
+        let pa;
+        if (ph) { const now = performance.now(), want = r.top < vh * 0.3 ? 0.567 : vxT.v, dt = vxT.t ? Math.min(0.05, (now - vxT.t) / 1000) : 0;
+          vxT.t = now; vxT.v = Math.min(want, vxT.v + dt * 0.567 / 2.6); pa = vxT.v;
+          if (vxT.v < want) { if (!raf) raf = requestAnimationFrame(frame); } else vxT.t = 0; }
+        else pa = cl(-r.top / Math.max(1, r.height - vh));
+        const p = cl(pa / 0.567);
         const sw = stick.clientWidth, sh = stick.clientHeight;
         { const q = io(seg(pa, 0.581, 1));
           stick.style.clipPath = q > 0 ? "inset(" + (q * sh * 0.5).toFixed(1) + "px " + (q * sw * 0.5).toFixed(1) + "px round " + (12 + q * 28).toFixed(1) + "px)" : "";
@@ -7493,17 +7500,19 @@ window.__veTR = function (host) {
         raf = 0;
 
         const r = voRun.getBoundingClientRect(), vh = innerHeight;
-        if (r.bottom < -50 || r.top > vh + 50) return;
         if (innerWidth < 760) {
-          // the stage pins and the staircase is built from the ground up: each step slides in from the right and settles,
-          // Step 1 first, Launch last; scrolling back slides them out again
-          const steps = bricks.filter(b => b.classList.contains("vo-s")), M = steps.length, L2 = 1.6;
-          const q = cl(-r.top / Math.max(1, r.height - vh)), T2 = seg(q, 0.05, 0.8) * (M - 1 + L2);
-          steps.forEach((b, i) => { const e = cl((T2 - i) / L2), k = 1 - Math.pow(1 - e, 3), h = how[bricks.indexOf(b)];
-            const tf = k >= 1 ? "none" : "translate3d(" + ((1 - k) * innerWidth * 0.9).toFixed(1) + "px,0,0) rotate(" + ((1 - k) * 5).toFixed(2) + "deg)", op = cl(e * 2).toFixed(3), key = tf + op;
-            if (key !== h.last) { b.style.transform = tf; b.style.opacity = op; h.last = key; } });
-          voRun.classList.toggle("vo-landed", q >= 0.84); return;
+          // phones: as each step comes up the screen it slides in from the right and settles; scrolling back slides it
+          // out again. "We are here" appears once the step it marks has landed.
+          let nowIn = false;
+          bricks.forEach((b, o) => { if (!b.classList.contains("vo-s")) return;
+            const t = b.getBoundingClientRect().top, e = cl((vh * 0.97 - t) / (vh * 0.3)), k = 1 - Math.pow(1 - e, 3), h = how[o];
+            const tf = k >= 1 ? "none" : "translate3d(" + ((1 - k) * 110).toFixed(1) + "%,0,0) rotate(" + ((1 - k) * 6).toFixed(2) + "deg)", op = cl(e * 1.8).toFixed(3), key = tf + op;
+            if (key !== h.last) { b.style.transform = tf; b.style.opacity = op; h.last = key; }
+            if (b.classList.contains("vo-now")) nowIn = k >= 1; });
+          voRun.classList.toggle("vo-landed", nowIn);
+          return;
         }
+        if (r.bottom < -50 || r.top > vh + 50) return;
         // the staircase keeps its proportions and scales down as a whole on a short screen, so every step's words fit
         if (fitH !== vh) { fitH = vh; const sh = stairs.offsetHeight, room = vh - 72 - 24 - 90; stairs.style.transform = sh > room ? "scale(" + (room / sh).toFixed(4) + ")" : "";
           stairs.style.marginTop = sh > room ? (room - sh).toFixed(0) + "px" : ""; }
@@ -21062,13 +21071,10 @@ html:not(.js) #learning .ylr-slab { opacity: 1; transform: translateZ(calc(var(-
 </style>
 <style id="yp-edge">
 /* iOS 26 Safari paints the status bar and the toolbar with a colour of its own whenever a full-width fixed or sticky box
-   sits at the middle of that edge (4px in), and shows the page itself under them when the first box there is narrow.
-   It also never draws a pinned (sticky) box under the bars: there it shows what lies behind the box in the page.
-   So on touch screens:
+   sits at the middle of that edge (4px in), and shows the page itself under them when the first box there is narrow. It
+   never draws a pinned (sticky) box under the bars, which is why nothing in the case study pins on a phone. So on touch
+   screens:
    - a small mark sits at each of those two points, so Safari never paints a bar and the portfolio runs under both;
-   - while a full-screen stage is pinned to an edge, a band in its scroll container lies just past that edge, under the
-     bar, painted with what the stage shows along that edge (sampled at seven points, so a beam, a photo or a glow carries
-     on), so the scene continues under the bar; the stage covers the band everywhere else;
    - at the very top and end of a page, where there is no page beyond the bar, a faint strip gives Safari the colour of
      the first or last screen instead of the plain page colour. */
 .yp-edge{position:fixed;left:0;right:0;height:12px;z-index:2147483647;opacity:.11;display:none;pointer-events:auto;contain:strict}
@@ -21078,13 +21084,12 @@ html:not(.js) #learning .ylr-slab { opacity: 1; transform: translateZ(calc(var(-
 .yp-pin::after{content:"";position:absolute;inset:0}
 .yp-pin-t{top:0}
 .yp-pin-b{bottom:0}
-.yp-rb{position:absolute;left:0;right:0;top:0;height:160px;display:none;pointer-events:none;will-change:transform}
 .yp-probe,.yp-probe *{pointer-events:auto!important}
 </style>
 <script id="yp-edge-js">
 (function () {
   if (!window.matchMedia || !matchMedia('(hover: none)').matches) return;
-  var d = document, html = d.documentElement, T = null, B = null, PT = null, PB = null, cands = [], quiet = [], stages = [], ps = new WeakMap(), timer = 0, raf = 0, cur = { t: '', b: '', pt: '', pb: '' };
+  var d = document, html = d.documentElement, T = null, B = null, PT = null, PB = null, cands = [], quiet = [], ps = new WeakMap(), timer = 0, cur = { t: '', b: '', pt: '', pb: '' };
   var cvs = d.createElement('canvas'); cvs.width = 4; cvs.height = 1;
   var cx = cvs.getContext('2d', { willReadFrequently: true });
 
@@ -21100,7 +21105,7 @@ html:not(.js) #learning .ylr-slab { opacity: 1; transform: translateZ(calc(var(-
       for (; i < end; i++) { var e = all[i]; if (e === T || e === B || e === PT || e === PB) continue; var cs = getComputedStyle(e), p = cs.position;
         if (p === 'fixed' || p === 'sticky') out.push(e);
         if (cs.pointerEvents === 'none' && e.parentElement && getComputedStyle(e.parentElement).pointerEvents !== 'none') qt.push(e); }
-      if (i < all.length) setTimeout(slice, 0); else { cands = out; quiet = qt.filter(paints); ps = new WeakMap(); findStages(); update(); bands(); }
+      if (i < all.length) setTimeout(slice, 0); else { cands = out; quiet = qt.filter(paints); ps = new WeakMap(); update(); }
     })();
   }
 
@@ -21273,52 +21278,6 @@ html:not(.js) #learning .ylr-slab { opacity: 1; transform: translateZ(calc(var(-
     put(T, 't', ct); put(B, 'b', cb); show(PT, 'pt', !ct); show(PB, 'pb', !cb);
   }
 
-  // full-screen stages that pin at the top and are alone in their scroll container (a container shared with other
-  // sections would show the bands over them)
-  function findStages() {
-    var vh = innerHeight, vw = innerWidth, keep = [];
-    cands.forEach(function (e) {
-      var cs = getComputedStyle(e), run = e.parentElement; if (cs.position !== 'sticky' || !run || Math.abs(parseFloat(cs.top) || 0) > 2) return;
-      if (e.offsetHeight < vh * 0.88 || e.offsetWidth < vw * 0.9) return;
-      var others = Array.prototype.some.call(run.children, function (k) { return k !== e && !k.classList.contains('yp-rb') && k.offsetHeight > 2 && getComputedStyle(k).display !== 'none'; }); if (others) return;
-      if (getComputedStyle(run).position === 'static') run.style.position = 'relative';
-      var st = stages.filter(function (o) { return o.s === e; })[0];
-      if (!st) { st = { s: e, run: run, t: band(run), b: band(run), ct: '', cb: '' }; }
-      keep.push(st);
-    });
-    stages.forEach(function (o) { if (keep.indexOf(o) < 0) { o.t.remove(); o.b.remove(); } });
-    stages = keep;
-  }
-  function band(run) { var e = d.createElement('i'); e.className = 'yp-rb'; e.setAttribute('aria-hidden', 'true'); run.insertBefore(e, run.firstChild); return e; }
-
-  // the colours along one edge of the screen, left to right, as a gradient
-  function edgeGradient(y) {
-    var w = innerWidth, op = new Map(), N = 7, stops = [];
-    for (var n = 0; n < N; n++) { var v = paintAt(w * (n + 0.5) / N, y, w / N, op); stops.push('rgb(' + Math.round(v[0]) + ',' + Math.round(v[1]) + ',' + Math.round(v[2]) + ') ' + ((n + 0.5) / N * 100).toFixed(1) + '%'); }
-    return 'linear-gradient(90deg,' + stops.join(',') + ')';
-  }
-
-  // where the bands sit (every frame) and what they show (a few times a second, and when a scroll ends)
-  function bands(paint) {
-    raf = 0; var vh = innerHeight;
-    stages.forEach(function (o) {
-      var r = o.s.getBoundingClientRect(), top = r.top <= 0.5 && r.bottom > 0, bot = r.bottom >= vh - 0.5 && r.top < vh, rr = o.run.getBoundingClientRect();
-      if (paint && (top || bot)) {
-        var pr = getComputedStyle(o.s).pointerEvents === 'none' ? [o.s] : quiet.filter(function (q) { return o.s.contains(q); });
-        pr.forEach(function (e) { e.classList.add('yp-probe'); });
-        try { if (top) o.ct = edgeGradient(1.5); if (bot) o.cb = edgeGradient(vh - 1.5); } finally { pr.forEach(function (e) { e.classList.remove('yp-probe'); }); }
-      }
-      place(o.t, top && o.ct, o.ct, -rr.top - 158);
-      place(o.b, bot && o.cb, o.cb, -rr.top + vh - 2);
-    });
-  }
-  function place(e, on, bg, y) {
-    if (!on) { if (e.style.display !== 'none') e.style.display = 'none'; return; }
-    if (e.style.background !== bg) e.style.background = bg;
-    e.style.transform = 'translate3d(0,' + y.toFixed(1) + 'px,0)'; if (e.style.display !== 'block') e.style.display = 'block';
-  }
-  function frame() { if (!raf) raf = requestAnimationFrame(function () { bands(false); }); }
-  var ptimer = 0; function repaint() { if (!ptimer) ptimer = setTimeout(function () { ptimer = 0; bands(true); }, 120); }
 
   // while scrolling, a few times a second is enough for the bars; a stop always measures once more
   function soon() { if (!timer) timer = setTimeout(update, 180); }
@@ -21327,27 +21286,33 @@ html:not(.js) #learning .ylr-slab { opacity: 1; transform: translateZ(calc(var(-
   function start() {
     T = strip('yp-edge yp-edge-t'); B = strip('yp-edge yp-edge-b'); PT = strip('yp-pin yp-pin-t'); PB = strip('yp-pin yp-pin-b'); settle();
     // the page builds itself for a few seconds after load: keep the edges current meanwhile
-    var n = 0, iv = setInterval(function () { update(); bands(true); if (++n === 4 || n === 12) scan(); if (n > 16) clearInterval(iv); }, 500);
+    var n = 0, iv = setInterval(function () { update(); if (++n === 4 || n === 12) scan(); if (n > 16) clearInterval(iv); }, 500);
     addEventListener('scroll', soon, { passive: true });
-    addEventListener('scroll', frame, { passive: true });
-    addEventListener('scroll', repaint, { passive: true });
-    addEventListener('scrollend', function () { bands(true); }, { passive: true });
     addEventListener('scrollend', update, { passive: true });
     addEventListener('touchend', soon, { passive: true });
-    addEventListener('resize', function () { setTimeout(settle, 150); repaint(); });
+    addEventListener('resize', function () { setTimeout(settle, 150); });
     addEventListener('hashchange', function () { setTimeout(settle, 400); setTimeout(settle, 1600); });
     addEventListener('load', function () { setTimeout(settle, 800); });
   }
   if (d.body) start(); else d.addEventListener('DOMContentLoaded', start);
 })();
 </script>
-<style id="yp-steps">
+<style id="yp-phone">
   @media (max-width: 760px) {
-    .ve6 .vo-pin { height: 230vh; height: 230lvh; }
-    .ve6 .vo-stage { position: sticky; top: 0; height: 100vh; height: 100svh; padding-top: 84px; padding-bottom: 24px; justify-content: center; }
+    html body .ve6 .vox, html body .ve6 .vt, html body .ve6 .vx, html body .ve6 .vo-pin { height: auto !important; }
+    html body .ve6 .vox-stick, html body .ve6 .vt-st, html body .ve6 .vx-stick, html body .ve6 .vo-arch-st { position: relative !important; top: auto !important; height: 100vh; height: 100svh; }
+    html body .ve6 .vt-notch, html body .ve6 .vt-break { margin-bottom: -100vh; margin-bottom: -100svh; }
+    html body .ve6 .vo-dark { position: relative !important; top: auto !important; }
+    html body .ve6 .vo-arch { height: auto !important; margin-top: 0 !important; }
+    html body .ve6 .vo-stage { position: relative !important; top: auto !important; height: auto !important; padding-top: 56px; padding-bottom: 8px; }
+    /* the staircase climbs: Step 1, the widest, at the bottom; Launch, the narrowest, on top */
     .ve6 .vo-stairs { grid-template-rows: repeat(5, auto); }
     .ve6 .vo-s { grid-row: var(--r); min-height: 92px; padding: 14px 16px 15px; margin-left: calc(var(--i) * 8%); transform-origin: 100% 100%; }
     .ve6 .vo-key { margin-top: 22px; }
+    /* the AI Browser: the feature card and the live window share one width and one corner */
+    html body .ve6 .vab-mac.ve-mac { margin: 0; }
+    html body .ve6 .vfp-bar { border-radius: 16px; }
+    html body .ve6 .vab-mac .ve-mac-lid { border-radius: 16px !important; }
   }
 </style>
 </body></html>
