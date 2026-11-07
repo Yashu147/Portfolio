@@ -154,7 +154,7 @@ try { var s = null; try { s = sessionStorage.getItem("hx-theme"); } catch (e) {}
 </style>
 <link rel="preload" href="assets/core/robot.1e358a5072.bin" as="fetch" crossorigin="anonymous" fetchpriority="low">
 <link rel="modulepreload" href="assets/core/hero.e0254e5073.js">
-<script id="yp-ver">(function () { var V = "1794066906";
+<script id="yp-ver">(function () { var V = "1794067139";
   try { fetch("version.txt?t=" + Date.now(), { cache: "no-store" }).then(function (r) { return r.ok ? r.text() : ""; }).then(function (t) {
     t = (t || "").trim(); if (!t || t === V || +t < +V) return;
     var k = "yp-reloaded-" + t; if (sessionStorage.getItem(k)) return; sessionStorage.setItem(k, "1"); location.reload(); }).catch(function () {}); } catch (e) {} })();</script>
@@ -6278,7 +6278,7 @@ window.__veFix = function (host) {
   const BASE = 0.85;                                                         // the front edge of the Mac in the picture: the whole laptop stays in view
   const cl = v => Math.max(0, Math.min(1, v)), seg = (p, a, b) => cl((p - a) / (b - a));
   const io = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2, out = t => 1 - Math.pow(1 - t, 3);
-  const RATE = 0.16, RATE_BACK = 0.2;   // the most progress the scene moves in a second (a full pass takes at least ~11s)
+  const RATE = 0.22, RATE_BACK = 0.26;   // the most progress the scene moves in a second (a full pass takes at least ~11s)
   let G = null, beat = -1, k = -1, raf = 0, still = null, q = null, tPrev = 0, RW = [], lastFill = [], lastRise = null, lastMo = null;
 
   // the end of the line turns to a window's work once that window has landed in the Mac (an eased roll with a crossfade),
@@ -6333,7 +6333,7 @@ window.__veFix = function (host) {
     raf = 0;
     if (!G) return;
     const r = run.getBoundingClientRect(), vh = innerHeight, now = performance.now() / 1000;
-    const PHN = innerWidth < 760, target = PHN ? (r.top > vh * 0.9 ? 0 : r.top < vh * 0.35 ? 1 : (q === null ? 0 : q)) : r.top > vh * 0.6 ? 0 : (-r.top / Math.max(1, r.height - vh) < 0.4 ? 0.55 : 1);
+    const PHN = innerWidth < 760, target = PHN ? (r.top > vh * 0.9 ? 0 : r.top < vh * 0.35 ? 1 : (q === null ? 0 : q)) : r.top > vh * 0.6 ? 0 : (-r.top / Math.max(1, r.height - vh) < 0.5 ? 0.55 : 1);
     // off screen the scene simply matches the scroll; on screen it eases towards it, no faster than RATE
     if (r.bottom < -40 || r.top > vh + 40) { q = target; tPrev = 0; return; }
     if (q === null || !tPrev) q = PHN ? (q === null ? 0 : q) : target;
@@ -6380,6 +6380,9 @@ window.__veFix = function (host) {
     if (!G || q === null || matchMedia("(hover: none)").matches) return next;
     const [a, b] = pins();
     if (innerWidth < 760 && next < cur && q > 0.002 && cur >= a - 1 && next < a) return Math.min(cur, a);
+    if (innerWidth >= 760) { const m = a + (b - a) * 0.45;   // the middle: each line plays out before the page moves on, either way
+      if (next > cur && q < 0.549 && cur <= m + 1 && next > m) return Math.max(cur, m);
+      if (next < cur && q > 0.56 && cur >= m - 1 && next < m) return Math.min(cur, m); }
     if (next > cur && q < 0.998 && cur <= b + 1 && next > b) return Math.max(cur, b);
     return next;
   };
