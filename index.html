@@ -154,7 +154,7 @@ try { var s = null; try { s = sessionStorage.getItem("hx-theme"); } catch (e) {}
 </style>
 <link rel="preload" href="assets/core/robot.1e358a5072.bin" as="fetch" crossorigin="anonymous" fetchpriority="low">
 <link rel="modulepreload" href="assets/core/hero.e0254e5073.js">
-<script id="yp-ver">(function () { var V = "1794144103";
+<script id="yp-ver">(function () { var V = "1794147349";
   try { fetch("version.txt?t=" + Date.now(), { cache: "no-store" }).then(function (r) { return r.ok ? r.text() : ""; }).then(function (t) {
     t = (t || "").trim(); if (!t || t === V || +t < +V) return;
     var k = "yp-reloaded-" + t; if (sessionStorage.getItem(k)) return; sessionStorage.setItem(k, "1"); location.reload(); }).catch(function () {}); } catch (e) {} })();</script>
@@ -6333,7 +6333,7 @@ window.__veFix = function (host) {
     raf = 0;
     if (!G) return;
     const r = run.getBoundingClientRect(), vh = innerHeight, now = performance.now() / 1000;
-    const PHN = innerWidth < 760, target = PHN ? (r.top > vh * 0.9 ? 0 : r.top < vh * 0.35 ? 1 : (q === null ? 0 : q)) : cl((vh * 0.35 - r.top) / Math.max(1, r.height - vh * 0.65));
+    const PHN = innerWidth < 760, target = PHN ? (r.top > vh * 0.9 ? 0 : r.top < vh * 0.35 ? 1 : (q === null ? 0 : q)) : cl(-r.top / Math.max(1, r.height - vh));
     // off screen the scene simply matches the scroll; on screen it eases towards it, no faster than RATE
     if (r.bottom < -40 || r.top > vh + 40) { q = target; tPrev = 0; return; }
     if (q === null || !tPrev) q = PHN ? (q === null ? 0 : q) : target;
@@ -21547,7 +21547,7 @@ html:not(.js) #learning .ylr-slab { opacity: 1; transform: translateZ(calc(var(-
 <style id="yp-fix3">
   .ve6 .vox-prog, .ve6 .vox-clk { display: none !important; }
   @media (min-width: 761px) {
-    html body .ve6 .vox { height: 260vh !important; }
+    html body .ve6 .vox { height: 280vh !important; }
     html body .ve6 .vox .vox-mid { font-size: clamp(26px, min(2.9vw, 5.2vh), 46px); line-height: 1.1; letter-spacing: -0.035em; max-width: 22em; }
   }
 </style>
