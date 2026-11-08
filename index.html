@@ -154,7 +154,7 @@ try { var s = null; try { s = sessionStorage.getItem("hx-theme"); } catch (e) {}
 </style>
 <link rel="preload" href="assets/core/robot.1e358a5072.bin" as="fetch" crossorigin="anonymous" fetchpriority="low">
 <link rel="modulepreload" href="assets/core/hero.e0254e5073.js">
-<script id="yp-ver">(function () { var V = "1794143177";
+<script id="yp-ver">(function () { var V = "1794144103";
   try { fetch("version.txt?t=" + Date.now(), { cache: "no-store" }).then(function (r) { return r.ok ? r.text() : ""; }).then(function (t) {
     t = (t || "").trim(); if (!t || t === V || +t < +V) return;
     var k = "yp-reloaded-" + t; if (sessionStorage.getItem(k)) return; sessionStorage.setItem(k, "1"); location.reload(); }).catch(function () {}); } catch (e) {} })();</script>
@@ -6274,11 +6274,11 @@ window.__veFix = function (host) {
   const WIN = [{"k": "tasks", "l": 0.025, "t": 0.089, "w": 0.45, "h": 0.394, "sx": 0.135, "sy": 0.47, "sw": 0.25, "r": -7}, {"k": "cal", "l": 0.565, "t": 0.103, "w": 0.392, "h": 0.39, "sx": 0.865, "sy": 0.44, "sw": 0.24, "r": 6}, {"k": "chat", "l": 0.025, "t": 0.487, "w": 0.3275, "h": 0.446, "sx": 0.15, "sy": 0.8, "sw": 0.2, "r": 5}, {"k": "docs", "l": 0.361, "t": 0.41, "w": 0.318, "h": 0.434, "sx": 0.5, "sy": 0.86, "sw": 0.2, "r": -3}, {"k": "code", "l": 0.681, "t": 0.499, "w": 0.3, "h": 0.383, "sx": 0.86, "sy": 0.8, "sw": 0.2, "r": -5}];
   const wins = WIN.map(w => run.querySelector('[data-win="' + w.k + '"]'));
   const SCR = { l: 0.1332, t: 0.2337, w: 0.736, h: 0.4673 }, HZ = 0.6858;   // the screen and the floor line in the picture
-  const B = [-1, -0.5, 0.56], F0 = -0.01, FD = 0.0001, FE = F0 + 5 * FD;   // beat bounds; the windows fly one after another, FD each
+  const B = [0.4, 0.4, 0.7], F0 = 0.02, FD = 0.064, FE = F0 + 5 * FD;   // beat bounds; the windows fly one after another, FD each
   const BASE = 0.85;                                                         // the front edge of the Mac in the picture: the whole laptop stays in view
   const cl = v => Math.max(0, Math.min(1, v)), seg = (p, a, b) => cl((p - a) / (b - a));
   const io = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2, out = t => 1 - Math.pow(1 - t, 3);
-  const RATE = 0.22, RATE_BACK = 0.26;   // the most progress the scene moves in a second (a full pass takes at least ~11s)
+  const RATE = 1.6, RATE_BACK = 1.8;   // the most progress the scene moves in a second (a full pass takes at least ~11s)
   let G = null, beat = -1, k = -1, raf = 0, still = null, q = null, tPrev = 0, RW = [], lastFill = [], lastRise = null, lastMo = null;
 
   // the end of the line turns to a window's work once that window has landed in the Mac (an eased roll with a crossfade),
@@ -6288,7 +6288,7 @@ window.__veFix = function (host) {
     items.forEach((it, j) => { it.classList.toggle("on", j === i); it.classList.toggle("gone", j < i); }); };
   // the line keeps its own pace: each phrase owns an equal stretch of the first beat, and the line steps one
   // phrase at a time, never sooner than HOLD after the last step, so every phrase is read even on a fast scroll
-  const HOLD = 1.1, R0 = 0.02, R1 = 0.40;
+  const HOLD = 0.28, R0 = 0.02, R1 = 0.36;
   let kAt = 0;
   const stepRoll = (want, now) => {
     if (k < 0) { setK(want); kAt = now; return false; }
@@ -6333,11 +6333,11 @@ window.__veFix = function (host) {
     raf = 0;
     if (!G) return;
     const r = run.getBoundingClientRect(), vh = innerHeight, now = performance.now() / 1000;
-    const PHN = innerWidth < 760, target = PHN ? (r.top > vh * 0.9 ? 0 : r.top < vh * 0.35 ? 1 : (q === null ? 0 : q)) : r.top > vh * 0.6 ? 0 : (-r.top / Math.max(1, r.height - vh) < 0.5 ? 0.55 : 1);
+    const PHN = innerWidth < 760, target = PHN ? (r.top > vh * 0.9 ? 0 : r.top < vh * 0.35 ? 1 : (q === null ? 0 : q)) : cl((vh * 0.35 - r.top) / Math.max(1, r.height - vh * 0.65));
     // off screen the scene simply matches the scroll; on screen it eases towards it, no faster than RATE
     if (r.bottom < -40 || r.top > vh + 40) { q = target; tPrev = 0; return; }
     if (q === null || !tPrev) q = PHN ? (q === null ? 0 : q) : target;
-    else { const tch = matchMedia("(hover: none)").matches, dt = Math.min(0.05, now - tPrev), cap = (PHN ? (target < q ? 0.5 : 0.08) : tch ? 0.6 : target < q ? RATE_BACK : RATE) * dt, d = PHN ? target - q : (target - q) * (1 - Math.exp(-dt * (tch ? 8 : 5)));
+    else { const tch = matchMedia("(hover: none)").matches, dt = Math.min(0.05, now - tPrev), cap = (PHN ? (target < q ? 0.5 : 0.16) : tch ? 0.6 : target < q ? RATE_BACK : RATE) * dt, d = PHN ? target - q : (target - q) * (1 - Math.exp(-dt * (tch ? 8 : 9)));
       q = Math.abs(target - q) < 0.0004 ? target : q + Math.max(-cap, Math.min(cap, d)); }
     tPrev = now;
     const p = q, chasing = p !== target;
@@ -6377,7 +6377,7 @@ window.__veFix = function (host) {
   // and rests there, with nothing to snap back. (Touch, which the page does not ease, is held directly.)
   const pins = () => { const r = run.getBoundingClientRect(), top = scrollY + r.top; return [top, top + r.height - innerHeight]; };
   const gate = (next, cur) => {
-    if (!G || q === null || matchMedia("(hover: none)").matches) return next;
+    if (!G || q === null || innerWidth >= 760 || matchMedia("(hover: none)").matches) return next;
     const [a, b] = pins();
     if (innerWidth < 760 && next < cur && q > 0.002 && cur >= a - 1 && next < a) return Math.min(cur, a);
     if (innerWidth >= 760) { const m = a + (b - a) * 0.45;   // the middle: each line plays out before the page moves on, either way
@@ -21547,7 +21547,7 @@ html:not(.js) #learning .ylr-slab { opacity: 1; transform: translateZ(calc(var(-
 <style id="yp-fix3">
   .ve6 .vox-prog, .ve6 .vox-clk { display: none !important; }
   @media (min-width: 761px) {
-    html body .ve6 .vox { height: 200vh !important; }
+    html body .ve6 .vox { height: 260vh !important; }
     html body .ve6 .vox .vox-mid { font-size: clamp(26px, min(2.9vw, 5.2vh), 46px); line-height: 1.1; letter-spacing: -0.035em; max-width: 22em; }
   }
 </style>
