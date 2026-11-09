@@ -154,7 +154,7 @@ try { var s = null; try { s = sessionStorage.getItem("hx-theme"); } catch (e) {}
 </style>
 <link rel="preload" href="assets/core/robot.1e358a5072.bin" as="fetch" crossorigin="anonymous" fetchpriority="low">
 <link rel="modulepreload" href="assets/core/hero.e0254e5073.js">
-<script id="yp-ver">(function () { var V = "1794202128";
+<script id="yp-ver">(function () { var V = "1794202598";
   try { fetch("version.txt?t=" + Date.now(), { cache: "no-store" }).then(function (r) { return r.ok ? r.text() : ""; }).then(function (t) {
     t = (t || "").trim(); if (!t || t === V || +t < +V) return;
     var k = "yp-reloaded-" + t; if (sessionStorage.getItem(k)) return; sessionStorage.setItem(k, "1"); location.reload(); }).catch(function () {}); } catch (e) {} })();</script>
@@ -6279,7 +6279,7 @@ window.__veFix = function (host) {
   const cl = v => Math.max(0, Math.min(1, v)), seg = (p, a, b) => cl((p - a) / (b - a));
   const io = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2, out = t => 1 - Math.pow(1 - t, 3);
   const RATE = 1.6, RATE_BACK = 1.8;   // the most progress the scene moves in a second (a full pass takes at least ~11s)
-  let G = null, beat = -1, k = -1, raf = 0, still = null, q = null, tPrev = 0, RW = [], lastFill = [], lastRise = null, lastMo = null;
+  let wf = 0, wT = 0, chasingW = false, gEv = 0, gLock = false, G = null, beat = -1, k = -1, raf = 0, still = null, q = null, tPrev = 0, RW = [], lastFill = [], lastRise = null, lastMo = null;
 
   // the end of the line turns to a window's work once that window has landed in the Mac (an eased roll with a crossfade),
   // and to "every tool." a moment after the last one
@@ -6341,11 +6341,14 @@ window.__veFix = function (host) {
       q = Math.abs(target - q) < 0.0004 ? target : q + Math.max(-cap, Math.min(cap, d)); }
     tPrev = now;
     const p = q, chasing = p !== target;
-    let bt = r.top > vh * 0.98 ? 0 : p < B[0] ? 1 : p < B[1] ? 2 : p < B[2] ? 3 : 4;
+    { const want = r.top < vh * 0.5 ? 1 : 0, wdt = wT ? Math.min(0.05, now - wT) : 0; wT = now;
+      wf = want > wf ? Math.min(1, wf + wdt / 2.1) : Math.max(0, wf - wdt / 1.2); if (wf !== want) chasingW = true; else chasingW = false; }
+    const pp = cl(-r.top / Math.max(1, r.height - vh));
+    let bt = r.top > vh * 0.98 ? 0 : PHN ? (p < B[0] ? 1 : p < B[1] ? 2 : p < B[2] ? 3 : 4) : (pp < 0.25 ? 1 : pp < 0.75 ? 3 : 4);
     if (bt === 2 && beat <= 1 && k >= 0 && k < 5) bt = 1;   // the next line waits until the first has said "all your tools."
     setBeat(bt);
     // the Mac rises into place while the windows come in
-    const e = out(seg(p, 0.06, 0.4)), ty = (1 - e) * G.H * 0.2;
+    const e = out(seg(wf, 0, 0.42)), ty = (1 - e) * G.H * 0.2;
     const rt = ty > 0.3 ? "translate3d(0," + ty.toFixed(1) + "px,0)" : "", mo = e >= 1 ? "" : (0.4 + 0.6 * e).toFixed(3);
     if (rt !== lastRise) { rise.style.transform = rt; lastRise = rt; }
     if (mo !== lastMo) { macBox.style.opacity = mo; lastMo = mo; }   // on the Mac itself, so only it restyles
@@ -6353,7 +6356,7 @@ window.__veFix = function (host) {
     // (while they float they drift a little on their own; each one gives a small pulse as it docks)
     let floating = false;
     G.fl.forEach((f, i) => {
-      const w = wins[i], u = 1 - io(seg(p, F0 + i * FD, F0 + (i + 1) * FD)), flying = u > 0 && u < 1;
+      const w = wins[i], u = 1 - io(seg(wf, 0.1 + i * 0.13, 0.1 + i * 0.13 + 0.38)), flying = u > 0 && u < 1;
       if (w._f !== flying) { w.style.zIndex = flying ? "10" : ""; w._f = flying; }   // the one in flight passes over the others
       const bx = u > 0 ? Math.sin(now * 0.7 + i * 1.7) * 7 * u : 0, by = u > 0 ? Math.cos(now * 0.55 + i * 2.3) * 9 * u : 0;
       const tf = u <= 0 ? "" : "translate3d(" + (f.dx * u + bx).toFixed(1) + "px," + ((f.dy - ty) * u + by).toFixed(1) + "px,0) scale(" + (1 + (f.s - 1) * u).toFixed(4) + ") rotate(" + (f.r * u + Math.sin(now * 0.6 + i) * 0.8 * u).toFixed(2) + "deg)";
@@ -6362,7 +6365,7 @@ window.__veFix = function (host) {
       if (w._d !== docked) { if (w._d === false && docked) { w.classList.remove("dock"); void w.offsetWidth; w.classList.add("dock"); } else if (!docked) w.classList.remove("dock"); w._d = docked; }
       if (u > 0) floating = true;
     });
-    if ((floating || chasing) && r.top < vh && r.bottom > 0) raf = requestAnimationFrame(frame);   // keep going while windows float or the scene catches up
+    if ((floating || chasing || chasingW) && r.top < vh && r.bottom > 0) raf = requestAnimationFrame(frame);   // keep going while windows float or the scene catches up
     const rolling = stepRoll(0, now);
     if (rolling && !raf && r.top < vh && r.bottom > 0) raf = requestAnimationFrame(frame);
     // the four steps of the story, filling as you read
@@ -6377,7 +6380,22 @@ window.__veFix = function (host) {
   // and rests there, with nothing to snap back. (Touch, which the page does not ease, is held directly.)
   const pins = () => { const r = run.getBoundingClientRect(), top = scrollY + r.top; return [top, top + r.height - innerHeight]; };
   const gate = (next, cur) => {
-    if (!G || q === null || innerWidth >= 760 || matchMedia("(hover: none)").matches) return next;
+    if (G && innerWidth >= 760 && !matchMedia("(hover: none)").matches) {
+      // one gesture (its wheel events, momentum included, come less than 220ms apart) moves one stop at most
+      const tn = performance.now(), same = tn - gEv < 220; gEv = tn;
+      if (same && gLock) return cur;
+      gLock = false;
+      const [a, b] = pins(), S = [a, (a + b) / 2, b], hold = s => { gLock = true; return s; };
+      if (next > cur) {
+        if (cur < a - 2 && next >= a - 2) return hold(a);                                      // coming in: stop on the first sentence
+        if (cur >= a - 2 && cur < b - 2) { for (const s of S) if (s > cur + 2) return hold(s); } // one scroll, one sentence
+      } else if (next < cur) {
+        if (cur > b + 2 && next <= b + 2) return hold(b);                                      // coming back up: stop on the last
+        if (cur <= b + 2 && cur > a + 2) { for (let i = S.length - 1; i >= 0; i--) if (S[i] < cur - 2) return hold(S[i]); }
+      }
+      return next;
+    }
+    if (!G || q === null || matchMedia("(hover: none)").matches) return next;
     const [a, b] = pins();
     if (innerWidth < 760 && next < cur && q > 0.002 && cur >= a - 1 && next < a) return Math.min(cur, a);
     if (innerWidth >= 760) { const m = a + (b - a) * 0.45;   // the middle: each line plays out before the page moves on, either way
@@ -21593,4 +21611,8 @@ html:not(.js) #learning .ylr-slab { opacity: 1; transform: translateZ(calc(var(-
   var q = 0; new MutationObserver(function () { if (q) return; q = requestAnimationFrame(function () { q = 0; init(); }); }).observe(document.body, { childList: true, subtree: true });
   init();
 })();</script>
+<style id="yp-vox3">
+  @media (min-width: 761px) { html body .ve6 .vox .vox-mid { line-height: 1.28; letter-spacing: -0.025em; } }
+  html body .ve6 .vox.vox-n .vox-mid { line-height: 1.24; }
+</style>
 </body></html>
