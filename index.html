@@ -154,7 +154,7 @@ try { var s = null; try { s = sessionStorage.getItem("hx-theme"); } catch (e) {}
 </style>
 <link rel="preload" href="assets/core/robot.1e358a5072.bin" as="fetch" crossorigin="anonymous" fetchpriority="low">
 <link rel="modulepreload" href="assets/core/hero.e0254e5073.js">
-<script id="yp-ver">(function () { var V = "1794202817";
+<script id="yp-ver">(function () { var V = "1794506825";
   try { fetch("version.txt?t=" + Date.now(), { cache: "no-store" }).then(function (r) { return r.ok ? r.text() : ""; }).then(function (t) {
     t = (t || "").trim(); if (!t || t === V || +t < +V) return;
     var k = "yp-reloaded-" + t; if (sessionStorage.getItem(k)) return; sessionStorage.setItem(k, "1"); location.reload(); }).catch(function () {}); } catch (e) {} })();</script>
@@ -300,7 +300,7 @@ try { var s = null; try { s = sessionStorage.getItem("hx-theme"); } catch (e) {}
     // the theme circle lives in the pill, next to the home icon; the Let's Talk pill (start-build-button.html)
     // stands top right and travels into the pill on scroll, as the photo does from the left
     sr.parentNode.insertBefore(th, sr);
-    top.querySelector(".hx-home").insertAdjacentHTML("afterend", '<a class="hx-home hx-cv" href="Yashwant_Ponde_Resume.pdf" target="_blank" rel="noopener" aria-label="Resume (PDF, opens in a new tab)"><i aria-hidden="true"></i><span>Resume</span></a>');
+    top.querySelector(".hx-home").insertAdjacentHTML("afterend", '<a class="hx-home hx-cv" href="Yashwant_Ponde_Resume.pdf?v=20261112" target="_blank" rel="noopener" aria-label="Resume (PDF, opens in a new tab)"><i aria-hidden="true"></i><span>Resume</span></a>');
     const right = top.querySelector(".hx-right");
     right.insertAdjacentHTML("beforeend", '<a class="hx-cta start-build" href="#site-foot"><span class="tile"></span><svg class="icon" viewBox="0 0 30 15" aria-hidden="true"></svg><span class="label">Let\u2019s Talk</span></a>');
     const tb = right.querySelector(".hx-cta");
@@ -4170,7 +4170,7 @@ window.__ypImgs = function (r) { r.querySelectorAll('img[data-yp-src]').forEach(
   <div class="yft-bot">
     <nav class="yft-links" aria-label="Elsewhere">
       <a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=ponde.yashwant@gmail.com" target="_blank" rel="noopener">Email<i aria-hidden="true">&#8599;</i></a>
-      <a href="Yashwant_Ponde_Resume.pdf" download="Yashwant_Ponde_Resume.pdf" data-link="resume">Resume<i aria-hidden="true">&#8599;</i></a>
+      <a href="Yashwant_Ponde_Resume.pdf?v=20261112" download="Yashwant_Ponde_Resume.pdf" data-link="resume">Resume<i aria-hidden="true">&#8599;</i></a>
       <a href="https://www.linkedin.com/in/yashwantponde" data-link="linkedin" target="_blank" rel="noopener">LinkedIn<i aria-hidden="true">&#8599;</i></a>
     </nav>
   </div>
