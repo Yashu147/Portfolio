@@ -154,7 +154,7 @@ try { var s = null; try { s = sessionStorage.getItem("hx-theme"); } catch (e) {}
 </style>
 <link rel="preload" href="assets/core/robot.1e358a5072.bin" as="fetch" crossorigin="anonymous" fetchpriority="low">
 <link rel="modulepreload" href="assets/core/hero.e0254e5073.js">
-<script id="yp-ver">(function () { var V = "1794506825";
+<script id="yp-ver">(function () { var V = "1794532315";
   try { fetch("version.txt?t=" + Date.now(), { cache: "no-store" }).then(function (r) { return r.ok ? r.text() : ""; }).then(function (t) {
     t = (t || "").trim(); if (!t || t === V || +t < +V) return;
     var k = "yp-reloaded-" + t; if (sessionStorage.getItem(k)) return; sessionStorage.setItem(k, "1"); location.reload(); }).catch(function () {}); } catch (e) {} })();</script>
@@ -6507,7 +6507,7 @@ window.__veNotch = function (host) {
     fr = document.createElement("iframe");
     fr.title = "Dynamic Notch prototype"; fr.setAttribute("sandbox", "allow-scripts"); fr.setAttribute("tabindex", "-1");
     fr.style.cssText = "display: block; width: 100%; height: 0; border: 0; background: transparent; color-scheme: normal";
-    fr.srcdoc = window.__veNotchSrc;
+    fr.srcdoc = window.__veNotchSrc.replace("<head>", "<head><style>html,body{-webkit-text-size-adjust:100%!important;text-size-adjust:100%!important}</style>");
     slot.insertBefore(fr, slot.firstChild);
   };
   const liveOff = window.__veLive(slot, post);
@@ -6708,7 +6708,7 @@ window.__veAB = function (host) {
     if (fr) return;
     fr = document.createElement("iframe");
     fr.title = "AI Browser prototype"; fr.setAttribute("sandbox", "allow-scripts"); fr.setAttribute("tabindex", "-1"); fr.loading = "eager";
-    fr.srcdoc = window.__veABSrc;
+    fr.srcdoc = window.__veABSrc.replace("<head>", "<head><style>html,body{-webkit-text-size-adjust:100%!important;text-size-adjust:100%!important}</style>");
     scr.insertBefore(fr, scr.firstChild);
   };
   on(window, "message", e => {
