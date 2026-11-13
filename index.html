@@ -154,7 +154,7 @@ try { var s = null; try { s = sessionStorage.getItem("hx-theme"); } catch (e) {}
 </style>
 <link rel="preload" href="assets/core/robot.1e358a5072.bin" as="fetch" crossorigin="anonymous" fetchpriority="low">
 <link rel="modulepreload" href="assets/core/hero.e0254e5073.js">
-<script id="yp-ver">(function () { var V = "1794532315";
+<script id="yp-ver">(function () { var V = "1794546984";
   try { fetch("version.txt?t=" + Date.now(), { cache: "no-store" }).then(function (r) { return r.ok ? r.text() : ""; }).then(function (t) {
     t = (t || "").trim(); if (!t || t === V || +t < +V) return;
     var k = "yp-reloaded-" + t; if (sessionStorage.getItem(k)) return; sessionStorage.setItem(k, "1"); location.reload(); }).catch(function () {}); } catch (e) {} })();</script>
@@ -434,13 +434,11 @@ void main() {
   float soft = clamp(e * 3.0 / abs(sx * sy + 1e-4), 0.0, 1.0) * reveal * (dark > 0.5 ? 0.27 : 0.19);
   // the design process colours, two to a side: orange into blue on the left half of the screen,
   // purple into pink on the right, crossfading as the pointer passes the middle
-  vec3 c1 = vec3(0.95, 0.52, 0.06), c2 = vec3(0.06, 0.48, 0.96);
-  vec3 c3 = vec3(0.52, 0.24, 0.96), c4 = vec3(0.94, 0.15, 0.52);
-  float side = smoothstep(0.42 * R.x, 0.58 * R.x, P.x);
-  float chroma = smoothstep(-0.12 * MN, 0.12 * MN, (f.x - P.x) + 0.32 * (f.y - P.y));
-  vec3 glow = mix(mix(c1, c3, side), mix(c2, c4, side), chroma);
+  vec3 c1 = vec3(0.52, 0.30, 0.98), c2 = vec3(0.12, 0.50, 1.0);   // violet into blue
+  float chroma = smoothstep(-0.16 * MN, 0.16 * MN, (f.x - P.x) + 0.32 * (f.y - P.y));
+  vec3 glow = mix(c1, c2, chroma);
   vec3 base = paper * (0.955 + 0.9 * (tile - 0.045));
-  vec3 col = dark > 0.5 ? vec3(tile) * (1.0 + 0.9 * bloom) + glow * (lit + soft + 0.05 * bloom) + vec3(0.16) * lit * lit : base * (1.0 - 0.82 * lit - soft) + glow * (0.82 * lit + soft);
+  vec3 col = dark > 0.5 ? vec3(tile) * (1.0 + 0.6 * bloom) + glow * 0.64 * (lit + soft + 0.05 * bloom) + vec3(0.07) * lit * lit : base * (1.0 - 0.56 * lit - 0.7 * soft) + glow * (0.56 * lit + 0.7 * soft);
   O = vec4(col, 1.0);
 }`;
     const sh = (type, src) => { const s = gl2.createShader(type); gl2.shaderSource(s, src); gl2.compileShader(s); if (!gl2.getShaderParameter(s, gl2.COMPILE_STATUS)) throw new Error(gl2.getShaderInfoLog(s)); return s; };
